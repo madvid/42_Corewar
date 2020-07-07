@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 10:18:52 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/07 16:04:01 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/07 16:33:30 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,5 @@ int     main(int argc, char **argv)
     parse(&head, &code, &label, fd);
     ft_printf("info =\n%s\n%s\n", head.name, head.comment);
     ft_printf("code->label = %s\n", code.label);
+    ft_printf("toto\n");
 }
