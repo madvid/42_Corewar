@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 10:18:52 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/07 16:04:01 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/07 16:26:04 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int     main(int argc, char **argv)
     t_label   label;
     int         fd;
 
+	ft_putstr("test");
     if (argc != 2)
         return (ft_error_arg());
     fd = open(argv[1], O_RDONLY);
