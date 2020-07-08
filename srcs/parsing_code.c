@@ -6,38 +6,83 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 15:16:00 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/07 16:09:02 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/08 15:05:40 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../incs/asm.h"
 
-void    get_label_code(t_code *code, t_label *label, char *line)
-{
-    t_label *tmp;
-
-    if (!(tmp = ft_create_elem(label)))
-		return ;
-    line = line + 1;
-    tmp->next = label->first;
-    label->first = tmp;
-    tmp->name = code->label;
-    tmp->value = ft_atoi(tmp->name);
-    ft_printf("value = %p\n", tmp->value);
-}
-
-void    parse_instruction(t_code *code, t_label *label, char *line)
+t_code    *is_label(t_code *tmp, char *line)
 {
     int i;
 
     i = 0;
     while (line[i] != '\0')
     {
-        if ((line[i] == ':') && (line[i - 1] != '%'))
+        if (line[i] == ':' && line[i - 1] != '%')
         {
-            code->label = ft_strncpy(code->label, line, i);
-            get_label_code(code, label ,line);
+            tmp->label = ft_strncpy(tmp->label, line, i);
+            tmp->label[i] = '\0';
+            return (tmp);
         }
         i++;
     }
+    tmp->label = NULL;
+    return (tmp);
+}
+
+void    dispatch_info(t_code *tmp, char **s, int argu)
+{
+    int j;
+    int k;
+
+    j = 0;
+    k = 0;
+    while (j < argu)
+    {
+        while (s[j][k] == ' ' || s[j][k] == 9)
+            k++;
+        s[j] = s[j] + k;
+        k = 0;
+        j++;
+    }
+    k = 0;
+    while (s[0][k] != '\0')
+    {
+        if (s[0][k] == ' ')
+            break;
+        tmp->op[k] = s[0][k];
+        k++;
+    }
+    tmp->op[k] = '\0';
+    s[0] += k;
+    tmp->arg[0] = s[0];
+    if (tmp->arg[0][0])
+        tmp->arg[0] += 1;
+    (argu <= 3) ? (tmp->arg[1] = s[1]) : (tmp->arg[1] = NULL);
+    (argu == 3) ? (tmp->arg[2] = s[2]) : (tmp->arg[2] = NULL);
+    tmp->arg[3] = NULL;
+}
+
+void    get_op_code_info(t_code *tmp, char *line, int i)
+{
+    char    **s;
+    int     j;
+    int     argu;
+
+    line += i;
+    argu = 0;
+    if (ft_strchr(line, ','))
+    {
+        s = ft_strsplit(line, ',');
+        argu = 3;
+    }
+    else
+    {
+        s = ft_strsplit(line, ' ');
+        argu = 2;
+    }
+    j = 0;
+    dispatch_info(tmp, s, argu);
+    j = 0;
 }

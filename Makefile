@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/21 14:17:47 by armajchr          #+#    #+#              #
-#    Updated: 2020/07/07 16:04:49 by armajchr         ###   ########.fr        #
+#    Updated: 2020/07/08 11:51:59 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,12 @@ YELLOW = \033[33m
 RESET = \033[0m
 
 #Binaries
-# CC		= /usr/bin/gcc -g -fsanitize=address
-CC		= /usr/bin/gcc -g3
+#CC		= /usr/bin/gcc -g -fsanitize=address
+CC		= /usr/bin/gcc
+
 RM		= /bin/rm
 FLAGS	= -Wall -Wextra -Werror
+FLAGS += -fsanitize=address,undefined -g3
 
 NAME	= asm_test
 LIB1	= Libft/libft.a
@@ -34,6 +36,7 @@ SRC		= parsing.c			\
 		init_struct.c		\
 		error_handler.c		\
 		ft_atoi.c			\
+		tools.c				\
 
 OBJ_PATH = obj
 OBJ_NAME = $(SRC:.c=.o)
