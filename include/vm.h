@@ -6,17 +6,18 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/08 15:32:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/08 18:56:31 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
 
-# ifndef TYPES_H
-#  define TYPES_H
-#  include <sys/types.h>
-# endif
+/*
+** include de fichiers entête 'externe'
+*/
+# include <sys/types.h>
+# include "libft.h"
 
 /*
 ** [SOURCE: op.h]
@@ -89,24 +90,51 @@
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
+/*
+** Macros des auteurs, des structures et prototypes des fonctions
+*/
+
 typedef struct					s_options
 {
 	int							dump;
-	ssize_t							nbr_cyle;
+	ssize_t						nbr_cycle;
+}								t_options;
 
-}								t_options
-typedef struct					s_champ_id
+typedef struct					s_champ
 {
 	char						*champ_file;
-	char						*name;
 	int							id;
-}								t_champ_id;
+	char						*name;
+	unsigned char				*comment;
+	unsigned char				*bytecode_field;
+}								t_champ;
+
 
 typedef struct					s_parse
 {
 	static int					nb_champions;
 	t_options					*options;
-	t_champ_id					*t_champ_id;
+	t_list						*t_champ_id;
 }								t_parse;
+
+# define M_USAGE_1				"Usage: ./corewar [-dump nbr_cycles] 
+# define M_USAGE_2				"[[-n number] champion1.cor] ..."
+# define M_USAGE				(M_USAGE_1 M_USAGE_2)
+# define M_DUMP_1				"Dump error argument: [-dump nbr_cycles] nbr_c"
+# define M_DUMP_2				"ycles need to be a non null and positive int."
+# define M_DUMP					(M_DUMP_1 M_DUMP_2)
+# define M_BD_VAL_1				"value error: [-n number] champion1.cor, n "
+# define M_BD_VAL_2				"must be either 1, 2, 3 or 4."
+# define M_BD_VAL				(M_BD_VALUE_1 M_BD_VALUE_2)
+# define CD_USAGE				0
+# define CD_DUMP 				1
+# define CD_BD_VAL				2
+
+typedef struct					s_m_error
+{
+	static char					m_error[][] = {M_USAGE, M_DUMP, M_BD_VAL};
+}								t_m_error;
+
+
 
 #endif
