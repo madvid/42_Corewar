@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoull.c                                        :+:      :+:    :+:   */
+/*   ft_is_positive_int.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/08 14:33:35 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/08 18:39:42 by mdavid           ###   ########.fr       */
+/*   Created: 2020/07/08 18:35:39 by mdavid            #+#    #+#             */
+/*   Updated: 2020/07/08 18:51:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-unsigned long long	ft_atoull(const char *str)
+int		ft_is_positive_int(char *str)
 {
-	unsigned long long	ret;
-	int					i;
+	int		i;
+	unsigned long long	result;
 
 	i = 0;
-	ret = 0;
+	result = 0;
+	if (!str || (str && !str[0]))
+		return (0);
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	if (str[i] == '+')
 		i++;
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
+	if (str[i] == '-')
+		return (0);
+	while ((str[i] >= '0') && (str[i] <= '9'))
 	{
-		ret = ret * 10 + (unsigned long long)(str[i] - '0');
+		result = 10 * result + ((unsigned long long)str[i] - 48);
 		i++;
+		if (result > INTEGER_MAX)
+			return (-1);
 	}
-	return (ret);
+	return (1);
 }

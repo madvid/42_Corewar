@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/07/08 14:47:53 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/08 18:48:50 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ LIB_FILES =	ft_memset	\
 			ft_isdigit	\
 			ft_isalnum	\
 			ft_isascii	\
+			ft_is_positive_int \
 			ft_isprint	\
 			ft_toupper	\
 			ft_tolower	\

@@ -6,13 +6,18 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/08 14:47:32 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/08 18:46:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
-# define LONG_MAX 9223372036854775807
+# ifndef LONG_MAX
+#  define LONG_MAX 9223372036854775807
+# endif
+# ifndef INTEGER_MAX
+#  define INTEGER_MAX 2147483647
+# endif
 # include <unistd.h>
 # include <string.h>
 
@@ -108,4 +113,6 @@ int					ft_strdupfree(char **dest, char **src);
 ** Fonctions ajoutées post projet libft
 */
 unsigned long long	ft_atoull(const char *str);
+int					ft_is_positive_int(char *str);
+
 #endif
