@@ -6,12 +6,17 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/07 15:53:53 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/08 15:32:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
+
+# ifndef TYPES_H
+#  define TYPES_H
+#  include <sys/types.h>
+# endif
 
 /*
 ** [SOURCE: op.h]
@@ -80,8 +85,28 @@
 */
 
 # define CYCLE_TO_DIE			1536
-# define CYCLE_DELTA				50
+# define CYCLE_DELTA			50
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
+
+typedef struct					s_options
+{
+	int							dump;
+	ssize_t							nbr_cyle;
+
+}								t_options
+typedef struct					s_champ_id
+{
+	char						*champ_file;
+	char						*name;
+	int							id;
+}								t_champ_id;
+
+typedef struct					s_parse
+{
+	static int					nb_champions;
+	t_options					*options;
+	t_champ_id					*t_champ_id;
+}								t_parse;
 
 #endif
