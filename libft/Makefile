@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/06/24 15:15:51 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/08 14:47:53 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ LIB_FILES =	ft_memset	\
 			ft_strcmp	\
 			ft_strncmp	\
 			ft_atoi	\
+			ft_atoull	\
 			ft_isalpha	\
 			ft_isdigit	\
 			ft_isalnum	\

@@ -79,7 +79,7 @@ Comme il n'y a qu'au maximum 3 arguments, le dernier couple de bits est donc non
 #define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
 ```
 * L'arène est la zone mémoire dans laquelle les codes des champions sont écrits/exécutés.
-La taille de l'arène est définie par ```MEM_SIZE```.
+La taille de l'arène est définie par ```MEM_SIZE``` et est de 4096 octets.
 * ```IDX_MOD``` définie ... .
 * ```CHAMP_MAX_SIZE``` définie la taille maximale en octets de chaque champion, si le code du champion dépasse cette taille, c'est une erreur.
 

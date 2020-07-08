@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2019/09/10 14:47:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/08 14:47:32 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,9 @@ char				*ft_strdup_1sp(const char *s);
 char				*ft_strdup_p(const char *s);
 char				*ft_strtrunc_x(char *s, size_t x);
 int					ft_strdupfree(char **dest, char **src);
+
+/*
+** Fonctions ajoutées post projet libft
+*/
+unsigned long long	ft_atoull(const char *str);
 #endif
