@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/08 15:35:51 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/08 18:54:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 static int		is_dump_option(char *arg, t_parse *p)
 {
-	p->option->dump = (ft_streq(arg, "-dump") == 1) ? 1 : 0;
-	return (p->option->dump);
+	p->options->dump = (ft_streq(arg, "-dump") == 1) ? 1 : 0;
+	return (p->options->dump);
 }
 
 /*
@@ -66,23 +66,18 @@ int				vm_parsing(int ac, char **av, t_parse *p)
 	int				tmp;
 
 	tmp = 1;
-	while (++i < ac)
+	i = 1;
+	if (is_dump_option(av[i], p) == 1 && av[++i] != NULL)
 	{
-		if (is_dump_option(av[i]) == 1 && av[++i] != NULL)
-		{
-			p->option->nbr_cycle = ft_atoull(av[i]);
-			i++;
-		}
-		if (is_nbchamp_option(av[i]) == 1)
-		{
-			if (av[++i] && is_within_int(av[i]))
-			{
-				tmp = ft_atoi(av[i]);
-				
-				i++;
-			}
-		}
-
-
+		if (is_positive_int(av[i]))
+			p->options->nbr_cycle = ft_atoi(av[i++]);
+		else
+			return(vm_error_manager((int)CD_DUMP));
+	}
+	while (i < ac)
+	{
+		if (is_n_flag(av[i], p) == 1 && av[++i] && is_valid_nb_champ(av[i]))
+			p->
+	}
 
 }
