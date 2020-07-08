@@ -6,16 +6,18 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/07 13:35:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/08 13:31:26 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
+
+
 int		main(int ac, char **av)
 {
 	t_parse		p;
 
-	if (vm_parsing(ac, av, ))
+	if (vm_parsing(ac, av, p))
 	return (0);
 }
