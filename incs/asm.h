@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 13:21:30 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/08 14:09:49 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/09 09:58:08 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ void        parse_instruction(t_head *head, char *line);
 void        get_op_code_info(t_code *tmp, char *line, int i);
 t_code      *is_label(t_code *tmp, char *line);
 void        dispatch_info(t_code *tmp, char **s, int argu);
+
+/**hexa_args**/
+void        arg_to_hexa(t_head *head);
+
 /**Errors**/
 int         ft_error_arg(void);
 

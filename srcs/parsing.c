@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 10:18:52 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/08 14:42:12 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/08 16:39:39 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ int     main(int argc, char **argv)
     fd = open(argv[1], O_RDONLY);
     init_head(&head);
     parse(&head, fd);
+    arg_to_hexa(&head);
     print_op_code(&head);
 }

@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/21 14:17:47 by armajchr          #+#    #+#              #
-#    Updated: 2020/07/08 11:51:59 by armajchr         ###   ########.fr        #
+#    Updated: 2020/07/08 16:27:39 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRC		= parsing.c			\
 		error_handler.c		\
 		ft_atoi.c			\
 		tools.c				\
+		hexa_arg.c			\
 
 OBJ_PATH = obj
 OBJ_NAME = $(SRC:.c=.o)
