@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/03 15:39:36 by armajchr          #+#    #+#              #
-#    Updated: 2019/10/24 15:37:02 by armajchr         ###   ########.fr        #
+#    Updated: 2020/07/09 15:50:48 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ SRC = ft_strcmp.c \
 	  ft_lstdelone.c \
 	  ft_lstdel.c	\
 	  get_next_line.c	\
+	  ft_bi_to_dc.c		\
 
 OBJ = $(patsubst %.c,%.o,$(SRC))
 HFILES = libft.h

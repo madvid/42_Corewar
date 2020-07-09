@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 15:16:29 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/08 09:50:58 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/09 11:00:13 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    ft_get_name(t_head *head, char *line)
     int j;
 
     i = 0;
-    while (line[i] != '\0')
+    while (line[i])
     {
         if (line[i] == ' ' || line[i] == '"')
             break ;
@@ -26,7 +26,7 @@ void    ft_get_name(t_head *head, char *line)
     }
     line[i] == ' ' ? i = i + 2: i++;
     j = 0;
-    while (line[i] != '\0')
+    while (line[i])
     {
         if (line[i] == '"')
             break ;
@@ -42,7 +42,7 @@ void    ft_get_comment(t_head *head, char *line)
     int j;
 
     i = 0;
-    while (line[i] != '\0')
+    while (line[i])
     {
         if (line[i] == ' ' || line[i] == '"')
             break ;
@@ -50,7 +50,7 @@ void    ft_get_comment(t_head *head, char *line)
     }
     line[i] == ' ' ? i = i + 2: i++;
     j = 0;
-    while (line[i] != '\0')
+    while (line[i])
     {
         if (line[i] == '"')
             break ;

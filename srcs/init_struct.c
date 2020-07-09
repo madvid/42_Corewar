@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 13:30:11 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/08 16:18:49 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/09 13:38:50 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_code    *ft_create_elem(void)
     if (!(elem->label = (char*)malloc(sizeof(char) * 10)))
         return (NULL);
     if (!(elem->op = (char*)malloc(sizeof(char) * 10)))
+        return (NULL);
+    if (!(elem->enc_byte = (char*)malloc(sizeof(char) * 11)))
         return (NULL);
     elem->len = 2;
     elem->position = 0;

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 11:10:59 by armajchr          #+#    #+#             */
-/*   Updated: 2019/09/18 15:40:34 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/09 15:57:03 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-static int		ft_sizenb(long nb)
+static int		ft_sizenb(long long nb)
 {
 	int count;
 
@@ -33,7 +33,7 @@ static int		ft_sizenb(long nb)
 	return (count);
 }
 
-static char		*ft_makedst(char *dst, long nb, int i)
+static char		*ft_makedst(char *dst, long long nb, int i)
 {
 	if (nb == -0)
 	{

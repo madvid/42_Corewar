@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/21 14:17:47 by armajchr          #+#    #+#              #
-#    Updated: 2020/07/08 16:27:39 by armajchr         ###   ########.fr        #
+#    Updated: 2020/07/09 16:31:48 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CC		= /usr/bin/gcc
 
 RM		= /bin/rm
 FLAGS	= -Wall -Wextra -Werror
-FLAGS += -fsanitize=address,undefined -g3
+#FLAGS += -fsanitize=address,undefined -g3
 
 NAME	= asm_test
 LIB1	= Libft/libft.a

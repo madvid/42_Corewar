@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 15:16:00 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/08 15:05:40 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/09 16:31:52 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void    dispatch_info(t_code *tmp, char **s, int argu)
         k++;
     }
     tmp->op[k] = '\0';
+    tmp->hexa_arg[0] = tmp->op;
     s[0] += k;
     tmp->arg[0] = s[0];
     if (tmp->arg[0][0])
