@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   vm_error_manager.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/09 16:11:37 by mdavid           ###   ########.fr       */
+/*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
+/*   Updated: 2020/07/09 15:00:05 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		main(int ac, char **av)
+int			vm_init_parse_error(int code_error)
 {
-	t_parse		*p;
+	ft_putendl("Error from the initialization of the struct parse.");
+	return (code_error);
+}
 
-	p = NULL;
-	if (!vm_init_parse(&p) || !vm_parsing(ac, av, p))
-		return (0);
+int			vm_error_manager(int code_error, char **error)
+{
+	ft_putendl(error[code_error]);
 	return (0);
 }

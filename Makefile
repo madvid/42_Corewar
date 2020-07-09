@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/09 13:04:07 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/09 15:49:37 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ INC_DIR = include/
 LIB_DIR = libraries/
 LIBFT_DIR = libft
 LIB_NAME = libft.a
-LIB = -L $(LIB_DIR) -lft
+LIB = -L $(LIBFT_DIR) -lft
 LIBFT = $(LIBFT_DIR)/$(LIB_NAME)
 
 CC = gcc
@@ -30,10 +30,15 @@ RM = rm -rf
 
 VM_FILES =	main \
 			vm_parsing \
-			vm_error_managers
+			vm_error_manager \
+			vm_champion_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)
+
+vpath %.c $(SRC_DIR)$(VM)
+vpath %.o $(SRC_DIR)$(VM)
+vpath %.h $(INC_DIR)
 
 ### COLORS ###
 
@@ -59,9 +64,9 @@ $(VM): $(VM_OBJ)
 
 $(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
 
-%.o: %.c
+$(SRC_DIR)$(VM_DIR)%.o: %.c
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
-	@$(CC) $(FLAGS) -o $@ -c $< -I$(LIBFT_DIR)/$(INC_DIR)
+	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR) 
 
 $(LIBFT): $(LIBFT_DIR)/$(INC_DIR)libft.h
 	@make -sC $(LIBFT_DIR)

@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vm_error_manager.c                                 :+:      :+:    :+:   */
+/*   ft_str_isnumber.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/09 13:36:27 by mdavid           ###   ########.fr       */
+/*   Created: 2020/07/09 17:10:19 by mdavid            #+#    #+#             */
+/*   Updated: 2020/07/09 17:14:00 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vm.h"
+#include "libft.h"
 
-int			vm_init_parse_error(int code_error)
+/*
+** Function: ft_str_isnumber
+** Description:
+**	Function checks if the 
+**
+*/
+
+int		ft_str_isnumber(char *str)
 {
-	ft_putendl("Error from the initialization of the struct parse.");
-	return (code_error);
-}
+	int		i;
 
-int			vm_error_manager(int code_error)
-{
-	t_m_error	*err;
-
-	ft_putendl(err[code_error]);
-	return (0);
+	i = 0;
+	if (!str || !(*str))
+		return (0);
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (0);
+		i++;
+	}
+	return (1);
 }

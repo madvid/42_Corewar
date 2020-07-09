@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/08 18:56:31 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/09 16:56:22 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** include de fichiers entête 'externe'
 */
 # include <sys/types.h>
-# include "libft.h"
+# include "../libft/include/libft.h"
 
 /*
 ** [SOURCE: op.h]
@@ -46,10 +46,10 @@
 # define IND_CODE				3
 
 
-# define MAX_ARGS_NUMBER			4
-# define MAX_PLAYERS				4
+# define MAX_ARGS_NUMBER		4
+# define MAX_PLAYERS			4
 # define MEM_SIZE				(4*1024)
-# define IDX_MOD					(MEM_SIZE / 8)
+# define IDX_MOD				(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
 
 # define CMT_CHAR				'#'
@@ -112,12 +112,17 @@ typedef struct					s_champ
 
 typedef struct					s_parse
 {
-	static int					nb_champions;
+	int							nb_champions;
 	t_options					*options;
 	t_list						*t_champ_id;
+	char						**error;
 }								t_parse;
 
-# define M_USAGE_1				"Usage: ./corewar [-dump nbr_cycles] 
+# define NB_ERROR_MSG			3
+# define CD_USAGE				0
+# define CD_DUMP 				1
+# define CD_BD_VAL				2
+# define M_USAGE_1				"Usage: ./corewar [-dump nbr_cycles] "
 # define M_USAGE_2				"[[-n number] champion1.cor] ..."
 # define M_USAGE				(M_USAGE_1 M_USAGE_2)
 # define M_DUMP_1				"Dump error argument: [-dump nbr_cycles] nbr_c"
@@ -125,16 +130,17 @@ typedef struct					s_parse
 # define M_DUMP					(M_DUMP_1 M_DUMP_2)
 # define M_BD_VAL_1				"value error: [-n number] champion1.cor, n "
 # define M_BD_VAL_2				"must be either 1, 2, 3 or 4."
-# define M_BD_VAL				(M_BD_VALUE_1 M_BD_VALUE_2)
-# define CD_USAGE				0
-# define CD_DUMP 				1
-# define CD_BD_VAL				2
+# define M_BD_VAL				(M_BD_VAL_1 M_BD_VAL_2)
 
-typedef struct					s_m_error
-{
-	static char					m_error[][] = {M_USAGE, M_DUMP, M_BD_VAL};
-}								t_m_error;
+/*
+** Prototypes des fonctions de parsing
+*/
 
+int							vm_parsing(int ac, char **av, t_parse *p);
+int							vm_init_parse(t_parse **p);
+int							vm_init_parse_error(int code_error); // print error message if memory allocation issue at initialization
+int							vm_error_manager(int code_error, char **error);
+int							vm_create_champion(t_list **lst_champs, char **av, int i);
 
 
 #endif
