@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/21 14:17:47 by armajchr          #+#    #+#              #
-#    Updated: 2020/07/09 16:31:48 by armajchr         ###   ########.fr        #
+#    Updated: 2020/07/10 10:59:53 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ LIB2	= ft_printf/libftprintf.a
 HEADER	= incs/asm.h
 INCLUDE = incs/
 
-SRC		= parsing.c			\
+SRC		= main.c			\
+		parsing.c			\
 		parsing_head.c		\
 		parsing_code.c		\
 		init_struct.c		\

@@ -6,13 +6,13 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 15:16:29 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/09 11:00:13 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/10 11:18:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/asm.h"
 
-void    ft_get_name(t_head *head, char *line)
+void    ft_get_name(t_head *h, char *line)
 {
     int i;
     int j;
@@ -30,13 +30,13 @@ void    ft_get_name(t_head *head, char *line)
     {
         if (line[i] == '"')
             break ;
-        head->name[j] = line[i];
+        h->name[j] = line[i];
         i++;
         j++;
     }
 }
 
-void    ft_get_comment(t_head *head, char *line)
+void    ft_get_comment(t_head *h, char *line)
 {
     int i;
     int j;
@@ -54,14 +54,14 @@ void    ft_get_comment(t_head *head, char *line)
     {
         if (line[i] == '"')
             break ;
-        head->comment[j] = line[i];
+        h->comment[j] = line[i];
         i++;
         j++;
     }
 }
 
 /**Recuperation du .name et .comment dans la struct s_head**/
-void    ft_is_name(t_head *head, char *line)
+void    ft_is_name(t_head *h, char *line)
 {
     if (ft_strncmp(line, NAME_CMD_STRING, 5) == 0)
         ft_get_name(head, line);

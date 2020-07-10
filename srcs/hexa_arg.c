@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 16:17:00 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/09 16:34:00 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/10 11:18:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void    get_direct(t_code *tmp, int i)
     tmp->hexa_arg[i + 2] = padding(tmp->hexa_arg[i + 2], 11);
 }
 
-void    arg_to_hexa(t_head *head)
+void    arg_to_hexa(t_head *h)
 {
     t_code *tmp;
     int i;
@@ -35,7 +35,7 @@ void    arg_to_hexa(t_head *head)
     size_t  deci;
 
     i = 0;
-    tmp = head->op_code;
+    tmp = h->op_code;
     posi = tmp->position;
     while (tmp)
     {

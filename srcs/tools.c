@@ -6,17 +6,17 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 09:56:07 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/09 16:33:58 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/10 11:18:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/asm.h"
 
-void    instruction_to_hexa(t_head *head)
+void    instruction_to_hexa(t_head *h)
 {
     t_code      *tmp;
 
-    tmp = head->op_code;
+    tmp = h->op_code;
     while (tmp)
     {
         if (ft_strcmp(tmp->op, "live") == 0)
@@ -81,13 +81,13 @@ char      *padding(char *s, int size)
     return (dst);
 }
 
-t_code    *create_nod(t_head *head, t_code *tmp)
+t_code    *create_nod(t_head *h, t_code *tmp)
 {
     if (tmp == NULL)
     {
-        if (!(head->op_code = ft_create_elem()))
+        if (!(h->op_code = ft_create_elem()))
 		    return NULL;
-        tmp = head->op_code;
+        tmp = h->op_code;
     }
     else
     {
@@ -100,16 +100,54 @@ t_code    *create_nod(t_head *head, t_code *tmp)
     return (tmp);
 }
 
-void    print_op_code(t_head *head)
+void	release(t_head *h)
+{
+    t_code  *tmp;
+
+    if (h->header)
+        ft_memdel((void **)&h->header);
+    tmp = h->op_code;
+    while (tmp)
+    {
+        if (h->op_code)
+            tmp = h->op_code->next;
+        if (h->op_code->label)
+            ft_memdel((void **)&h->op_code->label);
+        if (h->op_code->instruction)
+            ft_memdel((void **)&h->op_code->instruction);
+        if (h->op_code->hexa_instruction)
+            ft_memdel((void **)&h->op_code->hexa_instruction);
+    ft_memdel((void **)&h->op_code);
+    h->op_code = tmp;
+    }
+    ft_memset((void*)h->buff, 0, MEM_SIZE + 3);
+}
+
+/*
+** LEAVES THE PROGRAM AFTER RELEASING ALL ALLOCATED MEMORY
+*/
+
+void	leave(t_head *h, char *s)
+{
+	release(head);
+	write(2, "ERROR", 5);
+	if (!s)
+		write(2, "\n", 1);
+	else
+		write(2, s, ft_strlen(s));
+	exit(EXIT_FAILURE);
+}
+
+void    print_op_code(t_head *h)
 {
     t_code *tmp;
     int i;
 
-    tmp = head->op_code;
+    tmp = h->op_code;
     ft_printf(YELLOW"--------WARRIOR ID--------\n");
-    ft_printf("NAME:%s\n", head->name);
-    ft_printf("Comment:%s\n"EOC, head->comment);
-    ft_printf(RED"Magic_Number:%p\n"EOC, head->magic);
+    ft_printf("NAME:%s\n", h->name);
+    ft_printf("Comment:%s\n"EOC, h->comment);
+    ft_printf(RED"Magic_Number:%p\n"EOC, h->magic);
 
     while (tmp)
     {

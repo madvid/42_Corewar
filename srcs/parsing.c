@@ -6,18 +6,18 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 10:18:52 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/09 14:14:32 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/10 11:28:15 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/asm.h"
 
-void    parse_instruction(t_head *head, char *line)
+void    parse_instruction(t_head *h, char *line)
 {
     int i;
     t_code  *tmp;
 
-    tmp = head->op_code;
+    tmp = h->op_code;
     i = 0;
     ft_printf("line = %s\n", line);
     if (line[0])
@@ -36,33 +36,15 @@ void    parse_instruction(t_head *head, char *line)
     get_op_code_info(tmp, line, i);
 }
 
-void    parse(t_head *head, int fd)
+void    parse(t_head *h, int i)
 {
-    char *line;
-
-    while (get_next_line(fd, &line))
+    while (h->buff[i])
     {
-        if ((line[0] == '#') || (line[0] == '\0'))
-            free(line);
+        if ((h->buff[i] == '#') || (h == '\0'))
+            i++;;
         else if (line[0] == '.')
             ft_is_name(head, line);
         else
             parse_instruction(head, line);
     }
-}
-
-int     main(int argc, char **argv)
-{
-    t_head    head;
-
-    int         fd;
-
-    if (argc != 2)
-        return (ft_error_arg());
-    fd = open(argv[1], O_RDONLY);
-    init_head(&head);
-    parse(&head, fd);
-    arg_to_hexa(&head);
-    instruction_to_hexa(&head);
-    print_op_code(&head);
 }
