@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 13:21:30 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/10 13:24:30 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/10 15:04:34 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "../ft_printf/ft_printf.h"
 # include "../Libft/get_next_line.h"
 # include "op.h"
+
+# define INSTRUCT_CHAR  "abcdefghijklmnopqrstuvwxyz"
 
 typedef struct      s_head
 {

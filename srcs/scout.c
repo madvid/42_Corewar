@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/10 12:58:36 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/10 13:30:40 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/10 15:04:30 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,24 @@ int     is_com(t_head *h, char c)
 
 int     is_instruction(char *s, int i)
 {
+    int     j;
+
     while (is_white(s[i]))
     {
         if (s[i] == '\n')
             return (0);
         i++;
     }
+    j = 0;
+    while (ft_strchrf(INSTRUCT_CHAR, s[j + i], 0) >= 0)
+        j++;
+    if (is_white(s[j + i]) && j > 0)
+    {
+        if (s[j + i] == '\n')
+            return (0);
+        return (1);
+    }
+    return (0);
 }
 
 int     is_label(char *s, int i)
