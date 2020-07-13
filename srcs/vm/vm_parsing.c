@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/13 01:17:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/13 17:43:24 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,14 @@ static int		is_n_flag(char *arg)
 
 static int		is_valid_nb_champ(char *nb)
 {
-	if (!ft_str_isnumber(nb))
+	if (ft_strlen(nb) > 1)
 	{
-		ft_putendl("Error, champion number MUST BE a number.");
-		return (0);
-	}
-	if (ft_strlen(nb) > 2)
-	{
-		ft_putendl("Error, champion number must be 1, 2, 3 or 4.");
+		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
 		return (0);
 	}
 	if (!(nb[0] >= '1' && nb[0] <= '4'))
 	{
-		ft_putendl("Error, champion number must be 1, 2, 3 or 4.");
+		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
 		return (0);
 	}
 	return (1);
@@ -89,28 +84,6 @@ static void		vm_init_parse_value(t_parse *p)
 }
 
 /*
-** Function: is_valid_parameter
-** Description:
-**	
-**
-** Return:
-**	1: parameters is valid
-**	0: parameters is not valid
-*/
-
-static int		is_valid_parameter(char *str)
-{
-	if (ft_strequ(str, "-n") == 1)
-		return (1);
-	else if (is_valid_nb_champ(str))
-		return (1);
-	else if (is_valid_champ_filename(str))
-		return (1);
-	else
-		return (0);
-}
-
-/*
 ** Function: vm_parsing
 ** Description:
 **	Parsing of the standard inputs of the executable corewar (the VM)
@@ -130,29 +103,37 @@ int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 	static int		i;
 
 	i = 1;
-	printf("valeur de i:%d\n", i);
-	if (av[i] && is_dump_option(av[i], p) == 1)
-		p->options->dump = 1;
-	printf("valeur de i:%d\n", i);
-	if (av[++i] && p->options->dump == 1 && ft_is_positive_int(av[i]))
-		p->options->nbr_cycle = ft_atoi(av[i++]);
-	printf("valeur de i:%d\n", i);
-	while (av[i] && p->nb_champ < 4 && !is_valid_parameter(av[i]))
+	if (av[i] && is_dump_option(av[i], p) == 1) // check for -dump and the associate number
 	{
-		if (is_n_flag(av[i++]))
-			p->options->n = 1;
-		if (av[i] && p->options->n && is_valid_nb_champ(av[i]))
-				p->id_champ = ft_atoi(av[i++]);
-		if (av[i])
+		if (av[++i] && p->options->dump == 1 && ft_is_positive_int(av[i]))
 		{
-			if (!is_valid_champ_filename(av[i]))
-				return (vm_error_manager((int)CD_BD_CHAMP_NB, p->error));
-			if (!vm_create_champion(lst_champs, av[i], p))
-				return (vm_error_manager((int)CD_MEM_CHAMP, p->error));
-			i++;
+			p->options->dump = 1;
+			p->options->nbr_cycle = ft_atoi(av[i++]);
 		}
+		else
+			return (vm_error_manager((int)CD_DUMP, p->error));
 	}
-	printf("valeur de i:%d END\n", i);
+	while (av[i] p->nb_champ < 5)
+	{
+		if (is_n_flag(av[i])) // check for flag n and associated number
+		{
+			if (av[++i] && is_valid_nb_champ(av[i]))
+			{
+				p->options->n = 1;
+				p->id_champ = (int)(*av[i++] - '0');
+			}
+			else
+				return (vm_error_manager((int)CD_BD_VAL, p->error));
+		}
+		if (av[i] && !is_valid_champ_filename(av[i]))
+			return (vm_error_manager((int)CD_BD_CHAMP_NB, p->error));
+		if (av[i] && !vm_create_champion(lst_champs, av[i++], p))
+			return (vm_error_manager((int)CD_MEM_CHAMP, p->error));
+	}
+	if (p->nb_champ == 0)
+		return (vm_error_manager((int)CD_EMPTY_CHP, p->error));
+	if (p->nb_champ > (int)MAX_PLAYERS)
+		return (vm_error_manager((int)CD_MAX_CHAMP, p->error));
 	return (1);
 }
 
@@ -167,7 +148,9 @@ int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 int				vm_init_parse(t_parse **p)
 {
 	int		i;
-	static	char	*msg[]={M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB, M_MEM_CHAMP, NULL};
+	static	char	*msg[]={M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB,
+							M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
+							M_BD_CODE, NULL};
 
 	i = 0;
 	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
@@ -178,10 +161,7 @@ int				vm_init_parse(t_parse **p)
 	{
 		if (!((*p)->error[i] = ft_strdup(msg[i])))
 		{
-			while (--i >= 0)
-				ft_strdel(&((*p)->error[i]));
-			free((*p)->error);
-			(*p)->error = NULL;
+			ft_strtabldel(&((*p)->error));
 			return (vm_init_parse_error(2, p));
 		}
 		i++;

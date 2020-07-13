@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/13 01:27:11 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/13 18:48:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ typedef struct					s_options
 
 typedef struct					s_champ
 {
-	char						*champ_file;
 	int							id;
+	char						*champ_file;
 	char						*name;
-	unsigned char				*comment;
-	unsigned char				*bytecode;
+	char						*comment;
+	char						*bytecode;
 }								t_champ;
 
 
@@ -120,30 +120,36 @@ typedef struct					s_parse
 	char						**error;
 }								t_parse;
 
-# define NB_ERROR_MSG			5
+# define NB_ERROR_MSG			8
 # define CD_USAGE				0
 # define CD_DUMP 				1
 # define CD_BD_VAL				2
 # define CD_BD_CHAMP_NB			3
 # define CD_MEM_CHAMP			4
+# define CD_EMPTY_CHP			5
+# define CD_MAX_CHAMP			6
+# define CD_MAX_CHAMP			7
 # define M_USAGE_1				"Usage: ./corewar [-dump nbr_cycles] "
 # define M_USAGE_2				"[[-n number] champion1.cor] ..."
 # define M_USAGE				(M_USAGE_1 M_USAGE_2)
-# define M_DUMP_1				"Dump error argument: [-dump nbr_cycles] nbr_c"
-# define M_DUMP_2				"ycles need to be a non null and positive int."
+# define M_DUMP_1				"Dump error: [-dump nbr_cycles] nbr_cycles need"
+# define M_DUMP_2				" to exist, be non null and positive INT."
 # define M_DUMP					(M_DUMP_1 M_DUMP_2)
-# define M_BD_VAL_1				"value error: [-n number] champion1.cor, n "
+# define M_BD_VAL_1				"value error: [-n number], n "
 # define M_BD_VAL_2				"must be either 1, 2, 3 or 4."
 # define M_BD_VAL				(M_BD_VAL_1 M_BD_VAL_2)
 # define M_BD_CHAMP_NB_1		"Champion file error: file must be a bytecode"
 # define M_BD_CHAMP_NB_2		" with '.cor' extension."
 # define M_BD_CHAMP_NB			(M_BD_CHAMP_NB_1 M_BD_CHAMP_NB_2)
 # define M_MEM_CHAMP_1			"Error: memory allocation issue during parsing"
-# define M_MEM_CHAMP_2			"process."
+# define M_MEM_CHAMP_2			" process."
 # define M_MEM_CHAMP			(M_MEM_CHAMP_1 M_MEM_CHAMP_2)
+# define M_EMPTY_CHP			"Error: You must precise 1 champion at least."
+# define M_MAX_CHAMP			"Error: a maximum of 4 champions is allowed."
+# define M_BD_CODE				"Error: one of champion's file is not bytecode."
 
 /*
-** Prototypes des fonctions de parsing
+** Prototypes des fonctions de parsing des arguments en STDIN
 */
 
 int							vm_parsing(char **av, t_parse *p, t_list **lst_champs);
@@ -154,5 +160,14 @@ int							vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
 int 						is_valid_champ_filename(char* filename);
 void						vm_print_parsing(t_parse *p); //a retirer
 void						vm_print_champ_list(t_list *lst_champs); //a retirer
+
+/*
+** Prototypes des fonctions de parsing des fichiers des champions
+*/
+int							vm_champ_code_parse(t_list **lst_champs, char **error);
+char						*get_corewar_magic_key(char *file);
+char						*get_champ_name(char *file);
+char						*get_champ_comment(char *file);
+char						*get_champ_bcode(char *file);
 
 #endif
