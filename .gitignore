@@ -1,3 +1,7 @@
+# fichier de config VSCode
+launch.json
+settings.json
+
 # Prerequisites
 *.d
 
