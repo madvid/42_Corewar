@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 12:20:53 by mdavid            #+#    #+#             */
-/*   Updated: 2019/06/26 15:03:53 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/13 16:22:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_list	*ft_lstnew(void const *cnt, size_t cnt_s)
 	}
 	else
 	{
-		if (!(nwlist->cnt = (void*)malloc(sizeof(cnt))))
+		if (!(nwlist->cnt = malloc(cnt_s)))
 		{
 			free(nwlist);
 			return (NULL);
