@@ -6,10 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/09 17:10:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/13 01:17:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "vm.h"
 
@@ -25,9 +26,7 @@
 
 static int		is_dump_option(char *arg, t_parse *p)
 {
-	ft_putendl("is_dump 1");
 	p->options->dump = (ft_strequ(arg, "-dump") == 1) ? 1 : 0;
-	ft_putendl("is_dump 2");
 	return (p->options->dump);
 }
 
@@ -35,7 +34,7 @@ static int		is_dump_option(char *arg, t_parse *p)
 ** Function:
 ** Description:
 **	Function checks if the str arg is the flag option to attribute a specific
-**	number to the following champion.
+**	number to the following chafmpion.
 ** Return:
 **	1: if arg is the attribution number flag
 **	0: otherwise
@@ -73,6 +72,45 @@ static int		is_valid_nb_champ(char *nb)
 }
 
 /*
+** Function: ft_init_parse_value
+** Description:
+**
+** Return:
+**
+*/
+
+static void		vm_init_parse_value(t_parse *p)
+{
+	p->nb_champ = 0;
+	p->id_champ = 0;
+	p->options->dump = 0;
+	p->options->nbr_cycle = 0;
+	p->options->n = 0;
+}
+
+/*
+** Function: is_valid_parameter
+** Description:
+**	
+**
+** Return:
+**	1: parameters is valid
+**	0: parameters is not valid
+*/
+
+static int		is_valid_parameter(char *str)
+{
+	if (ft_strequ(str, "-n") == 1)
+		return (1);
+	else if (is_valid_nb_champ(str))
+		return (1);
+	else if (is_valid_champ_filename(str))
+		return (1);
+	else
+		return (0);
+}
+
+/*
 ** Function: vm_parsing
 ** Description:
 **	Parsing of the standard inputs of the executable corewar (the VM)
@@ -87,32 +125,34 @@ static int		is_valid_nb_champ(char *nb)
 **	n'est pas correct, ne pas être en mesure de relever qu'il y a une erreur
 */
 
-int				vm_parsing(int ac, char **av, t_parse *p)
+int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 {
 	static int		i;
-	int				tmp;
-	t_list			*lst_champs;
 
-	tmp = 1;
 	i = 1;
-	lst_champs = NULL;
-	if (!av[i])
-		return(vm_error_manager((int)CD_USAGE, p->error));
-	ft_putendl("ici 1");
-	if (is_dump_option(av[i], p) == 1 && av[++i])
+	printf("valeur de i:%d\n", i);
+	if (av[i] && is_dump_option(av[i], p) == 1)
+		p->options->dump = 1;
+	printf("valeur de i:%d\n", i);
+	if (av[++i] && p->options->dump == 1 && ft_is_positive_int(av[i]))
+		p->options->nbr_cycle = ft_atoi(av[i++]);
+	printf("valeur de i:%d\n", i);
+	while (av[i] && p->nb_champ < 4 && !is_valid_parameter(av[i]))
 	{
-		ft_putendl("ici 2");
-		if (ft_is_positive_int(av[i]))
-			p->options->nbr_cycle = ft_atoi(av[i++]);
-		else
-			return(vm_error_manager((int)CD_DUMP, p->error));
+		if (is_n_flag(av[i++]))
+			p->options->n = 1;
+		if (av[i] && p->options->n && is_valid_nb_champ(av[i]))
+				p->id_champ = ft_atoi(av[i++]);
+		if (av[i])
+		{
+			if (!is_valid_champ_filename(av[i]))
+				return (vm_error_manager((int)CD_BD_CHAMP_NB, p->error));
+			if (!vm_create_champion(lst_champs, av[i], p))
+				return (vm_error_manager((int)CD_MEM_CHAMP, p->error));
+			i++;
+		}
 	}
-	while (av[i] && i < ac)
-	{
-		if (is_n_flag(av[i]) == 1 && av[++i] && is_valid_nb_champ(av[i]))
-			if (!vm_create_champion(&lst_champs, av, i))
-				return (vm_error_manager((int)CD_BD_VAL, p->error));
-	}
+	printf("valeur de i:%d END\n", i);
 	return (1);
 }
 
@@ -127,26 +167,27 @@ int				vm_parsing(int ac, char **av, t_parse *p)
 int				vm_init_parse(t_parse **p)
 {
 	int		i;
-	static	char	*msg[]={M_USAGE, M_DUMP, M_BD_VAL, NULL};
+	static	char	*msg[]={M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB, M_MEM_CHAMP, NULL};
 
 	i = 0;
 	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
-		return (vm_init_parse_error(0));
+		return (vm_init_parse_error(0, p));
 	if (!((*p)->error = (char**)ft_memalloc(sizeof(char*) * (int)NB_ERROR_MSG)))
-		return (vm_init_parse_error(0));
+		return (vm_init_parse_error(1, p));
 	while (i < (int)NB_ERROR_MSG)
 	{
 		if (!((*p)->error[i] = ft_strdup(msg[i])))
 		{
-			while (i >= 0)
+			while (--i >= 0)
 				ft_strdel(&((*p)->error[i]));
 			free((*p)->error);
 			(*p)->error = NULL;
-			return (vm_init_parse_error(0));
+			return (vm_init_parse_error(2, p));
 		}
 		i++;
 	}
 	if (!((*p)->options = (t_options*)ft_memalloc(sizeof(t_options))))
-		return (vm_init_parse_error(0));
+		return (vm_init_parse_error(3, p));
+	vm_init_parse_value(*p);
 	return (1);
 }

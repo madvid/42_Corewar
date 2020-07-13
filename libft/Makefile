@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/07/08 18:48:50 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/11 02:32:23 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,7 @@ LIB_FILES =	ft_memset	\
 			ft_strmap	\
 			ft_strmapi	\
 			ft_strequ	\
+			ft_str_isnumber \
 			ft_strnequ	\
 			ft_strsub	\
 			ft_strjoin	\

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/09 16:56:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/13 01:27:11 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct					s_options
 {
 	int							dump;
 	ssize_t						nbr_cycle;
+	int							n;
 }								t_options;
 
 typedef struct					s_champ
@@ -106,22 +107,25 @@ typedef struct					s_champ
 	int							id;
 	char						*name;
 	unsigned char				*comment;
-	unsigned char				*bytecode_field;
+	unsigned char				*bytecode;
 }								t_champ;
 
 
 typedef struct					s_parse
 {
-	int							nb_champions;
+	int							nb_champ;
+	int							id_champ;
 	t_options					*options;
 	t_list						*t_champ_id;
 	char						**error;
 }								t_parse;
 
-# define NB_ERROR_MSG			3
+# define NB_ERROR_MSG			5
 # define CD_USAGE				0
 # define CD_DUMP 				1
 # define CD_BD_VAL				2
+# define CD_BD_CHAMP_NB			3
+# define CD_MEM_CHAMP			4
 # define M_USAGE_1				"Usage: ./corewar [-dump nbr_cycles] "
 # define M_USAGE_2				"[[-n number] champion1.cor] ..."
 # define M_USAGE				(M_USAGE_1 M_USAGE_2)
@@ -131,16 +135,24 @@ typedef struct					s_parse
 # define M_BD_VAL_1				"value error: [-n number] champion1.cor, n "
 # define M_BD_VAL_2				"must be either 1, 2, 3 or 4."
 # define M_BD_VAL				(M_BD_VAL_1 M_BD_VAL_2)
+# define M_BD_CHAMP_NB_1		"Champion file error: file must be a bytecode"
+# define M_BD_CHAMP_NB_2		" with '.cor' extension."
+# define M_BD_CHAMP_NB			(M_BD_CHAMP_NB_1 M_BD_CHAMP_NB_2)
+# define M_MEM_CHAMP_1			"Error: memory allocation issue during parsing"
+# define M_MEM_CHAMP_2			"process."
+# define M_MEM_CHAMP			(M_MEM_CHAMP_1 M_MEM_CHAMP_2)
 
 /*
 ** Prototypes des fonctions de parsing
 */
 
-int							vm_parsing(int ac, char **av, t_parse *p);
+int							vm_parsing(char **av, t_parse *p, t_list **lst_champs);
 int							vm_init_parse(t_parse **p);
-int							vm_init_parse_error(int code_error); // print error message if memory allocation issue at initialization
+int							vm_init_parse_error(int code_error, t_parse **p); // print error message if memory allocation issue at initialization
 int							vm_error_manager(int code_error, char **error);
-int							vm_create_champion(t_list **lst_champs, char **av, int i);
-
+int							vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
+int 						is_valid_champ_filename(char* filename);
+void						vm_print_parsing(t_parse *p); //a retirer
+void						vm_print_champ_list(t_list *lst_champs); //a retirer
 
 #endif
