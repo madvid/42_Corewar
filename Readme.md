@@ -138,6 +138,13 @@ typedef struct		header_s
 
 ### Partie VM:
 
+#### Parsing des fichiers des champions:
+Le contenue d'un fichier correspondant à un champion est en bycode.
+Ce fichier doit contenir une entête constituée:
+* d'un nombre magique '0x ea 83 f3'. Comme nous pouvons le voir ce nombre magique
+est constitué de 4 valeurs en hexadécimales, comme chacune des valeurs hexadécimales
+encode 2 bits, le nombre magique occupe 8 bits et donc 1 octets. 
+
 
 ## Bibliographie:
  1. https://docs.google.com/document/d/1DT_47inyTLDEUMevdmsA4jqr3_FXGvgKhzpGv_rtuOo/edit# | Corewar_Cheat_Sheet.pdf (dans le répertoire documentation)
