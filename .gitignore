@@ -2,7 +2,7 @@
 test
 
 # fichier de config VSCode
-launch.json
+.vscode/launch.json
 settings.json
 
 # Prerequisites
