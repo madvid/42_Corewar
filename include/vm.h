@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/14 02:42:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/14 18:45:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 */
 # include <sys/types.h>
 # include "../libft/include/libft.h"
+
+#include <stdio.h> // have to be removed at the end
 
 /*
 ** [SOURCE: op.h]
@@ -81,7 +83,7 @@
 # define REG_NUMBER				16
 
 /*
-** 
+**
 **
 */
 
@@ -94,6 +96,7 @@
 ** Macros des auteurs, des structures et prototypes des fonctions
 */
 
+# define BASE					"0123456789abcdef"
 typedef struct					s_options
 {
 	int							dump;
@@ -167,7 +170,7 @@ void						vm_print_champ_list(t_list *lst_champs); //a retirer
 ** Prototypes des fonctions de parsing des fichiers des champions
 */
 int							vm_champ_parse(t_list **lst_champs, char **error);
-char						*get_champ_magic_key(int df);
+int							get_champ_magic_key(int df);
 char						*get_champ_name(int df);
 char						*get_champ_comment(int df);
 char						*get_champ_bcode(int df);

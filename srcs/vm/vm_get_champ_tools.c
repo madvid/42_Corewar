@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/14 00:32:42 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/14 02:44:04 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/14 18:37:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,18 @@
 **	NULL:
 */
 
-char		*get_champ_magic_key(int fd)
+int		get_champ_magic_key(int fd)
 {
-	int		rd;
-	char	*buff;
+	int			rd;
+	char		*buff;
+	uint32_t	max = 0x0;
 
-	if (fd < 0 || read(fd, NULL, 0) < 0	|| !(buff = ft_strnew(2)))
-		return (NULL);
-	if ((rd = read(fd, buff, 2)) > 0)
-		buff[rd] = '\0';
-	else
-	{
-		ft_strdel(&buff);
-		return (NULL);
-	}
-	if (ft_strlen(buff) < 2)
-	{
-		ft_strdel(&buff);
-		return (NULL);
-	}
-	return (buff);
+
+	if (fd < 0 || read(fd, NULL, 0) < 0	|| !(buff = ft_strnew(4)))
+		return (0);
+	rd = read(fd, buff, 4);
+	max = (buff[3] & 0xff) | ((buff[2] & 0xff) << 8) | ((buff[1] & 0xff) << 16);
+	return (max);
 }
 
 /*
@@ -52,16 +44,16 @@ char		*get_champ_magic_key(int fd)
 **	NULL:
 */
 
-char		*get_champ_name(int fd)
-{
+// char		*get_champ_name(int fd)
+// {
 
-	if ()
-	{
+// 	if ()
+// 	{
 
-	}
-	else
-		return (NULL);
-}
+// 	}
+// 	else
+// 		return (NULL);
+// }
 
 /*
 ** Function: get_champ_comment
@@ -72,15 +64,15 @@ char		*get_champ_name(int fd)
 **	NULL:
 */
 
-char		*get_champ_comment(int fd)
-{
-	if ()
-	{
+// char		*get_champ_comment(int fd)
+// {
+// 	if ()
+// 	{
 
-	}
-	else
-		return (NULL);
-}
+// 	}
+// 	else
+// 		return (NULL);
+// }
 
 /*
 ** Function: get_champ_bcode
@@ -91,13 +83,13 @@ char		*get_champ_comment(int fd)
 **	NULL:
 */
 
-char		*get_champ_bcode(int fd)
-{
+// char		*get_champ_bcode(int fd)
+// {
 
-	if ()
-	{
+// 	if ()
+// 	{
 
-	}
-	else
-		return (NULL);
-}
+// 	}
+// 	else
+// 		return (NULL);
+// }

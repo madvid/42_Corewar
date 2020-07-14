@@ -6,11 +6,10 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/13 16:13:46 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/14 11:44:04 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "vm.h"
 
 void	vm_print_parsing(t_parse *p)
