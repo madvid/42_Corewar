@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/13 16:53:46 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/14 13:30:02 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,6 @@ unsigned long long	ft_atoull(const char *str);
 int					ft_is_positive_int(char *str);
 int					ft_str_isnumber(char *number);
 void				ft_strtabldel(char ***tab);
+char				*ft_itoa_base(int nb, char* strbase, int base);
 
 #endif
