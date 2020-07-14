@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/13 17:43:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/14 02:39:19 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 		else
 			return (vm_error_manager((int)CD_DUMP, p->error));
 	}
-	while (av[i] p->nb_champ < 5)
+	while (av[i] && p->nb_champ < 5)
 	{
 		if (is_n_flag(av[i])) // check for flag n and associated number
 		{
@@ -150,7 +150,7 @@ int				vm_init_parse(t_parse **p)
 	int		i;
 	static	char	*msg[]={M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB,
 							M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
-							M_BD_CODE, NULL};
+							M_BD_CODE, M_CHP_ERR, NULL};
 
 	i = 0;
 	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
