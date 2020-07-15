@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 14:15:32 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 16:00:56 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 **	id: the available id for the new champion.
 **	0: otherwise.
 */
-static int	attribut_nb_champ(int* id_table)
+
+static int	attribut_nb_champ(int *id_table)
 {
 	int		id;
 
@@ -44,7 +45,7 @@ static int	attribut_nb_champ(int* id_table)
 **	0: otherwise
 */
 
-int 		is_valid_champ_filename(char* filename)
+int			is_valid_champ_filename(char *filename)
 {
 	int		len;
 
@@ -72,14 +73,14 @@ static int	set_champ_value(t_champ *champ, t_parse *p, char *str)
 		p->id_table[champ->id - 1] = 1;
 	}
 	if (!(champ->champ_file = ft_strdup(str)))
-			return (0);
+		return (0);
 	return (1);
 }
 
 /*
 ** Function: vm_create_champion
 ** Description:
-**	Function checks if there is the filename in the next argument av, 
+**	Function checks if there is the filename in the next argument av,
 */
 
 int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 14:15:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 16:11:51 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,13 @@ static int		is_n_flag(char *arg)
 }
 
 /*
-**
-**
-**
+** Function: is_valid_nb_champ
+** Description:
+**	Checks if the number given by the user is a positive int sinfle digit
+**	in [1 ; 4].
+** Return:
+**	1: if the number for the id champion is correct.
+**	0: otherwise.
 */
 
 static int		is_valid_nb_champ(char *nb)
@@ -82,7 +86,7 @@ static int		is_valid_nb_champ(char *nb)
 
 int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 {
-	static int		i;
+	int		i;
 
 	i = 1;
 	if (av[i] && is_dump_option(av[i], p) == 1) // check for -dump and the associate number
@@ -118,4 +122,3 @@ int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 		return (vm_error_manager((int)CD_MAX_CHAMP, p->error));
 	return (1);
 }
-

@@ -6,12 +6,12 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 15:20:55 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 15:45:04 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_MSGS_H
-# define ERROR_MSGS_H
+#ifndef ERROR_MESSAGES_H
+# define ERROR_MESSAGES_H
 
 # define NB_ERROR_MSG			11
 # define CD_USAGE				0

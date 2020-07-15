@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 17:44:39 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 14:27:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 15:56:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int		vm_champ_file_parse(t_champ *ichamp, char **error)
 	if ((fd = open(ichamp->champ_file, O_RDONLY)) <= 2)
 		return (vm_error_manager((int)CD_INV_FD, error));
 	magic_key = get_champ_magic_key(fd);
-	if ( magic_key - (int)(COREWAR_EXEC_MAGIC) != 0)
+	if (magic_key - (int)(COREWAR_EXEC_MAGIC) != 0)
 		return (vm_error_manager((int)CD_MAGIC_EXEC, error));
 	ichamp->name = get_champ_name(fd);
 	ichamp->l_bytecode = get_champ_l_bcode(fd);
@@ -51,11 +51,11 @@ static int		vm_champ_file_parse(t_champ *ichamp, char **error)
 **	Parsing of the champions bytecode, this part couple the parsing and basics
 **	tests on the contains of the files.
 ** Return:
-**	1: 
-**	0:
+**	1: If parsing of champion is fine.
+**	0: otherwise.
 */
 
-int			vm_champ_parse(t_list **lst_champs, char **error)
+int				vm_champ_parse(t_list **lst_champs, char **error)
 {
 	t_list		*xplr;
 	t_champ		*ichamp;

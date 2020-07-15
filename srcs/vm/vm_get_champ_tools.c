@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/14 00:32:42 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 11:36:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 16:06:11 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@
 **	0: if wrong file descriptior, not existing file or memory allocation issue
 */
 
-int		get_champ_magic_key(int fd)
+int			get_champ_magic_key(int fd)
 {
 	int			rd;
 	char		*buff;
 	int			magic;
 
 	magic = 0;
-	if (fd < 0 || read(fd, NULL, 0) < 0	|| !(buff = ft_strnew(4)))
+	if (fd < 0 || read(fd, NULL, 0) < 0 || !(buff = ft_strnew(4)))
 		return (0);
 	if ((rd = read(fd, buff, 4)) != 4)
 	{
@@ -131,10 +131,12 @@ char		*get_champ_comment(int fd)
 ** Description:
 **	Checks the validity of the executable bytecode part of the champion
 **	To be valid, the executable part within the champion bytecode should
-*	not have any NULL byte.
+**	not have any NULL byte.
 ** Return:
-**	
+**	1: if no trailling zeros (NULL) at the end of champion bytecode.
+**	0: otherwise.
 */
+
 static int	check_champ_bcode(char *bytecode, int l_bcode)
 {
 	int		i;
@@ -144,7 +146,6 @@ static int	check_champ_bcode(char *bytecode, int l_bcode)
 		return (0);
 	return (1);
 }
-
 
 /*
 ** Function: get_champ_bcode
@@ -161,12 +162,12 @@ char		*get_champ_bcode(int fd, int l_bcode)
 	char		*buff1;
 	char		*buff2;
 
-	if (!(buff1 = ft_strnew(4)) || !(buff2 = ft_strnew(l_bcode)))
+	if (!(buff1 = ft_strnew(4)) || (read(fd, buff1, 4) != 4))
 	{
 		ft_strdel(&buff1);
 		return (0);
 	}
-	if ((read(fd, buff1, 4) != 4) || (read(fd, buff2, l_bcode) != l_bcode))
+	if (!(buff2 = ft_strnew(l_bcode)) || (read(fd, buff2, l_bcode) != l_bcode))
 	{
 		ft_strdel(&buff1);
 		ft_strdel(&buff2);
