@@ -6,10 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/14 00:32:42 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 02:10:05 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 11:36:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
 #include "vm.h"
 
 /*
@@ -126,6 +127,26 @@ char		*get_champ_comment(int fd)
 }
 
 /*
+** Function: check_champ_bcode
+** Description:
+**	Checks the validity of the executable bytecode part of the champion
+**	To be valid, the executable part within the champion bytecode should
+*	not have any NULL byte.
+** Return:
+**	
+*/
+static int	check_champ_bcode(char *bytecode, int l_bcode)
+{
+	int		i;
+
+	i = l_bcode - 1;
+	if (!bytecode[i])
+		return (0);
+	return (1);
+}
+
+
+/*
 ** Function: get_champ_bcode
 ** Description:
 **	Skips 4 NULL bytes (and check if it's NULL) and reads the
@@ -137,7 +158,6 @@ char		*get_champ_comment(int fd)
 
 char		*get_champ_bcode(int fd, int l_bcode)
 {
-	int			rd;
 	char		*buff1;
 	char		*buff2;
 
@@ -159,7 +179,7 @@ char		*get_champ_bcode(int fd, int l_bcode)
 		return (0);
 	}
 	ft_strdel(&buff1);
-	if (check_champ_bcode(buff2) == 0)
+	if (check_champ_bcode(buff2, l_bcode) == 0)
 		ft_strdel(&buff2);
 	return (buff2);
 }

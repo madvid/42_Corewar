@@ -6,13 +6,13 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/14 18:36:53 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/15 15:20:04 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 VM = vm
 
-INCLUDE = vm.h
+INCLUDE = vm.h error_messages.h
 SRC_DIR = srcs/
 VM_DIR = vm/
 INC_DIR = include/
@@ -30,6 +30,7 @@ RM = rm -rf
 
 VM_FILES =	main \
 			vm_parsing \
+			vm_parsing_init \
 			vm_error_manager \
 			vm_champion_tools \
 			vm_champ_code_parse \

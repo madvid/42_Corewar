@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/14 11:43:28 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 14:15:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,23 +66,6 @@ static int		is_valid_nb_champ(char *nb)
 }
 
 /*
-** Function: ft_init_parse_value
-** Description:
-**
-** Return:
-**
-*/
-
-static void		vm_init_parse_value(t_parse *p)
-{
-	p->nb_champ = 0;
-	p->id_champ = 0;
-	p->options->dump = 0;
-	p->options->nbr_cycle = 0;
-	p->options->n = 0;
-}
-
-/*
 ** Function: vm_parsing
 ** Description:
 **	Parsing of the standard inputs of the executable corewar (the VM)
@@ -136,37 +119,3 @@ int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 	return (1);
 }
 
-/*
-** Function: vm_init_parse
-** Description:
-**
-** Return:
-**
-*/
-
-int				vm_init_parse(t_parse **p)
-{
-	int		i;
-	static	char	*msg[]={M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB,
-							M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
-							M_BD_CODE, M_CHP_ERR, NULL};
-
-	i = 0;
-	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
-		return (vm_init_parse_error(0, p));
-	if (!((*p)->error = (char**)ft_memalloc(sizeof(char*) * (int)NB_ERROR_MSG)))
-		return (vm_init_parse_error(1, p));
-	while (i < (int)NB_ERROR_MSG)
-	{
-		if (!((*p)->error[i] = ft_strdup(msg[i])))
-		{
-			ft_strtabldel(&((*p)->error));
-			return (vm_init_parse_error(2, p));
-		}
-		i++;
-	}
-	if (!((*p)->options = (t_options*)ft_memalloc(sizeof(t_options))))
-		return (vm_init_parse_error(3, p));
-	vm_init_parse_value(*p);
-	return (1);
-}
