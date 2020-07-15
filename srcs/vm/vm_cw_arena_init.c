@@ -6,10 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 18:51:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/16 01:38:26 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "vm.h"
 
 /*
@@ -26,12 +27,12 @@
 **	0: otherwise (mem. allocation issue).
 */
 
-static void		load_champions(void *arena, t_champ *chp, int nb_champ)
+static void		load_champions(char **arena, t_champ *chp, int nb_champ)
 {
 	int		mem_pos;
 
 	mem_pos = ((int)MEM_SIZE / nb_champ) * (chp->id - 1);
-	ft_memcpy(arena + mem_pos, (void*)chp->bytecode, (size_t)chp->l_bytecode);
+	ft_strcpy(*arena + mem_pos, chp->bytecode);
 }
 
 /*
@@ -44,17 +45,37 @@ static void		load_champions(void *arena, t_champ *chp, int nb_champ)
 **	0: otherwise.
 */
 
-static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
+static int		arena_and_champions_placement(char **arena, t_parse *p)
 {
 	t_list	*xplr;
+	char	*tmp;
 
 	xplr = p->lst_champs;
-	if (!(cw->arena = ft_memalloc(MEM_SIZE)))
+	printf("ici 1\n");
+	if (!(tmp = ft_strnew(MEM_SIZE)))
 		return (0);
+	printf("ici 2\n");
 	while (xplr)
 	{
-		load_champions(cw->arena, (t_champ*)(xplr->cnt), p->nb_champ);
+		load_champions(&tmp, (t_champ*)(xplr->cnt), p->nb_champ);
 		xplr = xplr->next;
+	}
+	printf("ici 3\n");
+	return (1);
+}
+
+static int	vm_init_arena_memalloc(t_cw **cw, int nb_champ)
+{
+	if (!(*cw = (t_cw*)ft_memalloc(sizeof(t_cw))))
+		return (0); //<- build vm_init_cw_error (vm_error_manager.c)
+	if (!((*cw)->arena = ft_strnew(MEM_SIZE)))
+		return (0); //<- vm_init_cw_error (vm_error_manager.c) avec un code error pour free les variables deja allouees
+	if (!((*cw)->cursors = ft_lstnew(NULL, sizeof(t_cursor))))
+		return (0); //<- idem
+	while (nb > 0)
+	{	
+		ft_lstadd((*cw)->cursors, ft_lstnew(NULL, sizeof(t_cursor)));
+		nb--;
 	}
 	return (1);
 }
@@ -71,9 +92,11 @@ static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
 **	0: otherwise (memory allocation issue at some point).
 */
 
-int				vm_cw_arena_init(t_cw *cw, t_parse *p)
+int				vm_cw_arena_init(t_cw **cw, t_parse *p)
 {
-	if (arena_and_champions_placement(cw, p) == 0)
+	if (!(vm_init_cw_memalloc(cw, p->nb_champ)))
+		return (0);
+	if (arena_and_champions_placement(cw->arena), p) == 0)
 		return (0);
 	return (1);
 }

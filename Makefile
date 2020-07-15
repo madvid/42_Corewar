@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/15 15:20:04 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/15 23:39:17 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ VM_FILES =	main \
 			vm_champion_tools \
 			vm_champ_code_parse \
 			vm_get_champ_tools \
+			vm_cw_arena_init \
 			temporary_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 18:56:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/16 00:54:05 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct		s_cursor
 
 typedef struct		s_corewar
 {
-	void			*arena;
+	char			*arena;
 	t_list			*cursors;
 }					t_cw;
 
@@ -94,7 +94,7 @@ typedef struct		s_corewar
 */
 void				vm_print_parsing(t_parse *p); //a retirer
 void				vm_print_champ_list(t_list *lst_champs); //a retirer
-void				vm_print_arena(void *arena, size_t mem_size); // a retirer
+void				vm_print_arena(char *arena, size_t mem_size); // a retirer
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN
@@ -119,6 +119,7 @@ char				*get_champ_bcode(int fd, int l_bcode);
 /*
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
 */
-int					vm_cw_arena_init(t_cw *cw, t_parse *p);
+int					vm_cw_arena_init(t_cw **cw, t_parse *p);
+int					vm_init_cw_error(int cd_error, t_parse **cw); 
 
 #endif
