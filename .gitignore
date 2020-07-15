@@ -1,9 +1,10 @@
-# repertoire de test
-test
+# repertoire de test et ressources
+test/
+ressources/
 
 # fichier de config VSCode
 .vscode/launch.json
-settings.json
+.vscode/settings.json
 
 # Prerequisites
 *.d
