@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/14 18:45:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 02:02:15 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct					s_champ
 	char						*champ_file;
 	char						*name;
 	char						*comment;
+	int							l_bytecode;
 	char						*bytecode;
 }								t_champ;
 
@@ -170,9 +171,10 @@ void						vm_print_champ_list(t_list *lst_champs); //a retirer
 ** Prototypes des fonctions de parsing des fichiers des champions
 */
 int							vm_champ_parse(t_list **lst_champs, char **error);
-int							get_champ_magic_key(int df);
-char						*get_champ_name(int df);
-char						*get_champ_comment(int df);
-char						*get_champ_bcode(int df);
+int							get_champ_magic_key(int fd);
+char						*get_champ_name(int fd);
+char						*get_champ_comment(int fd);
+int							get_champ_l_bcode(int fd);
+char						*get_champ_bcode(int fd, int l_bcode);
 
 #endif
