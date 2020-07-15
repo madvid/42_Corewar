@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 15:58:57 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 18:59:42 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,29 @@ void		vm_print_champ_list(t_list *lst_champs)
 		i++;
 		xplr = xplr->next;
 	}
+}
+
+/*
+** Fonction pour imprimer la zone memoire correspondant à l'arène.
+*/
+
+void		vm_print_arena(void *arena, size_t mem_size)
+{
+	int		i;
+	int		width_line;
+
+	i = 0;
+	width_line = 32;
+	printf("|>------- ARENA -------<|\n");
+	while (i < mem_size)
+	{
+		if (i % width_line == 0)
+			printf("\n");
+		if (((int)bcode[i] & 255) < 16)
+			printf("0");
+		printf("%x ", ((int)bcode[i] & 255));
+		i++;
+	}
+	printf("|\n");
+}
 }
