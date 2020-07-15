@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 16:25:21 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 18:56:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,10 @@
 
 typedef struct		s_options
 {
-	int				dump;
+	bool			dump;
 	ssize_t			nbr_cycle;
-	int				n;
+	bool			n;
 }					t_options;
-
-typedef struct		s_parse
-{
-	int				nb_champ;
-	int				id_champ;
-	int				*id_table;
-	t_options		*options;
-	t_list			*t_champ_id;
-	char			**error;
-}					t_parse;
 
 typedef struct		s_champ
 {
@@ -71,39 +61,50 @@ typedef struct		s_champ
 	char			*bytecode;
 }					t_champ;
 
+typedef struct		s_parse
+{
+	int				nb_champ;
+	int				id_champ;
+	int				*id_table;
+	t_options		*options;
+	t_list			*lst_champs;
+	char			**error;
+}					t_parse;
+
 typedef struct		s_cursor
 {
-	int				id;
-	bool			carry;
-
-    carry - flag which can be changed by certain operations and which affects zjmp operation, initialised with value false.
-    opcode - operation code, before the battle starts it is not initialised.
-    last_live - number of cycle in which current cursor performed operation live last time.
-    wait_cycles - amount of cycles to wait before operation execution.
-    position - address in memory
-    jump - amount of bytes cursor must jump to get to the next operation
-    registries [REG_NUMBER] - registries of current cursor
+	int				id; // unique
+	bool			carry; // flag which can be changed by certain operations and which affects zjmp operation, initialised with value false.
+	int				opcode; // operation code, before the battle starts it is not initialised. use define and table of correspondance
+	int				last_live; // nb of cycle in which current cursor performed operation live last time.
+	int				wait_cycles; // amount of cycles to wait before operation execution.
+	int				position; // address in memory
+	int				jump; // amount of bytes cursor must jump to get to the next operation
+	int				*registries; // [REG_NUMBER] - registries of current cursor
 }					t_cursor;
 
 typedef struct		s_corewar
 {
 	void			*arena;
-	t_cursor		*cursors;
-}					t_corewar;
+	t_list			*cursors;
+}					t_cw;
 
+/*
+** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
+*/
+void				vm_print_parsing(t_parse *p); //a retirer
+void				vm_print_champ_list(t_list *lst_champs); //a retirer
+void				vm_print_arena(void *arena, size_t mem_size); // a retirer
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN
 */
-
-int					vm_parsing(char **av, t_parse *p, t_list **lst_champs);
+int					vm_parsing(char **av, t_parse *p);
 int					vm_init_parse(t_parse **p);
 int					vm_init_parse_error(int code_error, t_parse **p); // print error message if memory allocation issue at initialization
 int					vm_error_manager(int code_error, char **error);
 int					vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
 int 				is_valid_champ_filename(char* filename);
-void				vm_print_parsing(t_parse *p); //a retirer
-void				vm_print_champ_list(t_list *lst_champs); //a retirer
 
 /*
 ** Prototypes des fonctions de parsing des fichiers des champions
@@ -114,5 +115,10 @@ char				*get_champ_name(int fd);
 char				*get_champ_comment(int fd);
 int					get_champ_l_bcode(int fd);
 char				*get_champ_bcode(int fd, int l_bcode);
+
+/*
+** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
+*/
+int					vm_cw_arena_init(t_cw *cw, t_parse *p);
 
 #endif

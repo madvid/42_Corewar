@@ -6,21 +6,33 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/14 17:22:26 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 13:14:53 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
+/*
+** Include of extra header files
+*/
+# include <unistd.h>
+# include <string.h>
+
+/*
+** Definition of some constants
+*/
 # ifndef LONG_MAX
 #  define LONG_MAX 9223372036854775807
 # endif
 # ifndef INTEGER_MAX
 #  define INTEGER_MAX 2147483647
 # endif
-# include <unistd.h>
-# include <string.h>
+# define BASE "0123456789abcdef"
 
+/*
+** Definition of structures
+*/
 typedef struct		s_list
 {
 	int				file_d;

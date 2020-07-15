@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 16:11:51 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/15 18:28:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int		is_valid_nb_champ(char *nb)
 **	n'est pas correct, ne pas être en mesure de relever qu'il y a une erreur
 */
 
-int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
+int				vm_parsing(char **av, t_parse *p)
 {
 	int		i;
 
@@ -113,7 +113,7 @@ int				vm_parsing(char **av, t_parse *p, t_list **lst_champs)
 		}
 		if (av[i] && !is_valid_champ_filename(av[i]))
 			return (vm_error_manager((int)CD_BD_CHAMP_NB, p->error));
-		if (av[i] && !vm_create_champion(lst_champs, av[i++], p))
+		if (av[i] && !vm_create_champion(&(p->lst_champs), av[i++], p))
 			return (vm_error_manager((int)CD_MEM_CHAMP, p->error));
 	}
 	if (p->nb_champ == 0)
