@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_lst_fdel.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/24 17:35:16 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 14:49:50 by mdavid           ###   ########.fr       */
+/*   Created: 2020/07/16 14:13:40 by mdavid            #+#    #+#             */
+/*   Updated: 2020/07/16 15:02:41 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+/*
+** Function: ft_lst_fdel
+** Description:
+**	Delete function usefull for lstdel/lstdelone.
+*/
+
+void	ft_lst_fdel(void *link, size_t link_size)
 {
-	if ((*alst)->next)
-	{
-		ft_lstdel(&((*alst)->next), del);
-		(*alst)->next = NULL;
-	}
-	del(*alst, (*alst)->cnt_s);
+	link_size = 0;
+	if (!link)
+		return ;
+	((t_list*)link)->next = NULL;
+	free(((t_list*)link)->cnt);
+	free(link);
+	link = NULL;
 }

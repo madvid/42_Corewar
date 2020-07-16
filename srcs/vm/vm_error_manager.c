@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 00:56:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/16 15:05:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,24 @@
 **	0: in every cases.
 */
 
-/*
-int			vm_init_cw_error(int cd_error, t_parse **cw)
+int			vm_init_cw_error(int cd_error, t_cw **cw, int nb_champ)
 {
-	int		i;
+	int		i_proc;
 
-	i = ((int)NB_ERROR_MSG);
-	if (cd_error >= 4)
-		ft_memdel((void **)&((*p)->id_table));
+	i_proc = nb_champ;
 	if (cd_error >= 3)
 	{
-		while (--i >= 0)
-			ft_strdel(&((*p)->error[i]));
+		ft_lstdel(&((*cw)->cursors), ft_lst_fdel);	// Faudra tester que l'on libere bien toute la memoire
+		(*cw)->cursors = NULL;						// et qu'on oubli pas de free quelque chose.
 	}
 	if (cd_error >= 2)
-		ft_memdel((void**)((*p)->error));
+		ft_strdel(&((*cw)->arena));
 	if (cd_error >= 1)
-		ft_memdel((void **)p);
+		ft_memdel((void **)cw);
 	ft_putstr("Memory allocation issue during initialization of the");
-	ft_putstr("struct parse.\n");
+	ft_putstr("struct cw.\n");
 	return (0);
 }
-*/
 
 /*
 ** Function: vm_init_parse_error

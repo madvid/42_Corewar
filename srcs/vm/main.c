@@ -6,13 +6,35 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 00:39:46 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/16 15:06:43 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		main(int ac, char **av)
+/*
+** ZONE POUR TESTER DES BOUTS DE CODE OU COMPORTEMENT
+*/
+
+/*
+static void	test(t_parse *p)
+{
+	tool_print_champ_list(p->lst_champs);
+	printf("Avant la supression de la liste de champions\n");
+	ft_lstdel(&(p->lst_champs), ft_lst_fdel);
+	p->lst_champs = NULL;
+	printf("Après la supression de la liste de champions\n");
+	tool_print_champ_list(p->lst_champs);
+}
+*/
+
+/*
+** FIN DE LA ZONE
+*/
+
+
+
+int			main(int ac, char **av)
 {
 	t_parse		*p;
 	t_cw		*cw;
@@ -28,9 +50,10 @@ int		main(int ac, char **av)
 	}
 	else
 		return (vm_error_manager((int)CD_USAGE, p->error));
-	// vm_print_parsing(p);
-	vm_print_champ_list(p->lst_champs);
+	// tool_print_parsing(p);
+	// tool_print_champ_list(p->lst_champs);
+	// test(p);
 	vm_cw_arena_init(&cw, p);
-	vm_print_arena(cw->arena, (size_t)MEM_SIZE);
+	tool_print_arena(cw->arena, (size_t)MEM_SIZE);
 	return (0);
 }

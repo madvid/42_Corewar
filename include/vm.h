@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 00:54:05 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/16 17:22:42 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 //#include <sys/types.h>
 #include <stdbool.h>
 
-#include <stdio.h> // <-- have to be removed at the end
+#include <stdio.h> // <-- HAVE TO BE REMOVED AT THE END
 
 /*
 ** [Put some explanations]
@@ -59,6 +59,7 @@ typedef struct		s_champ
 	char			*comment;
 	int				l_bytecode;
 	char			*bytecode;
+	void			*mem_pos;
 }					t_champ;
 
 typedef struct		s_parse
@@ -71,38 +72,46 @@ typedef struct		s_parse
 	char			**error;
 }					t_parse;
 
-typedef struct		s_cursor
+typedef struct		s_process
 {
-	int				id; // unique
-	bool			carry; // flag which can be changed by certain operations and which affects zjmp operation, initialised with value false.
-	int				opcode; // operation code, before the battle starts it is not initialised. use define and table of correspondance
-	int				last_live; // nb of cycle in which current cursor performed operation live last time.
-	int				wait_cycles; // amount of cycles to wait before operation execution.
-	int				position; // address in memory
-	int				jump; // amount of bytes cursor must jump to get to the next operation
-	int				*registries; // [REG_NUMBER] - registries of current cursor
-}					t_cursor;
+	int				id;				// unique
+	bool			carry;			// flag carry= which can be changed by certain operations and which affects zjmp operation, initialised with value false.
+	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance
+	int				last_live;		// nb of cycle in which current cursor performed operation live last time.
+	int				wait_cycles;	// amount of cycles to wait before operation execution.
+	int				jump;			// amount of bytes cursor must jump to get to the next operation
+	void			*position;		// position address in memory, It maybe similar/identical to pc
+	void			*pc;			// program counter = register that load the next opcode address that will be executed for the current process
+	void			**registers;	// 16 registers for a process/cursors of 4 bytes each.
+	void			*adrchamp;
+}					t_process;
 
 typedef struct		s_corewar
 {
 	char			*arena;
-	t_list			*cursors;
+	t_list			*process;
 }					t_cw;
 
 /*
 ** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
 */
-void				vm_print_parsing(t_parse *p); //a retirer
-void				vm_print_champ_list(t_list *lst_champs); //a retirer
-void				vm_print_arena(char *arena, size_t mem_size); // a retirer
+void				tool_print_parsing(t_parse *p);					// a retirer
+void				tool_print_champ(t_champ *champ);				// a retirer
+void				tool_print_champ_list(t_list *lst_champs);		// a retirer
+void				tool_print_arena(char *arena, size_t mem_size);	// a retirer
+
+/*
+** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
+*/
+int					vm_error_manager(int code_error, char **error);
+int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
+int					vm_init_cw_error(int cd_error, t_cw **cw, int nb_champ);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN
 */
 int					vm_parsing(char **av, t_parse *p);
 int					vm_init_parse(t_parse **p);
-int					vm_init_parse_error(int code_error, t_parse **p); // print error message if memory allocation issue at initialization
-int					vm_error_manager(int code_error, char **error);
 int					vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
 int 				is_valid_champ_filename(char* filename);
 
@@ -120,6 +129,5 @@ char				*get_champ_bcode(int fd, int l_bcode);
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
 */
 int					vm_cw_arena_init(t_cw **cw, t_parse *p);
-int					vm_init_cw_error(int cd_error, t_parse **cw); 
 
 #endif

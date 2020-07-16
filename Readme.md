@@ -146,6 +146,25 @@ est constitué de 4 valeurs en hexadécimales, comme chacune des valeurs hexadé
 encode 2 bits, le nombre magique occupe 8 bits et donc 1 octets. 
 
 
+### Brouillons:
+
+#### Note sur l'ordre des champions:
+cmiran 28 juin 2019 à 18 h 49
+cela se traduit par, le joueur ayant le token le plus élevé commence et ainsi de suite jusqu’au token le plus bas, ou simplement le dernier joueur déclaré commence ?
+3 réponses
+
+cmiran  il y a un an
+si jamais quelqu’un se pose la meme question..après investigation, et finalement la réponse est toute c*nne, la vm fournie place les champions en mémoire en fonction de l’ordre de déclaration, puis exécute de bas en haut :aussiereversecongaparrot:.
+./a.out a.cor -n 1 b.cor -n 2 c.cor -n 3 d.cor
+b<-c<-d<-a
+
+ndelhomm:génie_homme:  il y a un an
+@cmiran donc si tu as : ./a.out a.cor b.cor -n 1 c.cor d.cor
+l'ordre sera b, a, c, d ?
+
+cmiran  il y a un an
+c <- a <- b <- d
+
 ## Bibliographie:
  1. https://docs.google.com/document/d/1DT_47inyTLDEUMevdmsA4jqr3_FXGvgKhzpGv_rtuOo/edit# | Corewar_Cheat_Sheet.pdf (dans le répertoire documentation)
 
