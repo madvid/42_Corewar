@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 14:13:40 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 15:02:41 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 14:30:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 
 void	ft_lst_fdel(void *link, size_t link_size)
 {
-	link_size = 0;
-	if (!link)
+	if (!link || link_size == 0)
 		return ;
 	((t_list*)link)->next = NULL;
-	free(((t_list*)link)->cnt);
+	if (((t_list*)link)->cnt)
+		free(((t_list*)link)->cnt);
 	free(link);
 	link = NULL;
 }

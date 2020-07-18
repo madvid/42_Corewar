@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 15:04:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 21:14:13 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void		tool_print_parsing(t_parse *p)
 	printf("   p->options->nbr_cycle = %ld\n", p->options->nbr_cycle);
 	printf("   p->options->n = %d\n", p->options->n);
 }
+
+/*
+** Imprime le bytecode des champions (mais possiblement aussi de la zone mémoire)
+*/
 
 static void	print_chp_bcode(char *bcode, int l_bcode)
 {
@@ -88,6 +92,7 @@ void		tool_print_champ_list(t_list *lst_champs)
 
 /*
 ** Fonction pour imprimer la zone memoire correspondant à l'arène.
+** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
 */
 
 void		tool_print_arena(char *arena, size_t mem_size)
@@ -108,4 +113,62 @@ void		tool_print_arena(char *arena, size_t mem_size)
 		i++;
 	}
 	printf("\n\033[1;31m|>------------------------------------------- [FIN] ------------------------------------------<|\033[0m\n");
+}
+
+static int	p_atoint(char *reg)
+{
+	int		ret;
+
+	ret = 0;
+	ret = (((int)reg[0] & 255) << 24) + (((int)reg[1] & 255) << 16) + (((int)reg[2] & 255) << 8) + (((int)reg[3] & 255));
+	return (ret);
+}
+
+
+/*
+** Imprime le contenue du processeur donné en paramètre.
+*/
+
+void		tool_print_processor(t_process *process, int nb)
+{
+	printf(" ______________________________________________________________\n");
+	printf("|_ _ _ _ _ _ _ _ _ _ _ _ _ _PROCESS #%d_ _ _ _ _ _ _ _ _ _ _ _ _|\n", nb);
+	printf("| id:__________%d                                               |\n", process->id);
+	printf("| carry:_______%d                                               |\n", process->carry);
+	printf("| opcode:______%8X                                        |\n", process->opcode);
+	printf("| last_live:___%d                                               |\n", process->last_live);
+	printf("| wait_cycles:_%d                                               |\n", process->wait_cycles);
+	printf("| jump:________%d                                               |\n", process->jump);
+	printf("| position:____%14p                                  |\n", process->position);
+	printf("| pc:__________%14p                                  |\n", process->pc);
+	printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");
+	printf("| registers:___| %8X | %8X | %8X | %8X |   |\n", p_atoint(process->registers[0]), p_atoint(process->registers[1]), p_atoint(process->registers[2]), p_atoint(process->registers[3]));
+	printf("|            r5| %8X | %8X | %8X | %8X |r8 |\n", p_atoint(process->registers[4]), p_atoint(process->registers[5]), p_atoint(process->registers[6]), p_atoint(process->registers[7]));
+	printf("|            r7| %8X | %8X | %8X | %8X |r12|\n", p_atoint(process->registers[8]), p_atoint(process->registers[9]), p_atoint(process->registers[10]), p_atoint(process->registers[11]));
+	printf("|              | %8X | %8X | %8X | %8X |r16|\n", p_atoint(process->registers[12]), p_atoint(process->registers[13]), p_atoint(process->registers[14]), p_atoint(process->registers[15]));
+	printf("| adrchamp:____%14p                                  |\n", process->adrchamp);
+	printf("|______________________________________________________________|\n");
+}
+
+
+/*
+** Imprime le contenue de tous les processeurs (liste donnée en paramètre).
+*/
+
+void		tool_print_all_processors(t_list *processes)
+{
+	t_list	*xplr;
+	int		nb;
+
+	nb = 0;
+	xplr = processes;
+	while(xplr && xplr->cnt && (t_process*)(xplr->cnt))
+	{
+		printf("valeur xplr->cnt:%p\n", (t_process*)(xplr->cnt));
+		tool_print_processor((t_process*)(xplr->cnt), nb);
+		printf("valeur xplr->next:%p\n", xplr->next);
+		xplr = xplr->next;
+		nb++;
+	}
+	printf("tool_print_all_fin\n");
 }

@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/15 23:39:17 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/18 22:28:33 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)
 
 vpath %.c $(SRC_DIR)$(VM)
+vpath %.c $(SRC_DIR)temp_tools
 vpath %.o $(SRC_DIR)$(VM)
 vpath %.h $(INC_DIR)
 

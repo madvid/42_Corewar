@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 15:05:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 22:29:18 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,28 @@
 **	0: in every cases.
 */
 
-int			vm_init_cw_error(int cd_error, t_cw **cw, int nb_champ)
+int			vm_init_cw_error(int cd_error, t_cw **cw)
 {
-	int		i_proc;
+	t_list	*xplr;
+	int		i;
 
-	i_proc = nb_champ;
+	xplr = (*cw)->process;
+	if (cd_error >= 4)
+	{
+		while (xplr)
+		{
+			i = -1;
+			while (++i < 16)
+				ft_strdel(&(((t_process*)(xplr->cnt))->registers[i]));
+			free(((t_process*)(xplr->cnt))->registers);	// Faudra tester que l'on libere bien toute la memoire
+			((t_process*)(xplr->cnt))->registers = NULL;
+			xplr = xplr->next;						// et qu'on oubli pas de free quelque chose.
+		}
+	}
 	if (cd_error >= 3)
 	{
-		ft_lstdel(&((*cw)->cursors), ft_lst_fdel);	// Faudra tester que l'on libere bien toute la memoire
-		(*cw)->cursors = NULL;						// et qu'on oubli pas de free quelque chose.
+		ft_lstdel(&((*cw)->process), ft_lst_fdel);	// Faudra tester que l'on libere bien toute la memoire
+		(*cw)->process = NULL;						// et qu'on oubli pas de free quelque chose.
 	}
 	if (cd_error >= 2)
 		ft_strdel(&((*cw)->arena));

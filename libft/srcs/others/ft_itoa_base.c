@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/14 12:07:44 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/14 14:27:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/14 23:10:27 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char					*ft_itoa_base(int nb, char *strbase, int base)
 		ft_strdel(&str);
 		return (NULL);
 	}
-	while (u_nb >= 0 && len > 0)
+	while (len > 0)
 	{
 		str[len - 1] = strbase[u_nb % base];
 		u_nb = (u_nb - u_nb % base) / base;

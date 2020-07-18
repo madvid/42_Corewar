@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 15:06:43 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 22:15:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static void	test(t_parse *p)
 /*
 ** FIN DE LA ZONE
 */
-
-
 
 int			main(int ac, char **av)
 {

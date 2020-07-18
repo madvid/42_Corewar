@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 17:22:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 17:01:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct		s_process
 	int				jump;			// amount of bytes cursor must jump to get to the next operation
 	void			*position;		// position address in memory, It maybe similar/identical to pc
 	void			*pc;			// program counter = register that load the next opcode address that will be executed for the current process
-	void			**registers;	// 16 registers for a process/cursors of 4 bytes each.
+	char			**registers;	// 16 registers for a process/cursors of 4 bytes each.
 	void			*adrchamp;
 }					t_process;
 
@@ -95,17 +95,19 @@ typedef struct		s_corewar
 /*
 ** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
 */
-void				tool_print_parsing(t_parse *p);					// a retirer
-void				tool_print_champ(t_champ *champ);				// a retirer
-void				tool_print_champ_list(t_list *lst_champs);		// a retirer
-void				tool_print_arena(char *arena, size_t mem_size);	// a retirer
+void				tool_print_parsing(t_parse *p);						// a retirer
+void				tool_print_champ(t_champ *champ);					// a retirer
+void				tool_print_champ_list(t_list *lst_champs);			// a retirer
+void				tool_print_arena(char *arena, size_t mem_size);		// a retirer
+void				tool_print_processor(t_process *process, int nb);	// a retirer
+void				tool_print_all_processors(t_list *processes);		// a retirer
 
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
 */
 int					vm_error_manager(int code_error, char **error);
 int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
-int					vm_init_cw_error(int cd_error, t_cw **cw, int nb_champ);
+int					vm_init_cw_error(int cd_error, t_cw **cw);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN

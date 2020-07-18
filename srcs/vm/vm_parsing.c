@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 18:28:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 22:21:37 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int				vm_parsing(char **av, t_parse *p)
 	int		i;
 
 	i = 1;
-	if (av[i] && is_dump_option(av[i], p) == 1) // check for -dump and the associate number
+	if (av[i] && is_dump_option(av[i], p) == 1)
 	{
 		if (av[++i] && p->options->dump == 1 && ft_is_positive_int(av[i]))
 		{
@@ -101,7 +101,7 @@ int				vm_parsing(char **av, t_parse *p)
 	}
 	while (av[i] && p->nb_champ < 5)
 	{
-		if (is_n_flag(av[i])) // check for flag n and associated number
+		if (is_n_flag(av[i]))
 		{
 			if (av[++i] && is_valid_nb_champ(av[i]))
 			{

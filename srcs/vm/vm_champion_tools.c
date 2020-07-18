@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 16:00:56 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 22:17:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 	if (set_champ_value(&champ, p, av) == 0)
 		return (0);
 	if (!(nw_link = ft_lstnew(&champ, sizeof(champ))))
-		return (0); // mem alloc of the new link failed.
+		return (0);
 	ft_lstadd(lst_champs, nw_link);
 	p->nb_champ++;
 	p->options->n = 0;

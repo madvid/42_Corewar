@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/16 17:22:19 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/18 22:12:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void		*load_champions(char **arena, t_champ *chp, int nb_champ)
 {
 	int		mem_pos;
 
-	mem_pos = ((int)MEM_SIZE / nb_champ) * (chp->id - 1);
+	mem_pos = ((int)MEM_SIZE / nb_champ) * (chp->id - 1) % (int)MEM_SIZE;
 	ft_memcpy((void*)(*arena + mem_pos), (void*)(chp->bytecode), (size_t)chp->l_bytecode);
 	return ((void*)(*arena + mem_pos));
 }
@@ -63,9 +63,9 @@ static int		arena_and_champions_placement(char **arena, t_parse *p)
 /*
 ** Function: vm_init_cw_registers
 ** Description:
-**	Allocation and initialization of the cursors within cw struct.
+**	Allocation and initialization of the processes within cw struct.
 **	-> Allocation part:
-**		Memory allocation is performed for the cursors struct and
+**		Memory allocation is performed for the processes struct and
 **		registers, each process has 16 registers available.
 **	-> Initialization part:
 **		- id = champion id to which the process is associated with,
@@ -82,29 +82,40 @@ static int		arena_and_champions_placement(char **arena, t_parse *p)
 **	0: [via vm_init_cw_error] otherwise.
 */
 
-static int		vm_init_cw_registers(t_cw **cw, t_list *lst_champs)
+static void			*vm_init_cw_registers(t_champ *champ)
 {
 	int				i;
-	t_cursor		*csr;
-
+	t_process		*proc;
 	
-	if (!(csr = (t_cursor*)ft_memalloc(sizeof(t_cursor))))
-		return (0); // <- redirriger vers error manager
-	if (!(csr->registers = (void**)ft_memalloc(REG_NUMBER)))
-		return (0); // <- redirriger vers error manager
+	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
+		return (NULL); // <- redirriger vers error manager
+	if (!(proc->registers = (char**)ft_memalloc(sizeof(char*) * (REG_NUMBER + 1))))
+		return (NULL); // <- redirriger vers error manager
 	i = -1;
 	while (++i < 16)
-		if (!(csr->registers[i] = (void*)ft_memalloc(REG_SIZE)))
-			return (0); // <- redirriger vers error manager
-
-	return (1);
+	{
+		if (!(proc->registers[i] = ft_strnew(REG_SIZE)))
+			return (NULL); // <- redirriger vers error manager
+	}
+	if (!(proc->pc = ft_strnew(REG_SIZE)))
+		return (NULL); // <- redirriger vers error manager
+	proc->pc = NULL;
+	proc->jump = 0;
+	proc->id = champ->id;
+	proc->carry = false;
+	proc->opcode = 0;
+	proc->last_live = 0;
+	proc->wait_cycles = 0;
+	proc->position = champ->mem_pos;
+	proc->adrchamp = (void*)&champ;
+	return ((void*)proc);
 }
 
 /*
 ** Function: vm_init_cw_memalloc
 ** Description:
 **	Allocations of the inner variables of cw (corewar struct) which need memory allocation.
-**	Exception for the cursors which are allocated in vm_init_cw_registers function.
+**	Exception for the processes which are allocated in vm_init_cw_registers function.
 **	If there is a allocation memory issue, the error manager for the cw struct is in charge
 **	of freeing the memory and print a message about this memory issue.
 ** Return:
@@ -118,16 +129,17 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 
 	tmp = NULL;
 	if (!(*cw = (t_cw*)ft_memalloc(sizeof(t_cw))))
-		return (vm_init_cw_error(0, cw, nb_champ));
+		return (vm_init_cw_error(0, cw));
 	if (!((*cw)->arena = ft_strnew(MEM_SIZE)))
-		return (vm_init_cw_error(1, cw, nb_champ));;
-	if (!((*cw)->cursors = ft_lstnew(NULL, sizeof(t_cursor))))
-		return (vm_init_cw_error(2, cw, nb_champ));
+		return (vm_init_cw_error(1, cw));
+	(*cw)->process = NULL;
+	// if (!((*cw)->process = ft_lstnew(NULL, sizeof(t_process))))
+	//	return (vm_init_cw_error(2, cw));
 	while (nb_champ > 0)
 	{
-		if (!(tmp = ft_lstnew(NULL, sizeof(t_cursor))))
-			return (vm_init_cw_error(3, cw, nb_champ));
-		ft_lstadd(&(*cw)->cursors, tmp);
+		if (!(tmp = ft_lstnew(NULL, sizeof(t_process))))
+			return (vm_init_cw_error(3, cw));
+		ft_lstadd(&(*cw)->process, tmp);
 		nb_champ--;
 	}
 	return (1);
@@ -139,7 +151,7 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 **	Creation and initialization of the arena:
 **		- memory allocation of the arena,
 **		- loading of bytecodes of the champions at the correct memory adresses,
-**		- memory allocation + initialization of inner variables of the cursors.
+**		- memory allocation + initialization of inner variables of the processes.
 ** Return:
 **	1: If arena, champions loading or registers creation is ok.
 **	0: otherwise (memory allocation issue at some point).
@@ -147,12 +159,25 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 
 int				vm_cw_arena_init(t_cw **cw, t_parse *p)
 {
+	t_list		*xplr;
+	t_list		*xplr2;
+
+	xplr = p->lst_champs;
 	if (!(vm_init_cw_memalloc(cw, p->nb_champ)))
-		return (0);
-	if (!vm_init_cw_registers(cw, p->lst_champs))
 		return (0);
 	if (arena_and_champions_placement(&((*cw)->arena), p) == 0)
 		return (0);
-	
+	xplr2 = (*cw)->process;
+	while (xplr)
+	{
+		xplr2->cnt = vm_init_cw_registers((t_champ*)xplr->cnt);
+		if (!(xplr->cnt))
+			return (0);
+		xplr = xplr->next;
+		xplr2 = xplr2->next;
+	}
+	printf("arena_init 1\n");
+	tool_print_all_processors((*cw)->process);
+	printf("arena_init 2\n");
 	return (1);
 }
