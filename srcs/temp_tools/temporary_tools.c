@@ -6,11 +6,18 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 10:55:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 16:09:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+typedef struct		s_color_champ
+{
+	size_t		start;
+	size_t		end;
+	char	*color;
+}					t_color_champ;
 
 void		tool_print_parsing(t_parse *p)
 {
@@ -56,7 +63,7 @@ void		tool_print_champ(t_champ *champ)
 	printf("   \033[1;32mname :\033[0m |%s|\n", champ->name);
 	printf("   \033[1;32mcomment :\033[0m |%s|\n", champ->comment);
 	printf("   \033[1;32mid :\033[0m |%d|\n", champ->id);
-	printf("   \033[1;32mmem position :\033[0m |%p|\n", champ->mem_pos);
+	printf("   \033[1;32mmem position :\033[0m |%d|\n", champ->mem_pos);
 	printf("   \033[1;32ml_bytecode :\033[0m |%d|\n", champ->l_bytecode);
 	print_chp_bcode(champ->bytecode, champ->l_bytecode);
 	//printf("   champ_file : %s\n", ((t_champ*)(xplr->cnt)->bytecode));
@@ -80,7 +87,7 @@ void		tool_print_champ_list(t_list *lst_champs)
 		printf("   champ_file : |%s|\n", ((t_champ*)(xplr->cnt))->champ_file);
 		printf("   name : |%s|\n", ((t_champ*)(xplr->cnt))->name);
 		printf("   comment : |%s|\n", ((t_champ*)(xplr->cnt))->comment);
-		printf("   mem position : |%p|\n", ((t_champ*)(xplr->cnt))->mem_pos);
+		printf("   mem position : |%d|\n", ((t_champ*)(xplr->cnt))->mem_pos);
 		printf("   l_bytecode : |%d|\n", ((t_champ*)(xplr->cnt))->l_bytecode);
 		print_chp_bcode(((t_champ*)(xplr->cnt))->bytecode, ((t_champ*)(xplr->cnt))->l_bytecode);
 		printf("  next:|%p|\n", xplr->next);
@@ -95,16 +102,41 @@ void		tool_print_champ_list(t_list *lst_champs)
 ** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
 */
 
-void		tool_print_arena(char *arena, size_t mem_size)
+void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
 {
-	size_t	i;
-	int		width_line;
+	size_t			i;
+	int				width_line;
+	t_color_champ	**champ;
+	static char		*color[] = {"\033[0m", "\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;34m"};
+	int				j = 0;
+	t_list			*l_champ;
 
 	i = 0;
 	width_line = 32;
-	printf("\033[1;31m|>------------------------------------------ [ARENA] -----------------------------------------<|\033[0m");
+	l_champ = p->lst_champs;
+	champ = (t_color_champ**)ft_memalloc(sizeof(t_color_champ*) * p->nb_champ);
+	while (j < p->nb_champ)
+	{
+		champ[j] = (t_color_champ*)ft_memalloc(sizeof(t_color_champ));
+		champ[j]->start = ((t_champ*)(l_champ->cnt))->mem_pos;
+		champ[j]->end = champ[j]->start + ((t_champ*)(l_champ->cnt))->l_bytecode;
+		printf("champ[j=%d]->start = %lu\n", j, champ[j]->start);
+		printf("champ[j=%d]->end = %lu\n", j, champ[j]->end);
+		champ[j]->color = color[j + 1];
+		j++;
+		l_champ = l_champ->next;
+	}
+	printf("\033[1;31m|>------------------------------------------ [ARENA] -----------------------------------------<|\033[0m ");
 	while (i < mem_size)
 	{
+		j = -1;
+		while (++j < p->nb_champ)
+			if (i == champ[j]->start)
+				printf("%s", champ[j]->color);
+		j = -1;
+		while (++j < p->nb_champ)
+			if (i == champ[j]->end)
+				printf("%s", color[0]);
 		if (i % width_line == 0)
 			printf("\n");
 		if (((int)arena[i] & 255) < 16)
@@ -146,7 +178,7 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("|            r5| %8X | %8X | %8X | %8X |r8 |\n", p_atoint(process->registers[4]), p_atoint(process->registers[5]), p_atoint(process->registers[6]), p_atoint(process->registers[7]));
 	printf("|            r7| %8X | %8X | %8X | %8X |r12|\n", p_atoint(process->registers[8]), p_atoint(process->registers[9]), p_atoint(process->registers[10]), p_atoint(process->registers[11]));
 	printf("|              | %8X | %8X | %8X | %8X |r16|\n", p_atoint(process->registers[12]), p_atoint(process->registers[13]), p_atoint(process->registers[14]), p_atoint(process->registers[15]));
-	printf("| adrchamp:____%14p                                  |\n", process->adrchamp);
+	printf("| adrchamp:____%14p                                  |\n", process->champ);
 	printf("|______________________________________________________________|\n");
 }
 

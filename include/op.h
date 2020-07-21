@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2020/07/15 15:10:43 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 17:12:00 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ typedef char	t_arg_type;
 ** ?
 */
 
-#define T_REG					1
-#define T_DIR					2
-#define T_IND					4
-#define T_LAB					8
+#define T_REG					1 // en binaire 0001
+#define T_DIR					2 // en binaire 0010
+#define T_IND					4 // en binaire 0100
+#define T_LAB					8 // en binaire 1000
 
 /*
 ** Macros related to the size of name and comment + the magic key which must
@@ -109,3 +109,17 @@ typedef struct		header_s
 	unsigned int		prog_size;
 	char				comment[COMMENT_LENGTH + 1];
 }					header_t;
+
+typedef struct					s_op
+{
+	char				*name;
+	size_t				n_arg;
+	size_t				type[MAX_ARGS_NUMBER];
+	size_t				code;
+	size_t				cycle;
+	char				*desc;
+	size_t				encod;
+	size_t				direct_size;
+}								t_op;
+// direct_size == 0 => 4 - (0 * 2) octets pour l’argument direct
+// direct_size == 1 => 4 - (1 * 2) octets pour l’argument direct

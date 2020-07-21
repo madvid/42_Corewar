@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 10:05:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 14:05:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	vm_champion_introduction(t_list *lst_champs)
 	{
 		chp = (t_champ *)(xplr->cnt);
 		id = chp->id;
-		printf("* Player %d, weighting %d bytes,", id, chp->l_bytecode);
+		printf("* Player %d, weighing %d bytes,", id, chp->l_bytecode);
 		printf(" \"%s\" (\"%s\") !\n", chp->name, chp->comment);
 		xplr = xplr->next;
 	}

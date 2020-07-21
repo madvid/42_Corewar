@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 17:44:39 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 22:16:37 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 15:06:36 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int		vm_champ_file_parse(t_champ *ichamp, char **error)
 	ichamp->l_bytecode = get_champ_l_bcode(fd);
 	ichamp->comment = get_champ_comment(fd);
 	ichamp->bytecode = get_champ_bcode(fd, ichamp->l_bytecode);
-	ichamp->mem_pos = NULL;
+	ichamp->mem_pos = 0;
 	close(fd);
 	if (!(ichamp->name) || !(ichamp->comment) || !(ichamp->bytecode))
 		return (vm_error_manager((int)CD_CHP_ERR, error));

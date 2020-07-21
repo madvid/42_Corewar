@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 09:53:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 17:28:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct		s_champ
 	char			*comment;
 	int				l_bytecode;
 	char			*bytecode;
-	void			*mem_pos;
+	int				mem_pos;
 }					t_champ;
 
 typedef struct		s_parse
@@ -79,28 +79,32 @@ typedef struct		s_process
 	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance
 	int				last_live;		// nb of cycle in which current cursor performed operation live last time.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
+	void			*position;		// position address in memory
 	int				jump;			// amount of bytes cursor must jump to get to the next operation
-	void			*position;		// position address in memory, It maybe similar/identical to pc (indeed, pc is the adress of the next opcode and jump the number of bytes to jump)
 	void			*pc;			// program counter = register that load the next opcode address that will be executed for the current process
 	char			**registers;	// 16 registers for a process/cursors of 4 bytes each.
-	void			*adrchamp;
+	t_champ			*champ;
 }					t_process;
 
 typedef struct		s_corewar
 {
-	char			*arena;
-	t_list			*process;
+	char			*arena;			// memory area where champion will fight until death
+	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
+	int				cycle_to_die;	// 
+	int				delta_cycle;	// number of cycles cycle_to_die is reduced.
+	int				nb_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle.
+	int				inter_check;	// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 }					t_cw;
 
 /*
 ** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
 */
-void				tool_print_parsing(t_parse *p);						// a retirer
-void				tool_print_champ(t_champ *champ);					// a retirer
-void				tool_print_champ_list(t_list *lst_champs);			// a retirer
-void				tool_print_arena(char *arena, size_t mem_size);		// a retirer
-void				tool_print_processor(t_process *process, int nb);	// a retirer
-void				tool_print_all_processors(t_list *processes);		// a retirer
+void				tool_print_parsing(t_parse *p);								// a retirer
+void				tool_print_champ(t_champ *champ);							// a retirer
+void				tool_print_champ_list(t_list *lst_champs);					// a retirer
+void				tool_print_arena(char *arena, size_t mem_size, t_parse *p);	// a retirer
+void				tool_print_processor(t_process *process, int nb);			// a retirer
+void				tool_print_all_processors(t_list *processes);				// a retirer
 
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
@@ -133,8 +137,9 @@ char				*get_champ_bcode(int fd, int l_bcode);
 int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 
 /*
-** Presentation des champions.
+** Lancement du corewar.
 */
 void				vm_champion_introduction(t_list *lst_champs);
+int					vm_execution(t_cw *cw);
 
 #endif

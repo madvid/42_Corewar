@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/18 22:28:33 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/21 16:55:08 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ RM = rm -rf
 ### SOURCES AND OBJECTS VARIABLES: ###
 
 VM_FILES =	main \
+			op \
 			vm_parsing \
 			vm_parsing_init \
 			vm_error_manager \
@@ -36,6 +37,7 @@ VM_FILES =	main \
 			vm_champ_code_parse \
 			vm_get_champ_tools \
 			vm_cw_arena_init \
+			vm_execution \
 			temporary_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))

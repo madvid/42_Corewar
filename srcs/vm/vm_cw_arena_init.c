@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 10:53:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 15:08:24 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 **	0: otherwise (mem. allocation issue).
 */
 
-static void		*load_champions(char **arena, t_champ *chp, int nb_champ)
+static int		load_champions(char **arena, t_champ *chp, int nb_champ)
 {
 	int			mem_pos;
 	static int	t_mem_pos[4] = {-1, -1, -1, -1};
@@ -44,7 +44,7 @@ static void		*load_champions(char **arena, t_champ *chp, int nb_champ)
 			% (int)MEM_SIZE;
 	ft_memcpy((void*)(*arena + mem_pos), (void*)(chp->bytecode),
 	(size_t)chp->l_bytecode);
-	return ((void*)(*arena + mem_pos));
+	return (mem_pos);
 }
 
 /*
@@ -79,15 +79,17 @@ static int		arena_and_champions_placement(char **arena, t_parse *p)
 **		Memory allocation is performed for the processes struct and
 **		registers, each process has 16 registers available.
 **	-> Initialization part:
-**		- id = champion id to which the process is associated with,
+**		- id = processus id, unique for each process
 **		- carry = initialized to false
 **		- opcode = initialized to -1
 **		- last_live = initialized to 0
 **		- wait_cycles = initialized to 0
 **		- position = memory adress of the beginning of the champion
 **		- jump = initialized to 0
-**		- registers[x]:
-**		- adrchamp = memory adress of the link containing the champion
+**		- registers[x]: small amount of memory reserve for each process
+**		  /!\ r1 is initialized to the champion id.
+**		- champ = pointer on the champion to facilitate the access of it inner
+**		  variables
 ** Return:
 **	1: if no memory allocation issue.
 **	0: [via vm_init_cw_error] otherwise.
@@ -97,6 +99,7 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 {
 	int				i;
 	t_process		*proc;
+	static int		proc_id;
 
 	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
 		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
@@ -111,13 +114,13 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 	proc->registers[0][3] = champ->id & 255;
 	proc->pc = NULL;
 	proc->jump = 0;
-	proc->id = champ->id;
+	proc->id = ++proc_id;
 	proc->carry = false;
 	proc->opcode = 0;
 	proc->last_live = 0;
 	proc->wait_cycles = 0;
-	proc->position = champ->mem_pos;
-	proc->adrchamp = (void*)&champ;
+	proc->position = (void*)(&((*cw)->arena[champ->mem_pos]));
+	proc->champ = champ;
 	return ((void*)proc);
 }
 
@@ -152,6 +155,10 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 		ft_lstadd(&(*cw)->process, tmp);
 		nb_champ--;
 	}
+	(*cw)->cycle_to_die = CYCLE_TO_DIE;
+	(*cw)->delta_cycle = CYCLE_DELTA;
+	(*cw)->nb_lives = 0;
+	(*cw)->inter_check = MAX_CHECKS;
 	return (1);
 }
 
