@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 17:01:59 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 09:53:38 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct		s_process
 	int				last_live;		// nb of cycle in which current cursor performed operation live last time.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	int				jump;			// amount of bytes cursor must jump to get to the next operation
-	void			*position;		// position address in memory, It maybe similar/identical to pc
+	void			*position;		// position address in memory, It maybe similar/identical to pc (indeed, pc is the adress of the next opcode and jump the number of bytes to jump)
 	void			*pc;			// program counter = register that load the next opcode address that will be executed for the current process
 	char			**registers;	// 16 registers for a process/cursors of 4 bytes each.
 	void			*adrchamp;
@@ -130,6 +130,11 @@ char				*get_champ_bcode(int fd, int l_bcode);
 /*
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
 */
-int					vm_cw_arena_init(t_cw **cw, t_parse *p);
+int					vm_cw_arena_init(t_cw **cw, t_parse **p);
+
+/*
+** Presentation des champions.
+*/
+void				vm_champion_introduction(t_list *lst_champs);
 
 #endif

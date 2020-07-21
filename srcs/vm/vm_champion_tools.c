@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 22:17:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 10:05:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,28 @@ int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 	p->options->n = 0;
 	p->id_champ = 0;
 	return (1);
+}
+
+/*
+** Function: vm_champion_introduction
+** Description:
+**	Introduces the different champions before the battle.
+*/
+
+void	vm_champion_introduction(t_list *lst_champs)
+{
+	t_list	*xplr;
+	t_champ	*chp;
+	int		id;
+
+	xplr = lst_champs;
+	ft_putstr("Introducing contestants...\n");
+	while (xplr)
+	{
+		chp = (t_champ *)(xplr->cnt);
+		id = chp->id;
+		printf("* Player %d, weighting %d bytes,", id, chp->l_bytecode);
+		printf(" \"%s\" (\"%s\") !\n", chp->name, chp->comment);
+		xplr = xplr->next;
+	}
 }

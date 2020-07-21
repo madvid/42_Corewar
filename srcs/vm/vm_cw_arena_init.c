@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 22:12:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 10:53:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 **	the current champion, it depends on the amount of champions and the id of
 **	the champion.
 **	The memory areas are determined as: MEM_SIZE / nb_champ.
-**	
 ** Return:
 **	1: if loading went well.
 **	0: otherwise (mem. allocation issue).
@@ -29,10 +28,22 @@
 
 static void		*load_champions(char **arena, t_champ *chp, int nb_champ)
 {
-	int		mem_pos;
+	int			mem_pos;
+	static int	t_mem_pos[4] = {-1, -1, -1, -1};
+	int			i;
 
+	i = -1;
 	mem_pos = ((int)MEM_SIZE / nb_champ) * (chp->id - 1) % (int)MEM_SIZE;
-	ft_memcpy((void*)(*arena + mem_pos), (void*)(chp->bytecode), (size_t)chp->l_bytecode);
+	if (mem_pos != t_mem_pos[0] && mem_pos != t_mem_pos[1]
+		&& mem_pos != t_mem_pos[2] && mem_pos != t_mem_pos[3])
+		t_mem_pos[chp->id - 1] = mem_pos;
+	else
+		while ((mem_pos == t_mem_pos[0] || mem_pos == t_mem_pos[1]
+		|| mem_pos == t_mem_pos[2] || mem_pos == t_mem_pos[3]) && ++i < 5)
+			mem_pos = ((int)MEM_SIZE / nb_champ) * (chp->id + i - 1)
+			% (int)MEM_SIZE;
+	ft_memcpy((void*)(*arena + mem_pos), (void*)(chp->bytecode),
+	(size_t)chp->l_bytecode);
 	return ((void*)(*arena + mem_pos));
 }
 
@@ -53,8 +64,8 @@ static int		arena_and_champions_placement(char **arena, t_parse *p)
 	xplr = p->lst_champs;
 	while (xplr)
 	{
-		((t_champ*)(xplr->cnt))->mem_pos = load_champions(arena, (t_champ*)(xplr->cnt), p->nb_champ);
-		// tool_print_champ((t_champ*)(xplr->cnt));
+		((t_champ*)(xplr->cnt))->mem_pos = load_champions(arena,
+		(t_champ*)(xplr->cnt), p->nb_champ);
 		xplr = xplr->next;
 	}
 	return (1);
@@ -82,23 +93,22 @@ static int		arena_and_champions_placement(char **arena, t_parse *p)
 **	0: [via vm_init_cw_error] otherwise.
 */
 
-static void			*vm_init_cw_registers(t_champ *champ)
+static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 {
 	int				i;
 	t_process		*proc;
-	
+
 	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
-		return (NULL); // <- redirriger vers error manager
+		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
 	if (!(proc->registers = (char**)ft_memalloc(sizeof(char*) * (REG_NUMBER + 1))))
-		return (NULL); // <- redirriger vers error manager
+		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
 	i = -1;
 	while (++i < 16)
-	{
 		if (!(proc->registers[i] = ft_strnew(REG_SIZE)))
-			return (NULL); // <- redirriger vers error manager
-	}
+			return (vm_init_cw_error(4, cw) == 0 ? NULL : NULL);
 	if (!(proc->pc = ft_strnew(REG_SIZE)))
-		return (NULL); // <- redirriger vers error manager
+		return (vm_init_cw_error(4, cw) == 0 ? NULL : NULL);
+	proc->registers[0][3] = champ->id & 255;
 	proc->pc = NULL;
 	proc->jump = 0;
 	proc->id = champ->id;
@@ -157,27 +167,24 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 **	0: otherwise (memory allocation issue at some point).
 */
 
-int				vm_cw_arena_init(t_cw **cw, t_parse *p)
+int				vm_cw_arena_init(t_cw **cw, t_parse **p)
 {
 	t_list		*xplr;
 	t_list		*xplr2;
 
-	xplr = p->lst_champs;
-	if (!(vm_init_cw_memalloc(cw, p->nb_champ)))
-		return (0);
-	if (arena_and_champions_placement(&((*cw)->arena), p) == 0)
-		return (0);
+	xplr = (*p)->lst_champs;
+	if (!(vm_init_cw_memalloc(cw, (*p)->nb_champ)))
+		return (vm_init_parse_error(4, p));
+	if (arena_and_champions_placement(&((*cw)->arena), *p) == 0)
+		return (vm_init_parse_error(4, p));
 	xplr2 = (*cw)->process;
 	while (xplr)
 	{
-		xplr2->cnt = vm_init_cw_registers((t_champ*)xplr->cnt);
+		xplr2->cnt = vm_init_cw_registers((t_champ*)xplr->cnt, cw);
 		if (!(xplr->cnt))
-			return (0);
+			return (vm_init_parse_error(4, p));
 		xplr = xplr->next;
 		xplr2 = xplr2->next;
 	}
-	printf("arena_init 1\n");
-	tool_print_all_processors((*cw)->process);
-	printf("arena_init 2\n");
 	return (1);
 }

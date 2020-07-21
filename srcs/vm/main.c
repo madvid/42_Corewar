@@ -6,14 +6,14 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 22:15:33 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 10:56:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
 /*
-** ZONE POUR TESTER DES BOUTS DE CODE OU COMPORTEMENT
+** TESTER DES BOUTS DE CODE OU COMPORTEMENT
 */
 
 /*
@@ -29,7 +29,7 @@ static void	test(t_parse *p)
 */
 
 /*
-** FIN DE LA ZONE
+**
 */
 
 int			main(int ac, char **av)
@@ -51,7 +51,9 @@ int			main(int ac, char **av)
 	// tool_print_parsing(p);
 	// tool_print_champ_list(p->lst_champs);
 	// test(p);
-	vm_cw_arena_init(&cw, p);
-	tool_print_arena(cw->arena, (size_t)MEM_SIZE);
+	vm_cw_arena_init(&cw, &p);
+	tool_print_all_processors(cw->process);
+	// tool_print_arena(cw->arena, (size_t)MEM_SIZE);
+	vm_champion_introduction(p->lst_champs);
 	return (0);
 }
