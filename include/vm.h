@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 17:28:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 18:35:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,24 @@
 ** Macros des auteurs, des structures et prototypes des fonctions
 ** --------------------------------------------------------------
 */
+
+/*
+** structure pour exploiter le fichier op.c
+*/
+
+typedef struct					s_op
+{
+	char				*name;
+	size_t				n_arg;
+	size_t				type[MAX_ARGS_NUMBER];
+	size_t				code;
+	size_t				cycle;
+	char				*desc;
+	size_t				encod;
+	size_t				direct_size;
+}								t_op;
+// direct_size == 0 => 4 - (0 * 2) octets pour l’argument direct
+// direct_size == 1 => 4 - (1 * 2) octets pour l’argument direct
 
 /*
 ** Définition des structures de la partie vm (parsing etc...)
@@ -141,5 +159,6 @@ int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 */
 void				vm_champion_introduction(t_list *lst_champs);
 int					vm_execution(t_cw *cw);
+void				get_next_opcode(char *arena, int mem_pos);
 
 #endif

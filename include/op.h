@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2020/07/21 17:12:00 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 18:35:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,17 +109,3 @@ typedef struct		header_s
 	unsigned int		prog_size;
 	char				comment[COMMENT_LENGTH + 1];
 }					header_t;
-
-typedef struct					s_op
-{
-	char				*name;
-	size_t				n_arg;
-	size_t				type[MAX_ARGS_NUMBER];
-	size_t				code;
-	size_t				cycle;
-	char				*desc;
-	size_t				encod;
-	size_t				direct_size;
-}								t_op;
-// direct_size == 0 => 4 - (0 * 2) octets pour l’argument direct
-// direct_size == 1 => 4 - (1 * 2) octets pour l’argument direct

@@ -6,22 +6,59 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 18:22:21 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 18:57:53 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
 /*
-** Function: 
+** Function: instruction_width
 ** Description:
-**
+**	[put some explanations here]
+** Return
+**	width: total length in term of bytes of the different parameters of opcode.
+**	0: if the encoding byte is invalid.
+*/
+int		instruction_width(char encoding)
+{
+	[put the code].
+}
+
+/*
+** Function: is_opcode
+** Description:
+**	[put some explanations here]
 ** Return:
+**	1: if the byte is an opcode.
+**	0: if the byte does not correspond to an opcode.
+*/
+bool	is_opcode(char byte)
+{
+	[put the code].
+}
+
+/*
+** Function: addr_next_opcode
+** Description:
+**	Gets the address of the next opcode, without distinguish if the opcode is
+**	related to the 'current' champion.
+** Return:
+**	addr: address of the next opcode.
+**	NULL: there is no next opcode right after the ongoing one.
 */
 
-void	*get_next_opcode(char *arena, )
+void	*addr_next_opcode(char *arena, int mem_pos)
 {
-	return ();
+	char	encoding;
+	int		addr_jump;
+
+	encoding = arena[mem_pos + 1];
+	addr_jump = instruction_width(encoding);
+	if (!is_opcode(arena[mem_pos + 1 + addr_jump]))
+		return (NULL);
+	else
+		return (&arena[mem_pos + 1 + addr_jump]);
 }
 
 /*
@@ -44,7 +81,7 @@ static void		vm_exec_init_pc(t_cw *cw)
 		p_xplr = (t_process*)l_xplr->cnt;
 		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
 		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
-		p_xplr->pc = get_next_opcode(cw->arena, p_xplr->champ->mem_pos);
+		p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
 		l_xplr = l_xplr->next;
 	}
 }
@@ -61,12 +98,12 @@ static void		vm_exec_init_pc(t_cw *cw)
 
 int		vm_execution(t_cw *cw)
 {
-	int		i_cycle;
-	bool	run_game; 
+	//int			i_cycle;
+	static bool	run_game;
 
-	printf("valeur de run_game = %d\n", run_game)
+	printf("valeur de run_game = %d\n", run_game);
 	vm_exec_init_pc(cw);
-	while (run_game == true)
+	/*while (run_game == true)
 	{
 		i_cycle = -1;
 		while (++i_cycle < cw->cycle_to_die)
@@ -74,6 +111,6 @@ int		vm_execution(t_cw *cw)
 			...
 		}
 		// perform the different checks.
-	}
+	}*/
 	return (1); // <- changer le num par l'id du champion vainqueur.
 }
