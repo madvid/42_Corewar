@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 18:17:52 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/21 18:22:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void		vm_exec_init_pc(t_cw *cw)
 		p_xplr = (t_process*)l_xplr->cnt;
 		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
 		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
-		p_xplr->pc = get_next_opcode(cw->arena, );
+		p_xplr->pc = get_next_opcode(cw->arena, p_xplr->champ->mem_pos);
 		l_xplr = l_xplr->next;
 	}
 }
