@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 18:57:53 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/22 18:24:15 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,51 +15,45 @@
 /*
 ** Function: instruction_width
 ** Description:
-**	[put some explanations here]
+**	Reads the encoding byte and calculates the length in bytes of the arguments
+**	field.
+** Remarks:
+**	Each arg can take 4 values:
+**		arg_1: can be 192/128/64 depending if 11/10/01 (xx 00 00 00).
+**		arg_2: can be 48/32/16 depending if 11/10/01 (00 xx 00 00).
+**		arg_3: can be 12/8/4 depending if 11/10/01 (00 00 xx 00).
+** Reminder:
+**	In the encoding byte are present the type of the different arguments:
+**		11 means the argument is an indirect type (2 bytes long),
+**		10 means the argument is an direct type (4 bytes long),
+**		01 means the argument is an indirect type (1 byte long)
 ** Return
 **	width: total length in term of bytes of the different parameters of opcode.
 **	0: if the encoding byte is invalid.
 */
-int		instruction_width(char encoding)
+int		instruction_width(unsigned char encoding)
 {
-	[put the code].
+	u_int8_t	arg_1;
+	u_int8_t	arg_2;
+	u_int8_t	arg_3;
+	int			width;
+
+	width = 0;
+	// printf("    [instruction_width] valeur de encoding = %d\n", (int)encoding);
+	arg_1 = (encoding & 0b11000000) >> 6;
+	arg_2 = (encoding & 0b00110000) >> 4;
+	arg_3 = (encoding & 0b00001100) >> 2;
+	if (arg_1 != 0)
+		width += 4 * (arg_1 / 2) - 2 * (arg_1 / 3) + (1 - arg_1 / 2);
+	if (arg_2 != 0)
+		width += 4 * (arg_2 / 2) - 2 * (arg_2 / 3) + (1 - arg_2 / 2);
+	if (arg_3 != 0)
+		width += 4 * (arg_3 / 2) - 2 * (arg_3 / 3) + (1 - arg_3 / 2);
+	// printf("    [instruction_width] valeur de width = %d\n", width);
+	return (width);
 }
 
-/*
-** Function: is_opcode
-** Description:
-**	[put some explanations here]
-** Return:
-**	1: if the byte is an opcode.
-**	0: if the byte does not correspond to an opcode.
-*/
-bool	is_opcode(char byte)
-{
-	[put the code].
-}
 
-/*
-** Function: addr_next_opcode
-** Description:
-**	Gets the address of the next opcode, without distinguish if the opcode is
-**	related to the 'current' champion.
-** Return:
-**	addr: address of the next opcode.
-**	NULL: there is no next opcode right after the ongoing one.
-*/
-
-void	*addr_next_opcode(char *arena, int mem_pos)
-{
-	char	encoding;
-	int		addr_jump;
-
-	encoding = arena[mem_pos + 1];
-	addr_jump = instruction_width(encoding);
-	if (!is_opcode(arena[mem_pos + 1 + addr_jump]))
-		return (NULL);
-	else
-		return (&arena[mem_pos + 1 + addr_jump]);
-}
 
 /*
 ** Function: vm_exec_init_pc
@@ -69,7 +63,7 @@ void	*addr_next_opcode(char *arena, int mem_pos)
 **	the wait_cycles and jump.
 */
 
-static void		vm_exec_init_pc(t_cw *cw)
+void		vm_exec_init_pc(t_cw *cw)
 {
 	extern t_op	op_tab[17];
 	t_list		*l_xplr;
@@ -86,7 +80,6 @@ static void		vm_exec_init_pc(t_cw *cw)
 	}
 }
 
-
 /*
 ** Function: vm_execution
 ** Description:
@@ -98,19 +91,23 @@ static void		vm_exec_init_pc(t_cw *cw)
 
 int		vm_execution(t_cw *cw)
 {
-	//int			i_cycle;
-	static bool	run_game;
+	int			i_cycle;
+	bool		run_game;
 
-	printf("valeur de run_game = %d\n", run_game);
 	vm_exec_init_pc(cw);
-	/*while (run_game == true)
+	run_game = true;
+	while (run_game == true)
 	{
 		i_cycle = -1;
-		while (++i_cycle < cw->cycle_to_die)
+		/*while (++i_cycle < cw->cycle_to_die)
 		{
 			...
-		}
-		// perform the different checks.
-	}*/
+		}*/
+		// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
+		if (cw->nb_lives >= NBR_LIVE)
+			cw->cycle_to_die -= (int)CYCLE_DELTA;
+		if (cw->nb_lives == 0)
+			run_game = false;
+	}
 	return (1); // <- changer le num par l'id du champion vainqueur.
 }

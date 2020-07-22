@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 22:29:18 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/22 18:51:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int			vm_init_cw_error(int cd_error, t_cw **cw)
 		ft_lstdel(&((*cw)->process), ft_lst_fdel);	// Faudra tester que l'on libere bien toute la memoire
 		(*cw)->process = NULL;						// et qu'on oubli pas de free quelque chose.
 	}
+	// if (cd_error >= xx)
+	// 	free((*cw)->id_arena));
 	if (cd_error >= 2)
 		ft_strdel(&((*cw)->arena));
 	if (cd_error >= 1)

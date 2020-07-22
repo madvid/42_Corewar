@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 15:08:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/22 18:51:24 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 		return (vm_init_cw_error(0, cw));
 	if (!((*cw)->arena = ft_strnew(MEM_SIZE)))
 		return (vm_init_cw_error(1, cw));
+	if (!((*cw)->id_arena = ft_1d_int_table((int)MEM_SIZE)))
+		return (vm_init_cw_error(2, cw));
 	(*cw)->process = NULL;
 	// if (!((*cw)->process = ft_lstnew(NULL, sizeof(t_process))))
 	//	return (vm_init_cw_error(2, cw));
@@ -156,7 +158,6 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 		nb_champ--;
 	}
 	(*cw)->cycle_to_die = CYCLE_TO_DIE;
-	(*cw)->delta_cycle = CYCLE_DELTA;
 	(*cw)->nb_lives = 0;
 	(*cw)->inter_check = MAX_CHECKS;
 	return (1);

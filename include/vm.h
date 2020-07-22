@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 18:35:48 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/22 18:26:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ typedef struct					s_op
 	size_t				encod;
 	size_t				direct_size;
 }								t_op;
-// direct_size == 0 => 4 - (0 * 2) octets pour l’argument direct
-// direct_size == 1 => 4 - (1 * 2) octets pour l’argument direct
 
 /*
 ** Définition des structures de la partie vm (parsing etc...)
@@ -107,9 +105,9 @@ typedef struct		s_process
 typedef struct		s_corewar
 {
 	char			*arena;			// memory area where champion will fight until death
+	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
-	int				delta_cycle;	// number of cycles cycle_to_die is reduced.
 	int				nb_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle.
 	int				inter_check;	// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 }					t_cw;
@@ -155,10 +153,26 @@ char				*get_champ_bcode(int fd, int l_bcode);
 int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 
 /*
-** Lancement du corewar.
+** Lancement et déroulement de corewar.
 */
 void				vm_champion_introduction(t_list *lst_champs);
 int					vm_execution(t_cw *cw);
-void				get_next_opcode(char *arena, int mem_pos);
+void				vm_exec_init_pc(t_cw *cw);
+bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
+int					instruction_width(unsigned char encoding);
+
+/*
+** Fonctions outils concernant les opcode
+*/
+bool				is_opcode(char *arena, int pos);
+int					arg_size_opcode_no_encode(u_int8_t opcode);
+bool				opcode_no_encoding(u_int8_t opcode);
+void				*addr_next_opcode(char *arena, int mem_pos);
+
+/*
+** Fonctions outils concernant l'octet d'encodage
+*/
+int					get_nb_arg_b_encoding(unsigned char encoding);
+bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
 
 #endif

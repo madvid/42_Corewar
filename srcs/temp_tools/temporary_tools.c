@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 16:09:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/22 18:09:19 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
 		champ[j] = (t_color_champ*)ft_memalloc(sizeof(t_color_champ));
 		champ[j]->start = ((t_champ*)(l_champ->cnt))->mem_pos;
 		champ[j]->end = champ[j]->start + ((t_champ*)(l_champ->cnt))->l_bytecode;
-		printf("champ[j=%d]->start = %lu\n", j, champ[j]->start);
-		printf("champ[j=%d]->end = %lu\n", j, champ[j]->end);
+		// printf("champ[j=%d]->start = %lu\n", j, champ[j]->start);
+		// printf("champ[j=%d]->end = %lu\n", j, champ[j]->end);
 		champ[j]->color = color[j + 1];
 		j++;
 		l_champ = l_champ->next;
@@ -167,7 +167,7 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("|_ _ _ _ _ _ _ _ _ _ _ _ _ _PROCESS #%d_ _ _ _ _ _ _ _ _ _ _ _ _|\n", nb);
 	printf("| id:__________%d                                               |\n", process->id);
 	printf("| carry:_______%d                                               |\n", process->carry);
-	printf("| opcode:______%8X                                        |\n", process->opcode);
+	printf("| opcode:______%X                                               |\n", process->opcode);
 	printf("| last_live:___%d                                               |\n", process->last_live);
 	printf("| wait_cycles:_%d                                               |\n", process->wait_cycles);
 	printf("| jump:________%d                                               |\n", process->jump);
