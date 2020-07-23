@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/22 18:24:15 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/23 18:46:28 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void		vm_exec_init_pc(t_cw *cw)
 		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
 		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
 		p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
+		p_xplr->n_lives = p_xplr->id - 1; // to suppress
 		l_xplr = l_xplr->next;
 	}
 }
@@ -95,19 +96,25 @@ int		vm_execution(t_cw *cw)
 	bool		run_game;
 
 	vm_exec_init_pc(cw);
+	tool_print_all_processors(cw->process);
 	run_game = true;
+	cw->cycle_to_die = 2;
 	while (run_game == true)
 	{
 		i_cycle = -1;
-		/*while (++i_cycle < cw->cycle_to_die)
+		while (++i_cycle < cw->cycle_to_die)
 		{
-			...
-		}*/
+			vm_proc_cycle(cw);
+		}
 		// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
-		if (cw->nb_lives >= NBR_LIVE)
-			cw->cycle_to_die -= (int)CYCLE_DELTA;
-		if (cw->nb_lives == 0)
+		cw->tot_lives = vm_proc_get_lives(cw);
+		if (cw->tot_lives == 0)
 			run_game = false;
+		vm_proc_kill_not_living(cw);
+		break ; // to suppress;
+		vm_proc_set_lives(cw, 0);
+		if (cw->tot_lives >= NBR_LIVE)
+			cw->cycle_to_die -= (int)CYCLE_DELTA;
 	}
 	return (1); // <- changer le num par l'id du champion vainqueur.
 }

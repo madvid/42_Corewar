@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 11:01:18 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/23 15:02:43 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 	proc->id = ++proc_id;
 	proc->carry = false;
 	proc->opcode = 0;
+	proc->n_lives = 0;
 	proc->last_live = 0;
 	proc->wait_cycles = 0;
 	proc->position = (void*)(&((*cw)->arena[champ->mem_pos]));
@@ -160,8 +161,10 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 		nb_champ--;
 	}
 	(*cw)->cycle_to_die = CYCLE_TO_DIE;
-	(*cw)->nb_lives = 0;
+	(*cw)->tot_lives = 0;
+	ft_1d_int_table_set((*cw)->champ_lives, 0, 0, 4);
 	(*cw)->inter_check = MAX_CHECKS;
+	
 	return (1);
 }
 
@@ -187,7 +190,6 @@ int				vm_cw_arena_init(t_cw **cw, t_parse **p)
 		return (vm_init_parse_error(4, p));
 	if (arena_and_champions_placement(*cw, *p) == 0)
 		return (vm_init_parse_error(4, p));
-	printf("id_arena = %d %d %d %d\n", (*cw)->id_arena[0], (*cw)->id_arena[1], (*cw)->id_arena[2], (*cw)->id_arena[3]);
 	xplr2 = (*cw)->process;
 	while (xplr)
 	{
