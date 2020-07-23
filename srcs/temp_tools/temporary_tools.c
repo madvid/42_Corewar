@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 10:39:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/23 17:55:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,9 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("| id:__________%d                                               |\n", process->id);
 	printf("| carry:_______%d                                               |\n", process->carry);
 	printf("| opcode:______%X                                               |\n", process->opcode);
-	printf("| last_live:___%d                                               |\n", process->last_live);
-	printf("| wait_cycles:_%d                                               |\n", process->wait_cycles);
+	printf("| n_lives:_____%2d                                              |\n", process->n_lives);
+	printf("| last_live:___%2d                                              |\n", process->last_live);
+	printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
 	printf("| jump:________%d                                               |\n", process->jump);
 	printf("| position:____%14p                                  |\n", process->position);
 	printf("| pc:__________%14p                                  |\n", process->pc);
@@ -242,11 +243,11 @@ void		tool_print_all_processors(t_list *processes)
 	xplr = processes;
 	while(xplr && xplr->cnt && (t_process*)(xplr->cnt))
 	{
-		printf("valeur xplr->cnt:%p\n", (t_process*)(xplr->cnt));
+		// printf("valeur xplr->cnt:%p\n", (t_process*)(xplr->cnt));
 		tool_print_processor((t_process*)(xplr->cnt), nb);
-		printf("valeur xplr->next:%p\n", xplr->next);
+		// printf("valeur xplr->next:%p\n", xplr->next);
 		xplr = xplr->next;
 		nb++;
 	}
-	printf("tool_print_all_fin\n");
+	printf("- - - - END OF ALL PROCESSES\n\n");
 }
