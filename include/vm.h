@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/22 18:26:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/23 10:51:47 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ typedef struct		s_parse
 
 typedef struct		s_process
 {
-	int				id;				// unique
+	int				id;				// unique to each process
 	bool			carry;			// flag carry= which can be changed by certain operations and which affects zjmp operation, initialised with value false.
-	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance
+	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
 	int				last_live;		// nb of cycle in which current cursor performed operation live last time.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	void			*position;		// position address in memory
@@ -115,12 +115,13 @@ typedef struct		s_corewar
 /*
 ** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
 */
-void				tool_print_parsing(t_parse *p);								// a retirer
-void				tool_print_champ(t_champ *champ);							// a retirer
-void				tool_print_champ_list(t_list *lst_champs);					// a retirer
-void				tool_print_arena(char *arena, size_t mem_size, t_parse *p);	// a retirer
-void				tool_print_processor(t_process *process, int nb);			// a retirer
-void				tool_print_all_processors(t_list *processes);				// a retirer
+void				tool_print_parsing(t_parse *p);										// a retirer
+void				tool_print_champ(t_champ *champ);									// a retirer
+void				tool_print_champ_list(t_list *lst_champs);							// a retirer
+void				tool_print_arena(char *arena, size_t mem_size, t_parse *p);			// a retirer
+void				tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p);	// a retirer
+void				tool_print_processor(t_process *process, int nb);					// a retirer
+void				tool_print_all_processors(t_list *processes);						// a retirer
 
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]

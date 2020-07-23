@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/22 18:09:19 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/23 10:39:13 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,52 @@ void		tool_print_champ_list(t_list *lst_champs)
 		i++;
 		xplr = xplr->next;
 	}
+}
+
+/*
+** Fonction pour imprimer la zone memoire correspondant à l'id-arène.
+** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
+*/
+
+void		tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p)
+{
+	size_t			i;
+	int				width_line;
+	t_color_champ	**champ;
+	static char		*color[] = {"\033[0m", "\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;34m"};
+	int				j = 0;
+	t_list			*l_champ;
+
+	i = 0;
+	width_line = 32;
+	l_champ = p->lst_champs;
+	champ = (t_color_champ**)ft_memalloc(sizeof(t_color_champ*) * p->nb_champ);
+	while (j < p->nb_champ)
+	{
+		champ[j] = (t_color_champ*)ft_memalloc(sizeof(t_color_champ));
+		champ[j]->start = ((t_champ*)(l_champ->cnt))->mem_pos;
+		champ[j]->end = champ[j]->start + ((t_champ*)(l_champ->cnt))->l_bytecode;
+		champ[j]->color = color[j + 1];
+		j++;
+		l_champ = l_champ->next;
+	}
+	printf("\033[1;36m|>---------------------------------------- [ID ARENA] ----------------------------------------<|\033[0m ");
+	while (i < mem_size)
+	{
+		j = -1;
+		while (++j < p->nb_champ)
+			if (i == champ[j]->start)
+				printf("%s", champ[j]->color);
+		j = -1;
+		while (++j < p->nb_champ)
+			if (i == champ[j]->end)
+				printf("%s", color[0]);
+		if (i % width_line == 0)
+			printf("\n");
+		printf("%d  ", id_arena[i]);
+		i++;
+	}
+	printf("\n\033[1;36m|>------------------------------------------- [FIN] ------------------------------------------<|\033[0m\n");
 }
 
 /*
