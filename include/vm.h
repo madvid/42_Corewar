@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 10:51:47 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/23 17:06:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct		s_process
 	int				id;				// unique to each process
 	bool			carry;			// flag carry= which can be changed by certain operations and which affects zjmp operation, initialised with value false.
 	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
+	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
 	int				last_live;		// nb of cycle in which current cursor performed operation live last time.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	void			*position;		// position address in memory
@@ -108,7 +109,8 @@ typedef struct		s_corewar
 	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
-	int				nb_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle.
+	int				tot_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle.
+	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				inter_check;	// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 }					t_cw;
 
@@ -175,5 +177,15 @@ void				*addr_next_opcode(char *arena, int mem_pos);
 */
 int					get_nb_arg_b_encoding(unsigned char encoding);
 bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
+
+/*
+** Fonctions concernant le déroulement des processus au sein de la VM
+*/
+void				vm_proc_cycle(t_cw *cw);
+// int					vm_proc_perform_opcode(t_cw *cw);
+int					vm_proc_get_lives(t_cw *cw);
+void				vm_proc_set_lives(t_cw *cw, int set);
+void				vm_proc_kill_not_living(t_cw *cw);
+void				free_one_process(t_list **lst_proc, int id);
 
 #endif
