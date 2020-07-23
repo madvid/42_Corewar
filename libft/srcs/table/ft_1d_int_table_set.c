@@ -1,42 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_1d_int_table.c                                  :+:      :+:    :+:   */
+/*   ft_1d_int_table_set.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/22 18:28:18 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 10:41:25 by mdavid           ###   ########.fr       */
+/*   Created: 2020/07/23 10:51:42 by mdavid            #+#    #+#             */
+/*   Updated: 2020/07/23 11:00:02 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 
-/*
-** Function: ft_1d_int_table
-** Description:
-**	Allocates a 1D int table of <nb_elem> elements.
-** Return:
-**	int* :
-**	NULL :
-*/
-
-int		*ft_1d_int_table(int nb_elem)
+void	ft_1d_int_table_set(int *table, int nb, size_t ini, size_t width)
 {
-	int		*table;
-	int		i;
+	size_t		i;
 
 	i = 0;
-	table = NULL;
-	if (nb_elem <= 0)
-		return (NULL);
-	if (!(table = (int*)malloc(sizeof(int) * nb_elem)))
-		return (NULL);
-	while (i < nb_elem)
+	while (i < width)
 	{
-		table[i] = 0;
+		table[ini + i] = nb;
 		i++;
 	}
-	return (table);
 }
