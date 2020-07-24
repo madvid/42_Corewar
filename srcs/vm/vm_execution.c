@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 13:35:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/24 15:35:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		vm_execution(t_cw *cw)
 	static bool	stop_game;
 
 	vm_exec_init_pc(cw);
-	// tool_print_all_processors(cw->process);
+	tool_print_all_processors(cw->process);
 	// cw->cycle_to_die = 2; // to supress
 	while (stop_game == false)
 	{

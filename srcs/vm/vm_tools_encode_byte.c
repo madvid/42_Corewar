@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 12:36:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/24 15:48:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,23 @@ bool	is_valid_encoding(unsigned char opcode, unsigned char encoding)
 	int				i;
 
 	i = -1;
+	printf("   [is_valid_encode] valeur de encoding = %c|(int)%d\n", encoding, (int)encoding);
 	l_arg[0] = get_nb_arg_b_encoding(encoding);
 	l_arg[1] = (encoding & 0b11000000) >> 6;
 	l_arg[2] = (encoding & 0b00110000) >> 4;
 	l_arg[3] = (encoding & 0b00001100) >> 2;
 	l_arg[4] = (encoding & 0b00000011);
-	// printf("   [is_valid_encode] valeur de encoding = %c|(int)%d\n", encoding, (int)encoding);
-	// printf("   [is_valid_encode] valeur de l_arg[0] = %d\n", l_arg[0]);
-	// printf("   [is_valid_encode] valeur de l_arg[1] = %d\n", l_arg[1]);
-	// printf("   [is_valid_encode] valeur de l_arg[2] = %d\n", l_arg[2]);
-	// printf("   [is_valid_encode] valeur de l_arg[3] = %d\n", l_arg[3]);
-	// printf("   [is_valid_encode] valeur de l_arg[4] = %d\n", l_arg[4]);
+	printf("   [is_valid_encode] valeur de encoding = %c|(int)%d\n", encoding, (int)encoding);
+	printf("   [is_valid_encode] valeur de l_arg[0] = %d\n", l_arg[0]);
+	printf("   [is_valid_encode] valeur de l_arg[1] = %d\n", l_arg[1]);
+	printf("   [is_valid_encode] valeur de l_arg[2] = %d\n", l_arg[2]);
+	printf("   [is_valid_encode] valeur de l_arg[3] = %d\n", l_arg[3]);
+	printf("   [is_valid_encode] valeur de l_arg[4] = %d\n", l_arg[4]);
 	if (l_arg[0] != (int)op_tab[(int)opcode].n_arg)
 		return (false);
 	while (++i < (int)op_tab[(int)opcode].n_arg)
 	{
-		// printf("l_arg[%d + 1] = %d et op_tab[(int)opcode].type[%d] = %ld\n", i, l_arg[i + 1], i, op_tab[(int)opcode].type[i]);
+		printf("l_arg[%d + 1] = %d et op_tab[(int)opcode].type[%d] = %ld\n", i, l_arg[i + 1], i, op_tab[(int)opcode].type[i]);
 		if (l_arg[i + 1] != (int)op_tab[(int)opcode].type[i])
 			return (false);
 	}

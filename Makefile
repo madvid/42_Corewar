@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/24 12:35:26 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/24 15:27:03 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ VM_FILES =	main					\
 			vm_tools_encode_byte	\
 			vm_tools_opcode			\
 			vm_tools_process		\
+			vm_op_functions_1		\
 			vm_cw_arena_init		\
 			vm_execution			\
 			temporary_tools
