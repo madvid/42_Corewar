@@ -1,17 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vm_process_tools.c                                 :+:      :+:    :+:   */
+/*   vm_tools_process.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 18:37:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/24 12:36:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "vm.h"
+
+/*
+** Function: vm_proc_set_lives
+** Description:
+**	[put some explanations here !]
+*/
+
+void	vm_proc_set_lives(t_cw *cw, int set)
+{
+	t_list		*xplr;
+	t_process	*cur_proc;
+
+	xplr = cw->process;
+	while (xplr)
+	{
+		cur_proc = (t_process*)(xplr->cnt);
+		cur_proc->n_lives = set;
+		xplr = xplr->next;
+	}
+}
+
+/*
+** Function: vm_proc_only_one_standing
+** Description:
+**	[put some explanations here !]
+*/
+bool		vm_proc_only_one_standing(t_cw *cw)
+{
+	int			tmp;
+	t_list		*xplr;
+	t_process	*cur_proc;
+
+	xplr = cw->process;
+	tmp = ((t_process*)(cw->process->cnt))->champ->id;
+	while (xplr)
+	{
+		cur_proc = (t_process*)(xplr->cnt);
+		if (tmp != cur_proc->champ->id)
+		{
+			tmp = -1;
+			break;
+		}
+		xplr = xplr->next;
+	}
+	return (tmp < 0 ? false : true);
+}
 
 /*
 ** Function: free_one_process
@@ -36,11 +82,7 @@ void		free_one_process(t_list **lst_proc, int id)
 	if (((t_process*)(xplr->cnt))->id == id)
 	{
 		*lst_proc = xplr->next;
-		while (++i < REG_NUMBER)
-			ft_strdel(&(((t_process*)(xplr->cnt))->registers[i]));
-		free(((t_process*)(xplr->cnt))->registers);
-		free(xplr->cnt);
-		free(xplr);
+		to_del = xplr;
 	}
 	else
 	{
@@ -48,15 +90,13 @@ void		free_one_process(t_list **lst_proc, int id)
 			xplr = xplr->next;
 		to_del = xplr->next;
 		xplr->next = xplr->next->next;
-		while (++i < REG_NUMBER)
-			ft_strdel(&(((t_process*)(to_del->cnt))->registers[i]));
-		free(((t_process*)(to_del->cnt))->registers);
-		((t_process*)(to_del->cnt))->registers = NULL;
-		free(to_del->cnt);
-		to_del->cnt = NULL;
-		free(to_del);
-		to_del = NULL;
 	}
+	while (++i < REG_NUMBER)
+		ft_strdel(&(((t_process*)(to_del->cnt))->registers[i]));
+	free(((t_process*)(to_del->cnt))->registers);
+	((t_process*)(to_del->cnt))->registers = NULL;
+	ft_memdel(&(to_del->cnt));
+	ft_memdel((void**)(&(to_del)));
 }	
 
 /*
@@ -83,26 +123,6 @@ void		vm_proc_kill_not_living(t_cw *cw)
 		}
 		else
 			xplr = xplr->next;
-	}
-}
-
-/*
-** Function: vm_proc_set_lives
-** Description:
-**	[put some explanations here !]
-*/
-
-void	vm_proc_set_lives(t_cw *cw, int set)
-{
-	t_list		*xplr;
-	t_process	*cur_proc;
-
-	xplr = cw->process;
-	while (xplr)
-	{
-		cur_proc = (t_process*)(xplr->cnt);
-		cur_proc->n_lives = set;
-		xplr = xplr->next;
 	}
 }
 
@@ -137,12 +157,9 @@ int		vm_proc_get_lives(t_cw *cw)
 ** Function: vm_proc_perform_opcode
 ** Description:
 **	[put some explanations !]
-** Return:
-**	1: action of the opcode have been performed, for all processes.
-**	0: Something wrong happen [find what wrong could happen].
 */
 
-/*int		vm_proc_perform_opcode(t_cw *cw)
+void	vm_proc_perform_opcode(t_cw *cw)
 {
 	t_list		*xplr;
 	t_process	*cur_proc;
@@ -150,10 +167,12 @@ int		vm_proc_get_lives(t_cw *cw)
 	xplr = cw->process;
 	while (xplr)
 	{
+		cur_proc = (t_process*)(xplr->cnt);
+		if (cur_proc->wait_cycles == 0)
+			perform_opcode(cw, cur_proc);
 		xplr = xplr->next;
 	}
-	return (1);
-}*/
+}
 
 /*
 ** Function: vm_proc_cycle

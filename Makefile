@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/23 12:51:35 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/24 12:35:26 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,15 +32,15 @@ VM_FILES =	main					\
 			op						\
 			vm_parsing				\
 			vm_parsing_init			\
+			vm_parsing_champ_code	\
 			vm_error_manager		\
-			vm_champion_tools		\
-			vm_champ_code_parse		\
-			vm_get_champ_tools		\
+			vm_tools_champion		\
+			vm_tools_get_champ		\
+			vm_tools_encode_byte	\
+			vm_tools_opcode			\
+			vm_tools_process		\
 			vm_cw_arena_init		\
 			vm_execution			\
-			vm_encode_byte_tools	\
-			vm_opcode_tools			\
-			vm_process_tools		\
 			temporary_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))

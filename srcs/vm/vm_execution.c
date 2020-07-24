@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 18:46:28 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/24 13:35:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,28 +93,28 @@ void		vm_exec_init_pc(t_cw *cw)
 int		vm_execution(t_cw *cw)
 {
 	int			i_cycle;
-	bool		run_game;
+	static bool	stop_game;
 
 	vm_exec_init_pc(cw);
-	tool_print_all_processors(cw->process);
-	run_game = true;
-	cw->cycle_to_die = 2;
-	while (run_game == true)
+	// tool_print_all_processors(cw->process);
+	// cw->cycle_to_die = 2; // to supress
+	while (stop_game == false)
 	{
 		i_cycle = -1;
 		while (++i_cycle < cw->cycle_to_die)
 		{
 			vm_proc_cycle(cw);
+			vm_proc_perform_opcode(cw);
 		}
 		// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
 		cw->tot_lives = vm_proc_get_lives(cw);
-		if (cw->tot_lives == 0)
-			run_game = false;
 		vm_proc_kill_not_living(cw);
+		if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
+			stop_game = true;
 		break ; // to suppress;
 		vm_proc_set_lives(cw, 0);
 		if (cw->tot_lives >= NBR_LIVE)
 			cw->cycle_to_die -= (int)CYCLE_DELTA;
 	}
-	return (1); // <- changer le num par l'id du champion vainqueur.
+	return (1); // <- changer le num par l'id du champion vainqueur ? ou alors faire gérer la fin par only_one_standing.
 }

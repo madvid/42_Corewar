@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 17:06:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/24 14:21:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ bool				is_opcode(char *arena, int pos);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
 void				*addr_next_opcode(char *arena, int mem_pos);
+void				perform_opcode(t_cw *cw, t_process *cur_proc);
 
 /*
 ** Fonctions outils concernant l'octet d'encodage
@@ -182,10 +183,31 @@ bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
 ** Fonctions concernant le déroulement des processus au sein de la VM
 */
 void				vm_proc_cycle(t_cw *cw);
-// int					vm_proc_perform_opcode(t_cw *cw);
+void				vm_proc_perform_opcode(t_cw *cw);
 int					vm_proc_get_lives(t_cw *cw);
 void				vm_proc_set_lives(t_cw *cw, int set);
 void				vm_proc_kill_not_living(t_cw *cw);
 void				free_one_process(t_list **lst_proc, int id);
+bool				vm_proc_only_one_standing(t_cw *cw);
+
+/*
+** Fonctions pour effectuer les instructions asm dans l'arene
+*/
+int					op_alive(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_store(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_soustraction(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_and(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_or(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_xor(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_zerojump(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_store_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_long_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_long_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_long_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_aff(t_cw *cw, t_process *cur_proc, t_op op_elem);
 
 #endif

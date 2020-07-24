@@ -1,16 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vm_opcode_tools.c                                  :+:      :+:    :+:   */
+/*   vm_tools_opcode.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/22 18:08:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/24 14:29:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+static void	init_op_funct(int (*t_op_funct)(t_cw*, t_process*, t_op))
+{
+	(t_op_funct[0]) = &op_alive;
+	t_op_funct[1] = op_load;
+	t_op_funct[2] = op_store;
+	t_op_funct[3] = op_addition;
+	t_op_funct[4] = op_soustraction;
+	t_op_funct[5] = op_and;
+	t_op_funct[6] = op_or;
+	t_op_funct[7] = op_xor;
+	t_op_funct[8] = op_zerojump;
+	t_op_funct[9] = op_load_index;
+	t_op_funct[10] = op_store_index;
+	t_op_funct[11] = op_fork;
+	t_op_funct[12] = op_long_load;
+	t_op_funct[13] = op_long_load_index;
+	t_op_funct[14] = op_long_fork;
+	t_op_funct[15] = op_aff;
+	return (t_op_funct[i])
+}
+
+/*
+** Function: perform_opcode
+** Description:
+**	[put some explanations here !]
+*/
+
+void	perform_opcode(t_cw *cw, t_process *cur_proc)
+{
+	extern t_op		op_tab[17];
+	int				i;
+	static int		(*op_funct[16])(t_cw*, t_process*, t_op) = {NULL};
+
+	i = -1;
+	if (op_funct[0] == NULL)
+		init_op_funct(op_funct);
+	// if (i == 0)
+	// {
+	// 	printf("arena = %s\n", cw->arena);
+	// 	printf("process id = %d\n", cur_proc->id);
+	// }
+	// printf("avant\n");
+	// while (++i < 18)
+	// 	printf("valeur d op_funct[%d] = %p\n", i, op_funct[i]);
+	// printf("apres\n");
+	t_op_funct[(int)cur_proc->opcode](cw, cur_proc, op_tab[(int)cur_proc->opcode])
+}
 
 /*
 ** Function: is_opcode
