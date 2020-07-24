@@ -159,7 +159,7 @@ int					naninf(long double n, char *s, t_arg *arg);
 ** >------------------------------ QUICK MATH --------------------------------<
 */
 
-unsigned long		ft_power(int x, int power);
+size_t				ft_power(int x, int power);
 int					ft_abs(int x);
 int					ft_min(int a, int b);
 int					ft_max(int a, int b);

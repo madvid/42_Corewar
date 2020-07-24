@@ -18,7 +18,7 @@ INCL = -Iincludes -Ilibft/includes
 
 LBFT = libft/libft.a
 
-SRCS = lab2.c
+SRCS = lab2.c op.c checks.c tools.c
 ODIR = ./objects/
 LM_O = $(patsubst %.c, $(ODIR)%.o, $(SRCS))
 CM_O = $(patsubst %.c, $(ODIR)%.o, $())

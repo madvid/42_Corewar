@@ -29,7 +29,7 @@
 #define MAX_PLAYERS				4
 #define MEM_SIZE				(4*1024)
 #define IDX_MOD					(MEM_SIZE / 8)
-#define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
+#define CHAMP_MAX_SIZE			(MEM_SIZE / 4)
 
 #define COMMENT_CHAR			'#'
 #define LABEL_CHAR				':'
@@ -67,6 +67,10 @@ typedef char	t_arg_type;
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
 typedef struct					header_s
 {
 	unsigned int		magic;
@@ -74,3 +78,21 @@ typedef struct					header_s
 	unsigned int		prog_size;
 	char				comment[COMMENT_LENGTH + 1];
 }								header_t;
+
+typedef struct					s_op
+{
+	char				*name;
+	size_t				n_arg;
+	size_t				type[MAX_ARGS_NUMBER];
+	size_t				code;
+	size_t				cycle;
+	char				*desc;
+	size_t				encod;
+	size_t				direct_size;
+}								t_op;
+
+// direct_size == 0 => 4 - (0 * 2) octets pour l'argument direct
+// direct_size == 1 => 4 - (1 * 2) octets pour l'argument direct
+
+
+

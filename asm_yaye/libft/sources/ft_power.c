@@ -23,6 +23,8 @@ size_t		ft_power(size_t x, int power)
 		return (1);
 	while (power > 0)
 	{
+		if (x >= 9223372036854775807 / y)
+			return (0);
 		y *= x;
 		power -= 1;
 	}
