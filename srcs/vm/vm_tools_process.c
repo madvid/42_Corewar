@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 12:36:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/25 16:57:27 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,45 @@ int		vm_proc_get_lives(t_cw *cw)
 		xplr = xplr->next;
 	}
 	return (n_lives);
+}
+
+/*
+** Function: vm_proc_mv_proc_pos
+** Description:
+**	Allows to set the process postion and pc to the next value when wait_cycles
+**	of the sime processes reach 0 and instruction has been performed
+**	(vm_proc_perform_opcode).
+**	Precisely, function sets process position, pc, opcode and wait_cycles right
+**	after the application of the instruction within process(-es).
+*/
+
+void	vm_proc_mv_proc_pos(t_cw *cw)
+{
+	extern t_op	op_tab[17];
+	t_list		*proc;
+	t_process	*cur_proc;
+	int			op_pos;
+
+	proc = cw->process;
+	while (proc)
+	{
+		cur_proc = ((t_process*)(proc->cnt));
+		if (cur_proc->wait_cycles == 0)
+		{
+			printf("a proc has it wait_cycles to 0\n");
+			printf("~~~~~ BEFORE MOVE ~~~~~\n");
+			tool_print_processor(cur_proc, cur_proc->id);
+			cur_proc->position = cur_proc->pc;
+			op_pos = cur_proc->position - (void*)(cw->arena);
+			cur_proc->pc = addr_next_opcode(cw->arena, op_pos);
+			printf("");
+			cur_proc->opcode = cw->arena[op_pos];
+			cur_proc->wait_cycles = op_tab[(int)(cur_proc->opcode) - 1].cycle;
+			printf("~~~~~ AFTER MOVE ~~~~~\n");
+			tool_print_processor(cur_proc, cur_proc->id);
+		}
+		proc = proc->next;
+	}
 }
 
 /*

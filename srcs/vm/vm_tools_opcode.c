@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 15:33:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/25 16:50:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*, t_op))
 {
-	(t_op_funct[0]) = &op_alive;
-	// t_op_funct[1] = op_load;
+	t_op_funct[0] = &op_alive;
+	// t_op_funct[1] = &op_load;
 	// t_op_funct[2] = op_store;
 	// t_op_funct[3] = op_addition;
 	// t_op_funct[4] = op_soustraction;
@@ -48,7 +48,11 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 	i = -1;
 	if (op_funct[0] == NULL)
 		init_op_funct(op_funct);
-	op_funct[0](cw, cur_proc, op_tab[0]);
+	if (cur_proc->wait_cycles == 0)
+	{
+		op_funct[0](cw, cur_proc, op_tab[0]);
+		printf("an instruction alive is performed\n");
+	}
 	// if (i == 0)
 	// {
 	// 	printf("arena = %s\n", cw->arena);
@@ -149,17 +153,19 @@ void	*addr_next_opcode(char *arena, int mem_pos)
 	u_int8_t	encoding;
 	u_int8_t	opcode;
 	int			addr_jump;
+	int			next_opcode;
 
 	opcode = (u_int8_t)arena[mem_pos];
-	// printf(">>  Opcode value = %d\n", opcode);
-	encoding = (u_int8_t)arena[mem_pos + 1];
+	printf(">>  Opcode value = %d\n", opcode);
+	encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
 	if (opcode_no_encoding(opcode))
 	{
-		// printf(">>  opcode with no encoding byte ...\n");
-		// printf(">>    size of the arg of opcode wtht encoded byte : %d\n", arg_size_opcode_no_encode(opcode));
-		// printf(">>    adress of the next opcode : %p\n", (void*)(arena + arg_size_opcode_no_encode(opcode) + 1));
-		// printf(">>    Code of the next opcode : %d\n", (int)arena[mem_pos + arg_size_opcode_no_encode(opcode) + 1]);
-		return ((void*)(arena + arg_size_opcode_no_encode(opcode) + 1));
+		printf(">>  opcode with no encoding byte ...\n");
+		printf(">>    size of the arg of opcode wtht encoded byte : %d\n", arg_size_opcode_no_encode(opcode));
+		printf(">>    adress of the next opcode : %p\n", (void*)(arena + arg_size_opcode_no_encode(opcode) + 1));
+		printf(">>    Code of the next opcode : %d\n", (int)arena[mem_pos + arg_size_opcode_no_encode(opcode) + 1]);
+		next_opcode = (mem_pos + arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
+		return ((void*)(&arena[next_opcode]));
 	}
 	// printf("[addr_next] current opcode = %d\n", opcode);
 	// printf("[addr_next] current encoding = %d\n", encoding);

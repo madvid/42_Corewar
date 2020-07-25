@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 14:21:21 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/25 15:44:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,9 @@ typedef struct		s_corewar
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
 	int				tot_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle.
+	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
-	int				inter_check;	// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
+	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 }					t_cw;
 
 /*
@@ -184,6 +185,7 @@ bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
 */
 void				vm_proc_cycle(t_cw *cw);
 void				vm_proc_perform_opcode(t_cw *cw);
+void				vm_proc_mv_proc_pos(t_cw *cw);
 int					vm_proc_get_lives(t_cw *cw);
 void				vm_proc_set_lives(t_cw *cw, int set);
 void				vm_proc_kill_not_living(t_cw *cw);

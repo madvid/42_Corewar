@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 15:35:58 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/25 16:51:16 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,16 @@ int		vm_execution(t_cw *cw)
 	static bool	stop_game;
 
 	vm_exec_init_pc(cw);
-	tool_print_all_processors(cw->process);
-	// cw->cycle_to_die = 2; // to supress
+	cw->cycle_to_die = 22; // to supress
 	while (stop_game == false)
 	{
 		i_cycle = -1;
 		while (++i_cycle < cw->cycle_to_die)
 		{
+			printf(">>> i_cycle = %d\n", i_cycle);
 			vm_proc_cycle(cw);
 			vm_proc_perform_opcode(cw);
+			vm_proc_mv_proc_pos(cw);
 		}
 		// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
 		cw->tot_lives = vm_proc_get_lives(cw);
