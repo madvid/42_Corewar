@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/25 15:44:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/27 13:58:20 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void				vm_champion_introduction(t_list *lst_champs);
 int					vm_execution(t_cw *cw);
 void				vm_exec_init_pc(t_cw *cw);
 bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
-int					instruction_width(unsigned char encoding);
+int					instruction_width(unsigned char encoding, size_t dir_s);
 
 /*
 ** Fonctions outils concernant les opcode
