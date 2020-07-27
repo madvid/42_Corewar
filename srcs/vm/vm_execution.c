@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/25 16:51:16 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/27 16:33:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,32 @@
 **	width: total length in term of bytes of the different parameters of opcode.
 **	0: if the encoding byte is invalid.
 */
-int		instruction_width(unsigned char encoding)
+int		instruction_width(unsigned char encoding, size_t dir_s)
 {
 	u_int8_t	arg_1;
 	u_int8_t	arg_2;
 	u_int8_t	arg_3;
+	size_t		size_dir;
 	int			width;
 
 	width = 0;
+	size_dir = (dir_s == 1) ? 2 : 4;
 	// printf("    [instruction_width] valeur de encoding = %d\n", (int)encoding);
 	arg_1 = (encoding & 0b11000000) >> 6;
 	arg_2 = (encoding & 0b00110000) >> 4;
 	arg_3 = (encoding & 0b00001100) >> 2;
+	// printf("[instruction_width]: arg1 = %d\n", arg_1);
+	// printf("[instruction_width]: arg2 = %d\n", arg_2);
+	// printf("[instruction_width]: arg3 = %d\n", arg_3);
 	if (arg_1 != 0)
-		width += 4 * (arg_1 / 2) - 2 * (arg_1 / 3) + (1 - arg_1 / 2);
+		width += size_dir * (arg_1 / 2) - 2 * (arg_1 / 3) + (1 - arg_1 / 2);
+	// printf("[instruction_width]: width = %d\n", width);
 	if (arg_2 != 0)
-		width += 4 * (arg_2 / 2) - 2 * (arg_2 / 3) + (1 - arg_2 / 2);
+		width += size_dir * (arg_2 / 2) - 2 * (arg_2 / 3) + (1 - arg_2 / 2);
+	// printf("[instruction_width]: width = %d\n", width);
 	if (arg_3 != 0)
-		width += 4 * (arg_3 / 2) - 2 * (arg_3 / 3) + (1 - arg_3 / 2);
+		width += size_dir * (arg_3 / 2) - 2 * (arg_3 / 3) + (1 - arg_3 / 2);
+	// printf("[instruction_width]: width = %d\n", width);
 	// printf("    [instruction_width] valeur de width = %d\n", width);
 	return (width);
 }
@@ -96,7 +104,7 @@ int		vm_execution(t_cw *cw)
 	static bool	stop_game;
 
 	vm_exec_init_pc(cw);
-	cw->cycle_to_die = 22; // to supress
+	cw->cycle_to_die = 100; // to supress
 	while (stop_game == false)
 	{
 		i_cycle = -1;

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/25 16:57:27 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/27 16:32:02 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,17 +176,16 @@ void	vm_proc_mv_proc_pos(t_cw *cw)
 		cur_proc = ((t_process*)(proc->cnt));
 		if (cur_proc->wait_cycles == 0)
 		{
-			printf("a proc has it wait_cycles to 0\n");
-			printf("~~~~~ BEFORE MOVE ~~~~~\n");
-			tool_print_processor(cur_proc, cur_proc->id);
+			// printf("a proc has it wait_cycles to 0\n");
+			// printf("~~~~~ BEFORE MOVE ~~~~~\n");
+			// tool_print_processor(cur_proc, cur_proc->id);
 			cur_proc->position = cur_proc->pc;
 			op_pos = cur_proc->position - (void*)(cw->arena);
 			cur_proc->pc = addr_next_opcode(cw->arena, op_pos);
-			printf("");
 			cur_proc->opcode = cw->arena[op_pos];
 			cur_proc->wait_cycles = op_tab[(int)(cur_proc->opcode) - 1].cycle;
-			printf("~~~~~ AFTER MOVE ~~~~~\n");
-			tool_print_processor(cur_proc, cur_proc->id);
+			// printf("~~~~~ AFTER MOVE ~~~~~\n");
+			// tool_print_processor(cur_proc, cur_proc->id);
 		}
 		proc = proc->next;
 	}
