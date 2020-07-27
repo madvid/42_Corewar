@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/27 16:32:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/27 17:01:00 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,13 +172,19 @@ void	*addr_next_opcode(char *arena, int mem_pos)
 	// printf("[addr_next] current opcode = %d\n", opcode);
 	// printf("[addr_next] current encoding = %d\n", encoding);
 	encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
-	next_opcode = instruction_width(encoding, op_tab[opcode - 1].direct_size) + 2;
-	// printf(">>  opcode with encoding byte ...\n");
-	// printf(">>[addr_next_opcode] size of the arg of opcode wth encoded byte : %d\n", instruction_width(encoding, op_tab[opcode - 1].direct_size));
-	// printf(">>    adress of the next opcode : %p\n", (void*)(&arena[mem_pos + next_opcode]));
-	// printf(">>[addr_next_opcode] Code of the next opcode : %d\n", (int)arena[mem_pos + next_opcode]);
-	// if (!is_opcode(arena, mem_pos + next_opcode))
-	// 	return (NULL);
-	// else
-	return ((void*)(&arena[mem_pos + next_opcode]));
+	if (is_valid_encoding(opcode, encoding))
+	{
+		// printf(">>  opcode with encoding byte ...\n");
+		// printf(">>[addr_next_opcode] size of the arg of opcode wth encoded byte : %d\n", instruction_width(encoding, op_tab[opcode - 1].direct_size));
+		// printf(">>    adress of the next opcode : %p\n", (void*)(&arena[mem_pos + next_opcode]));
+		// printf(">>[addr_next_opcode] Code of the next opcode : %d\n", (int)arena[mem_pos + next_opcode]);
+		next_opcode = instruction_width(encoding, op_tab[opcode - 1].direct_size) + 2;
+		return ((void*)(&arena[mem_pos + next_opcode]));
+	}
+	else
+	{
+		if ((next_opcode = reconstruct_arg_width(opcode)) == -1)
+			next_opcode = min_arg_width(opcode);
+		return ((void*)(&arena[mem_pos + next_opcode]));
+	}
 }

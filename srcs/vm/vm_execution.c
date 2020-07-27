@@ -6,11 +6,45 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/27 16:33:21 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/27 16:57:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+/*
+** Function: reconstruct_arg_width
+** Description:
+**	[put some explanations here]
+** Return:
+**	len: the minimal value of the arguments length field.
+*/
+
+int		reconstruct_arg_width(int opcode)
+{
+	int		len;
+
+	len = 0;
+	
+	return (len)
+}
+
+/*
+** Function: min_arg_width
+** Description:
+**	[put some explanations here]
+** Return:
+**	len: the minimal value of the arguments length field.
+*/
+
+int		min_arg_width(int opcode)
+{
+	int		len;
+
+	len = 0;
+	
+	return (len)
+}
 
 /*
 ** Function: instruction_width
