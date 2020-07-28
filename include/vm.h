@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/27 13:58:20 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 14:03:40 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct		s_process
 	void			*position;		// position address in memory
 	int				jump;			// amount of bytes cursor must jump to get to the next operation
 	void			*pc;			// program counter = register that load the next opcode address that will be executed for the current process
-	char			**registers;	// 16 registers for a process/cursors of 4 bytes each.
+	int				*registers;		// 16 registers for a process/cursors of 4 bytes each.
 	t_champ			*champ;
 }					t_process;
 
@@ -162,13 +162,13 @@ int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 void				vm_champion_introduction(t_list *lst_champs);
 int					vm_execution(t_cw *cw);
 void				vm_exec_init_pc(t_cw *cw);
-bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
+bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
 int					instruction_width(unsigned char encoding, size_t dir_s);
 
 /*
 ** Fonctions outils concernant les opcode
 */
-bool				is_opcode(char *arena, int pos);
+bool				is_valid_opcode(char *arena, int pos);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
 void				*addr_next_opcode(char *arena, int mem_pos);
@@ -177,7 +177,7 @@ void				perform_opcode(t_cw *cw, t_process *cur_proc);
 /*
 ** Fonctions outils concernant l'octet d'encodage
 */
-int					get_nb_arg_b_encoding(unsigned char encoding);
+int					get_nb_arg_b_encoding(u_int8_t encoding);
 bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
 
 /*

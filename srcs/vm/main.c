@@ -6,27 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/27 16:31:11 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 11:14:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
-/*
-** TESTER DES BOUTS DE CODE OU COMPORTEMENT
-*/
-
-/*
-static void	test(t_parse *p)
-{
-	tool_print_champ_list(p->lst_champs);
-	printf("Avant la supression de la liste de champions\n");
-	ft_lstdel(&(p->lst_champs), ft_lst_fdel);
-	p->lst_champs = NULL;
-	printf("Après la supression de la liste de champions\n");
-	tool_print_champ_list(p->lst_champs);
-}
-*/
 
 /*
 **
@@ -50,7 +34,6 @@ int			main(int ac, char **av)
 		return (vm_error_manager((int)CD_USAGE, p->error));
 	// tool_print_parsing(p);
 	// tool_print_champ_list(p->lst_champs);
-	// test(p);
 	vm_cw_arena_init(&cw, &p);
 	// vm_champion_introduction(p->lst_champs);
 	vm_execution(cw);

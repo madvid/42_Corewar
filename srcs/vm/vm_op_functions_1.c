@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/25 15:59:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 12:58:37 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,36 @@ int		op_alive(t_cw *cw, t_process *cur_proc, t_op op_elem)
 **	0:
 */
 
-/*int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
+int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 {
-	int		index;
-	int		arg;
+	int			index;
+	int			arg;
+	u_int8_t	reg;
 
 	index = cur_proc->position - (void*)(cw->arena);
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
-	
+	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == 2)
+	{
+		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
+		if (!(reg >= 0 && reg < 16))
+			return (0);
+		arg = (cw->arena[(index + 1) % MEM_SIZE] & 255) << 24
+		| (cw->arena[(index + 2) % MEM_SIZE] & 255) << 16
+		| (cw->arena[(index + 3) % MEM_SIZE] & 255) << 8
+		| (cw->arena[(index + 4) % MEM_SIZE] & 255);
+		cur_proc->carry = (arg == 0) ? 1 : 0;
+		cur_proc->registers[reg] = arg; // changer registers en tableau de int.
+		return (1);
+	}
+	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == 3)
+	{
+		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
+		if (!(reg >= 0 && reg < 16))
+			return (0);
 	return (1);
-}*/
+}
 
 /*
 ** Function: op_store
