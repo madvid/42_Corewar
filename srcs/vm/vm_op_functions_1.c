@@ -96,10 +96,14 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 /*
 ** Function: op_store
 ** Description:
-**	[put some explanations here !]
+**	- Writes in 
+**	  cur_proc->registers[ARG_2] 						if type(ARG_2) == T_REG
+**	  cw->arena[(index + (ARG_2 % IDX_MOD)) % MEM_SIZE] if type(ARG_2) == T_IND
+**	  the value
+**	  cur_proc->registers[ARG_1]
 ** Return:
-**	[value_1]:
-**	[value_2]:
+**	[value_1]: 1 if encoding byte and arguments are valid
+**	[value_2]: 0 else
 */
 
 int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
@@ -130,10 +134,13 @@ int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 /*
 ** Function: op_adition
 ** Description:
-**	[put some explanations here !]
+**	- Writes in cur_proc->registers[ARG_3] the value
+**	  cur_proc->registers[ARG_1] + cur_proc->registers[ARG_2]
+**	- cur->carry = 1 (if value == 0)
+**				   0 (else)
 ** Return:
-**	[]:
-**	[]:
+**	[value_1]: 1 if encoding byte and arguments are valid
+**	[value_2]: 0 else
 */
 
 int		op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem)

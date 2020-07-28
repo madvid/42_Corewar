@@ -15,10 +15,13 @@
 /*
 ** Function: op_soustraction
 ** Description:
-**	[put some explanations here !]
+**	- Writes in cur_proc->registers[ARG_3] the value
+**    cur_proc->registers[ARG_1] - cur_proc->registers[ARG_2]
+**  - cur->carry = 1 (if value == 0)
+**                 0 (else)
 ** Return:
-**	[value_1]:
-**	[value_2]:
+**	[value_1]: 1 if encoding byte and arguments are valid
+**	[value_2]: 0 else
 */
 
 int		op_soustraction(t_cw *cw, t_process *cur_proc, t_op op_elem)
