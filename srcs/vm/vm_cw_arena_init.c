@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/25 14:13:37 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 14:03:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,14 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 
 	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
 		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
-	if (!(proc->registers = (char**)ft_memalloc(sizeof(char*) * (REG_NUMBER + 1))))
+	if (!(proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
 		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
 	i = -1;
 	while (++i < 16)
-		if (!(proc->registers[i] = ft_strnew(REG_SIZE)))
-			return (vm_init_cw_error(4, cw) == 0 ? NULL : NULL);
+		proc->registers[i] = 0;
 	if (!(proc->pc = ft_strnew(REG_SIZE)))
 		return (vm_init_cw_error(4, cw) == 0 ? NULL : NULL);
-	proc->registers[0][3] = champ->id & 255;
+	proc->registers[0] = champ->id;
 	proc->pc = NULL;
 	proc->jump = 0;
 	proc->id = ++proc_id;

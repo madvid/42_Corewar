@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/27 16:57:48 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 15:49:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		reconstruct_arg_width(int opcode)
 **	len: the minimal value of the arguments length field.
 */
 
-int		min_arg_width(int opcode)
+int		min_arg_width(u_int8_t opcode)
 {
 	int		len;
 
