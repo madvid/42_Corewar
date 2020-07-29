@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/29 16:13:37 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/29 16:58:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
-	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == 2)
+	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == DIR_CODE)
 	{
 		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
 		if (!(reg >= 0 && reg < 16))
@@ -87,7 +87,7 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 		cur_proc->registers[reg] = arg; // changer registers en tableau de int.
 		return (1);
 	}
-	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == 3)
+	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == IND_CODE)
 	{
 		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
 		if (!(reg >= 0 && reg < 16))
@@ -118,31 +118,28 @@ int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	u_int8_t	b;
 
 	index = cur_proc->position - (void*)(cw->arena);
-	encoding = cw->arena[(index + 1) % MEM_SIZE];
-	printf("Store instruction en cours\n");
-	if (!is_valid_encoding(op_elem.code, encoding))
-		return (0);
+	if (op_elem.encod == 1)
+		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
+			return (0);
 	a = cw->arena[(index + 2) % MEM_SIZE];
-	if (a < 0 || a >= REG_NUMBER)
+	if (a < 1 || a > REG_NUMBER)
 		return (0);
 	b = cw->arena[(index + 3) % MEM_SIZE];
-	if (((encoding & 0b00110000) >> 4) == IND_CODE)
+	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
-		b = b << 8 | (cw->arena[(index + 4) % MEM_SIZE]);
-		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = cur_proc->registers[a];
-		return (1);
+		b = b << 8 | cw->arena[(index + 4) % MEM_SIZE];
+		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = cur_proc->registers[a - 1];
 	}
-	else if (((encoding & 0b00110000) >> 4) == REG_CODE && b >= 0 && b < REG_NUMBER)
-	{
-		cur_proc->registers[b] = cur_proc->registers[a];
-		return (1);
-	}
+	else if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE \
+		&& b > 0 && b <= REG_NUMBER)
+		cur_proc->registers[b - 1] = cur_proc->registers[a - 1];
 	else
 		return (0);
+	return (1);
 }
 
 /*
-** Function: op_adition
+** Function: op_addition
 ** Description:
 **	- Writes in cur_proc->registers[ARG_3] the value
 **	  cur_proc->registers[ARG_1] + cur_proc->registers[ARG_2]
@@ -164,12 +161,13 @@ int		op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
-	a = (cw->arena[(index + 2) % MEM_SIZE] & 255);
-	b = (cw->arena[(index + 3) % MEM_SIZE] & 255);
-	c = (cw->arena[(index + 4) % MEM_SIZE] & 255);
-	if (a < 0 || a > 99 || b < 0 || b > 99 || c < 0 || c > 99)	//valeurs limites à revoir
+	a = cw->arena[(index + 2) % MEM_SIZE];
+	b = cw->arena[(index + 3) % MEM_SIZE];
+	c = cw->arena[(index + 4) % MEM_SIZE];
+	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
+		|| c < 1 || c > REG_NUMBER)
 		return (0);
-	cur_proc->registers[c] = cur_proc->registers[a] + cur_proc->registers[b];
-	cur_proc->carry = (cur_proc->registers[c] == 0) ? 1 : 0;
+	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] + cur_proc->registers[b - 1];
+	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
 	return (1);
 }

@@ -40,6 +40,8 @@
 ** --------------------------------------------------------------
 */
 
+# define RELATIVE 10
+
 /*
 ** structure pour exploiter le fichier op.c
 */
@@ -211,5 +213,6 @@ int					op_long_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_long_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_long_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_aff(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					get_arg_value(t_cw *cw, int index, int type);
 
 #endif
