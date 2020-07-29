@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/28 14:53:43 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/29 14:45:36 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ void		free_one_process(t_list **lst_proc, int id)
 		to_del = xplr->next;
 		xplr->next = xplr->next->next;
 	}
-	while (++i < REG_NUMBER)
-		ft_strdel(&(((t_process*)(to_del->cnt))->registers[i]));
 	free(((t_process*)(to_del->cnt))->registers);
 	((t_process*)(to_del->cnt))->registers = NULL;
 	ft_memdel(&(to_del->cnt));
@@ -179,9 +177,11 @@ void	vm_proc_mv_proc_pos(t_cw *cw)
 			cur_proc->position = cur_proc->pc;
 			op_pos = cur_proc->position - (void*)(cw->arena);
 			cur_proc->pc = addr_next_opcode(cw->arena, op_pos);
-			// vait cycles set based on the opcode pointed by position
 			cur_proc->opcode = cw->arena[op_pos];
-			cur_proc->wait_cycles = op_tab[(int)(cur_proc->opcode) - 1].cycle;
+			if (cur_proc->opcode >= 1 && cur_proc->opcode <= 16)
+				cur_proc->wait_cycles = op_tab[(int)(cur_proc->opcode) - 1].cycle;
+			else
+				cur_proc->wait_cycles = 1;
 		}
 		proc = proc->next;
 	}

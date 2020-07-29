@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/28 11:53:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/29 16:56:53 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int		get_nb_arg_b_encoding(u_int8_t encoding)
 	l_arg[1] = (encoding & 0b00110000) >> 4;
 	l_arg[2] = (encoding & 0b00001100) >> 2;
 	l_arg[3] = (encoding & 0b00000011);
-	// printf("    [get_nb_arg] valeur de encoding = %d\n", (int)encoding);
-	// printf("    [get_nb_arg] valeur de l_arg[0] = %d\n", l_arg[0]);
-	// printf("    [get_nb_arg] valeur de l_arg[1] = %d\n", l_arg[1]);
-	// printf("    [get_nb_arg] valeur de l_arg[2] = %d\n", l_arg[2]);
-	// printf("    [get_nb_arg] valeur de l_arg[3] = %d\n", l_arg[3]);
+	printf("    [get_nb_arg] valeur de encoding = %d\n", (int)encoding);
+	printf("    [get_nb_arg] valeur de l_arg[0] = %d\n", l_arg[0]);
+	printf("    [get_nb_arg] valeur de l_arg[1] = %d\n", l_arg[1]);
+	printf("    [get_nb_arg] valeur de l_arg[2] = %d\n", l_arg[2]);
+	printf("    [get_nb_arg] valeur de l_arg[3] = %d\n", l_arg[3]);
 	nb_arg = 0;
 	nb_arg += (l_arg[0] > 0 && l_arg[0] < 4) ? 1 : -1;
 	nb_arg += (nb_arg > 0 && l_arg[1] > 0 && l_arg[1] < 4) ? 1 : -2;
@@ -72,6 +72,10 @@ bool	is_valid_encoding(u_int8_t opcode, u_int8_t encoding)
 	l_arg[2] = (encoding & 0b00110000) >> 4;
 	l_arg[3] = (encoding & 0b00001100) >> 2;
 	l_arg[4] = (encoding & 0b00000011);
+	printf("      [is_valid_encoding] l_arg[0] = %d\n", l_arg[0]);
+	printf("      [is_valid_encoding] l_arg[1] = %d\n", l_arg[1]);
+	printf("      [is_valid_encoding] l_arg[2] = %d\n", l_arg[2]);
+	printf("      [is_valid_encoding] l_arg[3] = %d\n", l_arg[3]);
 	if (l_arg[0] != (int)op_tab[(int)opcode].n_arg)
 		return (false);
 	while (i < (int)op_tab[(int)opcode].n_arg)
