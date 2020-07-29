@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 16:09:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/23 17:55:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,52 @@ void		tool_print_champ_list(t_list *lst_champs)
 }
 
 /*
+** Fonction pour imprimer la zone memoire correspondant à l'id-arène.
+** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
+*/
+
+void		tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p)
+{
+	size_t			i;
+	int				width_line;
+	t_color_champ	**champ;
+	static char		*color[] = {"\033[0m", "\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;34m"};
+	int				j = 0;
+	t_list			*l_champ;
+
+	i = 0;
+	width_line = 32;
+	l_champ = p->lst_champs;
+	champ = (t_color_champ**)ft_memalloc(sizeof(t_color_champ*) * p->nb_champ);
+	while (j < p->nb_champ)
+	{
+		champ[j] = (t_color_champ*)ft_memalloc(sizeof(t_color_champ));
+		champ[j]->start = ((t_champ*)(l_champ->cnt))->mem_pos;
+		champ[j]->end = champ[j]->start + ((t_champ*)(l_champ->cnt))->l_bytecode;
+		champ[j]->color = color[j + 1];
+		j++;
+		l_champ = l_champ->next;
+	}
+	printf("\033[1;36m|>---------------------------------------- [ID ARENA] ----------------------------------------<|\033[0m ");
+	while (i < mem_size)
+	{
+		j = -1;
+		while (++j < p->nb_champ)
+			if (i == champ[j]->start)
+				printf("%s", champ[j]->color);
+		j = -1;
+		while (++j < p->nb_champ)
+			if (i == champ[j]->end)
+				printf("%s", color[0]);
+		if (i % width_line == 0)
+			printf("\n");
+		printf("%d  ", id_arena[i]);
+		i++;
+	}
+	printf("\n\033[1;36m|>------------------------------------------- [FIN] ------------------------------------------<|\033[0m\n");
+}
+
+/*
 ** Fonction pour imprimer la zone memoire correspondant à l'arène.
 ** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
 */
@@ -120,8 +166,8 @@ void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
 		champ[j] = (t_color_champ*)ft_memalloc(sizeof(t_color_champ));
 		champ[j]->start = ((t_champ*)(l_champ->cnt))->mem_pos;
 		champ[j]->end = champ[j]->start + ((t_champ*)(l_champ->cnt))->l_bytecode;
-		printf("champ[j=%d]->start = %lu\n", j, champ[j]->start);
-		printf("champ[j=%d]->end = %lu\n", j, champ[j]->end);
+		// printf("champ[j=%d]->start = %lu\n", j, champ[j]->start);
+		// printf("champ[j=%d]->end = %lu\n", j, champ[j]->end);
 		champ[j]->color = color[j + 1];
 		j++;
 		l_champ = l_champ->next;
@@ -167,9 +213,10 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("|_ _ _ _ _ _ _ _ _ _ _ _ _ _PROCESS #%d_ _ _ _ _ _ _ _ _ _ _ _ _|\n", nb);
 	printf("| id:__________%d                                               |\n", process->id);
 	printf("| carry:_______%d                                               |\n", process->carry);
-	printf("| opcode:______%8X                                        |\n", process->opcode);
-	printf("| last_live:___%d                                               |\n", process->last_live);
-	printf("| wait_cycles:_%d                                               |\n", process->wait_cycles);
+	printf("| opcode:______%X                                               |\n", process->opcode);
+	printf("| n_lives:_____%2d                                              |\n", process->n_lives);
+	printf("| last_live:___%2d                                              |\n", process->last_live);
+	printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
 	printf("| jump:________%d                                               |\n", process->jump);
 	printf("| position:____%14p                                  |\n", process->position);
 	printf("| pc:__________%14p                                  |\n", process->pc);
@@ -196,11 +243,11 @@ void		tool_print_all_processors(t_list *processes)
 	xplr = processes;
 	while(xplr && xplr->cnt && (t_process*)(xplr->cnt))
 	{
-		printf("valeur xplr->cnt:%p\n", (t_process*)(xplr->cnt));
+		// printf("valeur xplr->cnt:%p\n", (t_process*)(xplr->cnt));
 		tool_print_processor((t_process*)(xplr->cnt), nb);
-		printf("valeur xplr->next:%p\n", xplr->next);
+		// printf("valeur xplr->next:%p\n", xplr->next);
 		xplr = xplr->next;
 		nb++;
 	}
-	printf("tool_print_all_fin\n");
+	printf("- - - - END OF ALL PROCESSES\n\n");
 }

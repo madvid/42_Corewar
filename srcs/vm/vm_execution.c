@@ -6,60 +6,96 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 18:57:53 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 15:49:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
 /*
-** Function: instruction_width
+** Function: reconstruct_arg_width
 ** Description:
 **	[put some explanations here]
+** Return:
+**	len: the minimal value of the arguments length field.
+*/
+
+int		reconstruct_arg_width(int opcode)
+{
+	int		len;
+
+	len = 0;
+	
+	return (len)
+}
+
+/*
+** Function: min_arg_width
+** Description:
+**	[put some explanations here]
+** Return:
+**	len: the minimal value of the arguments length field.
+*/
+
+int		min_arg_width(u_int8_t opcode)
+{
+	int		len;
+
+	len = 0;
+	
+	return (len)
+}
+
+/*
+** Function: instruction_width
+** Description:
+**	Reads the encoding byte and calculates the length in bytes of the arguments
+**	field.
+** Remarks:
+**	Each arg can take 4 values:
+**		arg_1: can be 192/128/64 depending if 11/10/01 (xx 00 00 00).
+**		arg_2: can be 48/32/16 depending if 11/10/01 (00 xx 00 00).
+**		arg_3: can be 12/8/4 depending if 11/10/01 (00 00 xx 00).
+** Reminder:
+**	In the encoding byte are present the type of the different arguments:
+**		11 means the argument is an indirect type (2 bytes long),
+**		10 means the argument is an direct type (4 bytes long),
+**		01 means the argument is an indirect type (1 byte long)
 ** Return
 **	width: total length in term of bytes of the different parameters of opcode.
 **	0: if the encoding byte is invalid.
 */
-int		instruction_width(char encoding)
+int		instruction_width(unsigned char encoding, size_t dir_s)
 {
-	[put the code].
+	u_int8_t	arg_1;
+	u_int8_t	arg_2;
+	u_int8_t	arg_3;
+	size_t		size_dir;
+	int			width;
+
+	width = 0;
+	size_dir = (dir_s == 1) ? 2 : 4;
+	// printf("    [instruction_width] valeur de encoding = %d\n", (int)encoding);
+	arg_1 = (encoding & 0b11000000) >> 6;
+	arg_2 = (encoding & 0b00110000) >> 4;
+	arg_3 = (encoding & 0b00001100) >> 2;
+	// printf("[instruction_width]: arg1 = %d\n", arg_1);
+	// printf("[instruction_width]: arg2 = %d\n", arg_2);
+	// printf("[instruction_width]: arg3 = %d\n", arg_3);
+	if (arg_1 != 0)
+		width += size_dir * (arg_1 / 2) - 2 * (arg_1 / 3) + (1 - arg_1 / 2);
+	// printf("[instruction_width]: width = %d\n", width);
+	if (arg_2 != 0)
+		width += size_dir * (arg_2 / 2) - 2 * (arg_2 / 3) + (1 - arg_2 / 2);
+	// printf("[instruction_width]: width = %d\n", width);
+	if (arg_3 != 0)
+		width += size_dir * (arg_3 / 2) - 2 * (arg_3 / 3) + (1 - arg_3 / 2);
+	// printf("[instruction_width]: width = %d\n", width);
+	// printf("    [instruction_width] valeur de width = %d\n", width);
+	return (width);
 }
 
-/*
-** Function: is_opcode
-** Description:
-**	[put some explanations here]
-** Return:
-**	1: if the byte is an opcode.
-**	0: if the byte does not correspond to an opcode.
-*/
-bool	is_opcode(char byte)
-{
-	[put the code].
-}
 
-/*
-** Function: addr_next_opcode
-** Description:
-**	Gets the address of the next opcode, without distinguish if the opcode is
-**	related to the 'current' champion.
-** Return:
-**	addr: address of the next opcode.
-**	NULL: there is no next opcode right after the ongoing one.
-*/
-
-void	*addr_next_opcode(char *arena, int mem_pos)
-{
-	char	encoding;
-	int		addr_jump;
-
-	encoding = arena[mem_pos + 1];
-	addr_jump = instruction_width(encoding);
-	if (!is_opcode(arena[mem_pos + 1 + addr_jump]))
-		return (NULL);
-	else
-		return (&arena[mem_pos + 1 + addr_jump]);
-}
 
 /*
 ** Function: vm_exec_init_pc
@@ -69,7 +105,7 @@ void	*addr_next_opcode(char *arena, int mem_pos)
 **	the wait_cycles and jump.
 */
 
-static void		vm_exec_init_pc(t_cw *cw)
+void		vm_exec_init_pc(t_cw *cw)
 {
 	extern t_op	op_tab[17];
 	t_list		*l_xplr;
@@ -82,10 +118,10 @@ static void		vm_exec_init_pc(t_cw *cw)
 		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
 		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
 		p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
+		p_xplr->n_lives = p_xplr->id - 1; // to suppress
 		l_xplr = l_xplr->next;
 	}
 }
-
 
 /*
 ** Function: vm_execution
@@ -98,19 +134,30 @@ static void		vm_exec_init_pc(t_cw *cw)
 
 int		vm_execution(t_cw *cw)
 {
-	//int			i_cycle;
-	static bool	run_game;
+	int			i_cycle;
+	static bool	stop_game;
 
-	printf("valeur de run_game = %d\n", run_game);
 	vm_exec_init_pc(cw);
-	/*while (run_game == true)
+	cw->cycle_to_die = 100; // to supress
+	while (stop_game == false)
 	{
 		i_cycle = -1;
 		while (++i_cycle < cw->cycle_to_die)
 		{
-			...
+			printf(">>> i_cycle = %d\n", i_cycle);
+			vm_proc_cycle(cw);
+			vm_proc_perform_opcode(cw);
+			vm_proc_mv_proc_pos(cw);
 		}
-		// perform the different checks.
-	}*/
-	return (1); // <- changer le num par l'id du champion vainqueur.
+		// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
+		cw->tot_lives = vm_proc_get_lives(cw);
+		vm_proc_kill_not_living(cw);
+		if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
+			stop_game = true;
+		break ; // to suppress;
+		vm_proc_set_lives(cw, 0);
+		if (cw->tot_lives >= NBR_LIVE)
+			cw->cycle_to_die -= (int)CYCLE_DELTA;
+	}
+	return (1); // <- changer le num par l'id du champion vainqueur ? ou alors faire gérer la fin par only_one_standing.
 }

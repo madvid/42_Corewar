@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/07/16 14:22:37 by mdavid           ###   ########.fr        #
+#    Updated: 2020/07/23 11:02:23 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,12 +100,15 @@ LIB_FILES =	ft_memset	\
 			ft_strdup_1n	\
 			ft_strjoin_1sp	\
 			ft_strdup_1sp	\
-			ft_strdup_p	\
+			ft_strdup_p		\
 			ft_strtrunc_x	\
 			ft_strdupfree	\
 			ft_strtabldel	\
 			ft_itoa_base	\
-			ft_print_binary
+			ft_print_binary	\
+			ft_1d_int_table	\
+			ft_1d_int_table_set
+
 
 LIB_SRCS = $(addsuffix .c, $(LIB_FILES))
 LIB_OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(LIB_FILES)))

@@ -6,7 +6,11 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2020/07/23 15:00:44 by armajchr         ###   ########.fr        #
+=======
+#    Updated: 2020/07/24 15:27:03 by mdavid           ###   ########.fr        #
+>>>>>>> 48e2db14addf02611e4d95e51a5a124a30834676
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,24 +43,27 @@ RM = rm -rf
 
 ### SOURCES AND OBJECTS VARIABLES: ###
 
-VM_FILES =	main \
-			op \
-			vm_parsing \
-			vm_parsing_init \
-			vm_error_manager \
-			vm_champion_tools \
-			vm_champ_code_parse \
-			vm_get_champ_tools \
-			vm_cw_arena_init 	\
-			temporary_tools		\
-			visu_launch			\
-			ft_itoa_base2		\
-			visu_arena			\
-			visu_process		\
-			visu_render			\
-			visu_chp			\
+VM_FILES =	main					\
+			op						\
+			vm_parsing				\
+			vm_parsing_init			\
+			vm_parsing_champ_code	\
+			vm_error_manager		\
+			vm_tools_champion		\
+			vm_tools_get_champ		\
+			vm_tools_encode_byte	\
+			vm_tools_opcode			\
+			vm_tools_process		\
+			vm_op_functions_1		\
+			vm_cw_arena_init		\
+			vm_execution			\
+			temporary_tools			\
+			ft_itoa_base2			\
+			visu_arena				\
+			visu_process			\
+			visu_render				\
+			visu_chp				\
 			visu_menu
-			#vm_execution
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)

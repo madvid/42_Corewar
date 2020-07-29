@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 22:29:18 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 14:49:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,12 @@
 int			vm_init_cw_error(int cd_error, t_cw **cw)
 {
 	t_list	*xplr;
-	int		i;
 
 	xplr = (*cw)->process;
 	if (cd_error >= 4)
 	{
 		while (xplr)
 		{
-			i = -1;
-			while (++i < 16)
-				ft_strdel(&(((t_process*)(xplr->cnt))->registers[i]));
 			free(((t_process*)(xplr->cnt))->registers);	// Faudra tester que l'on libere bien toute la memoire
 			((t_process*)(xplr->cnt))->registers = NULL;
 			xplr = xplr->next;						// et qu'on oubli pas de free quelque chose.
@@ -44,6 +40,8 @@ int			vm_init_cw_error(int cd_error, t_cw **cw)
 		ft_lstdel(&((*cw)->process), ft_lst_fdel);	// Faudra tester que l'on libere bien toute la memoire
 		(*cw)->process = NULL;						// et qu'on oubli pas de free quelque chose.
 	}
+	// if (cd_error >= xx)
+	// 	free((*cw)->id_arena));
 	if (cd_error >= 2)
 		ft_strdel(&((*cw)->arena));
 	if (cd_error >= 1)

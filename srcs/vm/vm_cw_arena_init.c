@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/21 15:08:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/28 14:03:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 **	0: otherwise (mem. allocation issue).
 */
 
-static int		load_champions(char **arena, t_champ *chp, int nb_champ)
+static int		load_champions(t_cw *cw, t_champ *chp, int nb_champ)
 {
 	int			mem_pos;
 	static int	t_mem_pos[4] = {-1, -1, -1, -1};
@@ -42,7 +42,9 @@ static int		load_champions(char **arena, t_champ *chp, int nb_champ)
 		|| mem_pos == t_mem_pos[2] || mem_pos == t_mem_pos[3]) && ++i < 5)
 			mem_pos = ((int)MEM_SIZE / nb_champ) * (chp->id + i - 1)
 			% (int)MEM_SIZE;
-	ft_memcpy((void*)(*arena + mem_pos), (void*)(chp->bytecode),
+	ft_memcpy((void*)(cw->arena + mem_pos), (void*)(chp->bytecode),
+	(size_t)chp->l_bytecode);
+	ft_1d_int_table_set(cw->id_arena, chp->id, mem_pos,
 	(size_t)chp->l_bytecode);
 	return (mem_pos);
 }
@@ -57,14 +59,14 @@ static int		load_champions(char **arena, t_champ *chp, int nb_champ)
 **	0: otherwise.
 */
 
-static int		arena_and_champions_placement(char **arena, t_parse *p)
+static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
 {
 	t_list	*xplr;
 
 	xplr = p->lst_champs;
 	while (xplr)
 	{
-		((t_champ*)(xplr->cnt))->mem_pos = load_champions(arena,
+		((t_champ*)(xplr->cnt))->mem_pos = load_champions(cw,
 		(t_champ*)(xplr->cnt), p->nb_champ);
 		xplr = xplr->next;
 	}
@@ -103,20 +105,20 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 
 	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
 		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
-	if (!(proc->registers = (char**)ft_memalloc(sizeof(char*) * (REG_NUMBER + 1))))
+	if (!(proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
 		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
 	i = -1;
 	while (++i < 16)
-		if (!(proc->registers[i] = ft_strnew(REG_SIZE)))
-			return (vm_init_cw_error(4, cw) == 0 ? NULL : NULL);
+		proc->registers[i] = 0;
 	if (!(proc->pc = ft_strnew(REG_SIZE)))
 		return (vm_init_cw_error(4, cw) == 0 ? NULL : NULL);
-	proc->registers[0][3] = champ->id & 255;
+	proc->registers[0] = champ->id;
 	proc->pc = NULL;
 	proc->jump = 0;
 	proc->id = ++proc_id;
 	proc->carry = false;
 	proc->opcode = 0;
+	proc->n_lives = 0;
 	proc->last_live = 0;
 	proc->wait_cycles = 0;
 	proc->position = (void*)(&((*cw)->arena[champ->mem_pos]));
@@ -145,6 +147,8 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 		return (vm_init_cw_error(0, cw));
 	if (!((*cw)->arena = ft_strnew(MEM_SIZE)))
 		return (vm_init_cw_error(1, cw));
+	if (!((*cw)->id_arena = ft_1d_int_table((int)MEM_SIZE))) // ajout du tableau de int 1D, penser a gerer la liberation memoire
+		return (vm_init_cw_error(2, cw));
 	(*cw)->process = NULL;
 	// if (!((*cw)->process = ft_lstnew(NULL, sizeof(t_process))))
 	//	return (vm_init_cw_error(2, cw));
@@ -156,9 +160,11 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 		nb_champ--;
 	}
 	(*cw)->cycle_to_die = CYCLE_TO_DIE;
-	(*cw)->delta_cycle = CYCLE_DELTA;
-	(*cw)->nb_lives = 0;
-	(*cw)->inter_check = MAX_CHECKS;
+	(*cw)->tot_lives = 0;
+	(*cw)->n_champ = 0;
+	ft_1d_int_table_set((*cw)->champ_lives, 0, 0, 4);
+	(*cw)->i_check = MAX_CHECKS;
+	
 	return (1);
 }
 
@@ -182,7 +188,7 @@ int				vm_cw_arena_init(t_cw **cw, t_parse **p)
 	xplr = (*p)->lst_champs;
 	if (!(vm_init_cw_memalloc(cw, (*p)->nb_champ)))
 		return (vm_init_parse_error(4, p));
-	if (arena_and_champions_placement(&((*cw)->arena), *p) == 0)
+	if (arena_and_champions_placement(*cw, *p) == 0)
 		return (vm_init_parse_error(4, p));
 	xplr2 = (*cw)->process;
 	while (xplr)

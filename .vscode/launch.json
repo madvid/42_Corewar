@@ -6,22 +6,15 @@
 	
 	"configurations": [
 		{
-			"name": "gcc",
+			"name": "(lldb) Launch",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/vm",
-			"args": ["-dump", "20", "test.cor"],
-			//"args": [],
+			"args": ["-dump", "20", "champion1.cor", "champion2.cor"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
-			"setupCommands": [
-				{
-	"text": "settings set target.input-path maps/valid/standard_example"
-				}
-			],
-			"MIMode": "lldb",
-		}
-	]
+			"MIMode": "lldb"
+		},	]
 	}
