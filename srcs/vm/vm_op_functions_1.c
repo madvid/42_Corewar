@@ -117,19 +117,20 @@ int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
 	a = cw->arena[(index + 2) % MEM_SIZE];
-	if (a < 0 || a > 99)
+	if (a < 1 || a > REG_NUMBER)
 		return (0);
 	b = cw->arena[(index + 3) % MEM_SIZE];
 	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
 		b = b << 8 | cw->arena[(index + 4) % MEM_SIZE];
-		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = cur_proc->registers[a];
+		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = cur_proc->registers[a - 1];
 	}
-	else if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == 1 \
-		&& b >= 0 && b <= 99)
-		cur_proc->registers[b] = cur_proc->registers[a];
+	else if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE \
+		&& b > 0 && b <= REG_NUMBER)
+		cur_proc->registers[b - 1] = cur_proc->registers[a - 1];
 	else
 		return (0);
+	return (1);
 }
 
 /*
@@ -158,9 +159,10 @@ int		op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	a = cw->arena[(index + 2) % MEM_SIZE];
 	b = cw->arena[(index + 3) % MEM_SIZE];
 	c = cw->arena[(index + 4) % MEM_SIZE];
-	if (a < 0 || a > 99 || b < 0 || b > 99 || c < 0 || c > 99)	//valeurs limites à revoir
+	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
+		|| c < 1 || c > REG_NUMBER)
 		return (0);
-	cur_proc->registers[c] = cur_proc->registers[a] + cur_proc->registers[b];
-	cur_proc->carry = (cur_proc->registers[c] == 0) ? 1 : 0;
+	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] + cur_proc->registers[b - 1];
+	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
 	return (1);
 }
