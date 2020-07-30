@@ -6,46 +6,12 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/29 15:36:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 10:03:24 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-/*
-** Function: reconstruct_arg_width
-** Description:
-**	[put some explanations here]
-** Return:
-**	len: the minimal value of the arguments length field.
-*/
-/*
-int		reconstruct_arg_width(int opcode)
-{
-	int		len;
-
-	len = 0;
-	
-	return (len);
-}
-*/
-/*
-** Function: min_arg_width
-** Description:
-**	[put some explanations here]
-** Return:
-**	len: the minimal value of the arguments length field.
-*/
-/*
-int		min_arg_width(u_int8_t opcode)
-{
-	int		len;
-
-	len = 0;
-	
-	return (len);
-}
-*/
 /*
 ** Function: instruction_width
 ** Description:
@@ -132,7 +98,7 @@ void		vm_exec_init_pc(t_cw *cw)
 **	0: if any problem has occured.
 */
 
-int		vm_execution(t_cw *cw)
+int		vm_execution(t_cw *cw, t_parse * p)
 {
 	int			i_cycle;
 	static bool	stop_game;
@@ -145,6 +111,8 @@ int		vm_execution(t_cw *cw)
 		while (++i_cycle < cw->cycle_to_die)
 		{
 			printf(">>> i_cycle = %d\n", i_cycle);
+			printf("P %d -- is at the memory adress : %p\n", ((t_process*)(cw->process->cnt))->id, ((t_process*)(cw->process->cnt))->position);
+			tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
 			vm_proc_cycle(cw);
 			vm_proc_perform_opcode(cw);
 			vm_proc_mv_proc_pos(cw);

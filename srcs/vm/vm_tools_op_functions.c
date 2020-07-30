@@ -15,6 +15,7 @@
 /*
 ** Function: get_arg_value
 ** Description:
+**	USED FOR OPERATION WHICH DIRECT_SIZE == 0
 **	RETURNS THE (RELATIVE/ABSOLUTE) VALUE OF THE ARGUMENT cw->arena[<index>]
 **	ARGUMENT TYPE IS <type>
 **		REG_CODE 1

@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/29 15:37:57 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 10:03:39 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
 	t_list			*l_champ;
 
 	i = 0;
-	width_line = 32;
+	width_line = 64;
 	l_champ = p->lst_champs;
 	champ = (t_color_champ**)ft_memalloc(sizeof(t_color_champ*) * p->nb_champ);
 	while (j < p->nb_champ)
@@ -193,14 +193,14 @@ void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
 	printf("\n\033[1;31m|>------------------------------------------- [FIN] ------------------------------------------<|\033[0m\n");
 }
 
-static int	p_atoint(char *reg)
+/*static int	p_atoint(char *reg)
 {
 	int		ret;
 
 	ret = 0;
 	ret = (((int)reg[0] & 255) << 24) + (((int)reg[1] & 255) << 16) + (((int)reg[2] & 255) << 8) + (((int)reg[3] & 255));
 	return (ret);
-}
+}*/
 
 
 /*
@@ -221,10 +221,10 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("| position:____%14p                                  |\n", process->position);
 	printf("| pc:__________%14p                                  |\n", process->pc);
 	printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");
-	printf("| registers:___| %8X | %8X | %8X | %8X |   |\n", p_atoint(process->registers[0]), p_atoint(process->registers[1]), p_atoint(process->registers[2]), p_atoint(process->registers[3]));
-	printf("|            r5| %8X | %8X | %8X | %8X |r8 |\n", p_atoint(process->registers[4]), p_atoint(process->registers[5]), p_atoint(process->registers[6]), p_atoint(process->registers[7]));
-	printf("|            r7| %8X | %8X | %8X | %8X |r12|\n", p_atoint(process->registers[8]), p_atoint(process->registers[9]), p_atoint(process->registers[10]), p_atoint(process->registers[11]));
-	printf("|              | %8X | %8X | %8X | %8X |r16|\n", p_atoint(process->registers[12]), p_atoint(process->registers[13]), p_atoint(process->registers[14]), p_atoint(process->registers[15]));
+	printf("| registers:___| %2d | %2d | %2d | %2d |   |\n", process->registers[0], process->registers[1], process->registers[2], process->registers[3]);
+	printf("|            r5| %2d | %2d | %2d | %2d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
+	printf("|            r7| %2d | %2d | %2d | %2d |r12|\n", process->registers[8], process->registers[9], process->registers[10], process->registers[11]);
+	printf("|              | %2d | %2d | %2d | %2d |r16|\n", process->registers[12], process->registers[13], process->registers[14], process->registers[15]);
 	printf("| adrchamp:____%14p                                  |\n", process->champ);
 	printf("|______________________________________________________________|\n");
 }

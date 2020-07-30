@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/29 13:22:51 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 10:02:45 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*, t_op))
 {
 	t_op_funct[0] = &op_alive;
-	// t_op_funct[1] = &op_load;
-	// t_op_funct[2] = &op_store;
+	t_op_funct[1] = &op_load;
+	t_op_funct[2] = &op_store;
 	// t_op_funct[3] = &op_addition;
 	// t_op_funct[4] = &op_soustraction;
 	// t_op_funct[5] = &op_and;
@@ -50,10 +50,12 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 	if (cur_proc->wait_cycles == 0)
 	{
 		pos = cur_proc->position - (void*)(&(cw->arena[0]));
+		printf("[perform_opcode] is_valid_opcode = %d\n", is_valid_opcode(cw->arena, pos));
+		printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[pos]);
+		printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[pos+1]);
 		if (!is_valid_opcode(cw->arena, pos))
 			return ;
-		op_funct[0](cw, cur_proc, op_tab[0]);
-		// printf("an instruction alive is performed\n");
+		op_funct[(int)(cur_proc->opcode) - 1](cw, cur_proc, op_tab[(int)(cur_proc->opcode) - 1]);
 	}
 }
 
@@ -148,15 +150,11 @@ void	*addr_next_opcode(char *arena, int mem_pos)
 		next_opcode = (mem_pos + arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
 		return ((void*)(&arena[next_opcode]));
 	}
-	if (is_valid_opcode(arena, mem_pos)) // ici, comme on a tester les opcode sans byte d'encodage, ça sera les autres traités ici.
+	if (opcode > 0 && opcode < 17) // ici, comme on a tester les opcode sans byte d'encodage, ça sera les autres traités ici.
 	{
 		encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
 		next_opcode = instruction_width(encoding, op_tab[opcode - 1].direct_size) + 2;
 		return ((void*)(&arena[(mem_pos + next_opcode) % MEM_SIZE]));
-	}/*
-	if ((opcode > 0 && opcode < 16) && (next_opcode = reconstruct_arg_width(opcode)) != -1)
-		return ((void*)(&arena[mem_pos + next_opcode + 1]));
-	if ((opcode > 0 && opcode < 16) && (next_opcode = min_arg_width(opcode)) != -1)
-		return ((void*)(&arena[mem_pos + next_opcode + 1]));*/
-	return ((void*)(&arena[mem_pos + 1]));
+	}
+	return ((void*)(&arena[(mem_pos + 1) % MEM_SIZE]));
 }

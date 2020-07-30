@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/29 15:35:20 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 10:03:03 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int		op_alive(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	int		arg;
 
 	index = cur_proc->position - (void*)(cw->arena);
+	printf("Alive en cours.\n");
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
@@ -68,6 +69,7 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	int			arg;
 	u_int8_t	reg;
 
+	printf("Load instruction en cours\n");
 	index = cur_proc->position - (void*)(cw->arena);
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
@@ -90,8 +92,9 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
 		if (!(reg >= 0 && reg < 16))
 			return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 /*
@@ -109,26 +112,27 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 
 int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 {
-	int		index;
-	int		a;
-	int		b;
+	int			index;
+	u_int8_t	encoding;
+	u_int8_t	a;
+	u_int8_t	b;
 
 	index = cur_proc->position - (void*)(cw->arena);
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
 	a = cw->arena[(index + 2) % MEM_SIZE];
-	if (a < 0 || a > 99)
+	if (a < 1 || a > REG_NUMBER)
 		return (0);
 	b = cw->arena[(index + 3) % MEM_SIZE];
 	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
 		b = b << 8 | cw->arena[(index + 4) % MEM_SIZE];
-		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = cur_proc->registers[a];
+		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = cur_proc->registers[a - 1];
 	}
-	else if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == 1 \
-		&& b >= 0 && b <= 99)
-		cur_proc->registers[b] = cur_proc->registers[a];
+	else if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE \
+		&& b > 0 && b <= REG_NUMBER)
+		cur_proc->registers[b - 1] = cur_proc->registers[a - 1];
 	else
 		return (0);
 	return (1);
@@ -160,9 +164,10 @@ int		op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	a = cw->arena[(index + 2) % MEM_SIZE];
 	b = cw->arena[(index + 3) % MEM_SIZE];
 	c = cw->arena[(index + 4) % MEM_SIZE];
-	if (a < 0 || a > 99 || b < 0 || b > 99 || c < 0 || c > 99)	//valeurs limites à revoir
+	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
+		|| c < 1 || c > REG_NUMBER)
 		return (0);
-	cur_proc->registers[c] = cur_proc->registers[a] + cur_proc->registers[b];
-	cur_proc->carry = (cur_proc->registers[c] == 0) ? 1 : 0;
+	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] + cur_proc->registers[b - 1];
+	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
 	return (1);
 }
