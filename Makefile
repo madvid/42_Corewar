@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/29 13:14:23 by armajchr         ###   ########.fr        #
+#    Updated: 2020/07/30 09:32:20 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,13 +53,13 @@ VM_FILES =	main					\
 			vm_op_functions_1		\
 			vm_cw_arena_init		\
 			vm_execution			\
-			temporary_tools			\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\
 			visu_render				\
 			visu_chp				\
-			visu_menu
+			visu_menu				\
+			visu_launch
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)

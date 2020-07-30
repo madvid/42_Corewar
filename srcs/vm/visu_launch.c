@@ -44,7 +44,19 @@ void	load_title(t_visu *v)
 	SDL_SetRenderDrawBlendMode(v->renderer, SDL_BLENDMODE_BLEND);
 }
 
-void	init_window(t_visu *v, t_parse *p, t_cw *cw)
+void	load_visu(t_visu *v, t_parse *p, t_cw *cw)
+{			
+	*v = init_visu(v);
+	*v = init_arena(v);
+	*v = init_id(v, p);
+	*v = init_process(v);
+	load_title(v);
+	load_chp(v, p);
+	load_arena(v, cw, p);
+	load_process(v, cw);
+}
+
+void	init_window(t_visu *v)
 {
 	v->screen = NULL;
 	v->renderer = NULL;
@@ -57,39 +69,58 @@ void	init_window(t_visu *v, t_parse *p, t_cw *cw)
 	SDL_CreateWindowAndRenderer(2500, 1400,
 			SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE, &v->screen,
 			&v->renderer);
-	*v = init_visu(v);
-	*v = init_arena(v);
-	*v = init_id(v, p);
-	*v = init_process(v);
-	load_title(v);
-	load_chp(v, p);
-	load_arena(v, cw, p);
-	load_process(v, cw);
 }
 
 void     visualizer(t_parse *p, t_cw *cw)
 {
 	t_visu		v;
-	
-	init_window(&v, p, cw);
+	int			i_cycle;
+	static bool	stop_game;
+	int			first;
+
+	init_window(&v);
 	v = init_menu(&v);
 	load_menu(&v);
-    while (v.isquit == 0)
+	vm_exec_init_pc(cw);
+	cw->cycle_to_die = 100; // to supress
+	first = 0;
+	while (stop_game == false && v.isquit == 0)
 	{
-        if (SDL_PollEvent(&v.event))
+		if (SDL_PollEvent(&v.event))
 	    {
 		    if (v.event.type == SDL_QUIT)
 			    v.isquit = 1;
 			if (v.event.type == SDL_KEYUP)
 				if(v.event.key.keysym.scancode == SDL_SCANCODE_SPACE)
 					v.menu_loop++;
-				if (v.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-					v.isquit = 1;
+			if (v.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+				v.isquit = 1;
 		}
 		if (v.menu_loop == 0)
 			v.angle = menu_move(&v, v.angle);
 		else
-			visu_render(&v, p);
+		{
+			i_cycle = -1;
+			while (++i_cycle < cw->cycle_to_die && v.menu_loop != 0)
+			{
+				load_visu(&v, p, cw);
+				visu_render(&v, p);
+				printf(">>> i_cycle = %d\n", i_cycle);
+				vm_proc_cycle(cw);
+				vm_proc_perform_opcode(cw);
+				vm_proc_mv_proc_pos(cw);
+
+			}
+			// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
+			cw->tot_lives = vm_proc_get_lives(cw);
+			vm_proc_kill_not_living(cw);
+			if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
+				stop_game = true;
+			break ; // to suppress;
+			vm_proc_set_lives(cw, 0);
+			if (cw->tot_lives >= NBR_LIVE)
+				cw->cycle_to_die -= (int)CYCLE_DELTA;
+		}
 	}
-    render_destroy(&v);
+	render_destroy(&v);
 }

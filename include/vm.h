@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/29 13:14:18 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 09:47:39 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@
 ** --------------------------------------------------------------
 */
 
+# define RELATIVE 10
+
 /*
 ** structure pour exploiter le fichier op.c
 */
@@ -63,8 +65,6 @@ typedef struct					s_op
 	size_t				encod;
 	size_t				direct_size;
 }								t_op;
-// direct_size == 0 => 4 - (0 * 2) octets pour l’argument direct
-// direct_size == 1 => 4 - (1 * 2) octets pour l’argument direct
 
 /*
 ** Définition des structures de la partie vm (parsing etc...)
@@ -100,26 +100,29 @@ typedef struct		s_parse
 
 typedef struct		s_process
 {
-	int				id;				// unique
+	int				id;				// unique to each process
 	bool			carry;			// flag carry= which can be changed by certain operations and which affects zjmp operation, initialised with value false.
-	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance
+	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
+	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
 	int				last_live;		// nb of cycle in which current cursor performed operation live last time.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	void			*position;		// position address in memory
 	int				jump;			// amount of bytes cursor must jump to get to the next operation
 	void			*pc;			// program counter = register that load the next opcode address that will be executed for the current process
-	char			**registers;	// 16 registers for a process/cursors of 4 bytes each.
+	int				*registers;		// 16 registers for a process/cursors of 4 bytes each.
 	t_champ			*champ;
 }					t_process;
 
 typedef struct		s_corewar
 {
 	char			*arena;			// memory area where champion will fight until death
+	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
-	int				nb_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle.
-	int				delta_cycle;
-	int				inter_check;	// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
+	int				tot_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle. (total)
+	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
+	int				champ_lives[4];	// Cumulated number of lives for each champion.
+	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 }					t_cw;
 
 /*
@@ -195,15 +198,17 @@ typedef struct		s_visu
 	SDL_Texture		*process_vt[3];
 
 }					t_visu;
+
 /*
 ** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
 */
-void				tool_print_parsing(t_parse *p);								// a retirer
-void				tool_print_champ(t_champ *champ);							// a retirer
-void				tool_print_champ_list(t_list *lst_champs);					// a retirer
-void				tool_print_arena(char *arena, size_t mem_size, t_parse *p);	// a retirer
-void				tool_print_processor(t_process *process, int nb);			// a retirer
-void				tool_print_all_processors(t_list *processes);				// a retirer
+void				tool_print_parsing(t_parse *p);										// a retirer
+void				tool_print_champ(t_champ *champ);									// a retirer
+void				tool_print_champ_list(t_list *lst_champs);							// a retirer
+void				tool_print_arena(char *arena, size_t mem_size, t_parse *p);			// a retirer
+void				tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p);	// a retirer
+void				tool_print_processor(t_process *process, int nb);					// a retirer
+void				tool_print_all_processors(t_list *processes);						// a retirer
 
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
@@ -236,11 +241,60 @@ char				*get_champ_bcode(int fd, int l_bcode);
 int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 
 /*
-** Lancement du corewar.
+** Lancement et déroulement de corewar.
 */
 void				vm_champion_introduction(t_list *lst_champs);
 int					vm_execution(t_cw *cw);
-void				get_next_opcode(char *arena, int mem_pos);
+void				vm_exec_init_pc(t_cw *cw);
+bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
+int					instruction_width(unsigned char encoding, size_t dir_s);
+
+/*
+** Fonctions outils concernant les opcode
+*/
+bool				is_valid_opcode(char *arena, int pos);
+int					arg_size_opcode_no_encode(u_int8_t opcode);
+bool				opcode_no_encoding(u_int8_t opcode);
+void				*addr_next_opcode(char *arena, int mem_pos);
+void				perform_opcode(t_cw *cw, t_process *cur_proc);
+
+/*
+** Fonctions outils concernant l'octet d'encodage
+*/
+int					get_nb_arg_b_encoding(u_int8_t encoding);
+bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
+
+/*
+** Fonctions concernant le déroulement des processus au sein de la VM
+*/
+void				vm_proc_cycle(t_cw *cw);
+void				vm_proc_perform_opcode(t_cw *cw);
+void				vm_proc_mv_proc_pos(t_cw *cw);
+int					vm_proc_get_lives(t_cw *cw);
+void				vm_proc_set_lives(t_cw *cw, int set);
+void				vm_proc_kill_not_living(t_cw *cw);
+void				free_one_process(t_list **lst_proc, int id);
+bool				vm_proc_only_one_standing(t_cw *cw);
+
+/*
+** Fonctions pour effectuer les instructions asm dans l'arene
+*/
+int					op_alive(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_store(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_soustraction(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_and(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_or(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_xor(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_zerojump(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_store_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_long_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_long_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_long_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_aff(t_cw *cw, t_process *cur_proc, t_op op_elem);
 
 /*
 **------------------Bonus functions------------------
@@ -249,13 +303,14 @@ void				get_next_opcode(char *arena, int mem_pos);
 /*
 **Window functions
 */
-void				init_window(t_visu *v, t_parse *p, t_cw *cw);
+void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
 void     			visualizer(t_parse *p, t_cw *cw);
 double    			menu_move(t_visu *v, double angle);
 void    			load_menu(t_visu *v);
 t_visu  			init_menu(t_visu *v);
+void				load_visu(t_visu *v, t_parse *p, t_cw *cw);
 /*
 **Champions functions
 */
@@ -288,4 +343,5 @@ void				process_to_texture(t_visu *v, int i);
 **Tools
 */
 char				*ft_itoa_base2(unsigned long long nb, char *base);
+
 #endif

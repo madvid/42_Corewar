@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_opcode.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/28 15:56:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/29 13:22:51 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,10 @@ void	*addr_next_opcode(char *arena, int mem_pos)
 		encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
 		next_opcode = instruction_width(encoding, op_tab[opcode - 1].direct_size) + 2;
 		return ((void*)(&arena[(mem_pos + next_opcode) % MEM_SIZE]));
-	}
+	}/*
 	if ((opcode > 0 && opcode < 16) && (next_opcode = reconstruct_arg_width(opcode)) != -1)
 		return ((void*)(&arena[mem_pos + next_opcode + 1]));
 	if ((opcode > 0 && opcode < 16) && (next_opcode = min_arg_width(opcode)) != -1)
-		return ((void*)(&arena[mem_pos + next_opcode + 1]));
-	return ((void*)(&arena[mem_pos + next_valid_opcode(arena, mem_pos)]));
+		return ((void*)(&arena[mem_pos + next_opcode + 1]));*/
+	return ((void*)(&arena[mem_pos + 1]));
 }

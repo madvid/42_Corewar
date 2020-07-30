@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_process.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/28 14:53:43 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/29 13:23:37 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void		free_one_process(t_list **lst_proc, int id)
 		to_del = xplr->next;
 		xplr->next = xplr->next->next;
 	}
-	while (++i < REG_NUMBER)
-		ft_strdel(&(((t_process*)(to_del->cnt))->registers[i]));
+	/*while (++i < REG_NUMBER)
+		ft_strdel(&(((t_process*)(to_del->cnt))->registers[i]));*/
 	free(((t_process*)(to_del->cnt))->registers);
 	((t_process*)(to_del->cnt))->registers = NULL;
 	ft_memdel(&(to_del->cnt));

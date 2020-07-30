@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/28 15:49:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/29 15:36:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@
 ** Return:
 **	len: the minimal value of the arguments length field.
 */
-
+/*
 int		reconstruct_arg_width(int opcode)
 {
 	int		len;
 
 	len = 0;
 	
-	return (len)
+	return (len);
 }
-
+*/
 /*
 ** Function: min_arg_width
 ** Description:
@@ -36,16 +36,16 @@ int		reconstruct_arg_width(int opcode)
 ** Return:
 **	len: the minimal value of the arguments length field.
 */
-
+/*
 int		min_arg_width(u_int8_t opcode)
 {
 	int		len;
 
 	len = 0;
 	
-	return (len)
+	return (len);
 }
-
+*/
 /*
 ** Function: instruction_width
 ** Description:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temporary_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/23 17:55:52 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/29 15:37:57 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	print_chp_bcode(char *bcode, int l_bcode)
 /*
 ** Fonction qui affiche 1 champion, celui reçu en parametre.
 */
-
+/*
 void		tool_print_champ(t_champ *champ)
 {
 	printf("\033[0;33mChampion:\033[0m\n");
@@ -72,7 +72,7 @@ void		tool_print_champ(t_champ *champ)
 /*
 ** Fonction qui affiche tous les champions de la liste de champions présent dans la structure p (parsing)
 */
-
+/*
 void		tool_print_champ_list(t_list *lst_champs)
 {
 	t_list		*xplr;
@@ -101,7 +101,7 @@ void		tool_print_champ_list(t_list *lst_champs)
 ** Fonction pour imprimer la zone memoire correspondant à l'id-arène.
 ** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
 */
-
+/*
 void		tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p)
 {
 	size_t			i;
@@ -147,7 +147,7 @@ void		tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p)
 ** Fonction pour imprimer la zone memoire correspondant à l'arène.
 ** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
 */
-
+/*
 void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
 {
 	size_t			i;
@@ -206,7 +206,7 @@ static int	p_atoint(char *reg)
 /*
 ** Imprime le contenue du processeur donné en paramètre.
 */
-
+/*
 void		tool_print_processor(t_process *process, int nb)
 {
 	printf(" ______________________________________________________________\n");
@@ -233,7 +233,7 @@ void		tool_print_processor(t_process *process, int nb)
 /*
 ** Imprime le contenue de tous les processeurs (liste donnée en paramètre).
 */
-
+/*
 void		tool_print_all_processors(t_list *processes)
 {
 	t_list	*xplr;
@@ -251,3 +251,4 @@ void		tool_print_all_processors(t_list *processes)
 	}
 	printf("- - - - END OF ALL PROCESSES\n\n");
 }
+*/
