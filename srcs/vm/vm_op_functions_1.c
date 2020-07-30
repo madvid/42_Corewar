@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 10:58:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/30 12:27:41 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,27 +74,26 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
-	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == DIR_CODE)
+	if ((((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) >> 6) == DIR_CODE)
 	{
 		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
 		if (!(reg >= 0 && reg < 16))
 			return (0);
-		arg = (cw->arena[(index + 1) % MEM_SIZE] & 255) << 24
-		| (cw->arena[(index + 2) % MEM_SIZE] & 255) << 16
-		| (cw->arena[(index + 3) % MEM_SIZE] & 255) << 8
-		| (cw->arena[(index + 4) % MEM_SIZE] & 255);
+		arg = (cw->arena[(index + 2) % MEM_SIZE] & 255) << 24
+		| (cw->arena[(index + 3) % MEM_SIZE] & 255) << 16
+		| (cw->arena[(index + 4) % MEM_SIZE] & 255) << 8
+		| (cw->arena[(index + 5) % MEM_SIZE] & 255);
 		cur_proc->carry = (arg == 0) ? 1 : 0;
-		cur_proc->registers[reg] = arg; // changer registers en tableau de int.
-		return (1);
+		cur_proc->registers[reg - 1] = arg; // changer registers en tableau de int.
+		// printf("     cur_proc->registers[%d - 1] = %d\n", reg, arg);
 	}
-	if (((u_int8_t)(cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) == IND_CODE)
+	if ((((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) >> 6) == IND_CODE)
 	{
-		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
+		reg = (cw->arena[(index + 4) % MEM_SIZE] & 255);
 		if (!(reg >= 0 && reg < 16))
 			return (0);
-		return (1);
 	}
-	return (0);
+	return (1);
 }
 
 /*
@@ -113,8 +112,8 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 {
 	int			index;
-	u_int8_t	a;
-	u_int8_t	b;
+	int			a;
+	int			b;
 
 	printf("Store instruction en cours\n");
 	index = cur_proc->position - (void*)(cw->arena);
@@ -127,8 +126,19 @@ int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	b = cw->arena[(index + 3) % MEM_SIZE];
 	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
-		b = b << 8 | cw->arena[(index + 4) % MEM_SIZE];
-		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = cur_proc->registers[a - 1];
+		b = (b << 8) | cw->arena[(index + 4) % MEM_SIZE];
+		printf("     (index + (b %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + (b % IDX_MOD)) % MEM_SIZE);
+		printf("     (index + ((b+1) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+1) % IDX_MOD)) % MEM_SIZE);
+		printf("     (index + ((b+2) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+2) % IDX_MOD)) % MEM_SIZE);
+		printf("     (index + ((b+3) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+3) % IDX_MOD)) % MEM_SIZE);
+		printf("     (cur_proc->registers[a - 1] & 4278190080) >> 24 = %lX\n", (cur_proc->registers[a - 1] & 4278190080) >> 24);
+		printf("     (cur_proc->registers[a - 1] & 16711680) >> 16 = %X\n", (cur_proc->registers[a - 1] & 16711680) >> 16);
+		printf("     (cur_proc->registers[a - 1] & 65280) >> 8 = %X\n", (cur_proc->registers[a - 1] & 65280) >> 8);
+		printf("     (cur_proc->registers[a - 1] & 255) = %X\n", (cur_proc->registers[a - 1] & 255));
+		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 4278190080) >> 24;
+		cw->arena[(index + ((b + 1) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 16711680) >> 16;
+		cw->arena[(index + ((b + 2) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 65280) >> 8;
+		cw->arena[(index + ((b + 3) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 255);
 	}
 	else if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE \
 		&& b > 0 && b <= REG_NUMBER)
