@@ -41,6 +41,7 @@
 ** fichier entête du sujet corewar (ressources)
 */
 #include "op.h"
+#include "op_tab.h"
 
 /*
 ** --------------------------------------------------------------

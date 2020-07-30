@@ -74,7 +74,7 @@ int		op_and(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11000000, op_elem->direct_size);
 	b = (cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, index + 2 + c, a + RELATIVE);
+	b = get_arg_value(cw, index + 2 + c, b + RELATIVE);
 	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
 		if (b < 1 | b > REG_NUMBER)
 			return (0);
@@ -113,7 +113,7 @@ int		op_or(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11000000, op_elem->direct_size);
 	b = (cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, index + 2 + c, a + RELATIVE);
+	b = get_arg_value(cw, index + 2 + c, b + RELATIVE);
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11110000, op_elem->direct_size);
 	c = get_arg_value(cw, index + 2 + c, REG_CODE);
