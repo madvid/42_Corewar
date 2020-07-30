@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/18 22:21:37 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/30 14:02:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,15 @@ int				vm_parsing(char **av, t_parse *p)
 		if (av[++i] && p->options->dump == 1 && ft_is_positive_int(av[i]))
 		{
 			p->options->dump = 1;
-			p->options->nbr_cycle = ft_atoi(av[i++]);
+			p->options->dump_cycle = ft_atoi(av[i++]);
 		}
 		else
 			return (vm_error_manager((int)CD_DUMP, p->error));
+	}
+	if (av[i] && ft_strequ(av[i], "-a") == 1)
+	{
+		i++;
+		p->options->aff = true;
 	}
 	while (av[i] && p->nb_champ < 5)
 	{

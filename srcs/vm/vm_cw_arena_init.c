@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/28 14:03:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/30 17:26:32 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
 **		- id = processus id, unique for each process
 **		- carry = initialized to false
 **		- opcode = initialized to -1
-**		- last_live = initialized to 0
 **		- wait_cycles = initialized to 0
 **		- position = memory adress of the beginning of the champion
 **		- jump = initialized to 0
@@ -119,7 +118,6 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 	proc->carry = false;
 	proc->opcode = 0;
 	proc->n_lives = 0;
-	proc->last_live = 0;
 	proc->wait_cycles = 0;
 	proc->position = (void*)(&((*cw)->arena[champ->mem_pos]));
 	proc->champ = champ;
@@ -199,5 +197,6 @@ int				vm_cw_arena_init(t_cw **cw, t_parse **p)
 		xplr = xplr->next;
 		xplr2 = xplr2->next;
 	}
+	copy_options(*cw, *p);
 	return (1);
 }

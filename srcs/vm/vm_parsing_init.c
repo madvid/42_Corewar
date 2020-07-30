@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 18:27:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/30 13:58:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static void		vm_init_parse_value(t_parse *p)
 	i = -1;
 	p->nb_champ = 0;
 	p->id_champ = 0;
-	p->options->dump = 0;
-	p->options->nbr_cycle = 0;
+	p->options->dump = false;
+	p->options->dump_cycle = 0;
 	p->options->n = 0;
 	p->lst_champs = NULL;
 	while (++i < 4)
