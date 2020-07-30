@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 10:03:03 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 10:58:38 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,10 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 {
 	int			index;
-	u_int8_t	encoding;
 	u_int8_t	a;
 	u_int8_t	b;
 
+	printf("Store instruction en cours\n");
 	index = cur_proc->position - (void*)(cw->arena);
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
