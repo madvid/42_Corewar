@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2020/07/30 12:31:25 by mdavid           ###   ########.fr       */
-=======
-/*   Updated: 2020/07/30 11:12:58 by armajchr         ###   ########.fr       */
->>>>>>> e9bdf4cfda4c623beeb5b7c5e067b403eb9f0b69
+/*   Updated: 2020/07/30 12:37:12 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,14 +127,14 @@ int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
 		b = (b << 8) | cw->arena[(index + 4) % MEM_SIZE];
-		printf("     (index + (b %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + (b % IDX_MOD)) % MEM_SIZE);
-		printf("     (index + ((b+1) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+1) % IDX_MOD)) % MEM_SIZE);
-		printf("     (index + ((b+2) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+2) % IDX_MOD)) % MEM_SIZE);
-		printf("     (index + ((b+3) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+3) % IDX_MOD)) % MEM_SIZE);
-		printf("     (cur_proc->registers[a - 1] & 4278190080) >> 24 = %lX\n", (cur_proc->registers[a - 1] & 4278190080) >> 24);
-		printf("     (cur_proc->registers[a - 1] & 16711680) >> 16 = %X\n", (cur_proc->registers[a - 1] & 16711680) >> 16);
-		printf("     (cur_proc->registers[a - 1] & 65280) >> 8 = %X\n", (cur_proc->registers[a - 1] & 65280) >> 8);
-		printf("     (cur_proc->registers[a - 1] & 255) = %X\n", (cur_proc->registers[a - 1] & 255));
+		// printf("     (index + (b %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + (b % IDX_MOD)) % MEM_SIZE);
+		// printf("     (index + ((b+1) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+1) % IDX_MOD)) % MEM_SIZE);
+		// printf("     (index + ((b+2) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+2) % IDX_MOD)) % MEM_SIZE);
+		// printf("     (index + ((b+3) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+3) % IDX_MOD)) % MEM_SIZE);
+		// printf("     (cur_proc->registers[a - 1] & 4278190080) >> 24 = %lX\n", (cur_proc->registers[a - 1] & 4278190080) >> 24);
+		// printf("     (cur_proc->registers[a - 1] & 16711680) >> 16 = %X\n", (cur_proc->registers[a - 1] & 16711680) >> 16);
+		// printf("     (cur_proc->registers[a - 1] & 65280) >> 8 = %X\n", (cur_proc->registers[a - 1] & 65280) >> 8);
+		// printf("     (cur_proc->registers[a - 1] & 255) = %X\n", (cur_proc->registers[a - 1] & 255));
 		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 4278190080) >> 24;
 		cw->arena[(index + ((b + 1) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 16711680) >> 16;
 		cw->arena[(index + ((b + 2) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 65280) >> 8;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 11:08:10 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 17:27:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 */
 //#include <sys/types.h>
 #include <stdbool.h>
-
-#include <stdio.h> // <-- HAVE TO BE REMOVED AT THE END
 
 /*
 ** [Put some explanations]
@@ -73,8 +71,10 @@ typedef struct					s_op
 typedef struct		s_options
 {
 	bool			dump;
-	ssize_t			nbr_cycle;
+	ssize_t			dump_cycle;
 	bool			n;
+	bool			aff;
+
 }					t_options;
 
 typedef struct		s_champ
@@ -104,7 +104,6 @@ typedef struct		s_process
 	bool			carry;			// flag carry= which can be changed by certain operations and which affects zjmp operation, initialised with value false.
 	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
 	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
-	int				last_live;		// nb of cycle in which current cursor performed operation live last time.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	void			*position;		// position address in memory
 	int				jump;			// amount of bytes cursor must jump to get to the next operation
@@ -124,10 +123,11 @@ typedef struct		s_corewar
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 	int				i_cycle;
+	t_options		options;			// struct with options
 }					t_cw;
 
 /*
-**v
+**
 */
 
 typedef struct		s_visu
@@ -211,6 +211,7 @@ void				tool_print_arena(char *arena, size_t mem_size, t_parse *p);			// a retir
 void				tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p);	// a retirer
 void				tool_print_processor(t_process *process, int nb);					// a retirer
 void				tool_print_all_processors(t_list *processes);						// a retirer
+void				tool_print_short_processors(t_cw *cw);								// a retirer
 
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
@@ -241,6 +242,7 @@ char				*get_champ_bcode(int fd, int l_bcode);
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
 */
 int					vm_cw_arena_init(t_cw **cw, t_parse **p);
+void				copy_options(t_cw *cw, t_parse *p);
 
 /*
 ** Lancement et déroulement de corewar.
@@ -297,6 +299,7 @@ int					op_long_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_long_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_long_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_aff(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 
 /*
 **------------------Bonus functions------------------

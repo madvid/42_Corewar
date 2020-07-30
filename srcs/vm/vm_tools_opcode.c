@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 10:59:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/30 17:51:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*, t_op))
 	// t_op_funct[8] = &op_zerojump;
 	// t_op_funct[9] = &op_load_index;
 	// t_op_funct[10] = &op_store_index;
-	// t_op_funct[11] = &op_fork;
+	 t_op_funct[11] = &op_fork;
 	// t_op_funct[12] = &op_long_load;
 	// t_op_funct[13] = &op_long_load_index;
-	// t_op_funct[14] = &op_long_fork;
+	t_op_funct[14] = &op_long_fork;
 	// t_op_funct[15] = &op_aff;
 }
 
@@ -42,6 +42,7 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 {
 	extern t_op		op_tab[17];
 	int				pos;
+	int				ret;
 	static int		(*op_funct[16])(t_cw*, t_process*, t_op) = {NULL};
 
 	
@@ -55,8 +56,11 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 		printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[pos+1]);
 		if (!is_valid_opcode(cw->arena, pos))
 			return ;
-		op_funct[(int)(cur_proc->opcode) - 1](cw, cur_proc, op_tab[(int)(cur_proc->opcode) - 1]);
+		ret = op_funct[(int)(cur_proc->opcode) - 1](cw, cur_proc, op_tab[(int)(cur_proc->opcode) - 1]);
+		// if (ret == -1)
+		// 	return (vm_error_manager(4, &cw)); // voir s'il faut recevoir **cw en argument et il va falloir rebosser le error_manager pour gerer la liberation de memoire !
 	}
+	return (1);
 }
 
 /*

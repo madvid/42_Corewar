@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
+#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/07/30 11:12:44 by armajchr         ###   ########.fr        #
+#    Updated: 2020/07/30 17:46:13 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,12 +45,15 @@ VM_FILES =	main					\
 			vm_parsing_init			\
 			vm_parsing_champ_code	\
 			vm_error_manager		\
+			vm_tools_parsing		\
 			vm_tools_champion		\
 			vm_tools_get_champ		\
 			vm_tools_encode_byte	\
 			vm_tools_opcode			\
 			vm_tools_process		\
 			vm_op_functions_1		\
+			vm_op_functions_3		\
+			vm_op_functions_4		\
 			vm_cw_arena_init		\
 			vm_execution			\
 			ft_itoa_base2			\
@@ -124,6 +127,9 @@ clean:
 	@echo "\n $(CYAN)Supressing $(VM) objects$(NOC)..."
 	@rm -rf $(VM_OBJ)
 	@echo " $(RED)-> $(VM) objects destroyed$(NOC)"
+#@echo "\n $(CYAN)Supressing $(VM) files with .d extension$(NOC)..."
+#@rm -rf $(SRC_DIR)$(VM_DIR)$(VM_FILES:.c=.d)
+#@echo " $(RED)-> $(VM) .d files destroyed$(NOC)"
 
 fclean: clean
 	@make fclean -C $(LIBFT_DIR)
