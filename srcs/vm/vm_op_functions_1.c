@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 10:44:29 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 11:12:58 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	u_int8_t	a;
 	u_int8_t	b;
 
+	printf("Store instruction en cours\n");
 	index = cur_proc->position - (void*)(cw->arena);
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
