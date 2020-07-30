@@ -22,7 +22,10 @@ void	upt_champion(t_asm *a, char *buf)
 
 	if (!(new = malloc(sizeof(char) \
 		* (ft_strlen(a->chp) + ft_strlen(buf) + 1))))
-		leave(a, ": malloc failure in upt_champion().\n");
+	{
+		release(a);
+		leave(NULL, ": malloc failure in upt_champion().\n", 0);
+	}
 	i = 0;
 	j = 0;
 	if (a->chp)
@@ -59,13 +62,14 @@ void	get_champion(t_asm *a, char **av)
 		upt_champion(a, buf);
 	close(fd);
 	if (r < 0)
-		leave(a, ": failed to read file.s\n");
+		leave(a, ": failed to read file.s\n", 0);
 	ft_memset(a->cor, 0, COR_MAX);
 	a->i = PROG_NAME_LENGTH + COMMENT_LENGTH + 16;
 	a->ldef = NULL;
 	a->lcall = NULL;
 	a->name = 0;
 	a->comm = 0;
+	a->line = 0;
 }
 
 void	fill_lcall(t_asm *a)
@@ -85,8 +89,12 @@ void	fill_lcall(t_asm *a)
 		}
 		if (def == NULL)
 		{
-			ft_printf("<%s>\n", cal->lb);
-			leave(a, ": LABEL CALLED DOES NOT EXIST.\n");
+			write(2, "ERROR: LABEL CALLED DOES NOT EXIST.\n<", 37);
+			write(2, cal->lb, ft_strlen(cal->lb));
+			write(2, "> AT LINE: <", 12);
+			ft_putnb(cal->line + 1);
+			release(a);
+			exit(write(2, ">\n", 2));
 		}
 		asto_bi(a, &cal->i_call, (def->i_op - cal->i_op), cal->byte_size);
 		cal = cal->next;
@@ -104,13 +112,19 @@ void	gen_cor(t_asm *a, char *filename)
 	ft_memset(new, 0, NAME_SIZE);
 	len = ft_strlen(filename) - 2;
 	if (len > NAME_SIZE - 5)
-		leave(a, ": NAME_SIZE EXCCEEDED, CHANGE THE VALUE ACCORDINGLY.\n");
+	{
+		release(a);
+		leave(NULL, ": NAME_SIZE EXCCEEDED, CHANGE THE VALUE ACCORDINGLY.\n", 0);
+	}
 	i = -1;
 	while (++i < len)
 		new[i] = filename[i];
 	ft_strcat(new, ".cor");
 	if ((i = open(new, O_CREAT | O_WRONLY | O_TRUNC, 0644)) < 3)
-		leave(a, ": FAILED TO CREATE championfile.cor\n");
+	{
+		release(a);
+		leave(NULL, ": FAILED TO CREATE championfile.cor\n", 0);
+	}
 	write(i, a->cor, a->i);
 	close(i);
 	ft_printf("Writing output program to %s\n", new);

@@ -22,12 +22,12 @@ size_t	is_hname(t_asm *a, char *s)
 	if (!ft_strnequ(s, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)))
 		return (0);
 	if (a->name++ == 1)
-		leave(a, ": MULTIPLE NAME_CMD_STRING COMMAND.\n");
+		leave(a, ": MULTIPLE NAME_CMD_STRING COMMAND.\n", t);
 	t = ft_strlen(NAME_CMD_STRING);
 	while (s[t] == ' ' || s[t] == '\t' || s[t] == '\v')
 		t += 1;
 	if (s[t++] != '"')
-		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND NAME_CMD_STRING.\n");
+		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND NAME_CMD_STRING.\n", t);
 	i = 4;
 	len = t;
 	while (s[t] && t <= (len + PROG_NAME_LENGTH)\
@@ -35,9 +35,9 @@ size_t	is_hname(t_asm *a, char *s)
 		asto_bi(a, &i, s[t++], 1);
 	a->size -= t - len;
 	if (t > (len + PROG_NAME_LENGTH))
-		leave(a, ": PROG_NAME_LENGTH EXCEEDED.\n");
+		leave(a, ": PROG_NAME_LENGTH EXCEEDED.\n", t);
 	if (s[t++] != '"')
-		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND NAME_CMD_STRING.\n");
+		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND NAME_CMD_STRING.\n", t);
 	return (t += is_endline(a, s + t));
 }
 
@@ -51,12 +51,12 @@ size_t	is_hcomment(t_asm *a, char *s)
 	if (!ft_strnequ(s, COMMENT_CMD_STRING, 8))
 		return (0);
 	if (a->comm++ == 1)
-		leave(a, ": MULTIPLE COMMENT_CMD_STRING COMMAND.\n");
+		leave(a, ": MULTIPLE COMMENT_CMD_STRING COMMAND.\n", t);
 	t = ft_strlen(COMMENT_CMD_STRING);
 	while (s[t] == ' ' || s[t] == '\t' || s[t] == '\v')
 		t += 1;
 	if (s[t++] != '"')
-		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND COMMENT_CMD_STRING.\n");
+		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND COMMENT_CMD_STRING.\n", t);
 	i = (PROG_NAME_LENGTH + 12);
 	len = t;
 	while (s[t] && t <= (len + COMMENT_LENGTH) \
@@ -64,9 +64,9 @@ size_t	is_hcomment(t_asm *a, char *s)
 		asto_bi(a, &i, s[t++], 1);
 	a->size -= t - len;
 	if (t > (len + COMMENT_LENGTH))
-		leave(a, ": COMMENT_LENGTH EXCEEDED.\n");
+		leave(a, ": COMMENT_LENGTH EXCEEDED.\n", t);
 	if (s[t++] != '"')
-		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND COMMENT_CMD_STRING.\n");
+		leave(a, ": SYNTAX ERROR AT TOKEN COMMAND COMMENT_CMD_STRING.\n", t);
 	return (t += is_endline(a, s + t));
 }
 
@@ -86,7 +86,7 @@ size_t	is_op(t_asm *a, char *s)
 		i += 1;
 	}
 	ft_printf("%s\n", s);
-	leave(a, ": SYNTAX ERROR IN INSTRUCTION LINE.\n");
+	leave(a, ": SYNTAX ERROR IN INSTRUCTION LINE.\n", t);
 	return (16);
 }
 
@@ -96,9 +96,9 @@ void	get_labeldef(t_asm *a, char *s, size_t len)
 	t_lb		*tmp;
 
 	if (!(l = malloc(sizeof(t_lb))))
-		leave(a, ": failed to malloc in get_labeldef().\n");
+		leave(a, ": failed to malloc in get_labeldef().\n", 0);
 	if (!(l->lb = malloc(sizeof(char) * len + 1)))
-		leave(a, ": failed to malloc in get_labeldef().\n");
+		leave(a, ": failed to malloc in get_labeldef().\n", 0);
 	ft_strncpy(l->lb, s, len);
 	l->lb[len] = 0;
 	l->i_op = a->i;
@@ -125,13 +125,13 @@ size_t	get_labelcall(t_asm *a, char *s, size_t byte_size, t_ope *ope)
 		t += 1;
 	if (!(l = malloc(sizeof(t_lb))) \
 		|| !(l->lb = malloc(sizeof(char) * t + 1)) || !ft_strncpy(l->lb, s, t))
-		leave(a, ": failed to malloc in get_labelcall().\n");
+		leave(a, ": failed to malloc in get_labelcall().\n", 0);
 	l->lb[t] = 0;
 	l->i_op = ope->i_op;
 	l->i_call = a->i;
 	l->byte_size = byte_size;
 	l->next = NULL;
-	if (a->lcall == NULL)
+	if ((l->line = a->line) >= 0 && a->lcall == NULL)
 		a->lcall = l;
 	else
 	{
@@ -182,7 +182,7 @@ size_t	get_register(t_asm *a, char *s)
 
 	t = 0;
 	if (!ft_isdigit(s[t]))
-		leave(a, ": SYNTAX ERROR INVALID REGISTER.\n");
+		leave(a, ": SYNTAX ERROR INVALID REGISTER.\n", t);
 	value = 0;
 	value = value * 10 + (s[t++] - '0');
 	if (ft_isdigit(s[t]))
@@ -214,7 +214,7 @@ size_t	get_else(t_asm *a, char *s, size_t op, t_ope *ope)
 	else if (asto_i(s + t, &value) > 0)
 		asto_bi(a, &a->i, value, size);
 	else
-		leave(a, ": SYNTAX ERROR INVALID ARGUMENT.\n");
+		leave(a, ": SYNTAX ERROR INVALID ARGUMENT.\n", t);
 	return (t += asto_i(s + t, &value));
 }
 
@@ -236,15 +236,15 @@ size_t	get_arg(t_asm *a, char *s, size_t op, t_ope *ope)
 				&& (a->op_tab[op].type[ope->n_arg] & T_IND)))
 			t += get_else(a, s + t, op, ope);
 		else
-			leave(a, ": SYNTAX ERROR INVALID ARGUMENT.\n");
+			leave(a, ": SYNTAX ERROR INVALID ARGUMENT.\n", t);
 		ope->n_arg += 1;
 		while (s[t] == ' ' || s[t] == '\t' || s[t] == '\v')
 			t += 1;
 		if (s[t] != SEPARATOR_CHAR && ope->n_arg < a->op_tab[op].n_arg)
-			leave(a, ": SYNTAX ERROR MISSING SEPARATOR_CHAR.\n");
+			leave(a, ": SYNTAX ERROR MISSING SEPARATOR_CHAR.\n", t);
 		else if (s[t] == SEPARATOR_CHAR && (t += 1) > 0 \
 			&& ope->n_arg == a->op_tab[op].n_arg)
-			leave(a, ": SYNTAX ERROR EXCEEDING MAX N_ARGUMENT.\n");
+			leave(a, ": SYNTAX ERROR EXCEEDING MAX N_ARGUMENT.\n", t);
 	}
 	return (t);
 }
@@ -279,14 +279,14 @@ size_t	is_opline(t_asm *a, char *s)
 	if (!t)
 		return (0);
 	if (a->name != 1 || a->comm != 1)
-		leave(a, ": MISSING NAME_CMD_STRING AND/OR COMMENT_CMD_STRING.\n");
+		leave(a, ": MISSING NAME_CMD_STRING AND/OR COMMENT_CMD_STRING.\n", t);
 	if (s[t] == ':')
 	{
 		get_labeldef(a, s, t++);
 		return (t += is_endline(NULL, s + t));
 	}
 	if ((op = is_op(a, s)) == 16)
-		leave(a, ": SYNTAX ERROR INVALID OPERATION.\n");
+		leave(a, ": SYNTAX ERROR INVALID OPERATION.\n", t);
 	return (t += get_arguments(a, s + t, op));
 }
 
@@ -310,6 +310,8 @@ void	get_cor(t_asm *a)
 		else if ((t = is_endline(a, a->chp + i)) > 0)
 			i += t;
 		else
-			leave(a, ": SYNTAX ERROR INVALID LINE\n");
+			leave(a, ": SYNTAX ERROR INVALID LINE.\n", 0);
 	}
+	if (a->chp[i] == 0 && i > 1 && a->chp[i - 1] != '\n')
+		leave(a, ": NO EMPTY LINE AT END OF FILE.\n", 0);
 }

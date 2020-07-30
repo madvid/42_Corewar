@@ -39,6 +39,7 @@ typedef struct		s_lb
 	size_t				byte_size;
 	int					i_op;
 	int					i_call;
+	size_t				line;
 	struct s_lb			*next;
 }					t_lb;
 
@@ -53,14 +54,16 @@ typedef struct		s_asm
 	t_lb				*lcall;			//malloc
 	int					name;			//set to 0 in get_champion() controler qu'il n'y a qu'une seule fois la commande .name
 	int					comm;			//set to 0 in get_champion() controler qu'il n'y a qu'une seule fois la commande .comment
+	size_t				line;
 }					t_asm;
 
 /*
 ** >-------------------------------- FUNCTIONS -------------------------------<
 */
 
+void	ft_putnb(size_t n);
 void	release(t_asm *a);
-void	leave(t_asm *a, char *s);
+void	leave(t_asm *a, char *s, size_t col);
 void	asto_bi(t_asm *a, int *i, int c, int bytes);
 size_t	is_endline(t_asm *a, char *s);
 size_t	is_opline(t_asm *a, char *s);

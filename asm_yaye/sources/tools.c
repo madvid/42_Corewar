@@ -12,6 +12,22 @@
 
 #include "asm.h"
 
+void	ft_putnb(size_t n)
+{
+	char	c;
+
+	if (n < 10)
+	{
+		c = n + '0';
+		write(2, &c, 1);
+	}
+	else
+	{
+		ft_putnbr(n / 10);
+		c = n % 10 + '0';
+		write(2, &c, 1);
+	}
+}
 /*
 ** FREES ALL ALLOCATED MEMORY IN THE PROGRAM
 */
@@ -46,12 +62,26 @@ void	release(t_asm *a)
 ** THEN WRITES AN ERROR MESSAGE IN THE STANDARD ERROR
 */
 
-void	leave(t_asm *a, char *s)
+void	leave(t_asm *a, char *s, size_t col)
 {
-	release(a);
 	write(2, "ERROR", 5);
 	if (s)
 		write(2, s, ft_strlen(s));
+	else
+		write(2, "\n", 1);
+	if (a)
+	{
+		release(a);
+		write(2, "LINE: <", 7);
+		ft_putnb(a->line + 1);
+		write(2, ">", 1);
+	}
+	if (col != 0)
+	{
+		write(2, " COL: <", 7);
+		ft_putnb(col + 1);
+		write(2, ">\n", 2);
+	}
 	else
 		write(2, "\n", 1);
 	exit(EXIT_FAILURE);
@@ -105,7 +135,7 @@ void	asto_bi(t_asm *a, int *i, int c, int bytes)
 	while (n != 0)
 	{
 		if (*i >= COR_MAX)
-			leave(a, ": .COR STACK-OVERFLOW.\n");
+			leave(a, ": .COR STACK-OVERFLOW.\n", 0);
 		a->cor[*i] = c / n * 16;
 		c = c % n;
 		n = n / 16;
@@ -130,7 +160,7 @@ size_t	is_endline(t_asm *a, char *s)
 		else if (s[t] != ' ' && s[t] != '\t' && s[t] != '\v')
 		{
 			if (a)
-				leave(a, " ENDLINE.\n");
+				leave(a, " ENDLINE.\n", t);
 			return (t);
 		}
 		else
@@ -138,33 +168,13 @@ size_t	is_endline(t_asm *a, char *s)
 	}
 	if (s[t] == '\n')
 	{
+		a->line += 1;
 		t += 1;
 		while (s[t] == ' ' || s[t] == '\t' || s[t] == '\v')
 			t += 1;
 	}
 	return (t);
 }
-
-/*
-** fonction de test
-
-
-void	print_core(t_asm *a)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < a->i)
-	{
-		ft_printf("%d", a->cor[i]);
-		if (i % (8 * 8) == 8 * 8 - 1)
-			ft_printf("\n");
-		else if (i % 8 == 7 && i < a->i)
-			ft_printf(" ");
-		i = i + 1;
-	}
-}
-*/
 
 void	print_core(t_asm *a)
 {
