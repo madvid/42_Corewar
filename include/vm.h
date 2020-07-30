@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 10:03:50 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 11:08:10 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ typedef struct		s_corewar
 	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
+	int				i_cycle;
 }					t_cw;
 
 /*
@@ -174,6 +175,7 @@ typedef struct		s_visu
 **Arena data
 */
 	SDL_Color		color_arena;
+	SDL_Color		color_process;
 	TTF_Font		*arena_font;
 	SDL_Rect		arena_rect;
 	SDL_Rect		arena_pos[MEM_SIZE];
@@ -323,7 +325,7 @@ t_visu				init_arena(t_visu *v);
 void      			load_arena(t_visu *v, t_cw *cw, t_parse *p);
 t_list				*get_chp_id(t_list *xplr, t_visu *v, t_parse *p, int i);
 void				get_items_cnt(t_visu *v, t_cw *cw, int i);
-void        		get_arena_texture(t_visu *v, int i);
+void        		get_arena_texture(t_visu *v, int i, t_cw *cw);
 /*
 **Render functions
 */
