@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temporary_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 11:13:19 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 17:17:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		tool_print_parsing(t_parse *p)
 	printf("variable t_parse p:\n");
 	printf("   p->nb_champ = %d\n", p->nb_champ);
 	printf("   p->options->dump = %d\n", p->options->dump);
-	printf("   p->options->nbr_cycle = %ld\n", p->options->nbr_cycle);
+	printf("   p->options->nbr_cycle = %ld\n", p->options->dump_cycle);
 	printf("   p->options->n = %d\n", p->options->n);
 }
 
@@ -250,4 +250,24 @@ void		tool_print_all_processors(t_list *processes)
 		nb++;
 	}
 	printf("- - - - END OF ALL PROCESSES\n\n");
+}
+
+/*
+** Affiche l'ensemble des processus (id et position simplement)
+*/
+
+void		tool_print_short_processors(t_cw *cw)
+{
+	t_list		*xplr;
+	t_process	*proc;
+	int			index;
+
+	xplr = cw->process;
+	while (xplr)
+	{
+		proc = (t_process*)(xplr->cnt);
+		index = proc->position - (void*)(cw->arena);
+		printf("P %d -- is at the memory adress : %p (index = %d)\n", proc->id, proc->position, index);
+		xplr = xplr->next;
+	}
 }
