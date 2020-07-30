@@ -49,7 +49,33 @@ int		op_zerojump(t_cw *cw, t_process *cur_proc, t_op op_elem)
 /*
 int		op_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem)
 {
-	...;
+	int		index;
+	int		a;
+	int		b;
+
+	index = cur_proc->position - (void*)(cw->arena);
+	if (op_elem.encod == 1)
+		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
+			return (0);
+	a = (cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6;
+	a = get_arg_value(cw, index + 2, a + RELATIVE);
+	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6) == REG_CODE)
+		if (a < 1 | a > REG_NUMBER)
+			return (0);
+	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
+		& 0b11000000, op_elem->direct_size);
+	b = (cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4;
+	b = get_arg_value(cw, index + 2 + c, b + RELATIVE);
+	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
+		if (b < 1 | b > REG_NUMBER)
+			return (0);
+	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
+		& 0b11110000, op_elem->direct_size);
+	c = get_arg_value(cw, index + 2 + c, REG_CODE);
+	if (c < 1 | c > REG_NUMBER)
+		return (0);
+	cur_proc->registers[c - 1] = cw->arena[index + (a + b) % IDX_MOD];
+	return (1);
 }
 */
 /*
