@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:40:12 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/23 10:24:18 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 11:05:43 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_visu      init_arena(t_visu *v)
     v->color_chp[1] = (SDL_Color) {0, 255, 0, 255}; //green
     v->color_chp[2] = (SDL_Color) {0, 0, 255, 255}; //blue
     v->color_chp[3] = (SDL_Color) {255, 255, 0, 255}; //yellow
+    v->color_process = (SDL_Color) {148, 0, 211, 200}; //light_gray
     v->count = 0;
     v->chp_n = 1;
     return (*v);
@@ -94,9 +95,24 @@ void        get_items_cnt(t_visu *v, t_cw *cw, int i)
 ** getting the texture for every items for final visualisation.
 */
 
-void        get_arena_texture(t_visu *v, int i)
+void        get_arena_texture(t_visu *v, int i, t_cw *cw)
 {
-    v->arena_txt[i] = TTF_RenderText_Blended(v->arena_font, v->final, v->chp_color);
+    t_list  *xplr;
+    int     is_proc;
+
+    xplr = cw->process;
+    is_proc = 0;
+    while (xplr)
+    {
+        if (i == ((t_process*)xplr->cnt)->position - (void*)(cw->arena))
+        {
+            v->arena_txt[i] = TTF_RenderText_Blended(v->arena_font, v->final, v->color_process);
+            is_proc++;
+        }
+        xplr = xplr->next;
+    }
+    if (is_proc == 0)
+        v->arena_txt[i] = TTF_RenderText_Blended(v->arena_font, v->final, v->chp_color);
 	if (!v->arena_txt[i])
 		printf("Error creating text : %s\n", SDL_GetError());
 	v->arena_vs[i] = SDL_CreateTextureFromSurface(v->renderer,
@@ -130,7 +146,7 @@ void      load_arena(t_visu *v, t_cw *cw, t_parse *p)
         if (i % 138 == 0)
             v->count++;
         get_items_cnt(v, cw, i);
-        get_arena_texture(v, i);
+        get_arena_texture(v, i, cw);
         i++;
     }
 }

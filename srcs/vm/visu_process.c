@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/29 15:42:17 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 11:10:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_visu      init_process(t_visu *v)
     v->process_title[1] = TTF_RenderText_Blended(v->font_process, "Nb_lives: ", v->color_title);
 	if (!v->process_title[1])
 		printf("Error creating text : %s\n", SDL_GetError());
-    v->process_title[2] = TTF_RenderText_Blended(v->font_process, "Inter_check: ", v->color_title);
+    v->process_title[2] = TTF_RenderText_Blended(v->font_process, "i_cycle: ", v->color_title);
 	if (!v->process_title[2])
 		printf("Error creating text : %s\n", SDL_GetError());
     v->process_rect.x = 400;
@@ -53,7 +53,7 @@ void    get_process_data(t_visu *v, t_cw *cw)
     v->process_name[1] = TTF_RenderText_Blended(v->font_process, ft_itoa(cw->tot_lives), v->color_title);
 	if (!v->process_name[1])
 		printf("Error creating text : %s\n", SDL_GetError());
-    v->process_name[2] = TTF_RenderText_Blended(v->font_process, ft_itoa(cw->i_check), v->color_title);
+    v->process_name[2] = TTF_RenderText_Blended(v->font_process, ft_itoa(cw->i_cycle), v->color_title);
 	if (!v->process_name[2])
 		printf("Error creating text : %s\n", SDL_GetError());
 }

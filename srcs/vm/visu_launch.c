@@ -74,7 +74,6 @@ void	init_window(t_visu *v)
 void     visualizer(t_parse *p, t_cw *cw)
 {
 	t_visu		v;
-	int			i_cycle;
 	static bool	stop_game;
 	int			first;
 
@@ -100,12 +99,12 @@ void     visualizer(t_parse *p, t_cw *cw)
 			v.angle = menu_move(&v, v.angle);
 		else
 		{
-			i_cycle = -1;
-			while (++i_cycle < cw->cycle_to_die && v.menu_loop != 0)
+			cw->i_cycle = -1;
+			while (++cw->i_cycle < cw->cycle_to_die && v.menu_loop != 0)
 			{
 				load_visu(&v, p, cw);
 				visu_render(&v, p);
-				printf(">>> i_cycle = %d\n", i_cycle);
+				printf(">>> i_cycle = %d\n", cw->i_cycle);
 				vm_proc_cycle(cw);
 				vm_proc_perform_opcode(cw);
 				vm_proc_mv_proc_pos(cw);
