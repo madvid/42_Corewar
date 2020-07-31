@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lab2.c                                             :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/13 10:05:10 by yaye              #+#    #+#             */
-/*   Updated: 2020/07/13 10:05:13 by yaye             ###   ########.fr       */
+/*   Created: 2020/07/31 13:25:00 by yaye              #+#    #+#             */
+/*   Updated: 2020/07/31 13:25:01 by yaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-
-#include <stdio.h>
 
 void	upt_champion(t_asm *a, char *buf)
 {
@@ -58,15 +56,14 @@ void	get_champion(t_asm *a, char **av)
 	if ((fd = open(av[1], O_RDONLY)) < 0)
 		exit(write(2, "ERROR: failed to open file.s\n", 29));
 	a->chp = NULL;
-	while ((r = read(fd, buf, 4095)) > 0 && !(buf[r] = 0))
+	while ((r = read(fd, buf, 4095)) > 0 \
+		&& !(buf[r] = 0))
 		upt_champion(a, buf);
 	close(fd);
 	if (r < 0)
 		leave(a, ": failed to read file.s\n", 0);
 	ft_memset(a->cor, 0, COR_MAX);
 	a->i = PROG_NAME_LENGTH + COMMENT_LENGTH + 16;
-	a->ldef = NULL;
-	a->lcall = NULL;
 	a->name = 0;
 	a->comm = 0;
 	a->line = 0;
@@ -114,7 +111,7 @@ void	gen_cor(t_asm *a, char *filename)
 	if (len > NAME_SIZE - 5)
 	{
 		release(a);
-		leave(NULL, ": NAME_SIZE EXCCEEDED, CHANGE THE VALUE ACCORDINGLY.\n", 0);
+		leave(NULL, ": NAME_SIZE EXCCEEDED.\n", 0);
 	}
 	i = -1;
 	while (++i < len)
@@ -134,18 +131,20 @@ int		main(int ac, char **av)
 {
 	extern t_op		op_tab[17];
 	t_asm			a;
-	int 			dummy;
+	int				magic_and_size;
 
 	if (ac != 2)
 		return (write(2, "Usage: ./asm <champion.s>\n", 26));
 	a.op_tab = op_tab;
-	get_champion(&a, av);						//def du t_asm a + read du .s
-	dummy = 0;
-	asto_bi(&a, &dummy, COREWAR_EXEC_MAGIC, 4);	//écriture du magic
+	a.ldef = NULL;
+	a.lcall = NULL;
+	get_champion(&a, av);
+	magic_and_size = 0;
+	asto_bi(&a, &magic_and_size, COREWAR_EXEC_MAGIC, 4);
 	get_cor(&a);
 	fill_lcall(&a);
-	dummy = 136;
-	asto_bi(&a, &dummy, a.size, 4);
+	magic_and_size = 136;
+	asto_bi(&a, &magic_and_size, a.size, 4);
 	gen_cor(&a, av[1]);
 	release(&a);
 }

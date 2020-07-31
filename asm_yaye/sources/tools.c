@@ -23,11 +23,12 @@ void	ft_putnb(size_t n)
 	}
 	else
 	{
-		ft_putnbr(n / 10);
+		ft_putnb(n / 10);
 		c = n % 10 + '0';
 		write(2, &c, 1);
 	}
 }
+
 /*
 ** FREES ALL ALLOCATED MEMORY IN THE PROGRAM
 */
@@ -76,6 +77,8 @@ void	leave(t_asm *a, char *s, size_t col)
 		ft_putnb(a->line + 1);
 		write(2, ">", 1);
 	}
+	else
+		exit(EXIT_FAILURE);
 	if (col != 0)
 	{
 		write(2, " COL: <", 7);
@@ -85,41 +88,6 @@ void	leave(t_asm *a, char *s, size_t col)
 	else
 		write(2, "\n", 1);
 	exit(EXIT_FAILURE);
-}
-
-/*void	printin_bi(char *bi)
-{
-	size_t	k;
-
-	k = 0;
-	while (bi[k])
-	{
-		write(1, bi + k, 1);
-		if (k % 40 == 39)
-			write(1, "\n", 1);
-		else if (k % 8 == 7)
-			write(1, " ", 1);
-		k = k + 1;
-	}
-	write(1, "\n", 1);
-}
-*/
-
-void	printin_bi(char *bi)
-{
-	size_t	k;
-
-	k = 0;
-	while (bi[k])
-	{
-		write(1, bi + k, 1);
-		if (k % 40 == 39)
-			write(1, "\n", 1);
-		else if (k % 8 == 7)
-			write(1, " ", 1);
-		k = k + 1;
-	}
-	write(1, "\n", 1);
 }
 
 /*
@@ -160,34 +128,18 @@ size_t	is_endline(t_asm *a, char *s)
 		else if (s[t] != ' ' && s[t] != '\t' && s[t] != '\v')
 		{
 			if (a)
-				leave(a, " ENDLINE.\n", t);
+				leave(a, ": SYNTAX ERROR.\n", t);
 			return (t);
 		}
 		else
 			t += 1;
 	}
-	if (s[t] == '\n')
+	if (s[t] == '\n' && (t += 1) > 0)
 	{
-		a->line += 1;
-		t += 1;
+		if (a)
+			a->line += 1;
 		while (s[t] == ' ' || s[t] == '\t' || s[t] == '\v')
 			t += 1;
 	}
 	return (t);
-}
-
-void	print_core(t_asm *a)
-{
-	int		i;
-
-	i = 0;
-	while (i < a->i)
-	{
-		ft_printf("%c", a->cor[i]);
-		if (i % (4 * 8) == 4 * 8 - 1)
-			ft_printf("\n");
-		else if (i % 4 == 3 && i < a->i)
-			ft_printf(" ");
-		i = i + 1;
-	}
 }

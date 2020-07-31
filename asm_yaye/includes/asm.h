@@ -67,9 +67,9 @@ void	leave(t_asm *a, char *s, size_t col);
 void	asto_bi(t_asm *a, int *i, int c, int bytes);
 size_t	is_endline(t_asm *a, char *s);
 size_t	is_opline(t_asm *a, char *s);
+size_t	check_args(t_asm *a, char *s, size_t op);
+void	get_labeldef(t_asm *a, char *s, size_t len);
+size_t	get_labelcall(t_asm *a, char *s, size_t byte_size, t_ope *ope);
 void	get_cor(t_asm *a);
-
-void	print_core(t_asm *a);
-void	printin_bi(char *bi);
 
 #endif
