@@ -60,7 +60,6 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 		// if (ret == -1)
 		// 	return (vm_error_manager(4, &cw)); // voir s'il faut recevoir **cw en argument et il va falloir rebosser le error_manager pour gerer la liberation de memoire !
 	}
-	return (1);
 }
 
 /*

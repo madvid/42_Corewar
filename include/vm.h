@@ -301,6 +301,7 @@ int					op_long_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_long_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					op_aff(t_cw *cw, t_process *cur_proc, t_op op_elem);
 int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
+int					get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type);
 
 /*
 **------------------Bonus functions------------------

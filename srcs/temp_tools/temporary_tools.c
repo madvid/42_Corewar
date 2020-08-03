@@ -215,7 +215,6 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("| carry:_______%d                                               |\n", process->carry);
 	printf("| opcode:______%X                                               |\n", process->opcode);
 	printf("| n_lives:_____%2d                                              |\n", process->n_lives);
-	printf("| last_live:___%2d                                              |\n", process->last_live);
 	printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
 	printf("| jump:________%d                                               |\n", process->jump);
 	printf("| position:____%14p                                  |\n", process->position);

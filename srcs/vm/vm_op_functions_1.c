@@ -68,31 +68,20 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 	int			index;
 	int			arg;
 	u_int8_t	reg;
+	extern t_op	op_tab[17];
 
 	printf("Load instruction en cours\n");
 	index = cur_proc->position - (void*)(cw->arena);
 	if (op_elem.encod == 1)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
-	if ((((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) >> 6) == DIR_CODE)
-	{
-		reg = (cw->arena[(index + 6) % MEM_SIZE] & 255);
-		if (!(reg >= 0 && reg < 16))
-			return (0);
-		arg = (cw->arena[(index + 2) % MEM_SIZE] & 255) << 24
-		| (cw->arena[(index + 3) % MEM_SIZE] & 255) << 16
-		| (cw->arena[(index + 4) % MEM_SIZE] & 255) << 8
-		| (cw->arena[(index + 5) % MEM_SIZE] & 255);
-		cur_proc->carry = (arg == 0) ? 1 : 0;
-		cur_proc->registers[reg - 1] = arg; // changer registers en tableau de int.
-		// printf("     cur_proc->registers[%d - 1] = %d\n", reg, arg);
-	}
-	if ((((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) >> 6) == IND_CODE)
-	{
-		reg = (cw->arena[(index + 4) % MEM_SIZE] & 255);
-		if (!(reg >= 0 && reg < 16))
-			return (0);
-	}
+	arg = get_arg_value(cw, cur_proc, index + 2, \
+		(((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
+	reg = instruction_width(((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000), op_tab[cur_proc->opcode - 1].direct_size);
+	reg = get_arg_value(cw, cur_proc, index + 2 + reg, ((cw->arena[(index + 1) % MEM_SIZE]) & 0b00110000) >> 4);
+	if (reg > REG_NUMBER || reg < 1)
+		return (0);
+	cur_proc->registers[reg - 1] = arg;
 	return (1);
 }
 

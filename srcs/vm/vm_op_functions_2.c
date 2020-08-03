@@ -67,20 +67,20 @@ int		op_and(t_cw *cw, t_process *cur_proc, t_op op_elem)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
 	a = (cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw, index + 2, a + RELATIVE);
+	a = get_arg_value(cw, cur_proc, index + 2, a + RELATIVE);
 	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6) == REG_CODE)
 		if (a < 1 | a > REG_NUMBER)
 			return (0);
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11000000, op_elem->direct_size);
 	b = (cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, index + 2 + c, b + RELATIVE);
+	b = get_arg_value(cw, cur_proc, index + 2 + c, b + RELATIVE);
 	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
 		if (b < 1 | b > REG_NUMBER)
 			return (0);
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11110000, op_elem->direct_size);
-	c = get_arg_value(cw, index + 2 + c, REG_CODE);
+	c = get_arg_value(cw, cur_proc, index + 2 + c, REG_CODE);
 	if (c < 1 | c > REG_NUMBER)
 		return (0);
 	cur_proc->registers[c] = a & b;
@@ -109,14 +109,14 @@ int		op_or(t_cw *cw, t_process *cur_proc, t_op op_elem)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
 	a = (cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw, index + 2, a + RELATIVE);
+	a = get_arg_value(cw, cur_proc, index + 2, a + RELATIVE);
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11000000, op_elem->direct_size);
 	b = (cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, index + 2 + c, b + RELATIVE);
+	b = get_arg_value(cw, cur_proc, index + 2 + c, b + RELATIVE);
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11110000, op_elem->direct_size);
-	c = get_arg_value(cw, index + 2 + c, REG_CODE);
+	c = get_arg_value(cw, cur_proc, index + 2 + c, REG_CODE);
 	cur_proc->registers[c] = a & b;
 	cur_proc->carry = (cur_proc->registers[c] = a | b) ? 1 : 0;
 	return (1);
@@ -143,14 +143,14 @@ int		op_xor(t_cw *cw, t_process *cur_proc, t_op op_elem)
 		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
 			return (0);
 	a = (cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw, index + 2, a + RELATIVE);
+	a = get_arg_value(cw, cur_proc, index + 2, a + RELATIVE);
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11000000, op_elem->direct_size);
 	b = (cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, index + 2 + c, a + RELATIVE);
+	b = get_arg_value(cw, cur_proc, index + 2 + c, a + RELATIVE);
 	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
 		& 0b11110000, op_elem->direct_size);
-	c = get_arg_value(cw, index + 2 + c, REG_CODE);
+	c = get_arg_value(cw, cur_proc, index + 2 + c, REG_CODE);
 	cur_proc->registers[c] = a & b;
 	cur_proc->carry = (cur_proc->registers[c] = a ^ b) ? 1 : 0;
 	return (1);

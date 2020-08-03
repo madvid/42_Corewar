@@ -36,8 +36,8 @@ int			main(int ac, char **av)
 	// tool_print_champ_list(p->lst_champs);
 	vm_cw_arena_init(&cw, &p);
 	vm_champion_introduction(p->lst_champs);
-	vm_execution(cw, p);
+	//vm_execution(cw, p);
 	//tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
-	//visualizer(p, cw);
+	visualizer(p, cw);
 	return (0);
 }

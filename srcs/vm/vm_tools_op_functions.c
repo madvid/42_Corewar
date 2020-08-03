@@ -16,6 +16,7 @@
 ** Function: get_arg_value
 ** Description:
 **	RETURNS THE (RELATIVE/ABSOLUTE) VALUE OF THE ARGUMENT cw->arena[<index>]
+**	<index> IS THE CORRECT INDEX OF THE VALUE IN THE ARENA
 **	ARGUMENT TYPE IS <type>
 **		REG_CODE 1
 **		IND_CODE 3
@@ -36,13 +37,14 @@ int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
 	i0 = cur_proc->position - (void *)(cw->arena);
 	value = cw->arena[(index) % MEM_SIZE];
 	if ((type % 10) == REG_CODE)
-		return ((type / 10) ? value : cur_proc->registers[value]);
+		return (value);
 	value = value << 8 | cw->arena[(index + 1) % MEM_SIZE];
 	if ((type % 10) == IND_CODE)
-		return ((type / 10) ? value : cw->arena[(i0 + (value % IDX_MOD)) % MEM_SIZE]);
+		return ((type / 10) == 0 ? value \
+			: cw->arena[(i0 + (value % IDX_MOD)) % MEM_SIZE]);
 	if ((type % 10) == DIR_CODE)
 	{
-		if (op_tab[cur_proc->opcode].direct_size == 1)
+		if (op_tab[(int)(cur_proc->opcode)].direct_size == 1)
 			return (value);
 		value = value << 8 | cw->arena[(index + 2) % MEM_SIZE];
 		if ((type % 10) == DIR_CODE)

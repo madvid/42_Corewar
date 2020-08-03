@@ -51,6 +51,7 @@ VM_FILES =	main					\
 			vm_tools_encode_byte	\
 			vm_tools_opcode			\
 			vm_tools_process		\
+			vm_tools_op_functions	\
 			vm_op_functions_1		\
 			vm_op_functions_3		\
 			vm_op_functions_4		\
