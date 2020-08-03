@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:40:12 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/03 14:29:56 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/03 16:43:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void        get_arena_texture(t_visu *v, int i, t_cw *cw)
     is_proc = 0;
     while (xplr)
     {
-        if (i == ((t_process*)xplr->cnt)->position - (void*)(cw->arena))
+        if (i == ((t_process*)xplr->cnt)->i)
         {
             v->arena_txt[i] = TTF_RenderText_Blended(v->arena_font, v->final, v->color_process);
             is_proc++;
