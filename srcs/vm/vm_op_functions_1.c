@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 12:37:12 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/03 17:51:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,15 @@ int		op_load(t_cw *cw, t_process *cur_proc)
 	arg = get_arg_value(cw, cur_proc, cur_proc->i + 2, \
 		(((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
 	reg = instruction_width(((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b11000000), op_tab[cur_proc->opcode - 1].direct_size);
+	printf("reg apres instruction width: %d\n", reg);
 	reg = get_arg_value(cw, cur_proc, cur_proc->i + 2 + reg, \
 		((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
+	printf("numero de registre ou ecrire: %d\n", reg);
 	if (reg > REG_NUMBER || reg < 1)
 		return (0);
 	cur_proc->registers[reg - 1] = arg;
 	cur_proc->carry = (arg == 0) ? 1 : 0;
+	// printf("valeur du contenue du registre apres ecriture: %d\n", arg);
 	return (1);
 }
 
