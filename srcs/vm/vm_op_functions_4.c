@@ -80,7 +80,7 @@ int		op_long_load_index(t_cw *cw, t_process *cur_proc)
 	if (c > REG_NUMBER || c < 1)
 		return (0);
 	cur_proc->carry = (a == 0) ? 1 : 0;
-	cur_proc->registers[c - 1] = cw->arena[(cur_proc->i + (a + b) % IDX_MOD) % MEM_SIZE];
+	cur_proc->registers[c - 1] = cw->arena[(cur_proc->i + a + b) % MEM_SIZE];
 	return (1);
 }
 

@@ -41,7 +41,6 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 void	perform_opcode(t_cw *cw, t_process *cur_proc)
 {
 	extern t_op		op_tab[17];
-	int				pos;
 	int				ret;
 	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
 
@@ -50,11 +49,10 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		pos = cur_proc->i;
-		printf("[perform_opcode] is_valid_opcode = %d\n", is_valid_opcode(cw->arena, pos));
-		printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[pos]);
-		printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[pos+1]);
-		if (!is_valid_opcode(cw->arena, pos))
+		printf("[perform_opcode] is_valid_opcode = %d\n", is_valid_opcode(cw->arena, cur_proc));
+		printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[cur_proc->i]);
+		printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[cur_proc->i + 1]);
+		if (!is_valid_opcode(cw->arena, cur_proc))
 			return ;
 		ret = op_funct[(int)(cur_proc->opcode) - 1](cw, cur_proc);
 		// if (ret == -1)
@@ -71,18 +69,20 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 **	0: if the byte does not correspond to an opcode.
 */
 
-bool	is_valid_opcode(char *arena, int pos)
+bool	is_valid_opcode(char *arena, t_process *cur_proc)
 {
 	u_int8_t	opcode;
 	u_int8_t	encoding;
 
-	opcode = arena[pos];
+	opcode = arena[cur_proc->i];
 	if (opcode_no_encoding(opcode))
 		return (true);
 	if (opcode >= 1 && opcode <= 16)
 	{
-		encoding = (u_int8_t)arena[(pos + 1) % (int)MEM_SIZE];
+		encoding = (u_int8_t)arena[(cur_proc->i + 1) % (int)MEM_SIZE];
 		if (is_valid_encoding(opcode, encoding) == false)
+			return (false);
+		if (is_valid_reg(arena, cur_proc) == false)
 			return (false);
 		return (true);
 	}

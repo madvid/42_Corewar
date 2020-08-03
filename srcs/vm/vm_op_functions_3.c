@@ -41,38 +41,42 @@ int		op_zerojump(t_cw *cw, t_process *cur_proc)
 **	[value_1]:
 **	[value_2]:
 */
-/*
+
 int		op_load_index(t_cw *cw, t_process *cur_proc)
 {
-	int		index;
-	int		a;
-	int		b;
+	extern t_op	op_tab[17];
+	int			a;
+	int			b;
+	int			c;
 
-	index = cur_proc->i - (void*)(cw->arena);
-	if (op_elem.encod == 1)
-		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
+	a = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
+	a = get_arg_value(cw, cur_proc, cur_proc->i + 2, a + RELATIVE);
+	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6) == REG_CODE)
+	{
+		if (a > REG_NUMBER || a < 1)
 			return (0);
-	a = (cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw, index + 2, a + RELATIVE);
-	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b11000000) >> 6) == REG_CODE)
-		if (a < 1 | a > REG_NUMBER)
+		a = cur_proc->registers[a - 1];
+	}
+	c = instruction_width(cw->arena[(cur_proc->i + 1) % MEM_SIZE] \
+		& 0b11000000, op_tab[cur_proc->opcode - 1].direct_size);
+	b = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
+	b = get_arg_value(cw, cur_proc, cur_proc->i + 2 + c, b + RELATIVE);
+	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
+	{
+		if (b > REG_NUMBER || b < 1)
 			return (0);
-	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
-		& 0b11000000, op_elem->direct_size);
-	b = (cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, index + 2 + c, b + RELATIVE);
-	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
-		if (b < 1 | b > REG_NUMBER)
-			return (0);
-	c = instruction_width(cw->arena[(index + 1) % MEM_SIZE] \
-		& 0b11110000, op_elem->direct_size);
-	c = get_arg_value(cw, index + 2 + c, REG_CODE);
-	if (c < 1 | c > REG_NUMBER)
+		b = cur_proc->registers[b - 1];
+	}
+	c = instruction_width(cw->arena[(cur_proc->i + 1) % MEM_SIZE] \
+		& 0b11110000, op_tab[cur_proc->opcode - 1].direct_size);
+	c = get_arg_value(cw, cur_proc, cur_proc->i + 2 + c, REG_CODE);
+	if (c > REG_NUMBER || c < 1)
 		return (0);
-	cur_proc->registers[c - 1] = cw->arena[index + (a + b) % IDX_MOD];
+	cur_proc->carry = (a == 0) ? 1 : 0;
+	cur_proc->registers[c - 1] = cw->arena[(cur_proc->i + (a + b) % IDX_MOD) % MEM_SIZE];
 	return (1);
 }
-*/
+
 /*
 ** Function: op_store_index
 ** Description:
@@ -81,12 +85,12 @@ int		op_load_index(t_cw *cw, t_process *cur_proc)
 **	[value_1]:
 **	[value_2]:
 */
-/*
-int		op_store_index(t_cw *cw, t_process *cur_proc)
+
+/*int		op_store_index(t_cw *cw, t_process *cur_proc)
 {
 	...;
-}
-*/
+}*/
+
 
 /*
 ** Function:

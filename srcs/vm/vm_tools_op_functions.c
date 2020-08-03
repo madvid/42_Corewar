@@ -53,12 +53,7 @@ int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
 	return (0);
 }
 
-int		is_valid_reg(t_process *p, int *arg, int type)
+int		is_valid_reg(char *arena, t_process *p)
 {
-	if (*arg < 1 || *arg > REG_NUMBER)
-		return (0);
-	if (type)
-		*arg = p->registers[*arg - 1];
 	return (1);
-	
 }

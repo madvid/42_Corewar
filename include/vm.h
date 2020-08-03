@@ -268,6 +268,7 @@ void				perform_opcode(t_cw *cw, t_process *cur_proc);
 */
 int					get_nb_arg_b_encoding(u_int8_t encoding);
 bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
+int					is_valid_reg(char *arena, t_process *p);
 
 /*
 ** Fonctions concernant le déroulement des processus au sein de la VM
