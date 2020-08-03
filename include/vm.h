@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 18:07:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/03 16:48:28 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ typedef struct		s_visu
 	SDL_Renderer	*renderer;
 	int				isquit;
 	SDL_Event		event;
+	Mix_Music		*musique;
 /*
 **Menu data
 */
@@ -257,7 +258,7 @@ int					instruction_width(unsigned char encoding, size_t dir_s);
 /*
 ** Fonctions outils concernant les opcode
 */
-bool				is_valid_opcode(char *arena, int pos);
+bool				is_valid_opcode(char *arena, t_process *cur_proc);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
 int					addr_next_opcode(char *arena, int mem_pos);
@@ -339,6 +340,7 @@ void				visu_render(t_visu *v, t_parse *p);
 void				arena_render(t_visu *v, t_parse *p);
 void				render_destroy(t_visu *v);
 void				render_destroy(t_visu *v);
+void				texture_free(t_visu *v);
 /*
 **Process info functions
 */

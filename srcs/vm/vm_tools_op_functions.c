@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_op_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/07/29 11:53:42 by yaye             ###   ########.fr       */
+/*   Updated: 2020/08/03 16:50:58 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
 
 int		is_valid_reg(char *arena, t_process *p)
 {
-	return (1);
+	if (arena && p)
+		return (1);
+	return (0);
 }
