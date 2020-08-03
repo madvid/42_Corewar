@@ -109,17 +109,15 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 	i = -1;
 	while (++i < 16)
 		proc->registers[i] = 0;
-	if (!(proc->pc = ft_strnew(REG_SIZE)))
-		return (vm_init_cw_error(4, cw) == 0 ? NULL : NULL);
 	proc->registers[0] = champ->id;
-	proc->pc = NULL;
+	proc->pc = 0;
 	proc->jump = 0;
 	proc->id = ++proc_id;
 	proc->carry = false;
 	proc->opcode = 0;
 	proc->n_lives = 0;
 	proc->wait_cycles = 0;
-	proc->position = (void*)(&((*cw)->arena[champ->mem_pos]));
+	proc->i = champ->mem_pos;
 	proc->champ = champ;
 	return ((void*)proc);
 }

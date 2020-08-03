@@ -12,7 +12,7 @@
 
 #include "vm.h"
 
-static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*, t_op))
+static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 {
 	t_op_funct[0] = &op_alive;
 	t_op_funct[1] = &op_load;
@@ -43,20 +43,20 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 	extern t_op		op_tab[17];
 	int				pos;
 	int				ret;
-	static int		(*op_funct[16])(t_cw*, t_process*, t_op) = {NULL};
+	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
 
 	
 	if (op_funct[0] == NULL)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		pos = cur_proc->position - (void*)(&(cw->arena[0]));
+		pos = cur_proc->i;
 		printf("[perform_opcode] is_valid_opcode = %d\n", is_valid_opcode(cw->arena, pos));
 		printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[pos]);
 		printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[pos+1]);
 		if (!is_valid_opcode(cw->arena, pos))
 			return ;
-		ret = op_funct[(int)(cur_proc->opcode) - 1](cw, cur_proc, op_tab[(int)(cur_proc->opcode) - 1]);
+		ret = op_funct[(int)(cur_proc->opcode) - 1](cw, cur_proc);
 		// if (ret == -1)
 		// 	return (vm_error_manager(4, &cw)); // voir s'il faut recevoir **cw en argument et il va falloir rebosser le error_manager pour gerer la liberation de memoire !
 	}
@@ -140,7 +140,7 @@ bool	opcode_no_encoding(u_int8_t opcode)
 **	NULL: there is no next opcode right after the ongoing one.
 */
 
-void	*addr_next_opcode(char *arena, int mem_pos)
+int		addr_next_opcode(char *arena, int mem_pos)
 {
 	u_int8_t	encoding;
 	u_int8_t	opcode;
@@ -151,13 +151,13 @@ void	*addr_next_opcode(char *arena, int mem_pos)
 	if (opcode_no_encoding(opcode))
 	{
 		next_opcode = (mem_pos + arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
-		return ((void*)(&arena[next_opcode]));
+		return (next_opcode);
 	}
 	if (opcode > 0 && opcode < 17) // ici, comme on a tester les opcode sans byte d'encodage, ça sera les autres traités ici.
 	{
 		encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
 		next_opcode = instruction_width(encoding, op_tab[opcode - 1].direct_size) + 2;
-		return ((void*)(&arena[(mem_pos + next_opcode) % MEM_SIZE]));
+		return ((mem_pos + next_opcode) % MEM_SIZE);
 	}
-	return ((void*)(&arena[(mem_pos + 1) % MEM_SIZE]));
+	return ((mem_pos + 1) % MEM_SIZE);
 }

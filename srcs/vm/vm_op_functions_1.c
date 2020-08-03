@@ -31,20 +31,15 @@
 **		as argument(s).
 */
 
-int		op_alive(t_cw *cw, t_process *cur_proc, t_op op_elem)
+int		op_alive(t_cw *cw, t_process *cur_proc)
 {
-	int		index;
 	int		arg;
 
-	index = cur_proc->position - (void*)(cw->arena);
 	printf("Alive en cours.\n");
-	if (op_elem.encod == 1)
-		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
-			return (0);
-	arg = (cw->arena[(index + 1) % MEM_SIZE] & 255) << 24
-		| (cw->arena[(index + 2) % MEM_SIZE] & 255) << 16
-		| (cw->arena[(index + 3) % MEM_SIZE] & 255) << 8
-		| (cw->arena[(index + 4) % MEM_SIZE] & 255);
+	arg = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 255) << 24
+		| (cw->arena[(cur_proc->i + 2) % MEM_SIZE] & 255) << 16
+		| (cw->arena[(cur_proc->i + 3) % MEM_SIZE] & 255) << 8
+		| (cw->arena[(cur_proc->i + 4) % MEM_SIZE] & 255);
 	cur_proc->n_lives++; // even if the arg contain a non valid champ id.
 	if (arg > 0 && arg < cw->n_champ) // not sure for this, is alive instruction always valid as long as the argument is a positive int ? or in every case ?
 	{
@@ -63,25 +58,22 @@ int		op_alive(t_cw *cw, t_process *cur_proc, t_op op_elem)
 **	0:
 */
 
-int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
+int		op_load(t_cw *cw, t_process *cur_proc)
 {
-	int			index;
 	int			arg;
 	u_int8_t	reg;
 	extern t_op	op_tab[17];
 
 	printf("Load instruction en cours\n");
-	index = cur_proc->position - (void*)(cw->arena);
-	if (op_elem.encod == 1)
-		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
-			return (0);
-	arg = get_arg_value(cw, cur_proc, index + 2, \
-		(((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
-	reg = instruction_width(((cw->arena[(index + 1) % MEM_SIZE]) & 0b11000000), op_tab[cur_proc->opcode - 1].direct_size);
-	reg = get_arg_value(cw, cur_proc, index + 2 + reg, ((cw->arena[(index + 1) % MEM_SIZE]) & 0b00110000) >> 4);
+	arg = get_arg_value(cw, cur_proc, cur_proc->i + 2, \
+		(((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
+	reg = instruction_width(((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b11000000), op_tab[cur_proc->opcode - 1].direct_size);
+	reg = get_arg_value(cw, cur_proc, cur_proc->i + 2 + reg, \
+		((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
 	if (reg > REG_NUMBER || reg < 1)
 		return (0);
 	cur_proc->registers[reg - 1] = arg;
+	cur_proc->carry = (arg == 0) ? 1 : 0;
 	return (1);
 }
 
@@ -98,38 +90,33 @@ int		op_load(t_cw *cw, t_process *cur_proc, t_op op_elem)
 **	[value_2]: 0 else
 */
 
-int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
+int		op_store(t_cw *cw, t_process *cur_proc)
 {
-	int			index;
 	int			a;
 	int			b;
 
 	printf("Store instruction en cours\n");
-	index = cur_proc->position - (void*)(cw->arena);
-	if (op_elem.encod == 1)
-		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
-			return (0);
-	a = cw->arena[(index + 2) % MEM_SIZE];
+	a = cw->arena[(cur_proc->i + 2) % MEM_SIZE];
 	if (a < 1 || a > REG_NUMBER)
 		return (0);
-	b = cw->arena[(index + 3) % MEM_SIZE];
-	if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
+	b = cw->arena[(cur_proc->i + 3) % MEM_SIZE];
+	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
-		b = (b << 8) | cw->arena[(index + 4) % MEM_SIZE];
-		// printf("     (index + (b %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + (b % IDX_MOD)) % MEM_SIZE);
-		// printf("     (index + ((b+1) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+1) % IDX_MOD)) % MEM_SIZE);
-		// printf("     (index + ((b+2) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+2) % IDX_MOD)) % MEM_SIZE);
-		// printf("     (index + ((b+3) %% IDX_MOD)) %% MEM_SIZE = %d\n", (index + ((b+3) % IDX_MOD)) % MEM_SIZE);
+		b = (b << 8) | cw->arena[(cur_proc->i + 4) % MEM_SIZE];
+		// printf("     (cur_proc->i + (b %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + (b % IDX_MOD)) % MEM_SIZE);
+		// printf("     (cur_proc->i + ((b+1) %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + ((b+1) % IDX_MOD)) % MEM_SIZE);
+		// printf("     (cur_proc->i + ((b+2) %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + ((b+2) % IDX_MOD)) % MEM_SIZE);
+		// printf("     (cur_proc->i + ((b+3) %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + ((b+3) % IDX_MOD)) % MEM_SIZE);
 		// printf("     (cur_proc->registers[a - 1] & 4278190080) >> 24 = %lX\n", (cur_proc->registers[a - 1] & 4278190080) >> 24);
 		// printf("     (cur_proc->registers[a - 1] & 16711680) >> 16 = %X\n", (cur_proc->registers[a - 1] & 16711680) >> 16);
 		// printf("     (cur_proc->registers[a - 1] & 65280) >> 8 = %X\n", (cur_proc->registers[a - 1] & 65280) >> 8);
 		// printf("     (cur_proc->registers[a - 1] & 255) = %X\n", (cur_proc->registers[a - 1] & 255));
-		cw->arena[(index + (b % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 4278190080) >> 24;
-		cw->arena[(index + ((b + 1) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 16711680) >> 16;
-		cw->arena[(index + ((b + 2) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 65280) >> 8;
-		cw->arena[(index + ((b + 3) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 255);
+		cw->arena[(cur_proc->i + (b % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 4278190080) >> 24;
+		cw->arena[(cur_proc->i + ((b + 1) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 16711680) >> 16;
+		cw->arena[(cur_proc->i + ((b + 2) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 65280) >> 8;
+		cw->arena[(cur_proc->i + ((b + 3) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 255);
 	}
-	else if (((cw->arena[(index + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE \
+	else if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE \
 		&& b > 0 && b <= REG_NUMBER)
 		cur_proc->registers[b - 1] = cur_proc->registers[a - 1];
 	else
@@ -149,24 +136,20 @@ int		op_store(t_cw *cw, t_process *cur_proc, t_op op_elem)
 **	[value_2]: 0 else
 */
 
-int		op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem)
+int		op_addition(t_cw *cw, t_process *cur_proc)
 {
-	int		index;
 	int		a;
 	int		b;
 	int		c;
 
-	index = cur_proc->position - (void*)(cw->arena);
-	if (op_elem.encod == 1)
-		if (!is_valid_encoding(cw->arena[index], cw->arena[(index + 1) % MEM_SIZE]))
-			return (0);
-	a = cw->arena[(index + 2) % MEM_SIZE];
-	b = cw->arena[(index + 3) % MEM_SIZE];
-	c = cw->arena[(index + 4) % MEM_SIZE];
+	a = cw->arena[(cur_proc->i + 2) % MEM_SIZE];
+	b = cw->arena[(cur_proc->i + 3) % MEM_SIZE];
+	c = cw->arena[(cur_proc->i + 4) % MEM_SIZE];
 	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
 		|| c < 1 || c > REG_NUMBER)
 		return (0);
-	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] + cur_proc->registers[b - 1];
+	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] \
+	+ cur_proc->registers[b - 1];
 	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
 	return (1);
 }

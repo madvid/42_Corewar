@@ -30,25 +30,35 @@
 
 int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
 {
-	int			i0;
 	int			value;
 	extern t_op	op_tab[17];
 
-	i0 = cur_proc->position - (void *)(cw->arena);
+	if ((type % 10) != REG_CODE || (type % 10) != IND_CODE \
+		|| (type % 10) != DIR_CODE)
+		return (0);
 	value = cw->arena[(index) % MEM_SIZE];
 	if ((type % 10) == REG_CODE)
 		return (value);
 	value = value << 8 | cw->arena[(index + 1) % MEM_SIZE];
 	if ((type % 10) == IND_CODE)
 		return ((type / 10) == 0 ? value \
-			: cw->arena[(i0 + (value % IDX_MOD)) % MEM_SIZE]);
+			: cw->arena[(cur_proc->i + (value % IDX_MOD)) % MEM_SIZE]);
 	if ((type % 10) == DIR_CODE)
 	{
 		if (op_tab[(int)(cur_proc->opcode)].direct_size == 1)
 			return (value);
 		value = value << 8 | cw->arena[(index + 2) % MEM_SIZE];
-		if ((type % 10) == DIR_CODE)
-			return (value = value << 8 | cw->arena[(index + 3) % MEM_SIZE]);
+		return (value = value << 8 | cw->arena[(index + 3) % MEM_SIZE]);
 	}
 	return (0);
+}
+
+int		is_valid_reg(t_process *p, int *arg, int type)
+{
+	if (*arg < 1 || *arg > REG_NUMBER)
+		return (0);
+	if (type)
+		*arg = p->registers[*arg - 1];
+	return (1);
+	
 }

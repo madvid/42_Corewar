@@ -174,8 +174,8 @@ void	vm_proc_mv_proc_pos(t_cw *cw)
 		cur_proc = ((t_process*)(proc->cnt));
 		if (cur_proc->wait_cycles == 0)
 		{
-			cur_proc->position = cur_proc->pc;
-			op_pos = cur_proc->position - (void*)(cw->arena);
+			cur_proc->i = cur_proc->pc;
+			op_pos = cur_proc->i;
 			cur_proc->pc = addr_next_opcode(cw->arena, op_pos);
 			cur_proc->opcode = cw->arena[op_pos];
 			if (cur_proc->opcode >= 1 && cur_proc->opcode <= 16)

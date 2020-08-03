@@ -106,9 +106,9 @@ typedef struct		s_process
 	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
 	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
-	void			*position;		// position address in memory
+	int				i;				// i is the index of the process in the cw->arena
 	int				jump;			// amount of bytes cursor must jump to get to the next operation
-	void			*pc;			// program counter = register that load the next opcode address that will be executed for the current process
+	int				pc;				// program counter = register that load the next opcode address that will be executed for the current process
 	int				*registers;		// 16 registers for a process/cursors of 4 bytes each.
 	t_champ			*champ;
 }					t_process;
@@ -116,7 +116,7 @@ typedef struct		s_process
 typedef struct		s_corewar
 {
 	char			*arena;			// memory area where champion will fight until death
-	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.
+	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.id des champs a chaque case.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
 	int				tot_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle. (total)
@@ -260,7 +260,7 @@ int					instruction_width(unsigned char encoding, size_t dir_s);
 bool				is_valid_opcode(char *arena, int pos);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
-void				*addr_next_opcode(char *arena, int mem_pos);
+int					addr_next_opcode(char *arena, int mem_pos);
 void				perform_opcode(t_cw *cw, t_process *cur_proc);
 
 /*
@@ -284,22 +284,22 @@ bool				vm_proc_only_one_standing(t_cw *cw);
 /*
 ** Fonctions pour effectuer les instructions asm dans l'arene
 */
-int					op_alive(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_store(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_addition(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_soustraction(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_and(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_or(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_xor(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_zerojump(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_store_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_long_load(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_long_load_index(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_long_fork(t_cw *cw, t_process *cur_proc, t_op op_elem);
-int					op_aff(t_cw *cw, t_process *cur_proc, t_op op_elem);
+int					op_alive(t_cw *cw, t_process *cur_proc);
+int					op_load(t_cw *cw, t_process *cur_proc);
+int					op_store(t_cw *cw, t_process *cur_proc);
+int					op_addition(t_cw *cw, t_process *cur_proc);
+int					op_soustraction(t_cw *cw, t_process *cur_proc);
+int					op_and(t_cw *cw, t_process *cur_proc);
+int					op_or(t_cw *cw, t_process *cur_proc);
+int					op_xor(t_cw *cw, t_process *cur_proc);
+int					op_zerojump(t_cw *cw, t_process *cur_proc);
+int					op_load_index(t_cw *cw, t_process *cur_proc);
+int					op_store_index(t_cw *cw, t_process *cur_proc);
+int					op_fork(t_cw *cw, t_process *cur_proc);
+int					op_long_load(t_cw *cw, t_process *cur_proc);
+int					op_long_load_index(t_cw *cw, t_process *cur_proc);
+int					op_long_fork(t_cw *cw, t_process *cur_proc);
+int					op_aff(t_cw *cw, t_process *cur_proc);
 int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type);
 
