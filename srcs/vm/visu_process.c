@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/30 11:10:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 14:38:20 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,19 @@
 
 t_visu      init_process(t_visu *v)
 {
-    v->font_process = TTF_OpenFont("./visu/Raleway-Black.ttf", 50);
-	if (!v->font_title)
-		printf("Error creating font : %s\n", SDL_GetError());
     v->process_title[0] = TTF_RenderText_Blended(v->font_process, "Cycle to die: ", v->color_title);
 	if (!v->process_title[0])
 		printf("Error creating text : %s\n", SDL_GetError());
     v->process_title[1] = TTF_RenderText_Blended(v->font_process, "Nb_lives: ", v->color_title);
 	if (!v->process_title[1])
 		printf("Error creating text : %s\n", SDL_GetError());
-    v->process_title[2] = TTF_RenderText_Blended(v->font_process, "i_cycle: ", v->color_title);
+    v->process_title[2] = TTF_RenderText_Blended(v->font_process, "Current cycle: ", v->color_title);
 	if (!v->process_title[2])
 		printf("Error creating text : %s\n", SDL_GetError());
-    v->process_rect.x = 400;
-    v->process_rect.y = 1075;
-    v->process_rect.w = 2500 - 400;
-    v->process_rect.h = 275;
+    v->process_rect.x = 405;
+    v->process_rect.y = 1080;
+    v->process_rect.w = 2500 - 405;
+    v->process_rect.h = 270;
     return (*v);
 }
 

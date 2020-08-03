@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:30:51 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/23 11:39:06 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/07/30 12:08:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,11 @@ t_visu		init_id(t_visu *v, t_parse *p)
     xplr = p->lst_champs;
     v->chp_n = 1;
     while (xplr && v->chp_n != ((t_champ*)(xplr->cnt))->id)
-        xplr = xplr->next;
-	v->font_p = TTF_OpenFont("./visu/Roboto-Black.ttf", 20);
-	if (!v->font_p)
-		printf("Error creating font : %s\n", SDL_GetError());	
+        xplr = xplr->next;	
 	while (i < p->nb_champ)
 	{
 		v->chp_id[i].x = 20;
-		v->chp_id[i].y = (i * 350);
+		v->chp_id[i].y = v->process_id.y + (i * 350);
 		v->chp_id[i].w = 400;
 		v->chp_id[i].h = 150;
         v->chp_name[i] = TTF_RenderText_Blended(v->font_p, ((t_champ*)(xplr->cnt))->name, v->color_chp[i]);
