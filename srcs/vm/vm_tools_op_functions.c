@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_op_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/08/03 16:50:58 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/03 17:15:39 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ int		is_valid_reg(char *arena, t_process *p)
 {
 	if (arena && p)
 		return (1);
-	return (0);
+	return (1);
 }
