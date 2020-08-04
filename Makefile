@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
+#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/03 18:51:26 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/04 09:46:42 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIB_DIR = libraries/
 LIBFT_DIR = libft
 LIB_NAME = libft.a
 LIB = -L $(LIBFT_DIR) -lft
-LIB_PRINTF = -L $(LIBFT_DIR)/ft_printf -lftprintf
+LIB_PRINTF = -L $(LIBFT_DIR)/ft_printf
 LIBFT = $(LIBFT_DIR)/$(LIB_NAME)
 
 #SDL
@@ -65,6 +65,7 @@ VM_FILES =	main					\
 			visu_chp				\
 			visu_menu				\
 			visu_launch				\
+			visu_tools				\
 			vm_tools_options		\
 			temporary_tools
 

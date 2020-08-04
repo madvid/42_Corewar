@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_options.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 18:22:58 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/03 18:54:02 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 09:31:52 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-#include "ft_printf.h"
+//#include "ft_printf.h"
 
 /*
 ** Function: dump_memory
@@ -27,9 +27,9 @@ int		dump_memory(char *arena)
 	int		i;
 
 	i = 0;
-	while (i < MEM_SIZE)
+	while (i < MEM_SIZE && arena)
 	{
-		ft_printf("0x%X : %s\n", i, "toto");
+		printf("0x%X : %s\n", i, "toto");
 		i = i + 65;
 	}
 	return (DUMP_SIG);
