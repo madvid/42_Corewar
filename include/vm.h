@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 11:38:11 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 12:28:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ typedef struct		s_corewar
 typedef struct		s_visu
 {
 	SDL_Window		*screen;
-	SDL_Renderer	*renderer;
+	SDL_Renderer	*r;
 	int				isquit;
 	SDL_Event		event;
 	Mix_Music		*musique;
@@ -203,6 +203,10 @@ typedef struct		s_visu
 	SDL_Surface		*process_title[3];
 	SDL_Texture		*process_vn[3];
 	SDL_Texture		*process_vt[3];
+/*
+**Render data
+*/
+	int				i;
 
 }					t_visu;
 
@@ -314,12 +318,12 @@ int					get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type);
 int					dump_memory(char *arena);
 
 /*
-**------------------Visualizer functions------------------
+**
+**<<<<<<<<<<<<<<<<<<Visualizer functions>>>>>>>>>>>>>>>>>>
+**
+**<<<<<Window functions>>>>>
 */
 
-/*
-**Window functions
-*/
 void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
@@ -330,41 +334,43 @@ t_visu  			init_menu(t_visu *v);
 void				load_visu(t_visu *v, t_parse *p, t_cw *cw);
 
 /*
-**Champions functions
+**<<<<<Champions functions>>>>>
 */
 t_visu				init_id(t_visu *v, t_parse *p);
 void				load_chp(t_visu *v, t_parse *p);
 
 /*
-**Arena functions
+**<<<<<Arena functions>>>>>
 */
+
 t_visu				init_arena(t_visu *v);
-void				load_arena(t_visu *v, t_cw *cw, t_parse *p);
-t_list				*get_chp_id(t_list *xplr, t_visu *v, t_parse *p, int i);
-void				get_items_cnt(t_visu *v, t_cw *cw, int i);
-void				get_arena_texture(t_visu *v, int i, t_cw *cw);
+void				load_arena(t_visu *v, t_cw *cw);
 
 /*
-**Render functions
+**<<<<<Render functions>>>>>
 */
+
 void				visu_render(t_visu *v, t_parse *p);
-void				arena_render(t_visu *v, t_parse *p);
 void				render_destroy(t_visu *v);
 void				render_destroy(t_visu *v);
 void				texture_free(t_visu *v);
 
 /*
-**Process info functions
+**<<<<<Process info functions>>>>>
 */
+
 t_visu				init_process(t_visu *v);
 void				load_process(t_visu *v, t_cw *cw);
-void				set_coo_process(t_visu *v, int i);
-void				get_process_data(t_visu *v, t_cw *cw);
-void				process_to_texture(t_visu *v, int i);
 
 /*
-**Tools
+**<<<<<Tools>>>>>
 */
+
 char				*ft_itoa_base2(unsigned long long nb, char *base);
+void				main_exe(t_visu *v, t_parse *p, t_cw *cw);
+void    			music_launcher(t_visu *v);
+t_visu				visu_breaker(t_visu *v);
+t_visu				visu_breaker2(t_visu *v);
+t_visu				init_details(t_visu *v);
 
 #endif
