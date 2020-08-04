@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   type_ox.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: weilin <weilin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 19:08:09 by weilin            #+#    #+#             */
-/*   Updated: 2020/02/25 19:43:34 by weilin           ###   ########.fr       */
+/*   Updated: 2020/08/04 12:02:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include "libft.h"
 #include "ft_printf.h"
 
 void	fillwidth_base(t_data *t, int n)
