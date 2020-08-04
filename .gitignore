@@ -1,3 +1,6 @@
+# fichier musique
+*.mp3
+
 # repertoire de test et ressources
 test/
 ressources/
