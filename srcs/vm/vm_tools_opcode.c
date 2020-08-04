@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 17:51:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/03 18:46:15 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 	// t_op_funct[12] = &op_long_load;
 	// t_op_funct[13] = &op_long_load_index;
 	t_op_funct[14] = &op_long_fork;
-	// t_op_funct[15] = &op_aff;
+	t_op_funct[15] = &op_aff;
 }
 
 /*
@@ -49,14 +49,16 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		printf("[perform_opcode] is_valid_opcode = %d\n", is_valid_opcode(cw->arena, cur_proc));
-		printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[cur_proc->i]);
-		printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[cur_proc->i + 1]);
+		// printf("[perform_opcode] is_valid_opcode = %d\n", is_valid_opcode(cw->arena, cur_proc));
+		// printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[cur_proc->i]);
+		// printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[cur_proc->i + 1]);
 		if (!is_valid_opcode(cw->arena, cur_proc))
 			return ;
-		ret = op_funct[(int)(cur_proc->opcode) - 1](cw, cur_proc);
+		ret = op_funct[cur_proc->opcode - 1](cw, cur_proc);
+		// if (ret == 0 && (cw->options->verbose & xx)) <- definir le niveau de verbose
+		// 	ft_printf("P-%d: instruction %d(%s) incorrect\n", cur_proc->id, op_tab[cur_proc->opcode - 1].name);
 		// if (ret == -1)
-		// 	return (vm_error_manager(4, &cw)); // voir s'il faut recevoir **cw en argument et il va falloir rebosser le error_manager pour gerer la liberation de memoire !
+		// 	return (vm_error_manager(, cw));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 18:07:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/03 18:48:54 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 */
 
 # define RELATIVE 10
+# define DUMP_SIG -20
 
 /*
 ** structure pour exploiter le fichier op.c
@@ -75,6 +76,7 @@ typedef struct		s_options
 	ssize_t			dump_cycle;
 	bool			n;
 	bool			aff;
+	u_int8_t		verbose;
 
 }					t_options;
 
@@ -103,7 +105,7 @@ typedef struct		s_process
 {
 	int				id;				// unique to each process
 	bool			carry;			// flag carry= which can be changed by certain operations and which affects zjmp operation, initialised with value false.
-	char			opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
+	int				opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
 	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	int				i;				// i is the index of the process in the cw->arena
@@ -137,6 +139,7 @@ typedef struct		s_visu
 	SDL_Renderer	*renderer;
 	int				isquit;
 	SDL_Event		event;
+	Mix_Music		*musique;
 /*
 **Menu data
 */
@@ -305,7 +308,12 @@ int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type);
 
 /*
-**------------------Bonus functions------------------
+** Fonctions pour la gestion des options de ./corewar
+*/
+int					dump_memory(char *arena);
+
+/*
+**------------------Visualizer functions------------------
 */
 
 /*
@@ -319,19 +327,22 @@ double    			menu_move(t_visu *v, double angle);
 void    			load_menu(t_visu *v);
 t_visu  			init_menu(t_visu *v);
 void				load_visu(t_visu *v, t_parse *p, t_cw *cw);
+
 /*
 **Champions functions
 */
 t_visu				init_id(t_visu *v, t_parse *p);
 void				load_chp(t_visu *v, t_parse *p);
+
 /*
 **Arena functions
 */
 t_visu				init_arena(t_visu *v);
-void      			load_arena(t_visu *v, t_cw *cw, t_parse *p);
+void				load_arena(t_visu *v, t_cw *cw, t_parse *p);
 t_list				*get_chp_id(t_list *xplr, t_visu *v, t_parse *p, int i);
 void				get_items_cnt(t_visu *v, t_cw *cw, int i);
-void        		get_arena_texture(t_visu *v, int i, t_cw *cw);
+void				get_arena_texture(t_visu *v, int i, t_cw *cw);
+
 /*
 **Render functions
 */
@@ -339,14 +350,17 @@ void				visu_render(t_visu *v, t_parse *p);
 void				arena_render(t_visu *v, t_parse *p);
 void				render_destroy(t_visu *v);
 void				render_destroy(t_visu *v);
+void				texture_free(t_visu *v);
+
 /*
 **Process info functions
 */
-t_visu      		init_process(t_visu *v);
+t_visu				init_process(t_visu *v);
 void				load_process(t_visu *v, t_cw *cw);
 void				set_coo_process(t_visu *v, int i);
 void				get_process_data(t_visu *v, t_cw *cw);
 void				process_to_texture(t_visu *v, int i);
+
 /*
 **Tools
 */

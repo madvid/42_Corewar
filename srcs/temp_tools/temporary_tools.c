@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temporary_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 17:17:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/03 16:50:14 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,8 +217,8 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("| n_lives:_____%2d                                              |\n", process->n_lives);
 	printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
 	printf("| jump:________%d                                               |\n", process->jump);
-	printf("| position:____%14p                                  |\n", process->position);
-	printf("| pc:__________%14p                                  |\n", process->pc);
+	printf("| position:____%14d                                  |\n", process->i);
+	printf("| pc:__________%14d                                  |\n", process->pc);
 	printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");
 	printf("| registers:___| %2d | %2d | %2d | %2d |   |\n", process->registers[0], process->registers[1], process->registers[2], process->registers[3]);
 	printf("|            r5| %2d | %2d | %2d | %2d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
@@ -265,8 +265,8 @@ void		tool_print_short_processors(t_cw *cw)
 	while (xplr)
 	{
 		proc = (t_process*)(xplr->cnt);
-		index = proc->position - (void*)(cw->arena);
-		printf("P %d -- is at the memory adress : %p (index = %d)\n", proc->id, proc->position, index);
+		index = proc->i;
+		printf("P %d -- is at the memory adress : %d (index = %d)\n", proc->id, proc->i, index);
 		xplr = xplr->next;
 	}
 }

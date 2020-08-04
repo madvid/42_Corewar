@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_process.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 10:02:19 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:09:43 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void	vm_proc_mv_proc_pos(t_cw *cw)
 			cur_proc->pc = addr_next_opcode(cw->arena, op_pos);
 			cur_proc->opcode = cw->arena[op_pos];
 			if (cur_proc->opcode >= 1 && cur_proc->opcode <= 16)
-				cur_proc->wait_cycles = op_tab[(int)(cur_proc->opcode) - 1].cycle;
+				cur_proc->wait_cycles = op_tab[cur_proc->opcode - 1].cycle;
 			else
 				cur_proc->wait_cycles = 1;
 		}

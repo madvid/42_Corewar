@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/07/23 11:02:23 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/03 19:01:31 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,9 +109,24 @@ LIB_FILES =	ft_memset	\
 			ft_1d_int_table	\
 			ft_1d_int_table_set
 
-
 LIB_SRCS = $(addsuffix .c, $(LIB_FILES))
 LIB_OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(LIB_FILES)))
+
+PRINTF_FILES =	base		\
+				ft_printf	\
+				parse		\
+				print_chars	\
+				print_int	\
+				tool		\
+				type_csp	\
+				type_di		\
+				type_ox		\
+				type_uint	\
+				parse_flags	\
+				print_addr
+
+PRINTF_SRCS = $(addsuffix .c, $(PRINTF_FILES))
+PRINTF_OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(PRINTF_FILES)))
 
 # ---------- COLORS ---------- #
 NOC = \033[0m
