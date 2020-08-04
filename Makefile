@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/03 16:58:59 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/04 09:46:42 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ LIB_DIR = libraries/
 LIBFT_DIR = libft
 LIB_NAME = libft.a
 LIB = -L $(LIBFT_DIR) -lft
+LIB_PRINTF = -L $(LIBFT_DIR)/ft_printf
 LIBFT = $(LIBFT_DIR)/$(LIB_NAME)
 
 #SDL
@@ -64,6 +65,8 @@ VM_FILES =	main					\
 			visu_chp				\
 			visu_menu				\
 			visu_launch				\
+			visu_tools				\
+			vm_tools_options		\
 			temporary_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
@@ -93,7 +96,7 @@ WHITE = \033[1;37m
 all: $(VM)
 
 $(VM): $(VM_OBJ)
-	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) -F $(FW_PATH)\
+	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) $(LIB_PRINTF) -F $(FW_PATH)\
 		-framework SDL2\
 		-framework SDL2_image\
 		-framework SDL2_ttf\
@@ -110,6 +113,7 @@ $(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
 $(SRC_DIR)$(VM_DIR)%.o: %.c
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
 	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
+	@#$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
 
 $(LIBFT): $(LIBFT_DIR)/$(INC_DIR)libft.h
 	@make -sC $(LIBFT_DIR)

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 16:23:19 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/03 18:46:39 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ int		vm_execution(t_cw *cw, t_parse * p)
 			vm_proc_cycle(cw);
 			vm_proc_perform_opcode(cw);
 			vm_proc_mv_proc_pos(cw);
+			if (cw->options.dump && i_cycle == cw->options.dump_cycle)
+				return (dump_memory(cw->arena));
 		}
 		// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
 		cw->tot_lives = vm_proc_get_lives(cw);
