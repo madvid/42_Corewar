@@ -21,22 +21,21 @@
 **	[value_2]:
 */
 
-int		op_long_load(t_cw *cw, t_process *cur_proc)
+int		op_long_load(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
 	int			a;
 	int			b;
 
-	a = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw, cur_proc, cur_proc->i + 2, a);
-	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6) == IND_CODE)
-		a = cw->arena[(cur_proc->i + a /*% IDX_MOD*/) % MEM_SIZE];
-		//on ne coupe pas la valeur IND_CODE avec IDX_MOD contrairement au ld simple
-	b = instruction_width(cw->arena[(cur_proc->i + 1) % MEM_SIZE] \
-		& 0b11000000, op_tab[cur_proc->opcode - 1].direct_size);
-	b = get_arg_value(cw, cur_proc, cur_proc->i + 2 + b, REG_CODE);
-	cur_proc->carry = (a == 0) ? 1 : 0;
-	cur_proc->registers[b - 1] = a;
+	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
+	a = get_arg_value(cw->arena, p, p->i + 2, a);
+	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6) == IND_CODE)
+		a = cw->arena[(p->i + a) % MEM_SIZE];
+	b = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+		& 0b11000000, op_tab[p->opcode - 1].direct_size);
+	b = get_arg_value(cw->arena, p, p->i + 2 + b, REG_CODE);
+	p->carry = (a == 0) ? 1 : 0;
+	p->registers[b - 1] = a;
 	return (1);
 }
 
@@ -49,38 +48,23 @@ int		op_long_load(t_cw *cw, t_process *cur_proc)
 **	[value_2]:
 */
 
-int		op_long_load_index(t_cw *cw, t_process *cur_proc)
+int		op_long_load_index(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
 	int			a;
 	int			b;
 	int			c;
 
-	a = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw, cur_proc, cur_proc->i + 2, a + RELATIVE);
-	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6) == REG_CODE)
-	{
-		if (a > REG_NUMBER || a < 1)
-			return (0);
-		a = cur_proc->registers[a - 1];
-	}
-	c = instruction_width(cw->arena[(cur_proc->i + 1) % MEM_SIZE] \
-		& 0b11000000, op_tab[cur_proc->opcode - 1].direct_size);
-	b = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, cur_proc, cur_proc->i + 2 + c, b + RELATIVE);
-	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
-	{
-		if (b > REG_NUMBER || b < 1)
-			return (0);
-		b = cur_proc->registers[b - 1];
-	}
-	c = instruction_width(cw->arena[(cur_proc->i + 1) % MEM_SIZE] \
-		& 0b11110000, op_tab[cur_proc->opcode - 1].direct_size);
-	c = get_arg_value(cw, cur_proc, cur_proc->i + 2 + c, REG_CODE);
-	if (c > REG_NUMBER || c < 1)
-		return (0);
-	cur_proc->carry = (a == 0) ? 1 : 0;
-	cur_proc->registers[c - 1] = cw->arena[(cur_proc->i + a + b) % MEM_SIZE];
+	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
+	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+		& 0b11000000, op_tab[p->opcode - 1].direct_size);
+	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
+	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+		& 0b11110000, op_tab[p->opcode - 1].direct_size);
+	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	p->registers[c - 1] = cw->arena[(p->i + a + b) % MEM_SIZE];
 	return (1);
 }
 

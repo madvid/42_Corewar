@@ -58,25 +58,20 @@ int		op_alive(t_cw *cw, t_process *cur_proc)
 **	0:
 */
 
-int		op_load(t_cw *cw, t_process *cur_proc)
+int		op_load(t_cw *cw, t_process *p)
 {
-	int			arg;
-	u_int8_t	reg;
 	extern t_op	op_tab[17];
+	int			arg;
+	int			reg;
 
-	printf("Load instruction en cours\n");
-	arg = get_arg_value(cw, cur_proc, cur_proc->i + 2, \
-		(((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
-	reg = instruction_width(((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b11000000), op_tab[cur_proc->opcode - 1].direct_size);
-	printf("reg apres instruction width: %d\n", reg);
-	reg = get_arg_value(cw, cur_proc, cur_proc->i + 2 + reg, \
-		((cw->arena[(cur_proc->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
-	printf("numero de registre ou ecrire: %d\n", reg);
-	if (reg > REG_NUMBER || reg < 1)
-		return (0);
-	cur_proc->registers[reg - 1] = arg;
-	cur_proc->carry = (arg == 0) ? 1 : 0;
-	// printf("valeur du contenue du registre apres ecriture: %d\n", arg);
+	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
+		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
+	reg = instruction_width((cw->arena[(p->i + 1) \
+		% MEM_SIZE]) & 0b11000000, op_tab[p->opcode - 1].direct_size);
+	reg = get_arg_value(cw->arena, p, p->i + 2 + reg, \
+		((cw->arena[(p->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
+	p->carry = (arg == 0) ? 1 : 0;
+	p->registers[reg - 1] = arg;
 	return (1);
 }
 
@@ -93,35 +88,29 @@ int		op_load(t_cw *cw, t_process *cur_proc)
 **	[value_2]: 0 else
 */
 
-int		op_store(t_cw *cw, t_process *cur_proc)
+int		op_store(t_cw *cw, t_process *p)
 {
-	int			a;
-	int			b;
+	int		a;
+	int		b;
+	int		i;
 
-	printf("Store instruction en cours\n");
-	a = cw->arena[(cur_proc->i + 2) % MEM_SIZE];
-	if (a < 1 || a > REG_NUMBER)
-		return (0);
-	b = cw->arena[(cur_proc->i + 3) % MEM_SIZE];
-	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
+	a = cw->arena[(p->i + 2) % MEM_SIZE];
+	b = cw->arena[(p->i + 3) % MEM_SIZE];
+	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 48) >> 4) == IND_CODE)
 	{
-		b = (b << 8) | cw->arena[(cur_proc->i + 4) % MEM_SIZE];
-		// printf("     (cur_proc->i + (b %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + (b % IDX_MOD)) % MEM_SIZE);
-		// printf("     (cur_proc->i + ((b+1) %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + ((b+1) % IDX_MOD)) % MEM_SIZE);
-		// printf("     (cur_proc->i + ((b+2) %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + ((b+2) % IDX_MOD)) % MEM_SIZE);
-		// printf("     (cur_proc->i + ((b+3) %% IDX_MOD)) %% MEM_SIZE = %d\n", (cur_proc->i + ((b+3) % IDX_MOD)) % MEM_SIZE);
-		// printf("     (cur_proc->registers[a - 1] & 4278190080) >> 24 = %lX\n", (cur_proc->registers[a - 1] & 4278190080) >> 24);
-		// printf("     (cur_proc->registers[a - 1] & 16711680) >> 16 = %X\n", (cur_proc->registers[a - 1] & 16711680) >> 16);
-		// printf("     (cur_proc->registers[a - 1] & 65280) >> 8 = %X\n", (cur_proc->registers[a - 1] & 65280) >> 8);
-		// printf("     (cur_proc->registers[a - 1] & 255) = %X\n", (cur_proc->registers[a - 1] & 255));
-		cw->arena[(cur_proc->i + (b % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 4278190080) >> 24;
-		cw->arena[(cur_proc->i + ((b + 1) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 16711680) >> 16;
-		cw->arena[(cur_proc->i + ((b + 2) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 65280) >> 8;
-		cw->arena[(cur_proc->i + ((b + 3) % IDX_MOD)) % MEM_SIZE] = (cur_proc->registers[a - 1] & 255);
+		b = (b << 8) | cw->arena[(p->i + 4) % MEM_SIZE];
+		i = -1;
+		while (++i < 4)
+		{
+			cw->arena[(p->i + (b % IDX_MOD) + i) % MEM_SIZE] \
+			= (p->registers[a - 1] & (0xFF000000 >> (8 * i))) \
+				>> (24 - (8 * i));
+			cw->id_arena[(p->i + (b % IDX_MOD) + i) % MEM_SIZE] \
+			= p->champ->id;
+		}
 	}
-	else if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE \
-		&& b > 0 && b <= REG_NUMBER)
-		cur_proc->registers[b - 1] = cur_proc->registers[a - 1];
+	else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 48) >> 4) == REG_CODE)
+		p->registers[b - 1] = p->registers[a - 1];
 	else
 		return (0);
 	return (1);

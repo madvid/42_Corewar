@@ -21,15 +21,15 @@
 **	[value_2]:
 */
 
-int		op_zerojump(t_cw *cw, t_process *cur_proc)
+int		op_zerojump(t_cw *cw, t_process *p)
 {
 	int		a;
 
-	if (!cur_proc->carry)
+	if (!p->carry)
 		return (0);
-	a = (cw->arena[(cur_proc->i + 1) % MEM_SIZE]) << 8 \
-		| (cw->arena[(cur_proc->i + 2) % MEM_SIZE]);
-	cur_proc->pc = cur_proc->i + (a % IDX_MOD);
+	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
+		| (cw->arena[(p->i + 2) % MEM_SIZE]);
+	p->pc = p->i + (a % IDX_MOD);
 	return (1);
 }
 
@@ -42,54 +42,63 @@ int		op_zerojump(t_cw *cw, t_process *cur_proc)
 **	[value_2]:
 */
 
-int		op_load_index(t_cw *cw, t_process *cur_proc)
+int		op_load_index(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
 	int			a;
 	int			b;
 	int			c;
 
-	a = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw, cur_proc, cur_proc->i + 2, a + RELATIVE);
-	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6) == REG_CODE)
-	{
-		if (a > REG_NUMBER || a < 1)
-			return (0);
-		a = cur_proc->registers[a - 1];
-	}
-	c = instruction_width(cw->arena[(cur_proc->i + 1) % MEM_SIZE] \
-		& 0b11000000, op_tab[cur_proc->opcode - 1].direct_size);
-	b = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw, cur_proc, cur_proc->i + 2 + c, b + RELATIVE);
-	if (((cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
-	{
-		if (b > REG_NUMBER || b < 1)
-			return (0);
-		b = cur_proc->registers[b - 1];
-	}
-	c = instruction_width(cw->arena[(cur_proc->i + 1) % MEM_SIZE] \
-		& 0b11110000, op_tab[cur_proc->opcode - 1].direct_size);
-	c = get_arg_value(cw, cur_proc, cur_proc->i + 2 + c, REG_CODE);
-	if (c > REG_NUMBER || c < 1)
-		return (0);
-	cur_proc->carry = (a == 0) ? 1 : 0;
-	cur_proc->registers[c - 1] = cw->arena[(cur_proc->i + (a + b) % IDX_MOD) % MEM_SIZE];
+	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
+	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+		& 0b11000000, op_tab[p->opcode - 1].direct_size);
+	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
+	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+		& 0b11110000, op_tab[p->opcode - 1].direct_size);
+	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	p->registers[c - 1] = cw->arena[(p->i + (a + b) % IDX_MOD) % MEM_SIZE];
 	return (1);
 }
 
 /*
 ** Function: op_store_index
 ** Description:
-**	[put some explanations here !]
+**	This operation writes the value from the registry that was passed as first
+**	argument.
 ** Return:
 **	[value_1]:
 **	[value_2]:
 */
 
-/*int		op_store_index(t_cw *cw, t_process *cur_proc)
+int		op_store_index(t_cw *cw, t_process *p)
 {
-	...;
-}*/
+	extern t_op	op_tab[17];
+	int			a;
+	int			b;
+	int			c;
+	int			i;
+
+	a = get_arg_value(cw->arena, p, p->i + 2, REG_CODE + RELATIVE);
+	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+		& 0b11000000, op_tab[p->opcode - 1].direct_size);
+	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
+	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+		& 0b11110000, op_tab[p->opcode - 1].direct_size);
+	c = get_arg_value(cw->arena, p, p->i + 2 + c, ((cw->arena[(p->i + 1) \
+		% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE);
+	i = -1;
+	while (++i < 4)
+	{
+		cw->arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
+		= (p->registers[a - 1] & (0xFF000000 >> (8 * i))) >> (24 - (8 * i));
+		cw->id_arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
+		= p->champ->id;
+	}
+	return (1);
+}
 
 
 /*
