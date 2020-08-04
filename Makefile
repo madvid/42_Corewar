@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
+#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/04 09:46:42 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/04 12:28:41 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,6 +71,7 @@ VM_FILES =	main					\
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)
+VM_D = $(VM_SRC:.c=.d) # temporaire !!!!
 DEP_NAME = $(VM_FILES:.c=.o)
 vpath %.c $(SRC_DIR)$(VM)
 vpath %.c $(SRC_DIR)temp_tools
@@ -132,9 +133,9 @@ clean:
 	@echo "\n $(CYAN)Supressing $(VM) objects$(NOC)..."
 	@rm -rf $(VM_OBJ)
 	@echo " $(RED)-> $(VM) objects destroyed$(NOC)"
-#@echo "\n $(CYAN)Supressing $(VM) files with .d extension$(NOC)..."
-#@rm -rf $(SRC_DIR)$(VM_DIR)$(VM_FILES:.c=.d)
-#@echo " $(RED)-> $(VM) .d files destroyed$(NOC)"
+	@echo "\n $(CYAN)Supressing $(VM) files with .d extension [THIS IS TEMPORARY]$(NOC)..."
+	@rm -rf $(VM_D)
+	@echo " $(RED)-> $(VM) .d files destroyed$(NOC)"
 
 fclean: clean
 	@make fclean -C $(LIBFT_DIR)

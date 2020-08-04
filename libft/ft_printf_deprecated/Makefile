@@ -3,23 +3,49 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: weilin <weilin@student.42.fr>              +#+  +:+       +#+         #
+#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/02/25 19:39:21 by weilin           ###   ########.fr        #
+#    Updated: 2020/08/04 10:09:32 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
 LIB_DIR = libft/
-LIB_FILES = ft_atoi ft_strlen ft_bzero ft_isdigit ft_strchr ft_int_len \
-			ft_strdup ft_strsub ft_strtolower ft_strjoin ft_strnew ft_strcat \
-			ft_strcpy ft_itoa ft_strnew_c ft_strdel ft_memalloc ft_memdel\
-			ft_strcmp  ft_strreset 
+LIB_FILES = ft_atoi			\
+			ft_strlen		\
+			ft_bzero		\
+			ft_isdigit		\
+			ft_strchr		\
+			ft_int_len		\
+			ft_strdup		\
+			ft_strsub		\
+			ft_strtolower	\
+			ft_strjoin		\
+			ft_strnew		\
+			ft_strcat		\
+			ft_strcpy		\
+			ft_itoa			\
+			ft_strnew_c		\
+			ft_strdel		\
+			ft_memalloc		\
+			ft_memdel		\
+			ft_strcmp		\
+			ft_strreset 
 
-FILES = ft_printf parse tool type_csp print_chars print_addr type_di base \
-		type_ox print_int type_uint parse_flags
+FILES =	ft_printf	\
+		parse		\
+		tool		\
+		type_csp	\
+		print_chars	\
+		print_addr	\
+		type_di		\
+		base		\
+		type_ox		\
+		print_int	\
+		type_uint	\
+		parse_flags
 
 FILES+= $(addprefix $(LIB_DIR),$(LIB_FILES))
 

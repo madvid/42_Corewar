@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   print_chars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: weilin <weilin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 17:35:55 by weilin            #+#    #+#             */
-/*   Updated: 2020/02/24 16:00:18 by weilin           ###   ########.fr       */
+/*   Updated: 2020/08/04 10:40:31 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "ft_printf.h"
 
 void	fillwidth_str(t_data *t)

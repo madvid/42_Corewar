@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   print_addr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: weilin <weilin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 17:40:43 by weilin            #+#    #+#             */
-/*   Updated: 2020/02/24 15:59:23 by weilin           ###   ########.fr       */
+/*   Updated: 2020/08/04 11:34:20 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "ft_printf.h"
 
 void	fillwidth_addr(t_data *t)

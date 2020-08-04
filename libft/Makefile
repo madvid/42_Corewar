@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/08/03 19:01:31 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/04 11:06:32 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ vpath %.c srcs/string
 vpath %.c srcs/memory
 vpath %.c srcs/table
 vpath %.c srcs/printing
+vpath %.c srcs/ft_printf
 vpath %.c srcs/others
 vpath %.o $(OBJ_DIR)
 vpath %.h include
@@ -60,11 +61,14 @@ LIB_FILES =	ft_memset	\
 			ft_isprint	\
 			ft_toupper	\
 			ft_tolower	\
+			ft_strtolower	\
 			ft_memalloc	\
 			ft_memdel	\
 			ft_strnew	\
+			ft_strnew_c	\
 			ft_strdel	\
 			ft_strclr	\
+			ft_strreset	\
 			ft_striter	\
 			ft_striteri	\
 			ft_strmap	\
@@ -109,11 +113,8 @@ LIB_FILES =	ft_memset	\
 			ft_1d_int_table	\
 			ft_1d_int_table_set
 
-LIB_SRCS = $(addsuffix .c, $(LIB_FILES))
-LIB_OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(LIB_FILES)))
-
-PRINTF_FILES =	base		\
-				ft_printf	\
+PRINTF_FILES =	ft_printf	\
+				base		\
 				parse		\
 				print_chars	\
 				print_int	\
@@ -127,6 +128,12 @@ PRINTF_FILES =	base		\
 
 PRINTF_SRCS = $(addsuffix .c, $(PRINTF_FILES))
 PRINTF_OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(PRINTF_FILES)))
+
+LIB_SRCS = $(addsuffix .c, $(LIB_FILES))
+LIB_SRCS += $(PRINTF_SRCS)
+LIB_OBJS = $(addprefix $(OBJ_DIR), $(LIB_SRCS:.c=.o))
+#LIB_OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(LIB_FILES)))
+
 
 # ---------- COLORS ---------- #
 NOC = \033[0m

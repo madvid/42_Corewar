@@ -1,43 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vm_tools_options.c                                 :+:      :+:    :+:   */
+/*   ft_strtolower.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/03 18:22:58 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 12:27:10 by mdavid           ###   ########.fr       */
+/*   Created: 2020/08/04 10:44:44 by mdavid            #+#    #+#             */
+/*   Updated: 2020/08/04 12:06:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vm.h"
+#include "libft.h"
 
 /*
-** Function: dump_memory
+** Function: ft_strtolower
 ** Description:
-**	print on standard output the arena memory state at the dump_cycle cycles
-**	after the beginning of the "battle".
-** Return:
-**	DUMP_SIG: signal of the dump operation.
+**	The functon converts uppercase letters within the string to lowrcase.
 */
 
-int		dump_memory(char *arena)
+void	ft_strtolower(char *str)
 {
 	int		i;
-	int		j;
-	
+
 	i = 0;
-	while (i < MEM_SIZE && arena)
+	while (str[i])
 	{
-		j = 0;
-		ft_printf("0x%.4x :", i);
-		while (j < 64)
-		{
-			ft_printf(" %2.2x", (u_int8_t)arena[i + j]);
-			j++;
-		}
-		ft_putchar('\n');
-		i = i + j;
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] += 32;
+		i++;
 	}
-	return (DUMP_SIG);
 }
