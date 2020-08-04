@@ -276,7 +276,7 @@ void				perform_opcode(t_cw *cw, t_process *cur_proc);
 */
 int					get_nb_arg_b_encoding(u_int8_t encoding);
 bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
-int					is_valid_reg(char *arena, t_process *p);
+bool				is_valid_reg(char *arena, t_process *p);
 
 /*
 ** Fonctions concernant le déroulement des processus au sein de la VM
@@ -310,7 +310,7 @@ int					op_long_load_index(t_cw *cw, t_process *cur_proc);
 int					op_long_fork(t_cw *cw, t_process *cur_proc);
 int					op_aff(t_cw *cw, t_process *cur_proc);
 int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
-int					get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type);
+int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 
 /*
 ** Fonctions pour la gestion des options de ./corewar
