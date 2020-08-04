@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/04 11:13:25 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/04 12:40:09 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		music_launcher(t_visu *v)
 
 void		main_exe(t_visu *v, t_parse *p, t_cw *cw)
 {
-	cw->cycle_to_die = 1000;
+	cw->cycle_to_die = 10000;
 	cw->i_cycle = -1;
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0\
 			&& v->isquit == 0)

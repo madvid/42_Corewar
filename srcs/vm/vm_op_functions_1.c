@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 09:30:41 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/04 14:58:05 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int		op_store(t_cw *cw, t_process *cur_proc)
 		cur_proc->registers[b - 1] = cur_proc->registers[a - 1];
 	else
 		return (0);
+	verbose(cw, cur_proc) = 0 || 1;
 	return (1);
 }
 
