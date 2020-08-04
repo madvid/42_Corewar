@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/03 18:46:39 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 12:07:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,8 @@ int		vm_execution(t_cw *cw, t_parse * p)
 		while (++i_cycle < cw->cycle_to_die)
 		{
 			printf(">>> i_cycle = %d\n", i_cycle);
-			tool_print_short_processors(cw);
 			tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
+			tool_print_short_processors(cw);
 			vm_proc_cycle(cw);
 			vm_proc_perform_opcode(cw);
 			vm_proc_mv_proc_pos(cw);

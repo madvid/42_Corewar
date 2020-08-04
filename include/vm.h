@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/03 18:48:54 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 11:38:11 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 ** [Put some explanations]
 */
 # include "../libft/include/libft.h"
+# include "../libft/include/ft_printf.h"
 #include "error_messages.h"
 
 /*
