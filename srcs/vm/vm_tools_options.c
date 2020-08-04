@@ -6,12 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 18:22:58 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/03 18:54:02 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 11:55:31 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-#include "ft_printf.h"
 
 /*
 ** Function: dump_memory
@@ -25,12 +24,20 @@
 int		dump_memory(char *arena)
 {
 	int		i;
-
+	int		j;
+	
 	i = 0;
-	while (i < MEM_SIZE)
+	while (i < MEM_SIZE && arena)
 	{
-		ft_printf("0x%X : %s\n", i, "toto");
-		i = i + 65;
+		j = 0;
+		ft_printf("0x%.4x :", i);
+		while (j < 64)
+		{
+			ft_printf(" %2.2x", (u_int8_t)arena[i + j]);
+			j++;
+		}
+		ft_putchar('\n');
+		i = i + j;
 	}
 	return (DUMP_SIG);
 }
