@@ -28,7 +28,7 @@
 **	<type> == 11 RETURNS cur_proc->registers[value]
 */
 
-int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
+int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)
 {
 	int			value;
 	extern t_op	op_tab[17];
@@ -36,26 +36,55 @@ int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
 	if ((type % 10) != REG_CODE && (type % 10) != IND_CODE \
 		&& (type % 10) != DIR_CODE)
 		return (0);
-	value = cw->arena[(index) % MEM_SIZE];
+	value = arena[(index) % MEM_SIZE];
 	if ((type % 10) == REG_CODE)
-		return (value);
-	value = value << 8 | cw->arena[(index + 1) % MEM_SIZE];
+		return ((type / 10) == 0 ? value : cur_proc->registers[value - 1]);
+	value = value << 8 | arena[(index + 1) % MEM_SIZE];
 	if ((type % 10) == IND_CODE)
 		return ((type / 10) == 0 ? value \
-			: cw->arena[(cur_proc->i + (value % IDX_MOD)) % MEM_SIZE]);
+			: arena[(cur_proc->i + (value % IDX_MOD)) % MEM_SIZE]);
 	if ((type % 10) == DIR_CODE)
 	{
 		if (op_tab[(int)(cur_proc->opcode)].direct_size == 1)
 			return (value);
-		value = value << 8 | cw->arena[(index + 2) % MEM_SIZE];
-		return (value = value << 8 | cw->arena[(index + 3) % MEM_SIZE]);
+		value = value << 8 | arena[(index + 2) % MEM_SIZE];
+		return (value = value << 8 | arena[(index + 3) % MEM_SIZE]);
 	}
 	return (0);
 }
 
-int		is_valid_reg(char *arena, t_process *p)
+/*
+** Function: is_valid_reg
+** Description:
+**	CHECK IF THE REGISTER VALUES ∈ [1; REG_NUMBER].
+**
+**	HOW <n> AND <mask> WORK:
+**	n = 0		mask = 2^(7 - 2 * n) + 2^(6 - 2 * n) = 0b11000000
+**	n = 1		mask = 2^(7 - 2 * n) + 2^(6 - 2 * n) = 0b00110000
+**	n = 2		mask = 2^(7 - 2 * n) + 2^(6 - 2 * n) = 0b00001100
+*/
+
+bool		is_valid_reg(char *arena, t_process *p)
 {
-	if (arena && p)
-		return (1);
-	return (1);
+	extern t_op	op_tab[17];
+	size_t		n;
+	int			mask;
+	int			arg;
+	int			j;
+
+	n = 0;
+	j = 0;
+	while (n < op_tab[p->opcode - 1].n_arg)
+	{
+		mask = ft_power(2, 7 - (2 * n)) + ft_power(2, 6 - (2 * n));
+		arg = get_arg_value(arena, p, p->i + 1 + j, arena[p->i + 1] & mask \
+			>> (6 - (2 * n)));
+		j = j + instruction_width(arena[p->i + 1] \
+			& mask, op_tab[p->opcode - 1].direct_size);
+		if ((arena[p->i + 1] & mask >> (6 - (2 * n))) == REG_CODE)
+			if (arg < 1 || arg > REG_NUMBER)
+				return (false);
+		n += 1;
+	}
+	return (true);
 }
