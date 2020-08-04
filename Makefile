@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/04 12:28:41 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/04 17:22:29 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ LIB_DIR = libraries/
 LIBFT_DIR = libft
 LIB_NAME = libft.a
 LIB = -L $(LIBFT_DIR) -lft
-LIB_PRINTF = -L $(LIBFT_DIR)/ft_printf
 LIBFT = $(LIBFT_DIR)/$(LIB_NAME)
 
 #SDL
@@ -54,6 +53,7 @@ VM_FILES =	main					\
 			vm_tools_process		\
 			vm_tools_op_functions	\
 			vm_op_functions_1		\
+			vm_op_functions_2		\
 			vm_op_functions_3		\
 			vm_op_functions_4		\
 			vm_cw_arena_init		\
@@ -97,7 +97,7 @@ WHITE = \033[1;37m
 all: $(VM)
 
 $(VM): $(VM_OBJ)
-	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) $(LIB_PRINTF) -F $(FW_PATH)\
+	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) -F $(FW_PATH)\
 		-framework SDL2\
 		-framework SDL2_image\
 		-framework SDL2_ttf\

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 12:28:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 14:45:51 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 */
 # include "../libft/include/libft.h"
 # include "../libft/include/ft_printf.h"
-#include "error_messages.h"
+# include "error_messages.h"
 
 /*
 ** fichier entête du sujet corewar (ressources)
@@ -77,7 +77,8 @@ typedef struct		s_options
 	ssize_t			dump_cycle;
 	bool			n;
 	bool			aff;
-	u_int8_t		verbose;
+	bool			verbose;
+	u_int8_t		v_lvl;
 
 }					t_options;
 
