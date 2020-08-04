@@ -33,8 +33,8 @@ int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
 	int			value;
 	extern t_op	op_tab[17];
 
-	if ((type % 10) != REG_CODE || (type % 10) != IND_CODE \
-		|| (type % 10) != DIR_CODE)
+	if ((type % 10) != REG_CODE && (type % 10) != IND_CODE \
+		&& (type % 10) != DIR_CODE)
 		return (0);
 	value = cw->arena[(index) % MEM_SIZE];
 	if ((type % 10) == REG_CODE)
@@ -55,5 +55,7 @@ int		get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type)
 
 int		is_valid_reg(char *arena, t_process *p)
 {
+	if (arena && p)
+		return (1);
 	return (1);
 }

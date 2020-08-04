@@ -257,7 +257,7 @@ int					instruction_width(unsigned char encoding, size_t dir_s);
 /*
 ** Fonctions outils concernant les opcode
 */
-bool				is_valid_opcode(char *arena, int pos);
+bool				is_valid_opcode(char *arena, t_process *cur_proc);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
 int					addr_next_opcode(char *arena, int mem_pos);
