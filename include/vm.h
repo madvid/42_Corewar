@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 16:17:51 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 10:26:07 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 */
 # include "../libft/include/libft.h"
 # include "../libft/include/ft_printf.h"
-#include "error_messages.h"
+# include "error_messages.h"
 
 /*
 ** fichier entête du sujet corewar (ressources)
@@ -77,7 +77,8 @@ typedef struct		s_options
 	ssize_t			dump_cycle;
 	bool			n;
 	bool			aff;
-	u_int8_t		verbose;
+	bool			verbose;
+	u_int8_t		v_lvl;
 
 }					t_options;
 
@@ -318,8 +319,21 @@ int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 int					dump_memory(char *arena);
 
 /*
+**<<<<<<<<<<<<<<<<<<<<<Bonus Functions>>>>>>>>>>>>>>>>>>>>
 **
-**<<<<<<<<<<<<<<<<<<Visualizer functions>>>>>>>>>>>>>>>>>>
+**<<<<<Verbosity>>>>>
+*/
+
+int    				init_verbotab(t_cw *cw, void *ptr, int flag);
+int     			vprint_essentials(t_cw *cw, void *ptr,int flag);
+int     			vprint_lives(t_cw *cw, void *ptr, int flag);
+int     			vprint_cycle(t_cw *cw, void *ptr, int flag);
+int     			vprint_op(t_cw *cw, void *ptr, int flag);
+int     			vprint_deaths(t_cw *cw, void *ptr, int flag);
+int     			vprint_pcmv(t_cw *cw, void *ptr, int flag);
+
+/*
+**<<<<<Visualizer functions>>>>>
 **
 **<<<<<Window functions>>>>>
 */

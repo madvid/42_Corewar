@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 16:09:26 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 10:25:11 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@
 int		op_alive(t_cw *cw, t_process *cur_proc)
 {
 	int		arg;
+	void	*ptr;
 
+	ptr = NULL;
 	printf("Alive en cours.\n");
 	arg = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 255) << 24
 		| (cw->arena[(cur_proc->i + 2) % MEM_SIZE] & 255) << 16
@@ -44,9 +46,9 @@ int		op_alive(t_cw *cw, t_process *cur_proc)
 	if (arg > 0 && arg < cw->n_champ) // not sure for this, is alive instruction always valid as long as the argument is a positive int ? or in every case ?
 	{
 		cw->champ_lives[arg - 1]++;
-		return (1);
+		return ((cw->options.verbose == true) ? init_verbotab(cw, ptr, 1) : 1);
 	}
-	return (1);
+	return ((cw->options.verbose == true) ? init_verbotab(cw, ptr, 1) : 1);
 }
 
 /*

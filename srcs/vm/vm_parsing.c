@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 14:02:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 16:05:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,25 @@ static int		is_dump_option(char *arg, t_parse *p)
 }
 
 /*
-** Function:
+** Function: in_verbose_range
 ** Description:
-**	Function checks if the str arg is the flag option to attribute a specific
-**	number to the following chafmpion.
+**	Function checks if the str arg is a positive number or null
+**	within 0 and 31 both included.
 ** Return:
-**	1: if arg is the attribution number flag
+**	1: if arg is in verbose level range
 **	0: otherwise
 */
 
-static int		is_n_flag(char *arg)
+static int		in_verbose_range(char *arg)
 {
-	return (ft_strequ(arg, "-n"));
+	int		option;
+
+	if (ft_is_positive_int(arg) == -1)
+		return (0);
+	option = ft_atoi(arg);
+	if (!(option >= 0 && option <= 31))
+		return (0);
+	return (1);
 }
 
 /*
@@ -89,24 +96,33 @@ int				vm_parsing(char **av, t_parse *p)
 	int		i;
 
 	i = 1;
-	if (av[i] && is_dump_option(av[i], p) == 1)
+	while (av[i] && (ft_strequ(av[i], "-dump") || ft_strequ(av[i], "-v")
+		|| ft_strequ(av[i], "-a")))
 	{
-		if (av[++i] && p->options->dump == 1 && ft_is_positive_int(av[i]))
+		if (is_dump_option(av[i], p) == 1)
 		{
-			p->options->dump = 1;
-			p->options->dump_cycle = ft_atoi(av[i++]);
+			if (av[++i] && ft_is_positive_int(av[i]))
+				p->options->dump_cycle = ft_atoi(av[i++]);
+			else
+				return (vm_error_manager((int)CD_DUMP, p->error));
 		}
-		else
-			return (vm_error_manager((int)CD_DUMP, p->error));
-	}
-	if (av[i] && ft_strequ(av[i], "-a") == 1)
-	{
-		i++;
-		p->options->aff = true;
+		if (av[i] && ft_strequ(av[i], "-a") == 1)
+		{
+			i++;
+			p->options->aff = true;
+		}
+		if (av[i] && (p->options->verbose = ft_strequ(av[i], "-v")) == 1)
+		{
+			ft_printf("ici_1\n");
+			if (av[++i] && in_verbose_range(av[i]))
+				p->options->v_lvl = (u_int8_t)ft_atoi(av[i++]);
+			else
+				return (vm_error_manager((int)CD_VERB, p->error));
+		}
 	}
 	while (av[i] && p->nb_champ < 5)
 	{
-		if (is_n_flag(av[i]))
+		if (ft_strequ(av[i], "-n") == 1)
 		{
 			if (av[++i] && is_valid_nb_champ(av[i]))
 			{

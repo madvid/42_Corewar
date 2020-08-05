@@ -6,14 +6,14 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/15 15:45:04 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 16:02:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_MESSAGES_H
 # define ERROR_MESSAGES_H
 
-# define NB_ERROR_MSG			11
+# define NB_ERROR_MSG			12
 # define CD_USAGE				0
 # define CD_DUMP 				1
 # define CD_BD_VAL				2
@@ -25,6 +25,7 @@
 # define CD_CHP_ERR				8
 # define CD_INV_FD				9
 # define CD_MAGIC_EXEC			10
+# define CD_VERB				11
 # define M_USAGE_1				"Usage: ./corewar [-dump nbr_cycles] "
 # define M_USAGE_2				"[[-n number] champion1.cor] ..."
 # define M_USAGE				(M_USAGE_1 M_USAGE_2)
@@ -40,11 +41,12 @@
 # define M_MEM_CHAMP_1			"Error: memory allocation issue during parsing"
 # define M_MEM_CHAMP_2			" process."
 # define M_MEM_CHAMP			(M_MEM_CHAMP_1 M_MEM_CHAMP_2)
-# define M_EMPTY_CHP			"Error: You must precise 1 champion at least."
+# define M_EMPTY_CHP			"Error: you must precise 1 champion at least."
 # define M_MAX_CHAMP			"Error: a maximum of 4 champions is allowed."
 # define M_BD_CODE				"Error: one of champion's file is not bytecode."
 # define M_CHP_ERR				"Error: Incorrect bytecode in champion's code."
-# define M_INV_FD				"Error: Invalid fd, file or path may not exist."
+# define M_INV_FD				"Error: invalid fd, file or path may not exist."
 # define M_MAGIC_EXEC			"Error: COREWAR_EXEC_MAGIC number into file."
+# define M_VERB					"Error: invalid parameter for verbose option."
 
 #endif

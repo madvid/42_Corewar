@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/04 16:21:43 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/05 10:17:29 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ LIB_DIR = libraries/
 LIBFT_DIR = libft
 LIB_NAME = libft.a
 LIB = -L $(LIBFT_DIR) -lft
-#LIB_PRINTF = -L $(LIBFT_DIR)/ft_printf_deprecated
 LIBFT = $(LIBFT_DIR)/$(LIB_NAME)
 
 #SDL
@@ -59,6 +58,7 @@ VM_FILES =	main					\
 			vm_op_functions_4		\
 			vm_cw_arena_init		\
 			vm_execution			\
+			verbosity				\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\
