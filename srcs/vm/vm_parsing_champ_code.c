@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 17:44:39 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 12:36:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 18:42:36 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@
 **	0: otherwise
 */
 
-static int		vm_champ_file_parse(t_champ *ichamp, char **error)
+static int		vm_champ_file_parse(t_champ *ichamp, t_parse **p)
 {
 	int			magic_key;
 	int			fd;
 
 	if ((fd = open(ichamp->champ_file, O_RDONLY)) <= 2)
-		return (vm_error_manager((int)CD_INV_FD, error));
+		return (vm_error_manager((int)CD_INV_FD, p, NULL));
 	magic_key = get_champ_magic_key(fd);
 	if (magic_key - (int)(COREWAR_EXEC_MAGIC) != 0)
-		return (vm_error_manager((int)CD_MAGIC_EXEC, error));
+		return (vm_error_manager((int)CD_MAGIC_EXEC, p, NULL));
 	ichamp->name = get_champ_name(fd);
 	ichamp->l_bytecode = get_champ_l_bcode(fd);
 	ichamp->comment = get_champ_comment(fd);
@@ -42,7 +42,7 @@ static int		vm_champ_file_parse(t_champ *ichamp, char **error)
 	ichamp->mem_pos = 0;
 	close(fd);
 	if (!(ichamp->name) || !(ichamp->comment) || !(ichamp->bytecode))
-		return (vm_error_manager((int)CD_CHP_ERR, error));
+		return (vm_error_manager((int)CD_CHP_ERR, p, NULL));
 	return (1);
 }
 
@@ -56,7 +56,7 @@ static int		vm_champ_file_parse(t_champ *ichamp, char **error)
 **	0: otherwise.
 */
 
-int				vm_champ_parse(t_list **lst_champs, char **error)
+int				vm_champ_parse(t_list **lst_champs, t_parse **p)
 {
 	t_list		*xplr;
 	t_champ		*ichamp;
@@ -65,7 +65,7 @@ int				vm_champ_parse(t_list **lst_champs, char **error)
 	while (xplr)
 	{
 		ichamp = (t_champ*)xplr->cnt;
-		if (vm_champ_file_parse(ichamp, error) == 0)
+		if (vm_champ_file_parse(ichamp, p) == 0)
 			return (0);
 		xplr = xplr->next;
 	}

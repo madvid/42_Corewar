@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 18:35:39 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 15:47:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 10:19:32 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		ft_is_positive_int(char *str)
 		result = 10 * result + ((size_t)str[i] - 48);
 		i++;
 		if (result > INTEGER_MAX)
-			return (0);
+			return (-1);
 	}
 	return (str[i] == '\0' ? result : -1);
 }

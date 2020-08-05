@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 14:17:19 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 17:32:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ int		op_soustraction(t_cw *cw, t_process *cur_proc)
 
 int		op_and(t_cw *cw, t_process *p)
 {
-	int		a;
-	int		b;
-	int		c;
+	int			a;
+	int			b;
+	int			c;
+	extern t_op	op_tab[17];
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
@@ -85,6 +86,7 @@ int		op_or(t_cw *cw, t_process *p)
 	int		a;
 	int		b;
 	int		c;
+	extern t_op	op_tab[17];
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
@@ -114,6 +116,7 @@ int		op_xor(t_cw *cw, t_process *p)
 	int		a;
 	int		b;
 	int		c;
+	extern t_op	op_tab[17];
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);

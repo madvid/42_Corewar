@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/03 18:46:15 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 17:33:40 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 	t_op_funct[0] = &op_alive;
 	t_op_funct[1] = &op_load;
 	t_op_funct[2] = &op_store;
-	// t_op_funct[3] = &op_addition;
-	// t_op_funct[4] = &op_soustraction;
-	// t_op_funct[5] = &op_and;
-	// t_op_funct[6] = &op_or;
-	// t_op_funct[7] = &op_xor;
-	// t_op_funct[8] = &op_zerojump;
-	// t_op_funct[9] = &op_load_index;
-	// t_op_funct[10] = &op_store_index;
+	t_op_funct[3] = &op_addition;
+	t_op_funct[4] = &op_soustraction;
+	t_op_funct[5] = &op_and;
+	t_op_funct[6] = &op_or;
+	t_op_funct[7] = &op_xor;
+	t_op_funct[8] = &op_zerojump;
+	t_op_funct[9] = &op_load_index;
+	t_op_funct[10] = &op_store_index;
 	 t_op_funct[11] = &op_fork;
-	// t_op_funct[12] = &op_long_load;
-	// t_op_funct[13] = &op_long_load_index;
+	t_op_funct[12] = &op_long_load;
+	t_op_funct[13] = &op_long_load_index;
 	t_op_funct[14] = &op_long_fork;
 	t_op_funct[15] = &op_aff;
 }
