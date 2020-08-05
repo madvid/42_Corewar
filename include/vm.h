@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 10:26:07 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 12:16:49 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct					s_op
 typedef struct		s_options
 {
 	bool			dump;
-	ssize_t			dump_cycle;
+	int				dump_cycle;
 	bool			n;
 	bool			aff;
 	bool			verbose;
@@ -123,7 +123,7 @@ typedef struct		s_corewar
 	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.id des champs a chaque case.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
-	int				tot_lives;		// If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle. (total)
+	int				tot_lives;		// (to change)If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle. (total)
 	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
@@ -226,14 +226,14 @@ void				tool_print_short_processors(t_cw *cw);								// a retirer
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
 */
-int					vm_error_manager(int code_error, char **error);
+int					vm_error_manager(int code_error, t_parse **p, t_cw **cw);
 int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
 int					vm_init_cw_error(int cd_error, t_cw **cw);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN
 */
-int					vm_parsing(char **av, t_parse *p);
+int					vm_parsing(char **av, t_parse **p);
 int					vm_init_parse(t_parse **p);
 int					vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
 int 				is_valid_champ_filename(char* filename);
@@ -241,7 +241,7 @@ int 				is_valid_champ_filename(char* filename);
 /*
 ** Prototypes des fonctions de parsing des fichiers des champions
 */
-int					vm_champ_parse(t_list **lst_champs, char **error);
+int					vm_champ_parse(t_list **lst_champs, t_parse **p);
 int					get_champ_magic_key(int fd);
 char				*get_champ_name(int fd);
 char				*get_champ_comment(int fd);
@@ -381,7 +381,7 @@ void				load_process(t_visu *v, t_cw *cw);
 */
 
 char				*ft_itoa_base2(unsigned long long nb, char *base);
-void				main_exe(t_visu *v, t_parse *p, t_cw *cw);
+void				main_exe(t_visu *v, t_parse *p, t_cw *cw, bool stop_game);
 void    			music_launcher(t_visu *v);
 t_visu				visu_breaker(t_visu *v);
 t_visu				visu_breaker2(t_visu *v);

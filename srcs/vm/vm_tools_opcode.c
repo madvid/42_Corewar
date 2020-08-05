@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 16:17:53 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 10:45:08 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 	t_op_funct[8] = &op_zerojump;
 	t_op_funct[9] = &op_load_index;
 	t_op_funct[10] = &op_store_index;
-	t_op_funct[11] = &op_fork;
+	 t_op_funct[11] = &op_fork;
 	t_op_funct[12] = &op_long_load;
 	t_op_funct[13] = &op_long_load_index;
 	t_op_funct[14] = &op_long_fork;

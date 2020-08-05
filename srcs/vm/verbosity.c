@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/05 10:36:54 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 11:46:46 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int     vprint_lives(t_cw *cw, void *ptr, int flag)
 {
     if (cw)
         if (flag == 1)
-            ft_printf("Player %d (%s) is said to be alive", ((t_champ*)(ptr))->id, ((t_champ*)(ptr))->name);
+            ft_printf("Player %d (%s) is said to be alive\n", ((t_process*)(ptr))->champ->id, ((t_process*)(ptr))->champ->name);
     return (flag);
 }
 
@@ -60,11 +60,11 @@ int     vprint_op(t_cw *cw, void *ptr, int flag)
     {
     if (flag == 1)
     {
-        ft_printf("P    %d | %d OK", ((t_process*)(ptr))->id, ((t_process*)(ptr))->opcode);
+        ft_printf("P    %d | %d OK\n", ((t_process*)(ptr))->id, ((t_process*)(ptr))->opcode);
         return (flag);
     }
     else
-        ft_printf("P    %d | %d FAIL", ((t_process*)(ptr))->id, ((t_process*)(ptr))->opcode);
+        ft_printf("P    %d | %d FAIL\n", ((t_process*)(ptr))->id, ((t_process*)(ptr))->opcode);
     }
     return (flag);
 }

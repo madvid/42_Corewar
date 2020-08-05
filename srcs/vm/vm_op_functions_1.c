@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 10:25:11 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 11:56:24 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@
 int		op_alive(t_cw *cw, t_process *cur_proc)
 {
 	int		arg;
-	void	*ptr;
+	int		i;
 
-	ptr = NULL;
-	printf("Alive en cours.\n");
 	arg = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 255) << 24
 		| (cw->arena[(cur_proc->i + 2) % MEM_SIZE] & 255) << 16
 		| (cw->arena[(cur_proc->i + 3) % MEM_SIZE] & 255) << 8
@@ -46,9 +44,9 @@ int		op_alive(t_cw *cw, t_process *cur_proc)
 	if (arg > 0 && arg < cw->n_champ) // not sure for this, is alive instruction always valid as long as the argument is a positive int ? or in every case ?
 	{
 		cw->champ_lives[arg - 1]++;
-		return ((cw->options.verbose == true) ? init_verbotab(cw, ptr, 1) : 1);
+		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 	}
-	return ((cw->options.verbose == true) ? init_verbotab(cw, ptr, 1) : 1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }
 
 /*
@@ -65,6 +63,7 @@ int		op_load(t_cw *cw, t_process *p)
 	extern t_op	op_tab[17];
 	int			arg;
 	int			reg;
+	int			i;
 
 	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
@@ -74,7 +73,7 @@ int		op_load(t_cw *cw, t_process *p)
 		((cw->arena[(p->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
@@ -114,9 +113,9 @@ int		op_store(t_cw *cw, t_process *p)
 	else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 48) >> 4) == REG_CODE)
 		p->registers[b - 1] = p->registers[a - 1];
 	else
-		return (0);
+		return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 0) : 0);
 	//verbose(cw, cur_proc) = 0 || 1;
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
@@ -136,15 +135,16 @@ int		op_addition(t_cw *cw, t_process *cur_proc)
 	int		a;
 	int		b;
 	int		c;
+	int		i;
 
 	a = cw->arena[(cur_proc->i + 2) % MEM_SIZE];
 	b = cw->arena[(cur_proc->i + 3) % MEM_SIZE];
 	c = cw->arena[(cur_proc->i + 4) % MEM_SIZE];
 	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
 		|| c < 1 || c > REG_NUMBER)
-		return (0);
+		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
 	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] \
 	+ cur_proc->registers[b - 1];
 	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }

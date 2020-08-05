@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 16:05:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 11:44:06 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int		in_verbose_range(char *arg)
 	option = ft_atoi(arg);
 	if (!(option >= 0 && option <= 31))
 		return (0);
+	
 	return (1);
 }
 
@@ -85,13 +86,7 @@ static int		is_valid_nb_champ(char *nb)
 ** and not the validity of the bytecode files (which is performed later).
 */
 
-/*
-** Remarque:
-**	Il faudra tester le retour de ft_atoull, je suspecte que lorsque la str
-**	n'est pas correct, ne pas être en mesure de relever qu'il y a une erreur
-*/
-
-int				vm_parsing(char **av, t_parse *p)
+int				vm_parsing(char **av, t_parse **p)
 {
 	int		i;
 
@@ -99,47 +94,47 @@ int				vm_parsing(char **av, t_parse *p)
 	while (av[i] && (ft_strequ(av[i], "-dump") || ft_strequ(av[i], "-v")
 		|| ft_strequ(av[i], "-a")))
 	{
-		if (is_dump_option(av[i], p) == 1)
-		{
-			if (av[++i] && ft_is_positive_int(av[i]))
-				p->options->dump_cycle = ft_atoi(av[i++]);
-			else
-				return (vm_error_manager((int)CD_DUMP, p->error));
-		}
 		if (av[i] && ft_strequ(av[i], "-a") == 1)
 		{
 			i++;
-			p->options->aff = true;
+			(*p)->options->aff = true;
 		}
-		if (av[i] && (p->options->verbose = ft_strequ(av[i], "-v")) == 1)
+		if (is_dump_option(av[i], *p) == 1)
+		{
+			if (av[++i] && ft_is_positive_int(av[i]) != -1)
+				(*p)->options->dump_cycle = ft_atoi(av[i++]);
+			else
+				return (vm_error_manager((int)CD_DUMP, p, NULL));
+		}
+		if (av[i] && ((*p)->options->verbose = ft_strequ(av[i], "-v")) == 1)
 		{
 			ft_printf("ici_1\n");
 			if (av[++i] && in_verbose_range(av[i]))
-				p->options->v_lvl = (u_int8_t)ft_atoi(av[i++]);
+				(*p)->options->v_lvl = (u_int8_t)ft_atoi(av[i++]);
 			else
-				return (vm_error_manager((int)CD_VERB, p->error));
+				return (vm_error_manager((int)CD_VERB, p, NULL));
 		}
 	}
-	while (av[i] && p->nb_champ < 5)
+	while (av[i] && (*p)->nb_champ < 5)
 	{
 		if (ft_strequ(av[i], "-n") == 1)
 		{
 			if (av[++i] && is_valid_nb_champ(av[i]))
 			{
-				p->options->n = 1;
-				p->id_champ = (int)(*av[i++] - '0');
+				(*p)->options->n = 1;
+				(*p)->id_champ = (int)(*av[i++] - '0');
 			}
 			else
-				return (vm_error_manager((int)CD_BD_VAL, p->error));
+				return (vm_error_manager((int)CD_BD_VAL, p, NULL));
 		}
 		if (av[i] && !is_valid_champ_filename(av[i]))
-			return (vm_error_manager((int)CD_BD_CHAMP_NB, p->error));
-		if (av[i] && !vm_create_champion(&(p->lst_champs), av[i++], p))
-			return (vm_error_manager((int)CD_MEM_CHAMP, p->error));
+			return (vm_error_manager((int)CD_BD_CHAMP_NB, p, NULL));
+		if (av[i] && !vm_create_champion(&((*p)->lst_champs), av[i++], *p))
+			return (vm_error_manager((int)CD_MEM_CHAMP, p, NULL));
 	}
-	if (p->nb_champ == 0)
-		return (vm_error_manager((int)CD_EMPTY_CHP, p->error));
-	if (p->nb_champ > (int)MAX_PLAYERS)
-		return (vm_error_manager((int)CD_MAX_CHAMP, p->error));
+	if ((*p)->nb_champ == 0)
+		return (vm_error_manager((int)CD_EMPTY_CHP, p, NULL));
+	if ((*p)->nb_champ > (int)MAX_PLAYERS)
+		return (vm_error_manager((int)CD_MAX_CHAMP, p, NULL));
 	return (1);
 }
