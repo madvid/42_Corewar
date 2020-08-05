@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 17:54:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 12:32:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static void		vm_init_parse_value(t_parse *p)
 	p->options->dump_cycle = 0;
 	p->options->n = 0;
 	p->lst_champs = NULL;
+	p->options->aff = false;
+	p->options->sdl = false;
+	p->options->verbose = false;
+	p->options->v_lvl = 0;
 }
 
 /*

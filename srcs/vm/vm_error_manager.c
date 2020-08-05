@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 18:55:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 12:37:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 	static	char	*msg[] = {M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB,
 						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
 						M_BD_CODE, M_CHP_ERR, M_INV_FD, M_MAGIC_EXEC,
-						M_VERB, NULL};
+						M_VERB, M_UNIQ, NULL};
 
 	ft_putendl(msg[code_error]);
 	if (code_error != CD_USAGE)

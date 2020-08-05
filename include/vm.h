@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 10:18:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 12:31:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct		s_options
 	int				dump_cycle;
 	bool			n;
 	bool			aff;
+	bool			sdl;
 	bool			verbose;
 	u_int8_t		v_lvl;
 
@@ -237,6 +238,9 @@ int					vm_parsing(char **av, t_parse **p);
 int					vm_init_parse(t_parse **p);
 int					vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
 int 				is_valid_champ_filename(char* filename);
+int					vm_options_flag(char **av, t_parse **p, int *i);
+int					is_dump_option(char *arg, t_parse *p);
+int					in_verbose_range(char *arg);
 
 /*
 ** Prototypes des fonctions de parsing des fichiers des champions
