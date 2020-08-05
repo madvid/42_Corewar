@@ -313,7 +313,7 @@ int					op_long_load(t_cw *cw, t_process *cur_proc);
 int					op_long_load_index(t_cw *cw, t_process *cur_proc);
 int					op_long_fork(t_cw *cw, t_process *cur_proc);
 int					op_aff(t_cw *cw, t_process *cur_proc);
-int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
+//int				fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 
 /*

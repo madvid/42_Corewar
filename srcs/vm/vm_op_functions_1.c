@@ -36,16 +36,11 @@ int		op_alive(t_cw *cw, t_process *cur_proc)
 	int		arg;
 
 	printf("Alive en cours.\n");
-	arg = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 255) << 24
-		| (cw->arena[(cur_proc->i + 2) % MEM_SIZE] & 255) << 16
-		| (cw->arena[(cur_proc->i + 3) % MEM_SIZE] & 255) << 8
-		| (cw->arena[(cur_proc->i + 4) % MEM_SIZE] & 255);
-	cur_proc->n_lives++; // even if the arg contain a non valid champ id.
-	if (arg > 0 && arg < cw->n_champ) // not sure for this, is alive instruction always valid as long as the argument is a positive int ? or in every case ?
-	{
+	arg = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
+	cur_proc->n_lives++;
+	arg = (arg > 0) ? arg : -arg;
+	if (arg > 0 && arg < cw->n_champ)
 		cw->champ_lives[arg - 1]++;
-		return (1);
-	}
 	return (1);
 }
 
