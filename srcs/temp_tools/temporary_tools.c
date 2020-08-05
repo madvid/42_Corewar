@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temporary_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 10:19:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 15:17:48 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,6 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("| opcode:______%X                                               |\n", process->opcode);
 	printf("| n_lives:_____%2d                                              |\n", process->n_lives);
 	printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
-	printf("| jump:________%d                                               |\n", process->jump);
 	printf("| position:____%14d                                  |\n", process->i);
 	printf("| pc:__________%14d                                  |\n", process->pc);
 	printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");

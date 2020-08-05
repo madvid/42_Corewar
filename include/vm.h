@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 12:16:49 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 15:17:09 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct		s_options
 	int				dump_cycle;
 	bool			n;
 	bool			aff;
+	bool			sdl;
 	bool			verbose;
 	u_int8_t		v_lvl;
 
@@ -111,7 +112,6 @@ typedef struct		s_process
 	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	int				i;				// i is the index of the process in the cw->arena
-	int				jump;			// amount of bytes cursor must jump to get to the next operation
 	int				pc;				// program counter = register that load the next opcode address that will be executed for the current process
 	int				*registers;		// 16 registers for a process/cursors of 4 bytes each.
 	t_champ			*champ;
@@ -237,6 +237,9 @@ int					vm_parsing(char **av, t_parse **p);
 int					vm_init_parse(t_parse **p);
 int					vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
 int 				is_valid_champ_filename(char* filename);
+int					vm_options_flag(char **av, t_parse **p, int *i);
+int					is_dump_option(char *arg, t_parse *p);
+int					in_verbose_range(char *arg);
 
 /*
 ** Prototypes des fonctions de parsing des fichiers des champions
