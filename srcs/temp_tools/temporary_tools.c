@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temporary_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/03 16:50:14 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 10:19:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		tool_print_parsing(t_parse *p)
 	printf("variable t_parse p:\n");
 	printf("   p->nb_champ = %d\n", p->nb_champ);
 	printf("   p->options->dump = %d\n", p->options->dump);
-	printf("   p->options->nbr_cycle = %ld\n", p->options->dump_cycle);
+	printf("   p->options->nbr_cycle = %d\n", p->options->dump_cycle);
 	printf("   p->options->n = %d\n", p->options->n);
 }
 

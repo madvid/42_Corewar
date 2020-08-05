@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 17:47:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/04 17:45:43 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,6 @@ int		op_aff(t_cw *cw, t_process *cur_proc)
 		return (0);
 	arg = cur_proc->registers[reg - 1];
 	if (cw->options.aff == true)
-		printf("Aff: %s\n", ft_itoa(arg)); // switch avec ft_printf
+		ft_printf("Aff: %s\n", ft_itoa(arg)); // Pas le bon affichage, faire des tests pour savoir
 	return (0);
 }

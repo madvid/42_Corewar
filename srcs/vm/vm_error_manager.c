@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/28 14:49:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 12:37:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ int			vm_init_cw_error(int cd_error, t_cw **cw)
 		ft_strdel(&((*cw)->arena));
 	if (cd_error >= 1)
 		ft_memdel((void **)cw);
-	ft_putstr("Memory allocation issue during initialization of the");
-	ft_putstr("struct cw.\n");
+	if (cd_error <= 4)
+		ft_putendl("Memory allocation failed \
+		during initialization of struct cw.");
 	return (0);
 }
 
@@ -61,22 +62,14 @@ int			vm_init_cw_error(int cd_error, t_cw **cw)
 
 int			vm_init_parse_error(int cd_error, t_parse **p)
 {
-	int		i;
-
-	i = ((int)NB_ERROR_MSG);
-	if (cd_error >= 4)
-		ft_memdel((void **)&((*p)->id_table));
 	if (cd_error >= 3)
-	{
-		while (--i >= 0)
-			ft_strdel(&((*p)->error[i]));
-	}
+		ft_memdel((void**)&((*p)->options));
 	if (cd_error >= 2)
-		ft_memdel((void**)((*p)->error));
+		ft_memdel((void**)((*p)->id_table));
 	if (cd_error >= 1)
 		ft_memdel((void **)p);
-	ft_putstr("Memory allocation issue during initialization of the");
-	ft_putstr("struct parse.\n");
+	if (cd_error <= 3)
+		ft_putstr("Memory allocation failed for parsing structure t_strut p\n");
 	return (0);
 }
 
@@ -88,8 +81,20 @@ int			vm_init_parse_error(int cd_error, t_parse **p)
 **	0: in every cases, it transmit the error signal (0).
 */
 
-int			vm_error_manager(int code_error, char **error)
+int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 {
-	ft_putendl(error[code_error]);
+	static	char	*msg[] = {M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB,
+						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
+						M_BD_CODE, M_CHP_ERR, M_INV_FD, M_MAGIC_EXEC,
+						M_VERB, M_UNIQ, NULL};
+
+	ft_putendl(msg[code_error]);
+	if (code_error != CD_USAGE)
+		ft_putendl(msg[CD_USAGE]);
+	if (p)
+		vm_init_parse_error(4, p);
+	if (cw)
+		vm_init_cw_error(5, cw);
+
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 13:58:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 12:32:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ static void		vm_init_parse_value(t_parse *p)
 	p->options->dump_cycle = 0;
 	p->options->n = 0;
 	p->lst_champs = NULL;
-	while (++i < 4)
-		p->id_table[i] = 0;
+	p->options->aff = false;
+	p->options->sdl = false;
+	p->options->verbose = false;
+	p->options->v_lvl = 0;
 }
 
 /*
@@ -51,26 +53,17 @@ static int		vm_init_parse_memalloc(t_parse **p)
 	int				i;
 	static	char	*msg[] = {M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB,
 						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
-						M_BD_CODE, M_CHP_ERR, M_INV_FD, M_MAGIC_EXEC, NULL};
+						M_BD_CODE, M_CHP_ERR, M_INV_FD, M_MAGIC_EXEC,
+						M_VERB, NULL};
 
 	i = 0;
 	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
 		return (vm_init_parse_error(0, p));
-	if (!((*p)->error = (char**)ft_memalloc(sizeof(char*) * (int)NB_ERROR_MSG)))
-		return (vm_init_parse_error(1, p));
-	while (i < (int)NB_ERROR_MSG)
-	{
-		if (!((*p)->error[i] = ft_strdup(msg[i])))
-		{
-			ft_strtabldel(&((*p)->error));
-			return (vm_init_parse_error(2, p));
-		}
-		i++;
-	}
+	(*p)->error = msg;
 	if (!((*p)->id_table = (int *)ft_memalloc(sizeof(int) * MAX_PLAYERS)))
-		return (vm_init_parse_error(3, p));
+		return (vm_init_parse_error(1, p));
 	if (!((*p)->options = (t_options*)ft_memalloc(sizeof(t_options))))
-		return (vm_init_parse_error(4, p));
+		return (vm_init_parse_error(2, p));
 	return (1);
 }
 
