@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 14:58:07 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 15:07:54 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,7 @@ int				vm_options_flag(char **av, t_parse **p, int *i)
 
 static int		is_valid_nb_champ(char *nb)
 {
-	if (ft_strlen(nb) > 1)
-	{
-		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
-		return (0);
-	}
-	if (!(nb[0] >= '1' && nb[0] <= '4'))
+	if (ft_strlen(nb) > 1 || !(nb[0] >= '1' && nb[0] <= '4'))
 	{
 		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
 		return (0);
