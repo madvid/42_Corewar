@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/04 12:37:58 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/04 16:21:43 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ VM_FILES =	main					\
 			vm_tools_process		\
 			vm_tools_op_functions	\
 			vm_op_functions_1		\
+			vm_op_functions_2		\
 			vm_op_functions_3		\
 			vm_op_functions_4		\
 			vm_cw_arena_init		\
