@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 14:45:51 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 10:18:22 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct					s_op
 typedef struct		s_options
 {
 	bool			dump;
-	ssize_t			dump_cycle;
+	int				dump_cycle;
 	bool			n;
 	bool			aff;
 	bool			verbose;
@@ -226,14 +226,14 @@ void				tool_print_short_processors(t_cw *cw);								// a retirer
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
 */
-int					vm_error_manager(int code_error, char **error);
+int					vm_error_manager(int code_error, t_parse **p, t_cw **cw);
 int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
 int					vm_init_cw_error(int cd_error, t_cw **cw);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN
 */
-int					vm_parsing(char **av, t_parse *p);
+int					vm_parsing(char **av, t_parse **p);
 int					vm_init_parse(t_parse **p);
 int					vm_create_champion(t_list **lst_champs, char *av, t_parse *p);
 int 				is_valid_champ_filename(char* filename);
@@ -241,7 +241,7 @@ int 				is_valid_champ_filename(char* filename);
 /*
 ** Prototypes des fonctions de parsing des fichiers des champions
 */
-int					vm_champ_parse(t_list **lst_champs, char **error);
+int					vm_champ_parse(t_list **lst_champs, t_parse **p);
 int					get_champ_magic_key(int fd);
 char				*get_champ_name(int fd);
 char				*get_champ_comment(int fd);

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 16:02:06 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 10:26:18 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@
 # define CD_INV_FD				9
 # define CD_MAGIC_EXEC			10
 # define CD_VERB				11
-# define M_USAGE_1				"Usage: ./corewar [-dump nbr_cycles] "
-# define M_USAGE_2				"[[-n number] champion1.cor] ..."
-# define M_USAGE				(M_USAGE_1 M_USAGE_2)
+# define M_USAGE_1				"Usage: ./corewar [[-dump N1] [-v N2] [-a]]"
+# define M_USAGE_2				"[[-n N3] champion1.cor] ...\n"
+# define M_USAGE_3				"     * N1 being an positive integer,\n"
+# define M_USAGE_4				"     * N2 being an integer in range [0;31],\n"
+# define M_USAGE_5				"     * N3 being an integer in range [1;4]."
+# define M_USAGE				(M_USAGE_1 M_USAGE_2 M_USAGE_3 M_USAGE_4 M_USAGE_5)
 # define M_DUMP_1				"Dump error: [-dump nbr_cycles] nbr_cycles need"
 # define M_DUMP_2				" to exist, be non null and positive INT."
 # define M_DUMP					(M_DUMP_1 M_DUMP_2)
