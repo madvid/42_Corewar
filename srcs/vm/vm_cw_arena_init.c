@@ -86,7 +86,6 @@ static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
 **		- opcode = initialized to -1
 **		- wait_cycles = initialized to 0
 **		- position = memory adress of the beginning of the champion
-**		- jump = initialized to 0
 **		- registers[x]: small amount of memory reserve for each process
 **		  /!\ r1 is initialized to the champion id.
 **		- champ = pointer on the champion to facilitate the access of it inner
@@ -111,7 +110,6 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 		proc->registers[i] = 0;
 	proc->registers[0] = champ->id;
 	proc->pc = 0;
-	proc->jump = 0;
 	proc->id = ++proc_id;
 	proc->carry = false;
 	proc->opcode = 0;
