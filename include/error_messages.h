@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 15:10:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 16:52:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 # define CD_BD_VAL			2
 # define CD_BD_CHAMP_NB		3
 # define CD_MEM_CHAMP		4
-
 # define CD_EMPTY_CHP		5
 # define CD_MAX_CHAMP		6
+
 # define CD_BD_CODE			7
 # define CD_CHP_ERR			8
 # define CD_INV_FD			9
@@ -49,9 +49,9 @@
 # define M_MEM_CHAMP_1		"Error: memory allocation issue during parsing"
 # define M_MEM_CHAMP_2		" process."
 # define M_MEM_CHAMP		(M_MEM_CHAMP_1 M_MEM_CHAMP_2)
-
 # define M_EMPTY_CHP		"Error: you must precise 1 champion at least."
 # define M_MAX_CHAMP		"Error: a maximum of 4 champions is allowed."
+
 # define M_BD_CODE			"Error: one of champion's file is not bytecode."
 # define M_CHP_ERR			"Error: Incorrect bytecode in champion's code."
 # define M_INV_FD			"Error: invalid fd, file or path may not exist."
