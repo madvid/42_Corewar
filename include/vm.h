@@ -112,7 +112,6 @@ typedef struct		s_process
 	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	int				i;				// i is the index of the process in the cw->arena
-	int				jump;			// amount of bytes cursor must jump to get to the next operation
 	int				pc;				// program counter = register that load the next opcode address that will be executed for the current process
 	int				*registers;		// 16 registers for a process/cursors of 4 bytes each.
 	t_champ			*champ;
