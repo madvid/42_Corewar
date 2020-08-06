@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 14:52:20 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/06 17:04:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct		s_parse
 {
 	int				nb_champ;
 	int				id_champ;
-	int				*id_table;
+	int				*id_available;
 	t_options		*options;
 	t_list			*lst_champs;
 	char			**error;
@@ -211,6 +211,7 @@ typedef struct		s_visu
 
 }					t_visu;
 
+
 /*
 ** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
 */
@@ -229,6 +230,7 @@ void				tool_print_short_processors(t_cw *cw);								// a retirer
 int					vm_error_manager(int code_error, t_parse **p, t_cw **cw);
 int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
 int					vm_init_cw_error(int cd_error, t_cw **cw);
+void				ft_lst_fdel_champ(void *link, size_t link_size);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN

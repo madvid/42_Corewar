@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 17:44:39 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 18:42:36 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/06 16:57:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		vm_champ_file_parse(t_champ *ichamp, t_parse **p)
 	int			fd;
 
 	if ((fd = open(ichamp->champ_file, O_RDONLY)) <= 2)
-		return (vm_error_manager((int)CD_INV_FD, p, NULL));
+		return (vm_error_manager((int)CD_INV_FD, p, NULL)); // <-- tester ce cas d'erreur
 	magic_key = get_champ_magic_key(fd);
 	if (magic_key - (int)(COREWAR_EXEC_MAGIC) != 0)
 		return (vm_error_manager((int)CD_MAGIC_EXEC, p, NULL));

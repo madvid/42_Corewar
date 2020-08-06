@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/04 18:44:48 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/06 17:05:53 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,8 @@ VM_FILES =	main					\
 			vm_op_functions_4		\
 			vm_cw_arena_init		\
 			vm_execution			\
+			vm_tools_options		\
+			ft_lst_fdel_champ		\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\
@@ -66,13 +68,12 @@ VM_FILES =	main					\
 			visu_menu				\
 			visu_launch				\
 			visu_tools				\
-			vm_tools_options		\
 			temporary_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)
 VM_D = $(VM_SRC:.c=.d) # temporaire !!!!
-DEP_NAME = $(VM_FILES:.c=.o)
+ DEP_NAME = $(VM_FILES:.c=.o)
 vpath %.c $(SRC_DIR)$(VM)
 vpath %.c $(SRC_DIR)temp_tools
 vpath %.o $(SRC_DIR)$(VM)
@@ -96,6 +97,10 @@ WHITE = \033[1;37m
 
 all: $(VM)
 
+# $(VM): $(VM_OBJ)
+# 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB)
+# 	@echo "\n $(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@"
+
 $(VM): $(VM_OBJ)
 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) -F $(FW_PATH)\
 		-framework SDL2\
@@ -110,6 +115,11 @@ $(VM): $(VM_OBJ)
 -include $(DEP)
 
 $(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
+
+# $(SRC_DIR)$(VM_DIR)%.o: %.c
+# 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
+# 	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR)
+# 	@#$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
 
 $(SRC_DIR)$(VM_DIR)%.o: %.c
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"

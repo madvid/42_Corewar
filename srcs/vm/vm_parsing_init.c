@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 12:32:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/06 14:47:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void		vm_init_parse_value(t_parse *p)
 **	variable p:
 **		- p itself,
 **		- p->error and error[i],
-**		- p->id_table,
+**		- p->id_available,
 ** Return:
 **	1: if every memory allocations went fine.
 **	0: otherwise.
@@ -50,20 +50,18 @@ static void		vm_init_parse_value(t_parse *p)
 
 static int		vm_init_parse_memalloc(t_parse **p)
 {
-	int				i;
-	static	char	*msg[] = {M_USAGE, M_DUMP, M_BD_VAL, M_BD_CHAMP_NB,
+	static	char	*msg[] = {M_USAGE, M_DUMP, M_BD_VAL, M_BD_FILE,
 						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
 						M_BD_CODE, M_CHP_ERR, M_INV_FD, M_MAGIC_EXEC,
-						M_VERB, NULL};
+						M_VERB, NULL}; // Est-ce nécessaire les messages d'erreurs dans p ?
 
-	i = 0;
 	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
-		return (vm_init_parse_error(0, p));
+		return (vm_error_manager(CD_P_STRUCT, p, NULL));
 	(*p)->error = msg;
-	if (!((*p)->id_table = (int *)ft_memalloc(sizeof(int) * MAX_PLAYERS)))
-		return (vm_init_parse_error(1, p));
+	if (!((*p)->id_available = (int *)ft_memalloc(sizeof(int) * MAX_PLAYERS)))
+		return (vm_error_manager(CD_P_IDTAB, p, NULL));
 	if (!((*p)->options = (t_options*)ft_memalloc(sizeof(t_options))))
-		return (vm_init_parse_error(2, p));
+		return (vm_error_manager(CD_P_OPT, p, NULL));
 	return (1);
 }
 

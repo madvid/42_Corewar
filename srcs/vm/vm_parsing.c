@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 15:07:54 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/06 15:37:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,9 @@ int				vm_parsing(char **av, t_parse **p)
 				return (vm_error_manager((int)CD_BD_VAL, p, NULL));
 		}
 		if (av[i] && !is_valid_champ_filename(av[i]))
-			return (vm_error_manager((int)CD_BD_CHAMP_NB, p, NULL));
-		if (av[i] && !vm_create_champion(&((*p)->lst_champs), av[i++], *p))
-			return (vm_error_manager((int)CD_MEM_CHAMP, p, NULL));
+			return (vm_error_manager((int)CD_BD_FILE, p, NULL));
+		if (av[i] && (code_error = vm_create_champion(&((*p)->lst_champs), av[i++], *p)))
+			return (vm_error_manager(code_error, p, NULL));
 	}
 	if ((*p)->nb_champ == 0)
 		return (vm_error_manager((int)CD_EMPTY_CHP, p, NULL));

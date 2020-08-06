@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/24 12:36:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/06 15:35:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@
 ** Function: attribut_nb_champ
 ** Description:
 **	Function explores the int table of id, to find an available one.
-**	An id is available if id_table[id -1] is equal to 0.
+**	An id is available if id_available[id -1] is equal to 0.
 ** Return:
 **	id: the available id for the new champion.
 **	0: otherwise.
 */
 
-static int	attribut_nb_champ(int *id_table)
+static int	attribut_nb_champ(int *id_available)
 {
 	int		id;
 
 	id = 1;
-	while (id < 5 && id_table[id - 1] == 1)
+	while (id < 5 && id_available[id - 1] == 1)
 		id++;
 	if (id == 5)
 		return (0);
@@ -58,6 +58,8 @@ int			is_valid_champ_filename(char *filename)
 ** Description:
 **	Set the value of the champion before adding it into the link.
 ** Return:
+**	1: attribution of id and copy of filename has been performed
+**	0: file name is too long.
 */
 
 static int	set_champ_value(t_champ *champ, t_parse *p, char *str)
@@ -65,15 +67,21 @@ static int	set_champ_value(t_champ *champ, t_parse *p, char *str)
 	if (p->options->n == 1)
 	{
 		champ->id = p->id_champ;
-		p->id_table[champ->id - 1] = 1;
+		p->id_available[champ->id - 1] = 1;
 	}
 	else
 	{
-		champ->id = attribut_nb_champ(p->id_table);
-		p->id_table[champ->id - 1] = 1;
+		champ->id = attribut_nb_champ(p->id_available);
+		p->id_available[champ->id - 1] = 1;
 	}
-	if (!(champ->champ_file = ft_strdup(str)))
+	if (ft_strlen(str) >= (int)FILE_BIG)
 		return (0);
+	champ->champ_file = str;
+	champ->name = NULL;
+	champ->comment = NULL;
+	champ->l_bytecode = 0;
+	champ->bytecode = NULL;
+	champ->mem_pos = -1;
 	return (1);
 }
 
@@ -90,14 +98,14 @@ int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 
 	nw_link = NULL;
 	if (set_champ_value(&champ, p, av) == 0)
-		return (0);
+		return ((int)CD_FILE_BIG);
 	if (!(nw_link = ft_lstnew(&champ, sizeof(champ))))
-		return (0);
+		return ((int)CD_MEM_CHAMP);
 	ft_lstadd(lst_champs, nw_link);
 	p->nb_champ++;
 	p->options->n = 0;
 	p->id_champ = 0;
-	return (1);
+	return (0);
 }
 
 /*
