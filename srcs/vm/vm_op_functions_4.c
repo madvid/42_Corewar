@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 11:50:00 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/06 14:58:40 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,28 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 int		op_long_fork(t_cw *cw, t_process *cur_proc)
 {
 	int			addr;
+	t_list		*new_link;
+	t_process	*new_proc;
 	int			i;
 
-	printf("Long fork instruction en cours\n");
-	addr = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 255) << 24
-		| (cw->arena[(cur_proc->i + 2) % MEM_SIZE] & 255) << 16
-		| (cw->arena[(cur_proc->i + 3) % MEM_SIZE] & 255) << 8
-		| (cw->arena[(cur_proc->i + 4) % MEM_SIZE] & 255);
-	if (!fork_creation_process(cw, cur_proc, addr)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
-		return (-1); // STOP SIGNAL MEMORY ALLOCATION ISSUE
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+	printf("long fork instruction en cours\n");
+	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
+	if (!(new_link = ft_lstnew((void*)(cur_proc), sizeof(t_process))))
+		return (-1);
+	new_proc = (t_process*)(new_link->cnt);
+	if (!(new_proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
+		return (-1);
+	i = -1;
+	while (++i < 16)
+		new_proc->registers[i] = cur_proc->registers[i];
+	new_proc->pc = cur_proc->i + (addr % IDX_MOD);
+	new_proc->id = ((t_process*)(cw->process->cnt))->id + 1;
+	new_proc->n_lives = 0;
+	new_proc->wait_cycles = 0;
+	new_proc->i = cur_proc->i;
+	new_proc->champ = cur_proc->champ;
+	ft_lstadd(&(cw->process), new_link);
+	return (1);
 }
 
 /*
@@ -110,9 +122,13 @@ int		op_aff(t_cw *cw, t_process *cur_proc)
 	int			i;
 
 	printf("Aff instruction en cours\n");
+<<<<<<< HEAD
 	reg = (u_int8_t)cw->arena[(cur_proc->i + 2) % MEM_SIZE];
 	if (reg < 1 || reg > REG_NUMBER)
 		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
+=======
+	reg = get_arg_value(cw->arena, cur_proc, cur_proc->i, REG_CODE);
+>>>>>>> 52ea6853986c0ddb34898b1f96c43f988a82e780
 	arg = cur_proc->registers[reg - 1];
 	if (cw->options.aff == true)
 		ft_printf("Aff: %s\n", ft_itoa(arg)); // Pas le bon affichage, faire des tests pour savoir

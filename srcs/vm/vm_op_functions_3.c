@@ -116,7 +116,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 **	0: otherwise.
 */
 
-int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
+/*int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 {
 	t_list		*new_link;
 	t_process	*new_proc;
@@ -126,7 +126,14 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
 	new_proc = (t_process*)(new_link->cnt);
 	if (!(new_proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
+<<<<<<< HEAD
 		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
+=======
+	{
+		ft_memdel((void **)&new_link);
+		return (0);
+	}
+>>>>>>> 52ea6853986c0ddb34898b1f96c43f988a82e780
 	i = -1;
 	while (++i < 16)
 		new_proc->registers[i] = cur_proc->registers[i];
@@ -138,8 +145,13 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	new_proc->i = cur_proc->i;
 	new_proc->champ = cur_proc->champ;
 	ft_lstadd(&(cw->process), new_link);
+<<<<<<< HEAD
 	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }
+=======
+	return (1);
+}*/
+>>>>>>> 52ea6853986c0ddb34898b1f96c43f988a82e780
 
 /*
 ** Function: op_fork
@@ -153,6 +165,7 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 int		op_fork(t_cw *cw, t_process *cur_proc)
 {
 	int			addr;
+<<<<<<< HEAD
 	int			i;
 
 	//printf("Fork instruction en cours\n");
@@ -163,4 +176,28 @@ int		op_fork(t_cw *cw, t_process *cur_proc)
 	if (!fork_creation_process(cw, cur_proc, addr % IDX_MOD)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
 		return (-1); // STOP SIGNAL MEMORY ALLOCATION ISSUE
 	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+=======
+	t_list		*new_link;
+	t_process	*new_proc;
+	int			i;
+
+	printf("fork instruction en cours\n");
+	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
+	if (!(new_link = ft_lstnew((void*)(cur_proc), sizeof(t_process))))
+		return (0);
+	new_proc = (t_process*)(new_link->cnt);
+	if (!(new_proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
+		return (0);
+	i = -1;
+	while (++i < 16)
+		new_proc->registers[i] = cur_proc->registers[i];
+	new_proc->pc = cur_proc->i + addr;
+	new_proc->id = ((t_process*)(cw->process->cnt))->id + 1;
+	new_proc->n_lives = 0;
+	new_proc->wait_cycles = 0;
+	new_proc->i = cur_proc->i;
+	new_proc->champ = cur_proc->champ;
+	ft_lstadd(&(cw->process), new_link);
+	return (1);
+>>>>>>> 52ea6853986c0ddb34898b1f96c43f988a82e780
 }
