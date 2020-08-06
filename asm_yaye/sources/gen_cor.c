@@ -134,4 +134,6 @@ void	get_cor(t_asm *a)
 		else
 			leave(a, ": INVALID LINE.\n", 0);
 	}
+	if (a->i == PROG_NAME_LENGTH + COMMENT_LENGTH + 16)
+		write(1, "WARNING: EMPTY INSTRUCTION FIELD.\n", 34);
 }
