@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 10:48:49 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/04 11:13:21 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 14:23:29 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,13 @@ void		visualizer(t_parse *p, t_cw *cw)
 	v = init_menu(&v);
 	load_menu(&v);
 	vm_exec_init_pc(cw);
+	cw->cycle_to_die = 1536;
 	while (stop_game == false && v.isquit == 0)
 	{
 		if (v.menu_loop == 0)
 			v.angle = menu_move(&v, v.angle);
 		else
-			main_exe(&v, p, cw);
+			main_exe(&v, p, cw, stop_game);
 		v = visu_breaker(&v);
 	}
 	render_destroy(&v);

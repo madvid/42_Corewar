@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/04 11:13:25 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 14:23:32 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ void		music_launcher(t_visu *v)
 	Mix_PlayMusic(v->musique, -1);
 }
 
-void		main_exe(t_visu *v, t_parse *p, t_cw *cw)
+void		main_exe(t_visu *v, t_parse *p, t_cw *cw, bool stop_game)
 {
-	cw->cycle_to_die = 1000;
+	int		tmp;
+	
 	cw->i_cycle = -1;
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0\
 			&& v->isquit == 0)
@@ -77,4 +78,13 @@ void		main_exe(t_visu *v, t_parse *p, t_cw *cw)
 		vm_proc_mv_proc_pos(cw);
 		texture_free(v);
 	}
+	// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
+		tmp = cw->tot_lives;
+		cw->tot_lives += vm_proc_get_lives(cw);
+		vm_proc_kill_not_living(cw);
+		if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
+			stop_game = true;
+		vm_proc_set_lives(cw, 0);
+		if (cw->tot_lives - tmp >= NBR_LIVE)
+			cw->cycle_to_die -= (int)CYCLE_DELTA;
 }

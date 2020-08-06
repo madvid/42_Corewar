@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 17:32:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 11:55:33 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,18 @@ int		op_soustraction(t_cw *cw, t_process *cur_proc)
 	int		a;
 	int		b;
 	int		c;
+	int		i;
 
 	a = cw->arena[(cur_proc->i + 2) % MEM_SIZE];
 	b = cw->arena[(cur_proc->i + 3) % MEM_SIZE];
 	c = cw->arena[(cur_proc->i + 4) % MEM_SIZE];
 	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
 		|| c < 1 || c > REG_NUMBER)
-		return (0);
+		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
 	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] \
 	- cur_proc->registers[b - 1];
 	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }
 
 /*
@@ -57,6 +58,7 @@ int		op_and(t_cw *cw, t_process *p)
 	int			b;
 	int			c;
 	extern t_op	op_tab[17];
+	int			i;
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
@@ -69,7 +71,7 @@ int		op_and(t_cw *cw, t_process *p)
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
 	p->registers[c - 1] = a & b;
 	p->carry = (p->registers[c] == 0) ? 1 : 0;
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
@@ -83,10 +85,11 @@ int		op_and(t_cw *cw, t_process *p)
 
 int		op_or(t_cw *cw, t_process *p)
 {
+	extern t_op op_tab[17];
 	int		a;
 	int		b;
 	int		c;
-	extern t_op	op_tab[17];
+	int		i;
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
@@ -99,7 +102,7 @@ int		op_or(t_cw *cw, t_process *p)
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
 	p->registers[c - 1] = a | b;
 	p->carry = (p->registers[c] == 0) ? 1 : 0;
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
@@ -113,10 +116,11 @@ int		op_or(t_cw *cw, t_process *p)
 
 int		op_xor(t_cw *cw, t_process *p)
 {
+	extern t_op op_tab[17];
 	int		a;
 	int		b;
 	int		c;
-	extern t_op	op_tab[17];
+	int		i;
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
@@ -129,6 +133,6 @@ int		op_xor(t_cw *cw, t_process *p)
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
 	p->registers[c - 1] = a ^ b;
 	p->carry = (p->registers[c] == 0) ? 1 : 0;
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 

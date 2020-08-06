@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
+#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/04 18:44:48 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/06 14:16:44 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,8 @@ VM_FILES =	main					\
 			vm_op_functions_4		\
 			vm_cw_arena_init		\
 			vm_execution			\
+			verbosity				\
+			verbosity_fct			\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\

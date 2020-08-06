@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 17:49:31 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 15:48:37 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,35 +100,38 @@ void		vm_exec_init_pc(t_cw *cw)
 
 int		vm_execution(t_cw *cw, t_parse * p)
 {
-	int			i_cycle;
 	static bool	stop_game;
+	int			tmp;
 
 	vm_exec_init_pc(cw);
-	cw->cycle_to_die = 830; // to supress
+	cw->cycle_to_die = 1536; // to supress
 	while (stop_game == false)
 	{
-		i_cycle = -1;
-		while (++i_cycle < cw->cycle_to_die)
+		cw->i_cycle = -1;
+		while (++cw->i_cycle < cw->cycle_to_die)
 		{
-			if (cw->options.dump && i_cycle == cw->options.dump_cycle)
+			if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
 				return (dump_memory(cw->arena));
 			// printf(">>> i_cycle = %d\n", i_cycle);
 			// tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
 			// tool_print_short_processors(cw);
+			if (cw->options.v_lvl & 2 && cw->i_cycle != 0)
+				vprint_cycle(cw, cw, 1);
 			vm_proc_cycle(cw);
 			vm_proc_perform_opcode(cw);
 			vm_proc_mv_proc_pos(cw);
 		}
 		// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
-		cw->tot_lives = vm_proc_get_lives(cw);
+		tmp = cw->tot_lives;
+		cw->tot_lives += vm_proc_get_lives(cw);
 		vm_proc_kill_not_living(cw);
 		if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
 			stop_game = true;
-		break ; // to suppress;
 		vm_proc_set_lives(cw, 0);
-		if (cw->tot_lives >= NBR_LIVE)
+		if (cw->tot_lives - tmp >= NBR_LIVE)
 			cw->cycle_to_die -= (int)CYCLE_DELTA;
 	}
-	tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
+	p = NULL;
+	//tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
 	return (1); // <- changer le num par l'id du champion vainqueur ? ou alors faire gérer la fin par only_one_standing.
 }
