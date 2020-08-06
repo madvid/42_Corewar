@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 11:55:50 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/06 11:50:00 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,5 @@ int		op_aff(t_cw *cw, t_process *cur_proc)
 	arg = cur_proc->registers[reg - 1];
 	if (cw->options.aff == true)
 		ft_printf("Aff: %s\n", ft_itoa(arg)); // Pas le bon affichage, faire des tests pour savoir
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);;
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc,1) : 1);;
 }

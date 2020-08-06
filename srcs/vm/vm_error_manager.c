@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 12:37:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/05 15:17:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int			vm_init_cw_error(int cd_error, t_cw **cw)
 
 int			vm_init_parse_error(int cd_error, t_parse **p)
 {
+	if (cd_error >= (int)CD_MEM_CHAMP)
+		ft_lstdel(&((*p)->lst_champs), ft_lst_fdel);
 	if (cd_error >= 3)
 		ft_memdel((void**)&((*p)->options));
 	if (cd_error >= 2)
@@ -92,9 +94,8 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 	if (code_error != CD_USAGE)
 		ft_putendl(msg[CD_USAGE]);
 	if (p)
-		vm_init_parse_error(4, p);
+		vm_init_parse_error(code_error, p);
 	if (cw)
-		vm_init_cw_error(5, cw);
-
+		vm_init_cw_error(code_error, cw);
 	return (0);
 }

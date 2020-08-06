@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 15:16:51 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 15:21:52 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int		unique_opt(t_parse *p, char *str)
 int				vm_options_flag(char **av, t_parse **p, int *i)
 {
 	while (av[*i] && (ft_strequ(av[*i], "-dump") || ft_strequ(av[*i], "-v")
-		|| ft_strequ(av[*i], "-a")))
+		|| ft_strequ(av[*i], "-a") || ft_strequ(av[*i], "-SDL")))
 	{
 		if (av[*i] && ft_strequ(av[*i], "-a") == 1)
 		{
@@ -73,7 +73,7 @@ int				vm_options_flag(char **av, t_parse **p, int *i)
 			else
 				return ((int)CD_VERB);
 		}
-		if (av[*i] && ((*p)->options->sdl = ft_strequ(av[*i], "-SDL")) == 1)
+		if (av[*i] && ft_strequ(av[*i], "-SDL") == 1)
 		{
 			(*i)++;
 			(*p)->options->sdl = true;
@@ -96,12 +96,7 @@ int				vm_options_flag(char **av, t_parse **p, int *i)
 
 static int		is_valid_nb_champ(char *nb)
 {
-	if (ft_strlen(nb) > 1)
-	{
-		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
-		return (0);
-	}
-	if (!(nb[0] >= '1' && nb[0] <= '4'))
+	if (ft_strlen(nb) > 1 || !(nb[0] >= '1' && nb[0] <= '4'))
 	{
 		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
 		return (0);

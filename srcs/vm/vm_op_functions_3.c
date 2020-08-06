@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 11:56:21 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/06 11:51:26 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int		op_fork(t_cw *cw, t_process *cur_proc)
 	int			addr;
 	int			i;
 
-	printf("Fork instruction en cours\n");
+	//printf("Fork instruction en cours\n");
 	addr = (cw->arena[(cur_proc->i + 1) % MEM_SIZE] & 255) << 24
 		| (cw->arena[(cur_proc->i + 2) % MEM_SIZE] & 255) << 16
 		| (cw->arena[(cur_proc->i + 3) % MEM_SIZE] & 255) << 8

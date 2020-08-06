@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 11:56:24 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/06 11:50:24 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int		op_store(t_cw *cw, t_process *p)
 		p->registers[b - 1] = p->registers[a - 1];
 	else
 		return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 0) : 0);
-	//verbose(cw, cur_proc) = 0 || 1;
 	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 

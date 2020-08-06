@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 14:21:15 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/05 15:48:37 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ int		vm_execution(t_cw *cw, t_parse * p)
 			// printf(">>> i_cycle = %d\n", i_cycle);
 			// tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
 			// tool_print_short_processors(cw);
+			if (cw->options.v_lvl & 2 && cw->i_cycle != 0)
+				vprint_cycle(cw, cw, 1);
 			vm_proc_cycle(cw);
 			vm_proc_perform_opcode(cw);
 			vm_proc_mv_proc_pos(cw);
