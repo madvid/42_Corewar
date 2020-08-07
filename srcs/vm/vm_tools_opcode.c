@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 14:09:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 15:37:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 		if (!is_valid_opcode(cw->arena, cur_proc))
 			return (0);
 		if (cur_proc->opcode == 12 || cur_proc->opcode == 15)
-			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? : 0;
+			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? CD_PROC_MEM : 0;
 		else
 			op_funct[cur_proc->opcode - 1](cw, cur_proc);
 		
