@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 15:00:38 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 09:53:31 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 int		op_alive(t_cw *cw, t_process *cur_proc)
 {
 	int		arg;
-	int		i;
 
 	printf("Alive en cours.\n");
 	arg = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
