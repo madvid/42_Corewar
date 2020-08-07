@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 17:00:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 11:02:40 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define FILE_BIG		250
 
-# define NB_ERROR_MSG	17
+# define NB_ERROR_MSG	19
 # define CD_USAGE		0
 # define CD_P_STRUCT	1
 # define CD_P_IDTAB		2
@@ -33,7 +33,8 @@
 # define CD_BD_CODE		14
 # define CD_CHP_ERR		15
 # define CD_MAGIC_EXEC	16
-
+# define CD_PROC_MEM	17
+# define FIN_DU_GAME	18
 
 # define M_USAGE_1		"Usage: ./corewar [[-dump N1] [-v N2] [-a]]"
 # define M_USAGE_2		" [[-n ID] champion1.cor]\n"
@@ -65,5 +66,7 @@
 # define M_BD_CODE		"Error: one of champion's file is not bytecode."
 # define M_CHP_ERR		"Error: Incorrect bytecode in champion's code."
 # define M_MAGIC_EXEC	"Error: COREWAR_EXEC_MAGIC number into file."
+# define M_PROC_MEM		"Error: [Mem. allocation] fork/lfork failed to allocate."
+# define M_FIN			"FIN DU GAME."
 
 #endif

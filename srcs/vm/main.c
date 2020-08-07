@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 17:07:36 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 10:59:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ int			main(int ac, char **av)
 	vm_cw_arena_init(&cw, &p);
 	vm_champion_introduction(p->lst_champs);
 	// vm_execution(cw, p);
-	p->options->sdl == true ? visualizer(p, cw) : vm_execution(cw, p);
+	if (p->options->sdl == true)
+		visualizer(p, cw);
+	else
+		vm_execution(cw, p);
+	vm_error_manager(FIN_DU_GAME, &p, &cw);
 	// tool_print_all_processors(cw->process);
 	// vm_cw_arena_init(&cw, &p);
 	// tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);

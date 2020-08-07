@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 16:45:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 11:05:38 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,15 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 	static	char	*msg[] = {M_USAGE, M_P_STRUCT, M_P_IDTAB, M_P_OPT,M_DUMP,
 						M_VERB, M_UNIQ, M_BD_VAL, M_BD_FILE, M_FILE_BIG,
 						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP, M_INV_FD,
-						M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC, NULL};
+						M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC, M_PROC_MEM ,
+						M_FIN, NULL};
 
 	ft_putendl(msg[code_error]);
 	if (p)
 		vm_init_parse_error(code_error, p);
 	if (cw)
 		vm_init_cw_error(code_error, cw);
-	if (code_error != CD_USAGE)
+	if (code_error != CD_USAGE && code_error != FIN_DU_GAME)
 	{
 		ft_putendl("Remainder:\n########################");
 		ft_putendl(msg[CD_USAGE]);

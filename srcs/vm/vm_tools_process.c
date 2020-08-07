@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_process.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 11:45:40 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 11:03:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void		vm_proc_kill_not_living(t_cw *cw)
 **	[put some explanations here !]
 ** Return:
 **	n_lives: total number of lives performed by the processes.
-**	-1: Something wrong happen [find what wrong could happen].
+**	0: if no alive has been made.
 */
 
 int		vm_proc_get_lives(t_cw *cw)
@@ -148,6 +148,8 @@ int		vm_proc_get_lives(t_cw *cw)
 		cw->champ_lives[cur_proc->champ->id - 1] += cur_proc->n_lives;
 		xplr = xplr->next;
 	}
+	cw->tot_lives += n_lives;
+	cw->ctd_lives = n_lives;
 	return (n_lives);
 }
 
@@ -191,21 +193,29 @@ void	vm_proc_mv_proc_pos(t_cw *cw)
 ** Function: vm_proc_perform_opcode
 ** Description:
 **	[put some explanations !]
+** Return:
+**	code_error: value of the corresponding error
+**	0: No error/issue occured
 */
 
-void	vm_proc_perform_opcode(t_cw *cw)
+int		vm_proc_perform_opcode(t_cw *cw)
 {
+	int			code_error;
 	t_list		*xplr;
 	t_process	*cur_proc;
 
+	code_error = 0;
 	xplr = cw->process;
 	while (xplr)
 	{
 		cur_proc = (t_process*)(xplr->cnt);
 		if (cur_proc->wait_cycles == 0)
-			perform_opcode(cw, cur_proc);
+			if ((code_error = perform_opcode(cw, cur_proc) != 0))
+				return (code_error);
 		xplr = xplr->next;
+	return (0);
 	}
+	return (0);
 }
 
 /*

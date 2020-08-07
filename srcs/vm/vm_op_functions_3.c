@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 10:08:36 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 10:52:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,6 @@ int		op_fork(t_cw *cw, t_process *cur_proc)
 	printf("Fork instruction en cours\n");
 	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
 	if (!fork_creation_process(cw, cur_proc, addr % IDX_MOD)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
-		return (0); // STOP SIGNAL MEMORY ALLOCATION ISSUE
+		return (-1); // STOP SIGNAL MEMORY ALLOCATION ISSUE
 	return ((cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }

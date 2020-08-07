@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 10:09:09 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 10:40:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ typedef struct		s_corewar
 	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.id des champs a chaque case.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
-	int				tot_lives;		// (to change)If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle. (total)
+	int				tot_lives;		// total number of alive performed since the beginning of the battle.
+	int				ctd_lives;		// number of alives performed during the last CTD period.
 	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
@@ -276,7 +277,7 @@ bool				is_valid_opcode(char *arena, t_process *cur_proc);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
 int					addr_next_opcode(char *arena, int mem_pos);
-void				perform_opcode(t_cw *cw, t_process *cur_proc);
+int					perform_opcode(t_cw *cw, t_process *cur_proc);
 
 /*
 ** Fonctions outils concernant l'octet d'encodage
@@ -289,7 +290,7 @@ bool				is_valid_reg(char *arena, t_process *p);
 ** Fonctions concernant le déroulement des processus au sein de la VM
 */
 void				vm_proc_cycle(t_cw *cw);
-void				vm_proc_perform_opcode(t_cw *cw);
+int					vm_proc_perform_opcode(t_cw *cw);
 void				vm_proc_mv_proc_pos(t_cw *cw);
 int					vm_proc_get_lives(t_cw *cw);
 void				vm_proc_set_lives(t_cw *cw, int set);
