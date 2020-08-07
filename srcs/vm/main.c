@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 14:10:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 14:25:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int			main(int ac, char **av)
 	}
 	else
 		return (vm_error_manager((int)CD_USAGE, NULL, NULL));
-	// tool_print_parsing(p);
-	// tool_print_champ_list(p->lst_champs);
 	vm_cw_arena_init(&cw, &p);
 	vm_champion_introduction(p->lst_champs);
 	// vm_execution(cw, p);
@@ -42,8 +40,5 @@ int			main(int ac, char **av)
 	else
 		vm_execution(cw, p);
 	vm_error_manager(FIN_DU_GAME, &p, &cw);
-	// tool_print_all_processors(cw->process);
-	// vm_cw_arena_init(&cw, &p);
-	// tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
 	return (0);
 }

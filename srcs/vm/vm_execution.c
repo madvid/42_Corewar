@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 14:10:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 16:00:27 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int		vm_execution(t_cw *cw, t_parse * p)
 
 	code_error = 0;
 	vm_exec_init_pc(cw);
+	cw->tot_cycle = 0;
 	while (stop_game == false)
 	{
 		cw->i_cycle = -1;
@@ -112,21 +113,25 @@ int		vm_execution(t_cw *cw, t_parse * p)
 			if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
 				return (dump_memory(cw->arena));
 			if (cw->options.v_lvl & 2 && cw->i_cycle != 0)
-				vprint_cycle(cw, cw, 1);
+				vprint_cycle(cw, NULL, 0);
 			vm_proc_cycle(cw);
 			if ((code_error = vm_proc_perform_opcode(cw)) != 0)
 				return (code_error);
 			vm_proc_mv_proc_pos(cw);
+			cw->tot_cycle++;
 		}
 		vm_proc_get_lives(cw);
 		vm_proc_kill_not_living(cw);
-		if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
+		// if (cw->ctd_lives == 0 || !vm_proc_only_one_standing(cw))
+		if (cw->ctd_lives == 0)
 			stop_game = true;
 		vm_proc_set_lives(cw, 0);
 		if (cw->ctd_lives >= NBR_LIVE || cw->i_check++ == MAX_CHECKS)
 		{
 			cw->cycle_to_die -= (int)CYCLE_DELTA;
 			cw->i_check = 0;
+			if (cw->options.v_lvl & 2)
+				vprint_cycle(cw, NULL, 1);
 		}
 	}
 	p = NULL;

@@ -6,14 +6,25 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 12:40:25 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 15:59:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
+
+
+/*
+** --------------------------------------------------------------
+** include de fichiers entête
+** --------------------------------------------------------------
+*/
+
+/*
+** fichiers entête externes à Corewar
+*/
+#include <stdbool.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <math.h>
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_timer.h>
@@ -22,15 +33,7 @@
 # include <SDL2_mixer/SDL_mixer.h>
 
 /*
-** --------------------------------------------------------------
-** include de fichiers entête 'externe'
-** --------------------------------------------------------------
-*/
-//#include <sys/types.h>
-#include <stdbool.h>
-
-/*
-** [Put some explanations]
+** fichiers entête internes à Corewar
 */
 # include "../libft/include/libft.h"
 # include "../libft/include/ft_printf.h"
@@ -40,7 +43,6 @@
 ** fichier entête du sujet corewar (ressources)
 */
 #include "op.h"
-//#include "op_tab.h"
 
 /*
 ** --------------------------------------------------------------
@@ -129,6 +131,7 @@ typedef struct		s_corewar
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 	int				i_cycle;
+	int				tot_cycle;
 	t_options		options;			// struct with options
 }					t_cw;
 
@@ -332,13 +335,13 @@ int					dump_memory(char *arena);
 **<<<<<Verbosity>>>>>
 */
 
-int    				init_verbotab(t_cw *cw, void *ptr, int flag);
-int     			vprint_essentials(t_cw *cw, void *ptr,int flag);
-int     			vprint_lives(t_cw *cw, void *ptr, int flag);
-int     			vprint_cycle(t_cw *cw, void *ptr, int flag);
-int     			vprint_op(t_cw *cw, void *ptr, int flag);
-int     			vprint_deaths(t_cw *cw, void *ptr, int flag);
-int     			vprint_pcmv(t_cw *cw, void *ptr, int flag);
+int					init_verbotab(t_cw *cw, void *ptr, int flag);
+int		 			vprint_essentials(t_cw *cw, void *ptr,int flag);
+int		 			vprint_lives(t_cw *cw, void *ptr, int flag);
+int					vprint_cycle(t_cw *cw, void *ptr, int flag);
+int		 			vprint_op(t_cw *cw, void *ptr, int flag);
+int		 			vprint_deaths(t_cw *cw, void *ptr, int flag);
+int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
 
 /*
 **<<<<<Visualizer functions>>>>>
@@ -349,10 +352,10 @@ int     			vprint_pcmv(t_cw *cw, void *ptr, int flag);
 void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
-void     			visualizer(t_parse *p, t_cw *cw);
-double    			menu_move(t_visu *v, double angle);
-void    			load_menu(t_visu *v);
-t_visu  			init_menu(t_visu *v);
+void				visualizer(t_parse *p, t_cw *cw);
+double				menu_move(t_visu *v, double angle);
+void				load_menu(t_visu *v);
+t_visu				init_menu(t_visu *v);
 void				load_visu(t_visu *v, t_parse *p, t_cw *cw);
 
 /*

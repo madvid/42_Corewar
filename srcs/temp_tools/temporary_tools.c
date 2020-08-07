@@ -6,10 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 14:06:54 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 14:36:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+# include <stdio.h>
 #include "vm.h"
 
 typedef struct		s_color_champ
