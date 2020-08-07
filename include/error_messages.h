@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 11:02:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 12:34:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define FILE_BIG		250
 
-# define NB_ERROR_MSG	19
+# define NB_ERROR_MSG	23
 # define CD_USAGE		0
 # define CD_P_STRUCT	1
 # define CD_P_IDTAB		2
@@ -34,7 +34,11 @@
 # define CD_CHP_ERR		15
 # define CD_MAGIC_EXEC	16
 # define CD_PROC_MEM	17
-# define FIN_DU_GAME	18
+# define CD_CW_STRUCT	18
+# define CD_ARENA		19
+# define CD_ID_ARENA	20
+# define CD_INI_PROC	21
+# define FIN_DU_GAME	22
 
 # define M_USAGE_1		"Usage: ./corewar [[-dump N1] [-v N2] [-a]]"
 # define M_USAGE_2		" [[-n ID] champion1.cor]\n"
@@ -42,9 +46,9 @@
 # define M_USAGE_4		"     * N2 being an integer in range [0;31],\n"
 # define M_USAGE_5		"     * ID being an integer in range [1;4]."
 # define M_USAGE		(M_USAGE_1 M_USAGE_2 M_USAGE_3 M_USAGE_4 M_USAGE_5)
-# define M_P_STRUCT		"Error: [Mem. allocation] failed for t_parse *p.\n"
-# define M_P_IDTAB		"Error: [Mem. allocation] failed for p->id_available\n"
-# define M_P_OPT		"Error: [Mem. allocation] failed for p->options.\n"
+# define M_P_STRUCT		"Error: [Mem. allocation] failed for t_parse *p."
+# define M_P_IDTAB		"Error: [Mem. allocation] failed for p->id_available"
+# define M_P_OPT		"Error: [Mem. allocation] failed for p->options."
 # define M_DUMP_1		"Error: [Dump flag] <-dump nbr_cycles> nbr_cycles need"
 # define M_DUMP_2		" to exist, be non null and positive INT."
 # define M_DUMP			(M_DUMP_1 M_DUMP_2)
@@ -67,6 +71,10 @@
 # define M_CHP_ERR		"Error: Incorrect bytecode in champion's code."
 # define M_MAGIC_EXEC	"Error: COREWAR_EXEC_MAGIC number into file."
 # define M_PROC_MEM		"Error: [Mem. allocation] fork/lfork failed to allocate."
+# define M_CW_STRUCT	"Error: [Mem. allocation] failed for t_cw *cw."
+# define M_ARENA		"Error: [Mem. allocation] failed for cw->arena."
+# define M_ID_ARENA		"Error: [Mem. allocation] failed for cw->id_arena."
+# define M_INI_PROC		"Error: [Mem. allocation] failed for the initial processes."
 # define M_FIN			"FIN DU GAME."
 
 #endif

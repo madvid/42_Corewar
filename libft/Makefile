@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/08/06 10:33:55 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/07 11:53:50 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,9 @@ LIB_FILES =	ft_memset	\
 			ft_itoa_base	\
 			ft_print_binary	\
 			ft_1d_int_table	\
-			ft_1d_int_table_set
+			ft_1d_int_table_set	\
+			ft_1d_int_tabledel
+
 
 PRINTF_FILES =	ft_printf	\
 				base		\

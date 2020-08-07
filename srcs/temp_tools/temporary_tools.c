@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 10:09:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 14:06:54 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,10 +219,10 @@ void		tool_print_processor(t_process *process, int nb)
 	printf("| position:____%14d                                  |\n", process->i);
 	printf("| pc:__________%14d                                  |\n", process->pc);
 	printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");
-	printf("| registers:___| %2d | %2d | %2d | %2d |   |\n", process->registers[0], process->registers[1], process->registers[2], process->registers[3]);
-	printf("|            r5| %2d | %2d | %2d | %2d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
-	printf("|            r7| %2d | %2d | %2d | %2d |r12|\n", process->registers[8], process->registers[9], process->registers[10], process->registers[11]);
-	printf("|              | %2d | %2d | %2d | %2d |r16|\n", process->registers[12], process->registers[13], process->registers[14], process->registers[15]);
+	printf("| registers:___| %8d | %8d | %8d | %8d |   |\n", process->registers[0], process->registers[1], process->registers[2], process->registers[3]);
+	printf("|            r5| %8d | %8d | %8d | %8d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
+	printf("|            r7| %8d | %8d | %8d | %8d |r12|\n", process->registers[8], process->registers[9], process->registers[10], process->registers[11]);
+	printf("|              | %8d | %8d | %8d | %8d |r16|\n", process->registers[12], process->registers[13], process->registers[14], process->registers[15]);
 	printf("| adrchamp:____%14p                                  |\n", process->champ);
 	printf("|______________________________________________________________|\n");
 }

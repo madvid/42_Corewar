@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 11:14:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 11:53:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void				ft_print_binary(int nb);
 void				ft_lst_fdel(void *link, size_t link_size);
 int					*ft_1d_int_table(int nb_elem);
 void				ft_1d_int_table_set(int *table, int nb, size_t ini, size_t width);
+void				ft_1d_int_tabledel(int **tab, int nb_elem);
 
 
 #endif

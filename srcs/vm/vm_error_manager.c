@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 11:05:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 14:11:12 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,14 @@
 
 int			vm_init_cw_error(int cd_error, t_cw **cw)
 {
-	t_list	*xplr;
-
-	xplr = (*cw)->process;
-	if (cd_error >= 4)
-		while (xplr)
-		{
-			free(((t_process*)(xplr->cnt))->registers);	// Faudra tester que l'on libere bien toute la memoire
-			((t_process*)(xplr->cnt))->registers = NULL;
-			xplr = xplr->next;						// et qu'on oubli pas de free quelque chose.
-		}
-	if (cd_error >= 3)
-	{
-		ft_lstdel(&((*cw)->process), ft_lst_fdel);	// Faudra tester que l'on libere bien toute la memoire
-		(*cw)->process = NULL;						// et qu'on oubli pas de free quelque chose.
-	}
-	cd_error >= 2 ? ft_strdel(&((*cw)->arena)) : 0;
-	cd_error >= 1 ? ft_memdel((void **)cw) : 0;
+	if (cd_error >= (int)CD_INI_PROC)
+		ft_lstdel(&((*cw)->process), &ft_lst_fdel_proc);
+	if (cd_error >= CD_ID_ARENA)
+		ft_1d_int_tabledel(&((*cw)->id_arena), REG_NUMBER);
+	if (cd_error >= CD_ARENA)
+		ft_strdel(&((*cw)->arena));
+	if (cd_error >= CD_CW_STRUCT)
+		ft_memdel((void **)cw);
 	return (0);
 }
 
@@ -77,8 +68,8 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 	static	char	*msg[] = {M_USAGE, M_P_STRUCT, M_P_IDTAB, M_P_OPT,M_DUMP,
 						M_VERB, M_UNIQ, M_BD_VAL, M_BD_FILE, M_FILE_BIG,
 						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP, M_INV_FD,
-						M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC, M_PROC_MEM ,
-						M_FIN, NULL};
+						M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC, M_PROC_MEM,
+						M_CW_STRUCT, M_ARENA, M_ID_ARENA, M_FIN, NULL};
 
 	ft_putendl(msg[code_error]);
 	if (p)

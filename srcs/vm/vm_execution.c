@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 10:39:37 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 14:10:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void		vm_exec_init_pc(t_cw *cw)
 		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
 		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
 		p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
-		p_xplr->n_lives = p_xplr->id - 1; // to suppress
 		l_xplr = l_xplr->next;
 	}
 }
@@ -125,7 +124,10 @@ int		vm_execution(t_cw *cw, t_parse * p)
 			stop_game = true;
 		vm_proc_set_lives(cw, 0);
 		if (cw->ctd_lives >= NBR_LIVE || cw->i_check++ == MAX_CHECKS)
+		{
 			cw->cycle_to_die -= (int)CYCLE_DELTA;
+			cw->i_check = 0;
+		}
 	}
 	p = NULL;
 	//tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
