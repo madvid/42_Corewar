@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/06 17:08:59 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/07 09:53:05 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ VM_FILES =	main					\
 			vm_tools_encode_byte	\
 			vm_tools_opcode			\
 			vm_tools_process		\
-			vm_tools_optiogit sns		\
+			vm_tools_options		\
 			vm_tools_op_functions	\
 			vm_op_functions_1		\
 			vm_op_functions_2		\
