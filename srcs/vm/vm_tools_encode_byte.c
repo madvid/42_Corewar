@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 14:54:33 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 09:54:40 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,43 @@ bool	is_valid_encoding(u_int8_t opcode, u_int8_t encoding)
 	return (true);
 }
 
+char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
+{
+	int			arg;
+	int			widht;
+	extern t_op	op_tab[17];
+	
+	if (op_tab[proc->opcode - 1].n_arg >= 2)
+	{
+		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
+			& 0b11000000, op_tab[proc->opcode - 1].direct_size);
+		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
+		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
+		dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
+			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+	}
+	if (op_tab[proc->opcode - 1].n_arg >= 3)
+	{
+		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
+			& 0b11110000, op_tab[proc->opcode - 1].direct_size);
+		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00001100) >> 2;
+		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
+		dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
+			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+	}
+	return (dst);
+}
+
 char		*args_to_str(t_cw *cw, t_process *proc)
 {
 	char		*dst;
 	u_int8_t	encoding;
 	int			arg;
 	extern t_op	op_tab[17];
-	int			widht;
 
 	arg = 0;
 	encoding = cw->arena[(proc->i + 1) % MEM_SIZE];
+	dst = NULL;
 	if (op_tab[proc->opcode - 1].n_arg >= 1)
 	{
 		if (opcode_no_encoding(proc->opcode))
@@ -106,23 +133,9 @@ char		*args_to_str(t_cw *cw, t_process *proc)
 			arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 			arg = get_arg_value(cw->arena, proc, proc->i + 2, arg);
 		}
-		dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
+			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
 	}
-	if (op_tab[proc->opcode - 1].n_arg >= 2)
-	{
-		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11000000, op_tab[proc->opcode - 1].direct_size);
-		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
-		dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
-	}
-	if (op_tab[proc->opcode - 1].n_arg >= 3)
-	{
-		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11110000, op_tab[proc->opcode - 1].direct_size);
-		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00001100) >> 2;
-		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
-		dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
-	}
+	dst = arg2_3_to_str(cw, proc, dst, encoding);
 	return (dst);
 }

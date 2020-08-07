@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 14:58:40 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 09:59:05 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int		op_long_fork(t_cw *cw, t_process *cur_proc)
 	new_proc->i = cur_proc->i;
 	new_proc->champ = cur_proc->champ;
 	ft_lstadd(&(cw->process), new_link);
-	return (1);
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }
 
 /*
@@ -122,13 +122,7 @@ int		op_aff(t_cw *cw, t_process *cur_proc)
 	int			i;
 
 	printf("Aff instruction en cours\n");
-<<<<<<< HEAD
-	reg = (u_int8_t)cw->arena[(cur_proc->i + 2) % MEM_SIZE];
-	if (reg < 1 || reg > REG_NUMBER)
-		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
-=======
 	reg = get_arg_value(cw->arena, cur_proc, cur_proc->i, REG_CODE);
->>>>>>> 52ea6853986c0ddb34898b1f96c43f988a82e780
 	arg = cur_proc->registers[reg - 1];
 	if (cw->options.aff == true)
 		ft_printf("Aff: %s\n", ft_itoa(arg)); // Pas le bon affichage, faire des tests pour savoir
