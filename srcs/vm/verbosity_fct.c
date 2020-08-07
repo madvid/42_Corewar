@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity_fct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/06 14:38:32 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 16:01:40 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,13 @@ int     vprint_lives(t_cw *cw, void *ptr, int flag)
     return (flag);
 }
 
-int     vprint_cycle(t_cw *cw, void *ptr, int flag)
+int			vprint_cycle(t_cw *cw, void *ptr, int flag)
 {
-    if (ptr)
-    {
-        if (flag == 1)
-        {
-            ft_printf("tot_lives = %d >>>>>>>>>>>i_check = %d\n", cw->tot_lives, cw->i_check);
-            if (cw->tot_lives >= NBR_LIVE || cw->i_check >= MAX_CHECKS)
-                ft_printf("Cycle to die is now %d\n", cw->cycle_to_die);
-            ft_printf("It is now cycle %d\n", cw->i_cycle);
-        }
-    }
-    return (flag);
+	if (flag == 1 && !ptr)
+		ft_printf("Cycle to die is now %d\n", cw->cycle_to_die);
+	if (flag == 0 && !ptr)
+		ft_printf("It is now cycle %d\n", cw->tot_cycle);
+	return (flag);
 }
 
 int     vprint_op(t_cw *cw, void *ptr, int flag)
