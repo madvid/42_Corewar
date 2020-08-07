@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/04 10:59:52 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 12:08:45 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,20 @@ t_visu		init_process(t_visu *v)
 	if (!v->process_title[0])
 		printf("Error creating text : %s\n", SDL_GetError());
 	v->process_title[1] = TTF_RenderText_Blended(v->font_process,\
-			"Nb_lives: ", v->color_title);
+			"Nb_lives during this CTD: ", v->color_title);
 	if (!v->process_title[1])
 		printf("Error creating text : %s\n", SDL_GetError());
 	v->process_title[2] = TTF_RenderText_Blended(v->font_process,\
-			"Current cycle: ", v->color_title);
+			"NB of check before CTD: ", v->color_title);
 	if (!v->process_title[2])
+		printf("Error creating text : %s\n", SDL_GetError());
+	v->process_title[3] = TTF_RenderText_Blended(v->font_process,\
+			"Total nbr of lives: ", v->color_title);
+	if (!v->process_title[3])
+		printf("Error creating text : %s\n", SDL_GetError());
+	v->process_title[4] = TTF_RenderText_Blended(v->font_process,\
+			"Number of Cycle: ", v->color_title);
+	if (!v->process_title[4])
 		printf("Error creating text : %s\n", SDL_GetError());
 	v->process_rect.x = 405;
 	v->process_rect.y = 1080;
@@ -35,14 +43,29 @@ t_visu		init_process(t_visu *v)
 
 void		set_coo_process(t_visu *v, int i)
 {
-	v->process_tc[i].x = v->process_rect.x + 10;
-	v->process_tc[i].y = v->process_rect.y + i * 100;
-	v->process_tc[i].w = 300;
-	v->process_tc[i].h = 100;
-	v->process_coo[i].x = v->process_tc[i].x + 600;
-	v->process_coo[i].y = v->process_tc[i].y;
-	v->process_coo[i].w = 300;
-	v->process_coo[i].h = 100;
+	if (i < 3)
+	{
+		v->process_tc[i].x = v->process_rect.x + 10;
+		v->process_tc[i].y = v->process_rect.y + i * 100;
+		v->process_tc[i].w = 300;
+		v->process_tc[i].h = 100;
+		v->process_coo[i].x = v->process_tc[i].x + 700;
+		v->process_coo[i].y = v->process_tc[i].y;
+		v->process_coo[i].w = 300;
+		v->process_coo[i].h = 100;
+	}
+	else
+	{
+		v->process_tc[i].x = v->process_rect.x + 1200;
+		v->process_tc[i].y = v->process_rect.y + (i % 3) * 100;
+		v->process_tc[i].w = 300;
+		v->process_tc[i].h = 100;
+		v->process_coo[i].x = v->process_tc[i].x + 600;
+		v->process_coo[i].y = v->process_tc[i].y;
+		v->process_coo[i].w = 300;
+		v->process_coo[i].h = 100;
+	}
+	
 }
 
 void		get_process_data(t_visu *v, t_cw *cw)
@@ -52,12 +75,20 @@ void		get_process_data(t_visu *v, t_cw *cw)
 	if (!v->process_name[0])
 		printf("Error creating text : %s\n", SDL_GetError());
 	v->process_name[1] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->tot_lives), v->color_title);
+			ft_itoa(cw->ctd_lives), v->color_title);
 	if (!v->process_name[1])
 		printf("Error creating text : %s\n", SDL_GetError());
 	v->process_name[2] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->i_cycle), v->color_title);
+			ft_itoa(cw->i_check), v->color_title);
 	if (!v->process_name[2])
+		printf("Error creating text : %s\n", SDL_GetError());
+	v->process_name[3] = TTF_RenderText_Blended(v->font_process,\
+			ft_itoa(cw->tot_lives), v->color_title);
+	if (!v->process_name[3])
+		printf("Error creating text : %s\n", SDL_GetError());
+	v->process_name[4] = TTF_RenderText_Blended(v->font_process,\
+			ft_itoa(cw->i_cycle), v->color_title);
+	if (!v->process_name[4])
 		printf("Error creating text : %s\n", SDL_GetError());
 }
 
@@ -87,7 +118,7 @@ void		load_process(t_visu *v, t_cw *cw)
 
 	get_process_data(v, cw);
 	i = 0;
-	while (i < 3)
+	while (i < 5)
 	{
 		set_coo_process(v, i);
 		process_to_texture(v, i);

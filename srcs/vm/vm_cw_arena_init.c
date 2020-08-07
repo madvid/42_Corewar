@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/07/30 17:26:32 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 10:22:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,10 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 	}
 	(*cw)->cycle_to_die = CYCLE_TO_DIE;
 	(*cw)->tot_lives = 0;
+	(*cw)->ctd_lives = 0;
 	(*cw)->n_champ = 0;
 	ft_1d_int_table_set((*cw)->champ_lives, 0, 0, 4);
 	(*cw)->i_check = MAX_CHECKS;
-	
 	return (1);
 }
 

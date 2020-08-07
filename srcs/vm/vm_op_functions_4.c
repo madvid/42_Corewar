@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 09:59:05 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 11:39:53 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,28 +82,12 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 int		op_long_fork(t_cw *cw, t_process *cur_proc)
 {
 	int			addr;
-	t_list		*new_link;
-	t_process	*new_proc;
-	int			i;
 
 	printf("long fork instruction en cours\n");
 	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
-	if (!(new_link = ft_lstnew((void*)(cur_proc), sizeof(t_process))))
-		return (-1);
-	new_proc = (t_process*)(new_link->cnt);
-	if (!(new_proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
-		return (-1);
-	i = -1;
-	while (++i < 16)
-		new_proc->registers[i] = cur_proc->registers[i];
-	new_proc->pc = cur_proc->i + (addr % IDX_MOD);
-	new_proc->id = ((t_process*)(cw->process->cnt))->id + 1;
-	new_proc->n_lives = 0;
-	new_proc->wait_cycles = 0;
-	new_proc->i = cur_proc->i;
-	new_proc->champ = cur_proc->champ;
-	ft_lstadd(&(cw->process), new_link);
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+	if (!fork_creation_process(cw, cur_proc, addr)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
+		return (-1); // STOP SIGNAL MEMORY ALLOCATION ISSUE
+	return (1);
 }
 
 /*
@@ -125,6 +109,6 @@ int		op_aff(t_cw *cw, t_process *cur_proc)
 	reg = get_arg_value(cw->arena, cur_proc, cur_proc->i, REG_CODE);
 	arg = cur_proc->registers[reg - 1];
 	if (cw->options.aff == true)
-		ft_printf("Aff: %s\n", ft_itoa(arg)); // Pas le bon affichage, faire des tests pour savoir
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc,1) : 1);;
+		ft_printf("Aff: %s\n", ft_itoa(arg));
+	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc,1) : 1);
 }

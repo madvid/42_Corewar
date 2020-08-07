@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 15:00:47 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 14:12:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct		s_parse
 {
 	int				nb_champ;
 	int				id_champ;
-	int				*id_table;
+	int				*id_available;
 	t_options		*options;
 	t_list			*lst_champs;
 	char			**error;
@@ -123,7 +123,8 @@ typedef struct		s_corewar
 	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.id des champs a chaque case.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
 	int				cycle_to_die;	// 
-	int				tot_lives;		// (to change)If the number of lives performed by the processes reachs nb-lives, cycle_to_die is decreased by delta_cycle. (total)
+	int				tot_lives;		// total number of alive performed since the beginning of the battle.
+	int				ctd_lives;		// number of alives performed during the last CTD period.
 	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
@@ -171,11 +172,11 @@ typedef struct		s_visu
 	SDL_Rect		chp_id[4];	//Rect for champion info
 	SDL_Rect		chp_info[36];
 	TTF_Font		*font_p;
-	SDL_Surface		*chp_name[4];
-	SDL_Texture		*chp_vn[4];
-	SDL_Rect		chp_cs[4];
-	SDL_Surface		*chp_size[4];
-	SDL_Texture		*chp_vs[4];
+	SDL_Surface		*chp_name[20];
+	SDL_Texture		*chp_vn[20];
+	SDL_Rect		chp_cs[20];
+	SDL_Surface		*chp_size[20];
+	SDL_Texture		*chp_vs[20];
 
 /*
 **Arena data
@@ -198,18 +199,19 @@ typedef struct		s_visu
 	TTF_Font		*font_process;
 	SDL_Rect		process_id;  //Rect for process id info
 	SDL_Rect		process_rect;
-	SDL_Rect		process_coo[3];
-	SDL_Rect		process_tc[3];
-	SDL_Surface		*process_name[3];
-	SDL_Surface		*process_title[3];
-	SDL_Texture		*process_vn[3];
-	SDL_Texture		*process_vt[3];
+	SDL_Rect		process_coo[5];
+	SDL_Rect		process_tc[5];
+	SDL_Surface		*process_name[5];
+	SDL_Surface		*process_title[5];
+	SDL_Texture		*process_vn[5];
+	SDL_Texture		*process_vt[5];
 /*
 **Render data
 */
 	int				i;
 
 }					t_visu;
+
 
 /*
 ** Prototypes de fonctions temporaires, à retirer avant de push sur la vogsphere.
@@ -229,6 +231,7 @@ void				tool_print_short_processors(t_cw *cw);								// a retirer
 int					vm_error_manager(int code_error, t_parse **p, t_cw **cw);
 int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
 int					vm_init_cw_error(int cd_error, t_cw **cw);
+void				ft_lst_fdel_champ(void *link, size_t link_size);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN
@@ -274,7 +277,7 @@ bool				is_valid_opcode(char *arena, t_process *cur_proc);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
 int					addr_next_opcode(char *arena, int mem_pos);
-void				perform_opcode(t_cw *cw, t_process *cur_proc);
+int					perform_opcode(t_cw *cw, t_process *cur_proc);
 
 /*
 ** Fonctions outils concernant l'octet d'encodage
@@ -287,7 +290,7 @@ bool				is_valid_reg(char *arena, t_process *p);
 ** Fonctions concernant le déroulement des processus au sein de la VM
 */
 void				vm_proc_cycle(t_cw *cw);
-void				vm_proc_perform_opcode(t_cw *cw);
+int					vm_proc_perform_opcode(t_cw *cw);
 void				vm_proc_mv_proc_pos(t_cw *cw);
 int					vm_proc_get_lives(t_cw *cw);
 void				vm_proc_set_lives(t_cw *cw, int set);
@@ -314,7 +317,7 @@ int					op_long_load(t_cw *cw, t_process *cur_proc);
 int					op_long_load_index(t_cw *cw, t_process *cur_proc);
 int					op_long_fork(t_cw *cw, t_process *cur_proc);
 int					op_aff(t_cw *cw, t_process *cur_proc);
-//int				fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
+int				fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 
 /*
@@ -345,17 +348,17 @@ int     			vprint_pcmv(t_cw *cw, void *ptr, int flag);
 void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
-void     			visualizer(t_parse *p, t_cw *cw);
+void     			visualizer(t_cw *cw);
 double    			menu_move(t_visu *v, double angle);
 void    			load_menu(t_visu *v);
 t_visu  			init_menu(t_visu *v);
-void				load_visu(t_visu *v, t_parse *p, t_cw *cw);
+void				load_visu(t_visu *v, t_cw *cw);
 
 /*
 **<<<<<Champions functions>>>>>
 */
-t_visu				init_id(t_visu *v, t_parse *p);
-void				load_chp(t_visu *v, t_parse *p);
+t_visu				init_id(t_visu *v, t_cw *cw);
+void				load_chp(t_visu *v, t_cw *cw);
 
 /*
 **<<<<<Arena functions>>>>>
@@ -368,7 +371,7 @@ void				load_arena(t_visu *v, t_cw *cw);
 **<<<<<Render functions>>>>>
 */
 
-void				visu_render(t_visu *v, t_parse *p);
+void				visu_render(t_visu *v);
 void				render_destroy(t_visu *v);
 void				render_destroy(t_visu *v);
 void				texture_free(t_visu *v);
@@ -385,7 +388,7 @@ void				load_process(t_visu *v, t_cw *cw);
 */
 
 char				*ft_itoa_base2(unsigned long long nb, char *base);
-void				main_exe(t_visu *v, t_parse *p, t_cw *cw, bool stop_game);
+void				main_exe(t_visu *v, t_cw *cw, bool stop_game);
 void    			music_launcher(t_visu *v);
 t_visu				visu_breaker(t_visu *v);
 t_visu				visu_breaker2(t_visu *v);

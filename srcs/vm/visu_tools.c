@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/05 14:23:32 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 14:12:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,34 @@ void		music_launcher(t_visu *v)
 	Mix_PlayMusic(v->musique, -1);
 }
 
-void		main_exe(t_visu *v, t_parse *p, t_cw *cw, bool stop_game)
-{
-	int		tmp;
-	
+void		main_exe(t_visu *v, t_cw *cw, bool stop_game)
+{	
+	int		code_error;
+
 	cw->i_cycle = -1;
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0\
 			&& v->isquit == 0)
 	{
-		load_visu(v, p, cw);
-		visu_render(v, p);
+		load_visu(v, cw);
+		visu_render(v);
+		if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
+			v->isquit = 1;
+		if (cw->options.v_lvl & 2 && cw->i_cycle != 0)
+			vprint_cycle(cw, cw, 1);
 		vm_proc_cycle(cw);
-		vm_proc_perform_opcode(cw);
+		if ((code_error = vm_proc_perform_opcode(cw)) != 0)
+			v->isquit = 1;
 		vm_proc_mv_proc_pos(cw);
 		texture_free(v);
 	}
-	// ICI ajouter une fonction qui va attribuer une valeur a cw->lives + retirer les processus qui n'ont pas live pendant cw->cycle_to_die cycle
-		tmp = cw->tot_lives;
-		cw->tot_lives += vm_proc_get_lives(cw);
-		vm_proc_kill_not_living(cw);
-		if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
-			stop_game = true;
-		vm_proc_set_lives(cw, 0);
-		if (cw->tot_lives - tmp >= NBR_LIVE)
-			cw->cycle_to_die -= (int)CYCLE_DELTA;
+	vm_proc_get_lives(cw);
+	vm_proc_kill_not_living(cw);
+	if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
+		stop_game = true;
+	vm_proc_set_lives(cw, 0);
+	if (cw->ctd_lives >= NBR_LIVE || cw->i_check++ == MAX_CHECKS)
+	{
+		cw->cycle_to_die -= (int)CYCLE_DELTA;
+		cw->i_check = 0;
+	}
 }

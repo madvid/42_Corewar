@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_opcode.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 10:45:08 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/07 11:03:25 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 **	[put some explanations here !]
 */
 
-void	perform_opcode(t_cw *cw, t_process *cur_proc)
+int		perform_opcode(t_cw *cw, t_process *cur_proc)
 {
 	extern t_op		op_tab[17];
-	int				ret;
+	int				code_error;
 	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
 
-	
+	code_error = 0;
 	if (op_funct[0] == NULL)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
@@ -53,13 +53,12 @@ void	perform_opcode(t_cw *cw, t_process *cur_proc)
 		// printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[cur_proc->i]);
 		// printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[cur_proc->i + 1]);
 		if (!is_valid_opcode(cw->arena, cur_proc))
-			return ;
-		ret = op_funct[cur_proc->opcode - 1](cw, cur_proc);
-		// if (ret == 0 && (cw->options->verbose & xx)) <- definir le niveau de verbose
-		// 	ft_printf("P-%d: instruction %d(%s) incorrect\n", cur_proc->id, op_tab[cur_proc->opcode - 1].name);
-		// if (ret == -1)
-		// 	return (vm_error_manager(, cw));
+			return (0);
+		if (cur_proc->opcode == 12 || cur_proc->opcode == 15) // uniquement dans le cas fork & lfork
+			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? : 0; // 0 -> c'est ok ; != 0 il y a une erreur
+		return (code_error);
 	}
+	return (0);
 }
 
 /*

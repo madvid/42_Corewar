@@ -24,8 +24,10 @@
 **	<type> / 10 == 0 => RETURNS ABSOLUTE VALUE
 **	<type> / 10 != 0 => RETURNS RELATIVE VALUE
 ** Example:
-**	<type> == 1  RETURNS value
-**	<type> == 11 RETURNS cur_proc->registers[value]
+**	<type> == REG_CODE				RETURNS arg_value
+**										<=>	numero du registre
+**	<type> == REG_CODE + RELATIVE	RETURNS cur_proc->registers[arg_value]
+**										<=> valeur du registre[arg_value]
 */
 
 int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)

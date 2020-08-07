@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/06 14:16:44 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/07 11:40:32 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ VM_FILES =	main					\
 			vm_tools_encode_byte	\
 			vm_tools_opcode			\
 			vm_tools_process		\
+			vm_tools_options		\
 			vm_tools_op_functions	\
 			vm_op_functions_1		\
 			vm_op_functions_2		\
@@ -58,6 +59,7 @@ VM_FILES =	main					\
 			vm_op_functions_4		\
 			vm_cw_arena_init		\
 			vm_execution			\
+			ft_lst_fdel_champ		\
 			verbosity				\
 			verbosity_fct			\
 			ft_itoa_base2			\
@@ -68,13 +70,12 @@ VM_FILES =	main					\
 			visu_menu				\
 			visu_launch				\
 			visu_tools				\
-			vm_tools_options		\
 			temporary_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)
 VM_D = $(VM_SRC:.c=.d) # temporaire !!!!
-DEP_NAME = $(VM_FILES:.c=.o)
+ DEP_NAME = $(VM_FILES:.c=.o)
 vpath %.c $(SRC_DIR)$(VM)
 vpath %.c $(SRC_DIR)temp_tools
 vpath %.o $(SRC_DIR)$(VM)
@@ -98,6 +99,10 @@ WHITE = \033[1;37m
 
 all: $(VM)
 
+# $(VM): $(VM_OBJ)
+# 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB)
+# 	@echo "\n $(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@"
+
 $(VM): $(VM_OBJ)
 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) -F $(FW_PATH)\
 		-framework SDL2\
@@ -112,6 +117,11 @@ $(VM): $(VM_OBJ)
 -include $(DEP)
 
 $(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
+
+# $(SRC_DIR)$(VM_DIR)%.o: %.c
+# 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
+# 	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR)
+# 	@#$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
 
 $(SRC_DIR)$(VM_DIR)%.o: %.c
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"

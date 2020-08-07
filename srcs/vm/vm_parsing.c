@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 15:21:52 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/06 17:07:27 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,9 @@ int				vm_parsing(char **av, t_parse **p)
 				return (vm_error_manager((int)CD_BD_VAL, p, NULL));
 		}
 		if (av[i] && !is_valid_champ_filename(av[i]))
-			return (vm_error_manager((int)CD_BD_CHAMP_NB, p, NULL));
-		if (av[i] && !vm_create_champion(&((*p)->lst_champs), av[i++], *p))
-			return (vm_error_manager((int)CD_MEM_CHAMP, p, NULL));
+			return (vm_error_manager((int)CD_BD_FILE, p, NULL));
+		if (av[i] && (code_error = vm_create_champion(&((*p)->lst_champs), av[i++], *p)))
+			return (vm_error_manager(code_error, p, NULL));
 	}
 	if ((*p)->nb_champ == 0)
 		return (vm_error_manager((int)CD_EMPTY_CHP, p, NULL));
