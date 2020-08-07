@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 14:11:12 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 14:24:45 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 						M_VERB, M_UNIQ, M_BD_VAL, M_BD_FILE, M_FILE_BIG,
 						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP, M_INV_FD,
 						M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC, M_PROC_MEM,
-						M_CW_STRUCT, M_ARENA, M_ID_ARENA, M_FIN, NULL};
+						M_CW_STRUCT, M_ARENA, M_ID_ARENA, M_FIN, M_INI_PROC,
+						NULL};
 
 	ft_putendl(msg[code_error]);
 	if (p)
