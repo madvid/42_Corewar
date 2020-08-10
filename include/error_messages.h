@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:50:30 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/10 17:04:36 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define CD_P_OPT		3
 # define CD_DUMP 		4
 # define CD_VERB		5
-# define CD_VERB		6
+# define CD_MUSIC		6
 # define CD_UNIQ		7
 # define CD_BD_VAL		8
 # define CD_DUPL_N		9
