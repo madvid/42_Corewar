@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/07 11:56:58 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/10 12:39:25 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ VM_FILES =	main					\
 			vm_parsing_champ_code	\
 			vm_error_manager		\
 			vm_tools_parsing		\
-			vm_tools_champion		\
+			vm_tools_champion_1		\
+			vm_tools_champion_2		\
 			vm_tools_get_champ		\
 			vm_tools_encode_byte	\
 			vm_tools_opcode			\

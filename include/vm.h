@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:46:00 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/10 18:04:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,8 @@ void				tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p);	// a re
 void				tool_print_processor(t_process *process, int nb);					// a retirer
 void				tool_print_all_processors(t_list *processes);						// a retirer
 void				tool_print_short_processors(t_cw *cw);								// a retirer
+void				tool_print_short_champ_list(t_list *lst_champs);						// a retirer
+
 
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
@@ -260,7 +262,7 @@ int					get_champ_l_bcode(int fd);
 char				*get_champ_bcode(int fd, int l_bcode);
 int					lst_sort_champion(t_list **champ);
 int					lst_order_chp(t_list *chp1, t_list *chp2);
-t_list				*lst_bubble(t_list **link1, t_list **link2);
+t_list				*lst_bubble(t_list *link1, t_list *link2);
 
 /*
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
@@ -325,7 +327,7 @@ int					op_long_load(t_cw *cw, t_process *cur_proc);
 int					op_long_load_index(t_cw *cw, t_process *cur_proc);
 int					op_long_fork(t_cw *cw, t_process *cur_proc);
 int					op_aff(t_cw *cw, t_process *cur_proc);
-int				fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
+int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 
 /*
