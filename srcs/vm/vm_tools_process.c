@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 11:03:57 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 11:31:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,6 @@ int		vm_proc_perform_opcode(t_cw *cw)
 			if ((code_error = perform_opcode(cw, cur_proc) != 0))
 				return (code_error);
 		xplr = xplr->next;
-	return (0);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 10:22:09 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 13:47:45 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int		load_champions(t_cw *cw, t_champ *chp, int nb_champ)
 **	0: otherwise.
 */
 
-static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
+static void		arena_and_champions_placement(t_cw *cw, t_parse *p)
 {
 	t_list	*xplr;
 
@@ -70,7 +70,6 @@ static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
 		(t_champ*)(xplr->cnt), p->nb_champ);
 		xplr = xplr->next;
 	}
-	return (1);
 }
 
 /*
@@ -95,16 +94,16 @@ static int		arena_and_champions_placement(t_cw *cw, t_parse *p)
 **	0: [via vm_init_cw_error] otherwise.
 */
 
-static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
+static void			*vm_init_cw_registers(t_champ *champ)
 {
 	int				i;
 	t_process		*proc;
 	static int		proc_id;
 
 	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
-		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
+		return (NULL);
 	if (!(proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
-		return (vm_init_cw_error(3, cw) == 0 ? NULL : NULL);
+		return (NULL);
 	i = -1;
 	while (++i < 16)
 		proc->registers[i] = 0;
@@ -128,8 +127,8 @@ static void			*vm_init_cw_registers(t_champ *champ, t_cw **cw)
 **	If there is a allocation memory issue, the error manager for the cw struct is in charge
 **	of freeing the memory and print a message about this memory issue.
 ** Return:
-**	1: if no memory allocation issue.
-**	0: [via vm_init_cw_error] otherwise.
+**	0: if no memory allocation issue.
+**	CD____: [via vm_init_cw_error after return] otherwise.
 */
 
 static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
@@ -138,18 +137,16 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 
 	tmp = NULL;
 	if (!(*cw = (t_cw*)ft_memalloc(sizeof(t_cw))))
-		return (vm_init_cw_error(0, cw));
+		return ((int)CD_CW_STRUCT);
 	if (!((*cw)->arena = ft_strnew(MEM_SIZE)))
-		return (vm_init_cw_error(1, cw));
-	if (!((*cw)->id_arena = ft_1d_int_table((int)MEM_SIZE))) // ajout du tableau de int 1D, penser a gerer la liberation memoire
-		return (vm_init_cw_error(2, cw));
+		return ((int)CD_ARENA);
+	if (!((*cw)->id_arena = ft_1d_int_table((int)MEM_SIZE)))
+		return ((int)CD_ID_ARENA);
 	(*cw)->process = NULL;
-	// if (!((*cw)->process = ft_lstnew(NULL, sizeof(t_process))))
-	//	return (vm_init_cw_error(2, cw));
 	while (nb_champ > 0)
 	{
 		if (!(tmp = ft_lstnew(NULL, sizeof(t_process))))
-			return (vm_init_cw_error(3, cw));
+			return ((int)CD_INI_PROC);
 		ft_lstadd(&(*cw)->process, tmp);
 		nb_champ--;
 	}
@@ -159,7 +156,7 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 	(*cw)->n_champ = 0;
 	ft_1d_int_table_set((*cw)->champ_lives, 0, 0, 4);
 	(*cw)->i_check = MAX_CHECKS;
-	return (1);
+	return (0);
 }
 
 /*
@@ -176,20 +173,20 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 
 int				vm_cw_arena_init(t_cw **cw, t_parse **p)
 {
+	int			code_error;
 	t_list		*xplr;
 	t_list		*xplr2;
 
 	xplr = (*p)->lst_champs;
-	if (!(vm_init_cw_memalloc(cw, (*p)->nb_champ)))
-		return (vm_init_parse_error(4, p));
-	if (arena_and_champions_placement(*cw, *p) == 0)
-		return (vm_init_parse_error(4, p));
+	if ((code_error = vm_init_cw_memalloc(cw, (*p)->nb_champ)) != 0)
+		return (vm_error_manager(code_error, p, cw));
+	arena_and_champions_placement(*cw, *p);
 	xplr2 = (*cw)->process;
 	while (xplr)
 	{
-		xplr2->cnt = vm_init_cw_registers((t_champ*)xplr->cnt, cw);
+		xplr2->cnt = vm_init_cw_registers((t_champ*)xplr->cnt);
 		if (!(xplr->cnt))
-			return (vm_init_parse_error(4, p));
+			return (vm_error_manager((int)CD_INI_PROC, p, cw));
 		xplr = xplr->next;
 		xplr2 = xplr2->next;
 	}

@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/07 11:40:32 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/10 14:19:09 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ VM_FILES =	main					\
 			vm_cw_arena_init		\
 			vm_execution			\
 			ft_lst_fdel_champ		\
+			ft_lst_fdel_proc		\
 			verbosity				\
 			verbosity_fct			\
 			ft_itoa_base2			\

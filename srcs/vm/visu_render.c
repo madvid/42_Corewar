@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:18:43 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/07 14:11:38 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/10 15:11:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 void		arena_render(t_visu *v)
 {
 	v->i = -1;
-	while (++v->i < 20)
+	while (++v->i < 13)
 	{
 		SDL_SetRenderDrawColor(v->r, 255, 255, 0, 255);
 		SDL_RenderCopy(v->r, v->chp_vn[v->i], NULL, &v->chp_id[v->i]);
 		SDL_SetRenderDrawColor(v->r, 255, 255, 0, 255);
 		SDL_RenderCopy(v->r, v->chp_vs[v->i], NULL, &v->chp_cs[v->i]);
+		SDL_DestroyTexture(v->chp_vn[v->i]);
+		SDL_DestroyTexture(v->chp_vs[v->i]);
 	}
 	v->i = -1;
 	while (++v->i < MEM_SIZE)
@@ -68,7 +70,7 @@ void		texture_free(t_visu *v)
 	SDL_DestroyTexture(v->menu_vt);
 	SDL_DestroyTexture(v->texture_title);
 	v->i = -1;
-	while (++v->i < 20)
+	while (++v->i < 13)
 	{
 		SDL_DestroyTexture(v->chp_vn[v->i]);
 		SDL_DestroyTexture(v->chp_vs[v->i]);

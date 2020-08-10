@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 14:12:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/10 15:09:57 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,11 +172,11 @@ typedef struct		s_visu
 	SDL_Rect		chp_id[4];	//Rect for champion info
 	SDL_Rect		chp_info[36];
 	TTF_Font		*font_p;
-	SDL_Surface		*chp_name[20];
-	SDL_Texture		*chp_vn[20];
-	SDL_Rect		chp_cs[20];
-	SDL_Surface		*chp_size[20];
-	SDL_Texture		*chp_vs[20];
+	SDL_Surface		*chp_name[13];
+	SDL_Texture		*chp_vn[13];
+	SDL_Rect		chp_cs[13];
+	SDL_Surface		*chp_size[13];
+	SDL_Texture		*chp_vs[13];
 
 /*
 **Arena data
@@ -232,6 +232,7 @@ int					vm_error_manager(int code_error, t_parse **p, t_cw **cw);
 int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
 int					vm_init_cw_error(int cd_error, t_cw **cw);
 void				ft_lst_fdel_champ(void *link, size_t link_size);
+void				ft_lst_fdel_proc(void *link, size_t link_size);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN

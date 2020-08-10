@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 11:03:25 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/07 14:09:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,18 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 /*
 ** Function: perform_opcode
 ** Description:
-**	[put some explanations here !]
+**	Checks the validity of the encoded byte (if there is one) associated to
+**	the opcode in the current process and performs the corresponding
+**	instruction if wait_cycles of the process is 0.
+** Return:
+**	0: No error has been raised by any opcode functions (by return -1)
+**	code_error: Can only be an memory allocation issue during process creation
 */
 
 int		perform_opcode(t_cw *cw, t_process *cur_proc)
 {
-	extern t_op		op_tab[17];
 	int				code_error;
+	extern t_op		op_tab[17];
 	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
 
 	code_error = 0;
@@ -49,16 +54,15 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		// printf("[perform_opcode] is_valid_opcode = %d\n", is_valid_opcode(cw->arena, cur_proc));
-		// printf("[perform_opcode] valeur pointée par processor = %d\n", (int)cw->arena[cur_proc->i]);
-		// printf("[perform_opcode] valeur du byte d'encodage = %d\n", (int)cw->arena[cur_proc->i + 1]);
 		if (!is_valid_opcode(cw->arena, cur_proc))
 			return (0);
-		if (cur_proc->opcode == 12 || cur_proc->opcode == 15) // uniquement dans le cas fork & lfork
-			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? : 0; // 0 -> c'est ok ; != 0 il y a une erreur
-		return (code_error);
+		if (cur_proc->opcode == 12 || cur_proc->opcode == 15)
+			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? : 0;
+		else
+			op_funct[cur_proc->opcode - 1](cw, cur_proc);
+		
 	}
-	return (0);
+	return (code_error);
 }
 
 /*
