@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 15:59:33 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/10 16:46:00 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct		s_options
 	bool			n;
 	bool			aff;
 	bool			sdl;
+	bool			music;
 	bool			verbose;
 	u_int8_t		v_lvl;
 
@@ -257,6 +258,9 @@ char				*get_champ_name(int fd);
 char				*get_champ_comment(int fd);
 int					get_champ_l_bcode(int fd);
 char				*get_champ_bcode(int fd, int l_bcode);
+int					lst_sort_champion(t_list **champ);
+int					lst_order_chp(t_list *chp1, t_list *chp2);
+t_list				*lst_bubble(t_list **link1, t_list **link2);
 
 /*
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors

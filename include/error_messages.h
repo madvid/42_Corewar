@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 12:34:48 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/10 16:50:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,32 @@
 
 # define FILE_BIG		250
 
-# define NB_ERROR_MSG	23
+# define NB_ERROR_MSG	25
 # define CD_USAGE		0
 # define CD_P_STRUCT	1
 # define CD_P_IDTAB		2
 # define CD_P_OPT		3
 # define CD_DUMP 		4
 # define CD_VERB		5
-# define CD_UNIQ		6
-# define CD_BD_VAL		7
-# define CD_BD_FILE		8
-# define CD_FILE_BIG	9
-# define CD_MEM_CHAMP	10
-# define CD_EMPTY_CHP	11
-# define CD_MAX_CHAMP	12
-# define CD_INV_FD		13
-# define CD_BD_CODE		14
-# define CD_CHP_ERR		15
-# define CD_MAGIC_EXEC	16
-# define CD_PROC_MEM	17
-# define CD_CW_STRUCT	18
-# define CD_ARENA		19
-# define CD_ID_ARENA	20
-# define CD_INI_PROC	21
-# define FIN_DU_GAME	22
+# define CD_VERB		6
+# define CD_UNIQ		7
+# define CD_BD_VAL		8
+# define CD_DUPL_N		9
+# define CD_BD_FILE		10
+# define CD_FILE_BIG	11
+# define CD_MEM_CHAMP	12
+# define CD_EMPTY_CHP	13
+# define CD_MAX_CHAMP	14
+# define CD_INV_FD		15
+# define CD_BD_CODE		16
+# define CD_CHP_ERR		17
+# define CD_MAGIC_EXEC	18
+# define CD_PROC_MEM	19
+# define CD_CW_STRUCT	20
+# define CD_ARENA		21
+# define CD_ID_ARENA	22
+# define CD_INI_PROC	23
+# define FIN_DU_GAME	24
 
 # define M_USAGE_1		"Usage: ./corewar [[-dump N1] [-v N2] [-a]]"
 # define M_USAGE_2		" [[-n ID] champion1.cor]\n"
@@ -53,10 +55,12 @@
 # define M_DUMP_2		" to exist, be non null and positive INT."
 # define M_DUMP			(M_DUMP_1 M_DUMP_2)
 # define M_VERB			"Error: [Verbose flag] invalid parameter."
+# define M_MUSIC		"Error: [Music flag] invalid parameter."
 # define M_UNIQ			"Error: [Flag] dupplicate option flag."
 # define M_BD_VAL_1		"Error: [Number flag] <-n id>, id "
 # define M_BD_VAL_2		"must be either 1, 2, 3 or 4."
 # define M_BD_VAL		(M_BD_VAL_1 M_BD_VAL_2)
+# define M_DUPL_N		"Error: [Number flag] <-n id>, repetition of an id."
 # define M_BD_FILE_1	"Error: Champion file must be a bytecode"
 # define M_BD_FILE_2	" with '.cor' extension."
 # define M_BD_FILE		(M_BD_FILE_1 M_BD_FILE_2)
