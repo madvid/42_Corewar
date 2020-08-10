@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 16:00:27 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/10 10:34:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int		vm_execution(t_cw *cw, t_parse * p)
 		if (cw->ctd_lives == 0)
 			stop_game = true;
 		vm_proc_set_lives(cw, 0);
+		ft_printf("END of the period CTD\n");
 		if (cw->ctd_lives >= NBR_LIVE || cw->i_check++ == MAX_CHECKS)
 		{
 			cw->cycle_to_die -= (int)CYCLE_DELTA;
