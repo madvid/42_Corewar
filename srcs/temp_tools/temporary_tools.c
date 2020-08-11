@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:10:30 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/11 15:10:07 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,29 @@ void		tool_print_champ_list(t_list *lst_champs)
 		print_chp_bcode(((t_champ*)(xplr->cnt))->bytecode, ((t_champ*)(xplr->cnt))->l_bytecode);
 		printf("  next:|%p|\n", xplr->next);
 		//printf("   champ_file : %s\n", ((t_champ*)(xplr->cnt)->bytecode));
+		i++;
+		xplr = xplr->next;
+	}
+}
+
+/*
+** Fonction qui affiche tous les champions de la liste de champions présent dans la structure p (parsing)
+** au format court
+*/
+
+void		tool_print_short_champ_list(t_list *lst_champs)
+{
+	t_list		*xplr;
+	int			i;
+
+	i = 1;
+	xplr = lst_champs;
+	while (xplr)
+	{
+		printf("\033[0;33mChampion #%d:\033[0m ", i);
+		printf("id : |%d| ", ((t_champ*)(xplr->cnt))->id);
+		printf("champ_file : |%s|", ((t_champ*)(xplr->cnt))->champ_file);
+		printf("name : |%s|\n", ((t_champ*)(xplr->cnt))->name);
 		i++;
 		xplr = xplr->next;
 	}

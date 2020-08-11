@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/30 14:25:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/05 15:16:44 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/10 16:51:47 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	copy_options(t_cw *cw, t_parse *p)
 	cw->options.sdl = p->options->sdl;
 	cw->options.verbose = p->options->verbose;
 	cw->options.v_lvl = p->options->v_lvl;
+	cw->options.music = p->options->music;
 
 }
 

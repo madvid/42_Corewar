@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 14:24:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/10 16:50:51 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 int			vm_init_cw_error(int cd_error, t_cw **cw)
 {
+	ft_printf("vm_init_cw_error\n");
 	if (cd_error >= (int)CD_INI_PROC)
 		ft_lstdel(&((*cw)->process), &ft_lst_fdel_proc);
 	if (cd_error >= CD_ID_ARENA)
@@ -44,6 +45,7 @@ int			vm_init_cw_error(int cd_error, t_cw **cw)
 
 int			vm_init_parse_error(int cd_error, t_parse **p)
 {
+	ft_printf("vm_init_parse_error\n");
 	if (cd_error >= (int)CD_BD_VAL && (*p)->lst_champs)
 		ft_lstdel(&((*p)->lst_champs), &ft_lst_fdel_champ);
 	if (cd_error >= CD_P_OPT)
@@ -66,11 +68,11 @@ int			vm_init_parse_error(int cd_error, t_parse **p)
 int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 {
 	static	char	*msg[] = {M_USAGE, M_P_STRUCT, M_P_IDTAB, M_P_OPT,M_DUMP,
-						M_VERB, M_UNIQ, M_BD_VAL, M_BD_FILE, M_FILE_BIG,
-						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP, M_INV_FD,
-						M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC, M_PROC_MEM,
-						M_CW_STRUCT, M_ARENA, M_ID_ARENA, M_FIN, M_INI_PROC,
-						NULL};
+						M_VERB, M_MUSIC, M_UNIQ, M_BD_VAL, M_DUPL_N, M_BD_FILE,
+						M_FILE_BIG, M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
+						M_INV_FD, M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC,
+						M_PROC_MEM, M_CW_STRUCT, M_ARENA, M_ID_ARENA, M_FIN,
+						M_INI_PROC, NULL};
 
 	ft_putendl(msg[code_error]);
 	if (p)

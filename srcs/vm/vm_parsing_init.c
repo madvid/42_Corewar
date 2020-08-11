@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/06 14:47:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/10 16:45:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void		vm_init_parse_value(t_parse *p)
 	p->lst_champs = NULL;
 	p->options->aff = false;
 	p->options->sdl = false;
+	p->options->music = false;
 	p->options->verbose = false;
 	p->options->v_lvl = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 14:21:08 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/11 15:10:17 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct		s_options
 	bool			n;
 	bool			aff;
 	bool			sdl;
+	bool			music;
 	bool			verbose;
 	u_int8_t		v_lvl;
 
@@ -238,6 +239,7 @@ void				tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p);	// a re
 void				tool_print_processor(t_process *process, int nb);					// a retirer
 void				tool_print_all_processors(t_list *processes);						// a retirer
 void				tool_print_short_processors(t_cw *cw);								// a retirer
+void				tool_print_short_champ_list(t_list *lst_champs);					// a retirer
 
 /*
 ** Prototypes des fonctions du manager d'erreurs [vm_error_manager.c]
@@ -268,6 +270,11 @@ char				*get_champ_name(int fd);
 char				*get_champ_comment(int fd);
 int					get_champ_l_bcode(int fd);
 char				*get_champ_bcode(int fd, int l_bcode);
+int					lst_sort_champion(t_list **champ);
+int					lst_order_chp(t_list *chp1, t_list *chp2);
+t_list				*reconstruct_champ_list(t_list *tab_champ[4]);
+t_list				*get_champ_id(t_list **champ, int id);
+
 
 /*
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
@@ -278,7 +285,7 @@ void				copy_options(t_cw *cw, t_parse *p);
 /*
 ** Lancement et déroulement de corewar.
 */
-void				vm_champion_introduction(t_list *lst_champs);
+void				vm_champion_introduction(t_list **lst_champs);
 int					vm_execution(t_cw *cw, t_parse *p);
 void				vm_exec_init_pc(t_cw *cw);
 bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
@@ -332,7 +339,7 @@ int					op_long_load(t_cw *cw, t_process *cur_proc);
 int					op_long_load_index(t_cw *cw, t_process *cur_proc);
 int					op_long_fork(t_cw *cw, t_process *cur_proc);
 int					op_aff(t_cw *cw, t_process *cur_proc);
-int				fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
+int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 
 /*
