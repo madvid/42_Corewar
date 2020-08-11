@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 14:43:26 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 15:10:17 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,11 +176,11 @@ typedef struct		s_visu
 	SDL_Rect		chp_id[4];	//Rect for champion info
 	SDL_Rect		chp_info[36];
 	TTF_Font		*font_p;
-	SDL_Surface		*chp_name[4];
-	SDL_Texture		*chp_vn[4];
-	SDL_Rect		chp_cs[4];
-	SDL_Surface		*chp_size[4];
-	SDL_Texture		*chp_vs[4];
+	SDL_Surface		*chp_name[13];
+	SDL_Texture		*chp_vn[13];
+	SDL_Rect		chp_cs[13];
+	SDL_Surface		*chp_size[13];
+	SDL_Texture		*chp_vs[13];
 
 /*
 **Arena data
@@ -203,12 +203,23 @@ typedef struct		s_visu
 	TTF_Font		*font_process;
 	SDL_Rect		process_id;  //Rect for process id info
 	SDL_Rect		process_rect;
-	SDL_Rect		process_coo[3];
-	SDL_Rect		process_tc[3];
-	SDL_Surface		*process_name[3];
-	SDL_Surface		*process_title[3];
-	SDL_Texture		*process_vn[3];
-	SDL_Texture		*process_vt[3];
+	SDL_Rect		process_coo[6];
+	SDL_Rect		process_tc[6];
+	SDL_Surface		*process_name[6];
+	SDL_Surface		*process_title[6];
+	SDL_Texture		*process_vn[6];
+	SDL_Texture		*process_vt[6];
+
+/*
+**players data
+*/
+	int				tot_players;
+	SDL_Rect		players_coo[4];
+	SDL_Rect		pid_coo[4];
+	SDL_Surface		*players_name[4];
+	SDL_Texture		*players_vn[4];
+	SDL_Surface		*pid_name[4];
+	SDL_Texture		*pid_vn[4];
 /*
 **Render data
 */
@@ -359,17 +370,20 @@ int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
 void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
-void				visualizer(t_parse *p, t_cw *cw);
-double				menu_move(t_visu *v, double angle);
-void				load_menu(t_visu *v);
-t_visu				init_menu(t_visu *v);
-void				load_visu(t_visu *v, t_parse *p, t_cw *cw);
+void     			visualizer(t_cw *cw, t_parse *p);
+double    			menu_move(t_visu *v, double angle);
+void    			load_menu(t_visu *v);
+t_visu  			init_menu(t_visu *v);
+void				load_visu(t_visu *v, t_cw *cw, t_parse *p);
 
 /*
-**<<<<<Champions functions>>>>>
+**<<<<<Process functions>>>>>
 */
-t_visu				init_id(t_visu *v, t_parse *p);
-void				load_chp(t_visu *v, t_parse *p);
+t_visu				init_id(t_visu *v, t_cw *cw);
+void				load_chp(t_visu *v, t_cw *cw);
+void				fill_coo_proc(t_visu *v, int i);
+void				fill_proc_name(t_visu *v, t_list *xplr, int i);
+void				fill_proc_texture(t_visu *v, t_list *xplr, int i);
 
 /*
 **<<<<<Arena functions>>>>>
@@ -382,27 +396,38 @@ void				load_arena(t_visu *v, t_cw *cw);
 **<<<<<Render functions>>>>>
 */
 
-void				visu_render(t_visu *v, t_parse *p);
+void				visu_render(t_visu *v);
 void				render_destroy(t_visu *v);
 void				render_destroy(t_visu *v);
 void				texture_free(t_visu *v);
 
 /*
-**<<<<<Process info functions>>>>>
+**<<<<<Cycle info functions>>>>>
 */
 
 t_visu				init_process(t_visu *v);
 void				load_process(t_visu *v, t_cw *cw);
 
 /*
+**Players functions
+*/
+
+t_visu      		init_players(t_visu *v, t_parse *p);
+void				load_players(t_visu *v, t_parse *p);
+
+/*
 **<<<<<Tools>>>>>
 */
 
 char				*ft_itoa_base2(unsigned long long nb, char *base);
-void				main_exe(t_visu *v, t_parse *p, t_cw *cw, bool stop_game);
+bool				main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p);
+bool        		main_exe2(t_cw *cw, bool stop_game);
 void    			music_launcher(t_visu *v);
 t_visu				visu_breaker(t_visu *v);
 t_visu				visu_breaker2(t_visu *v);
 t_visu				init_details(t_visu *v);
+int					find_nbr_proc(t_cw *cw);
+int					find_nbr_players(t_parse *p);
+void    			arena_texture(t_visu *v, int is_proc, int i);
 
 #endif

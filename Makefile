@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
+#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/10 12:39:25 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/11 15:20:56 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,13 +71,15 @@ VM_FILES =	main					\
 			visu_chp				\
 			visu_menu				\
 			visu_launch				\
+			visu_players			\
 			visu_tools				\
+			visu_tools2				\
 			temporary_tools
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 VM_OBJ = $(VM_SRC:.c=.o)
 VM_D = $(VM_SRC:.c=.d) # temporaire !!!!
- DEP_NAME = $(VM_FILES:.c=.o)
+DEP_NAME = $(VM_FILES:.c=.o)
 vpath %.c $(SRC_DIR)$(VM)
 vpath %.c $(SRC_DIR)temp_tools
 vpath %.o $(SRC_DIR)$(VM)

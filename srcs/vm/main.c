@@ -6,15 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 17:00:30 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 17:04:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
-/*
-**
-*/
 
 int			main(int ac, char **av)
 {
@@ -36,7 +32,7 @@ int			main(int ac, char **av)
 	vm_champion_introduction(&(p->lst_champs));
 	// vm_execution(cw, p);
 	if (p->options->sdl == true)
-		visualizer(p, cw);
+		visualizer(cw, p);
 	else
 		vm_execution(cw, p);
 	vm_error_manager(FIN_DU_GAME, &p, &cw);

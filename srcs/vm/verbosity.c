@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/07 16:16:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 15:04:53 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,12 @@ int		init_verbotab(t_cw *cw, void *ptr, int flag)
 	(cw->options.v_lvl & 0b00000100) ? verbotab[3](cw, ptr, flag) : flag;
 	(cw->options.v_lvl & 0b00001000) ? verbotab[4](cw, ptr, flag) : flag;
 	(cw->options.v_lvl & 0b00010000) ? verbotab[5](cw, ptr, flag) : flag;
+	return (flag);
+}
+
+int		vprint_essentials(t_cw *cw, void *ptr, int flag)
+{
+	if (cw || ptr)
+		return (flag);
 	return (flag);
 }
