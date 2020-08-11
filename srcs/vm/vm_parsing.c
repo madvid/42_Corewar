@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:49:31 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 15:55:28 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int				vm_options_flag(char **av, t_parse **p, int *i)
 		}
 		if (av[*i] && ft_strequ(av[*i], "-m") == 1)
 		{
-			if (av[++(*i)] && ft_strequ(av[*i], "on") == 1)
+			if (av[++(*i)] && ft_strequ(av[(*i)++], "on") == 1)
 				(*p)->options->music = true;
 			else
 				return ((int)CD_MUSIC);
