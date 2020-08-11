@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 13:38:04 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 14:43:19 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,20 +117,20 @@ int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 **	Introduces the different champions before the battle.
 */
 
-void	vm_champion_introduction(t_list *lst_champs, int nb_champ)
+void	vm_champion_introduction(t_list **lst_champs)
 {
-	t_list	*xplr;
-	t_champ	*chp;
-	int		id;
+	t_list		*xplr;
+	t_champ		*chp;
+	int			id;
 
 	ft_putstr("Introducing contestants...\n");
 	// tool_print_short_champ_list(lst_champs);
-	if (lst_sort_champion(&lst_champs, nb_champ) == 0)
+	if (lst_sort_champion(lst_champs) == 0)
 	{
 		ft_printf("erreur dans la fonction de tri des champions.\n");
 		return ;
 	}
-	xplr = lst_champs;
+	xplr = *lst_champs;
 	// tool_print_short_champ_list(lst_champs);
 	while (xplr)
 	{
