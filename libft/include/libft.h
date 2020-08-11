@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 15:18:57 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 10:53:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int					ft_str_isnumber(char *number);
 void				ft_strtabldel(char ***tab);
 char				*ft_itoa_base(int nb, char* strbase, int base);
 void				ft_print_binary(int nb);
+void				ft_lstaddend(t_list **alst, t_list *add);
 void				ft_lst_fdel(void *link, size_t link_size);
 int					ft_lst_len(t_list *lst);
 int					ft_lst_issort(t_list *lst, int (*ft_lst_order)(t_list*, t_list*));
