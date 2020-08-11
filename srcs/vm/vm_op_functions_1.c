@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 16:21:48 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 14:55:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int		op_alive(t_cw *cw, t_process *proc)
 
 	arg = get_arg_value(cw->arena, proc, proc->i + 1, DIR_CODE);
 	proc->n_lives++;
+	cw->ctd_lives++;
+	cw->tot_lives++;
 	arg = (arg > 0) ? arg : -arg;
 	if (arg > 0 && arg < cw->n_champ)
 		cw->champ_lives[arg - 1]++;

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 10:34:33 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 16:14:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,20 +110,20 @@ int		vm_execution(t_cw *cw, t_parse * p)
 		cw->i_cycle = -1;
 		while (++cw->i_cycle < cw->cycle_to_die)
 		{
-			if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
-				return (dump_memory(cw->arena));
 			if (cw->options.v_lvl & 2 && cw->i_cycle != 0)
 				vprint_cycle(cw, NULL, 0);
-			vm_proc_cycle(cw);
+			if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
+				return (dump_memory(cw->arena));
 			if ((code_error = vm_proc_perform_opcode(cw)) != 0)
 				return (code_error);
 			vm_proc_mv_proc_pos(cw);
+			vm_proc_cycle(cw);
 			cw->tot_cycle++;
 		}
-		vm_proc_get_lives(cw);
+		//vm_proc_get_lives(cw); <- augmentation de cw->tot_lives/ctd_lives pendant l'action alive, peut etre retiré donc.
 		vm_proc_kill_not_living(cw);
 		// if (cw->ctd_lives == 0 || !vm_proc_only_one_standing(cw))
-		if (cw->ctd_lives == 0)
+		if (cw->ctd_lives == 0 || cw->process == NULL)
 			stop_game = true;
 		vm_proc_set_lives(cw, 0);
 		ft_printf("END of the period CTD\n");

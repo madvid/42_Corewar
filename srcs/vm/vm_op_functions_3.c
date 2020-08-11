@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 15:49:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 17:02:15 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,27 +121,33 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	t_list		*new_link;
 	t_process	*new_proc;
 	int			i;
+	static int	id;
 
-	if (!(new_link = ft_lstnew((void*)(cur_proc), sizeof(t_process))))
-		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
-	new_proc = (t_process*)(new_link->cnt);
+	if (!(new_link = ft_lstnew(NULL, sizeof(t_list))))
+		return (0);
+	if (!(new_proc = (t_process*)ft_memalloc(sizeof(t_process))))
+		return (0);
+	new_link->cnt = new_proc;
 	if (!(new_proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
 	{
+		ft_memdel((void **)&(new_link->cnt));
 		ft_memdel((void **)&new_link);
 		return (0);
 	}
 	i = -1;
 	while (++i < 16)
 		new_proc->registers[i] = cur_proc->registers[i];
-	i = cur_proc->i;
-	new_proc->pc = i + addr;
-	new_proc->id = ((t_process*)(cw->process->cnt))->id + 1;
+	id++;
+	new_proc->id = id + cw->n_champ;
+	// TEST EN COURS, YANNICK ET ARTHUR n'acceptez pas le changement
+	ft_printf(">>>>> id = %d -- cw->n_champ = %d -- nvlle process id = %d <<<<<\n", id, cw->n_champ, new_proc->id);
+	new_proc->i = cur_proc->i;
+	new_proc->pc = cur_proc->i + addr;
 	new_proc->n_lives = 0;
 	new_proc->wait_cycles = 0;
-	new_proc->i = cur_proc->i;
 	new_proc->champ = cur_proc->champ;
 	ft_lstadd(&(cw->process), new_link);
-	return (1);
+	return ((cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }
 
 
