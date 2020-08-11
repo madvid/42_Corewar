@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 11:02:30 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 18:23:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/11 13:37:39 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,74 +34,94 @@ int		lst_order_chp(t_list *chp1, t_list *chp2)
 }
 
 /*
-**
-**
-**
-**
+** Function: reconstruct_champ_list
+** Description:
+**	Functions cuts the links and relinks the champions.
+** Return:
+**	new: the sorted list of champions
 */
 
-t_list	*lst_bubble(t_list *link1, t_list *link2)
+t_list		*reconstruct_champ_list(t_list *tab_champ[4])
 {
-	t_list		*head;
+	t_list	*new;
+	t_list	*chp1;
+	t_list	*chp2;
+	t_list	*chp3;
+	t_list	*chp4;
 
-	head = link1;
-	while(head != NULL && ft_lst_issort(head, &lst_order_chp) == 0)
+	tab_champ[0]->next = NULL;
+	tab_champ[1]->next = NULL;
+	tab_champ[2]->next = NULL;
+	tab_champ[3]->next = NULL;
+	chp1 = tab_champ[0];
+	chp2 = tab_champ[1];
+	chp3 = tab_champ[2];
+	chp4 = tab_champ[3];
+	if (chp1 != NULL)
+		new = chp1;
+	if (chp2 != NULL)
+		ft_lstaddend(&new, chp2);
+	if (chp3 != NULL)
+		ft_lstaddend(&new, chp3);
+	if (chp4 != NULL)
+		ft_lstaddend(&new, chp4);
+	return (new);
+}
+
+/*
+** Function: get_champ_id
+** Description:
+**	Searchs and return the address link of the champion with the corresponding
+**	id.
+** Return:
+**	address of the champion : if the champion was found.
+**	NULL: if the champion has not been found.
+*/
+
+t_list		*get_champ_id(t_list **champ, int id)
+{
+	t_list	*xplr;
+
+	if (!champ || !(xplr = *champ))
+		return (NULL);
+	while (xplr)
 	{
-		ft_printf("link1 = %p -- link2 = %p\n", link1, link2);
-		ft_printf("valeur de lst_order_chp(l1, l2) = %d\n", lst_order_chp(link1, link2));
-		tool_print_short_champ_list(head);
-		ft_printf("\n");
-		if (lst_order_chp(link1, link2) == 1)
-		{
-			ft_printf("1er if\n");
-			head = lst_bubble(link1->next, link2->next);
-		}
-		if (lst_order_chp(link1, link2) == 0)
-		{
-			ft_printf("2nd if\n");
-			head = ft_lst_swap(link1, link2);
-		}
-		ft_printf("after\n");
+		if (((t_champ*)(xplr->cnt))->id == id)
+			return (xplr);
+		xplr = xplr->next;
 	}
-	return (head);
+	return (NULL);
 }
 
 /*
 ** Function: sort_champion
 ** Description:
-**	
+**	Reconstructs and sorts the list of champions.
+**	The goal is to sort champions in ascending ordering ID.
 ** Return:
 **	1: the list has been sorted
 **	0: if the list to sort is NULL
 */
 
-int		lst_sort_champion(t_list **champ)
+int		lst_sort_champion(t_list **champ, int nb_champ)
 {
-	t_list	*xplr1;
-	t_list	*xplr2;
+	t_list			*xplr;
+	static t_list	*chp[4]={NULL, NULL, NULL, NULL};
+	int				i;
+	int				id;
 
-	/*if (ft_lst_len(*champ) == -1)
+	if (ft_lst_len(*champ) == -1)
 		return (0);
 	if (ft_lst_len(*champ) == 1)
-		return (1);*/
-	xplr1 = *champ;
-	xplr2 = (*champ)->next;
-	/*if (ft_lst_len(*champ) == 2
-		&& ((t_champ*)(xplr1->cnt))->id > ((t_champ*)(xplr2->cnt))->id)
+		return (0);
+	i = 0;
+	id = 0;
+	while (++id <= nb_champ)
 	{
-		ft_printf(">>>>>>>>>>>>>>> ici n champ = 2 <<<<<<<<<<<<<<<<<\n");
-		tool_print_champ_list(*champ);
-		*champ = ft_lst_swap(xplr1, xplr2);
-		tool_print_champ_list(*champ);
-		ft_printf(">>>>>>>>>>>>>>>>>>>>> fin <<<<<<<<<<<<<<<<<<<<<<<\n");
-		return (1);
-	}*/
-	ft_printf(">>>>>>>>>>>>>>> ici n champ = 3/4 <<<<<<<<<<<<<<<<<\n");
-	tool_print_short_champ_list(*champ);
-	ft_printf(">>>>>>>>>>>>>>>>> middle <<<<<<<<<<<<<<<<<<<\n");
-	*champ = lst_bubble(xplr1, xplr2);
-	ft_printf(">>>>>>>>>>>>>>>>> middle fin<<<<<<<<<<<<<<<<<<<\n");
-	tool_print_short_champ_list(*champ);
-	ft_printf(">>>>>>>>>>>>>>>>>>>>> fin <<<<<<<<<<<<<<<<<<<<<<<\n");
+		xplr = get_champ_id(champ, id);
+		if (xplr != NULL)
+			chp[i++] = xplr;
+	}
+	*champ = reconstruct_champ_list(chp);
 	return (1);
 }
