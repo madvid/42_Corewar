@@ -6,14 +6,25 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 15:09:57 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/11 14:21:08 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
+
+
+/*
+** --------------------------------------------------------------
+** include de fichiers entête
+** --------------------------------------------------------------
+*/
+
+/*
+** fichiers entête externes à Corewar
+*/
+#include <stdbool.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <math.h>
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_timer.h>
@@ -22,15 +33,7 @@
 # include <SDL2_mixer/SDL_mixer.h>
 
 /*
-** --------------------------------------------------------------
-** include de fichiers entête 'externe'
-** --------------------------------------------------------------
-*/
-//#include <sys/types.h>
-#include <stdbool.h>
-
-/*
-** [Put some explanations]
+** fichiers entête internes à Corewar
 */
 # include "../libft/include/libft.h"
 # include "../libft/include/ft_printf.h"
@@ -40,7 +43,6 @@
 ** fichier entête du sujet corewar (ressources)
 */
 #include "op.h"
-//#include "op_tab.h"
 
 /*
 ** --------------------------------------------------------------
@@ -129,6 +131,7 @@ typedef struct		s_corewar
 	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 	int				i_cycle;
+	int				tot_cycle;
 	t_options		options;			// struct with options
 }					t_cw;
 
@@ -199,12 +202,23 @@ typedef struct		s_visu
 	TTF_Font		*font_process;
 	SDL_Rect		process_id;  //Rect for process id info
 	SDL_Rect		process_rect;
-	SDL_Rect		process_coo[5];
-	SDL_Rect		process_tc[5];
-	SDL_Surface		*process_name[5];
-	SDL_Surface		*process_title[5];
-	SDL_Texture		*process_vn[5];
-	SDL_Texture		*process_vt[5];
+	SDL_Rect		process_coo[6];
+	SDL_Rect		process_tc[6];
+	SDL_Surface		*process_name[6];
+	SDL_Surface		*process_title[6];
+	SDL_Texture		*process_vn[6];
+	SDL_Texture		*process_vt[6];
+
+/*
+**players data
+*/
+	int				tot_players;
+	SDL_Rect		players_coo[4];
+	SDL_Rect		pid_coo[4];
+	SDL_Surface		*players_name[4];
+	SDL_Texture		*players_vn[4];
+	SDL_Surface		*pid_name[4];
+	SDL_Texture		*pid_vn[4];
 /*
 **Render data
 */
@@ -332,13 +346,13 @@ int					dump_memory(char *arena);
 **<<<<<Verbosity>>>>>
 */
 
-int    				init_verbotab(t_cw *cw, void *ptr, int flag);
-int     			vprint_essentials(t_cw *cw, void *ptr,int flag);
-int     			vprint_lives(t_cw *cw, void *ptr, int flag);
-int     			vprint_cycle(t_cw *cw, void *ptr, int flag);
-int     			vprint_op(t_cw *cw, void *ptr, int flag);
-int     			vprint_deaths(t_cw *cw, void *ptr, int flag);
-int     			vprint_pcmv(t_cw *cw, void *ptr, int flag);
+int					init_verbotab(t_cw *cw, void *ptr, int flag);
+int		 			vprint_essentials(t_cw *cw, void *ptr,int flag);
+int		 			vprint_lives(t_cw *cw, void *ptr, int flag);
+int					vprint_cycle(t_cw *cw, void *ptr, int flag);
+int		 			vprint_op(t_cw *cw, void *ptr, int flag);
+int		 			vprint_deaths(t_cw *cw, void *ptr, int flag);
+int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
 
 /*
 **<<<<<Visualizer functions>>>>>
@@ -349,17 +363,20 @@ int     			vprint_pcmv(t_cw *cw, void *ptr, int flag);
 void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
-void     			visualizer(t_cw *cw);
+void     			visualizer(t_cw *cw, t_parse *p);
 double    			menu_move(t_visu *v, double angle);
 void    			load_menu(t_visu *v);
 t_visu  			init_menu(t_visu *v);
-void				load_visu(t_visu *v, t_cw *cw);
+void				load_visu(t_visu *v, t_cw *cw, t_parse *p);
 
 /*
-**<<<<<Champions functions>>>>>
+**<<<<<Process functions>>>>>
 */
 t_visu				init_id(t_visu *v, t_cw *cw);
 void				load_chp(t_visu *v, t_cw *cw);
+void				fill_coo_proc(t_visu *v, int i);
+void				fill_proc_name(t_visu *v, t_list *xplr, int i);
+void				fill_proc_texture(t_visu *v, t_list *xplr, int i);
 
 /*
 **<<<<<Arena functions>>>>>
@@ -378,21 +395,32 @@ void				render_destroy(t_visu *v);
 void				texture_free(t_visu *v);
 
 /*
-**<<<<<Process info functions>>>>>
+**<<<<<Cycle info functions>>>>>
 */
 
 t_visu				init_process(t_visu *v);
 void				load_process(t_visu *v, t_cw *cw);
 
 /*
+**Players functions
+*/
+
+t_visu      		init_players(t_visu *v, t_parse *p);
+void				load_players(t_visu *v, t_parse *p);
+
+/*
 **<<<<<Tools>>>>>
 */
 
 char				*ft_itoa_base2(unsigned long long nb, char *base);
-void				main_exe(t_visu *v, t_cw *cw, bool stop_game);
+bool				main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p);
+bool        		main_exe2(t_cw *cw, bool stop_game);
 void    			music_launcher(t_visu *v);
 t_visu				visu_breaker(t_visu *v);
 t_visu				visu_breaker2(t_visu *v);
 t_visu				init_details(t_visu *v);
+int					find_nbr_proc(t_cw *cw);
+int					find_nbr_players(t_parse *p);
+void    			arena_texture(t_visu *v, int is_proc, int i);
 
 #endif

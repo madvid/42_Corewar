@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:18:43 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/10 15:11:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/11 14:23:17 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ void		arena_render(t_visu *v)
 	while (++v->i < MEM_SIZE)
 		SDL_RenderCopy(v->r, v->arena_vs[v->i], NULL, &v->arena_pos[v->i]);
 	v->i = -1;
-	while (++v->i < 5)
+	while (++v->i < 6)
 	{
 		SDL_RenderCopy(v->r, v->process_vt[v->i], NULL, &v->process_tc[v->i]);
 		SDL_RenderCopy(v->r, v->process_vn[v->i], NULL, &v->process_coo[v->i]);
+	}
+	v->i = -1;
+	while (++v->i < v->tot_players)
+	{
+		SDL_RenderCopy(v->r, v->players_vn[v->i], NULL, &v->players_coo[v->i]);
+		SDL_RenderCopy(v->r, v->pid_vn[v->i], NULL, &v->pid_coo[v->i]);
 	}
 }
 
@@ -79,10 +85,16 @@ void		texture_free(t_visu *v)
 	while (++v->i < MEM_SIZE)
 		SDL_DestroyTexture(v->arena_vs[v->i]);
 	v->i = -1;
-	while (++v->i < 5)
+	while (++v->i < 6)
 	{
 		SDL_DestroyTexture(v->process_vn[v->i]);
 		SDL_DestroyTexture(v->process_vt[v->i]);
+	}
+	v->i = -1;
+	while (++v->i < v->tot_players)
+	{
+		SDL_DestroyTexture(v->players_vn[v->i]);
+		SDL_DestroyTexture(v->pid_vn[v->i]);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 11:40:58 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/10 16:10:14 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,16 @@
 **		as argument(s).
 */
 
-int		op_alive(t_cw *cw, t_process *cur_proc)
+int		op_alive(t_cw *cw, t_process *proc)
 {
 	int		arg;
 
-	printf("Alive en cours.\n");
-	arg = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
-	cur_proc->n_lives++;
+	arg = get_arg_value(cw->arena, proc, proc->i + 1, DIR_CODE);
+	proc->n_lives++;
 	arg = (arg > 0) ? arg : -arg;
 	if (arg > 0 && arg < cw->n_champ)
 		cw->champ_lives[arg - 1]++;
-	return ((cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+	return ((cw->options.verbose == true) ? init_verbotab(cw, proc, 1) : 1);
 }
 
 /*
@@ -58,7 +57,6 @@ int		op_load(t_cw *cw, t_process *p)
 	extern t_op	op_tab[17];
 	int			arg;
 	int			reg;
-	int			i;
 
 	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
@@ -68,7 +66,7 @@ int		op_load(t_cw *cw, t_process *p)
 		((cw->arena[(p->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*

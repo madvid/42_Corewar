@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/07 14:12:02 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/11 14:23:33 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,39 @@ t_visu		visu_breaker(t_visu *v)
 void		music_launcher(t_visu *v)
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT,\
-				MIX_DEFAULT_CHANNELS, 1024) == -1)
+		MIX_DEFAULT_CHANNELS, 1024) == -1)
 		printf("%s", Mix_GetError());
 	v->musique =\
-				Mix_LoadMUS("./Visu/8-bit-music-chiptune-reloaded(1).mp3");
+		Mix_LoadMUS("./Visu/8-bit-music-chiptune-reloaded(1).mp3");
 	Mix_PlayMusic(v->musique, -1);
 }
 
-void		main_exe(t_visu *v, t_cw *cw, bool stop_game)
-{	
+int			find_nbr_proc(t_cw *cw)
+{
+	int		j;
+	t_list	*xplr;
+
+	j = 0;
+	xplr = cw->process;
+	while (xplr)
+	{
+		j++;
+		xplr = xplr->next;
+	}
+	if (j > 13)
+		j = 13;
+	return (j);
+}
+
+bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
+{
 	int		code_error;
 
 	cw->i_cycle = -1;
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0\
 			&& v->isquit == 0)
 	{
-		load_visu(v, cw);
+		load_visu(v, cw, p);
 		visu_render(v);
 		if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
 			v->isquit = 1;
@@ -81,16 +98,9 @@ void		main_exe(t_visu *v, t_cw *cw, bool stop_game)
 		if ((code_error = vm_proc_perform_opcode(cw)) != 0)
 			v->isquit = 1;
 		vm_proc_mv_proc_pos(cw);
+		cw->tot_cycle++;
 		texture_free(v);
 	}
-	vm_proc_get_lives(cw);
-	vm_proc_kill_not_living(cw);
-	if (cw->tot_lives == 0 || !vm_proc_only_one_standing(cw))
-		stop_game = true;
-	vm_proc_set_lives(cw, 0);
-	if (cw->ctd_lives >= NBR_LIVE || cw->i_check++ == MAX_CHECKS)
-	{
-		cw->cycle_to_die -= (int)CYCLE_DELTA;
-		cw->i_check = 0;
-	}
+	stop_game = main_exe2(cw, stop_game);
+	return (stop_game);
 }

@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:40:12 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/04 11:14:53 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/11 14:09:31 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,34 @@ t_visu		init_arena(t_visu *v)
 **Getting every items of arena coord, and writting '0' if needed
 */
 
+void		get_arena_coo(t_visu *v, int i)
+{
+	v->arena_pos[i].x = (i > 0) ? v->arena_pos[i - 1].x + 15 :\
+		v->arena_rect.x + 100;
+	v->arena_pos[i].x = (i % 128 == 0) ? v->arena_rect.x + 100 :\
+		v->arena_pos[i - 1].x + 15;
+	v->arena_pos[i].y = v->arena_rect.y + (v->count * 30);
+	v->arena_pos[i].w = 30;
+	v->arena_pos[i].h = 30;
+}
+
 void		get_items_cnt(t_visu *v, t_cw *cw, int i)
 {
 	size_t	j;
 	int		k;
 
-	v->arena_pos[i].x = (i > 0) ? v->arena_pos[i - 1].x + 15 :\
-						v->arena_rect.x + 100;
-	v->arena_pos[i].x = (i % 128 == 0) ? v->arena_rect.x + 100 :\
-						v->arena_pos[i - 1].x + 15;
-	v->arena_pos[i].y = v->arena_rect.y + (v->count * 30);
-	v->arena_pos[i].w = 30;
-	v->arena_pos[i].h = 30;
+	get_arena_coo(v, i);
 	if (((int)cw->arena[i] & 255) < 16)
 	{
 		v->dst = ft_itoa_base2((int)cw->arena[i] & 255, "0123456789abcdef");
 		if (!(v->final = (char*)malloc(sizeof(char) * ft_strlen(v->dst) + 2)))
 			return ;
 		v->final[0] = '0';
-		j = 0;
+		j = -1;
 		k = 1;
-		while (j < ft_strlen(v->dst))
+		while (++j < ft_strlen(v->dst))
 		{
 			v->final[k] = v->dst[j];
-			j++;
 			k++;
 		}
 		free(v->dst);
@@ -65,7 +69,7 @@ void		get_items_cnt(t_visu *v, t_cw *cw, int i)
 }
 
 /*
-** getting the texture for every items for final visualisation.
+**getting the texture for every items for final visualisation.
 */
 
 void		get_arena_texture(t_visu *v, int i, t_cw *cw)
@@ -85,20 +89,7 @@ void		get_arena_texture(t_visu *v, int i, t_cw *cw)
 		}
 		xplr = xplr->next;
 	}
-	if (is_proc == 0)
-		v->arena_txt[i] = TTF_RenderText_Blended(v->arena_font,\
-				v->final, v->chp_color);
-	if (!v->arena_txt[i])
-		printf("Error creating text : %s\n", SDL_GetError());
-	v->arena_vs[i] = SDL_CreateTextureFromSurface(v->r,
-			v->arena_txt[i]);
-	if (!v->arena_vs[i])
-		printf("Error creating texture : %s\n", SDL_GetError());
-	SDL_QueryTexture(v->arena_vs[i], NULL, NULL, &v->arena_pos[i].w,
-			&v->arena_pos[i].h);
-	SDL_FreeSurface(v->arena_txt[i]);
-	SDL_SetRenderDrawBlendMode(v->r, SDL_BLENDMODE_BLEND);
-	free(v->final);
+	arena_texture(v, is_proc, i);
 }
 
 /*
