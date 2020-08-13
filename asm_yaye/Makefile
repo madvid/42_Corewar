@@ -14,7 +14,7 @@ ASM  = asm
 DASM = dasm
 CC	 = clang
 CFLAGS = -Wall -Wextra -Werror -Wpadded
-CFLAGS += -fsanitize=address,undefined -g3
+CFLAGS += -fsanitize=address
 INCL = -Iincludes -Ilibft/includes
 
 LBFT = libft/libft.a

@@ -35,7 +35,7 @@ void	get_champion(t_dasm *a, char **av)
 	r = -1;
 	while (av[1][++r])
 		if (!ft_isprint(av[1][r]))
-			exit(write(2, "ERROR: unprintable character in filename.\n", 43));
+			exit(write(2, "ERROR: unprintable character in filename.cor\n", 45));
 	if (!ft_strequ(av[1] + r - 4, ".cor"))
 		exit(write(2, "ERROR: filename extension must be .cor\n", 37));
 	if ((fd = open(av[1], O_RDONLY)) < 0)

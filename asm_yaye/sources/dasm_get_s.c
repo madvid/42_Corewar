@@ -68,7 +68,7 @@ int		get_arg_value(t_dasm *a, t_op op_line, int type)
 		addto_s(a, "r", 1);
 		return (value);
 	}
-	value = value << 8 | a->cor[++a->i];
+	value = value << 8 | (unsigned char)a->cor[++a->i];
 	if (type == IND_CODE)
 		return (value);
 	if (type == DIR_CODE)
@@ -76,8 +76,8 @@ int		get_arg_value(t_dasm *a, t_op op_line, int type)
 		addto_s(a, "%", 1);
 		if (op_line.direct_size == 1)
 			return (value);
-		value = value << 8 | a->cor[++a->i];
-		return ((value = value << 8 | a->cor[++a->i]));
+		value = value << 8 | (unsigned char)a->cor[++a->i];
+		return ((value = value << 8 | (unsigned char)a->cor[++a->i]));
 	}
 	leave(a, NULL);
 	return (0);
