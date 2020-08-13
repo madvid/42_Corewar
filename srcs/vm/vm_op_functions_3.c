@@ -95,7 +95,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 	while (++i < 4)
 	{
 		cw->arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
-		= (p->registers[a - 1] & (0xFF000000 >> (8 * i))) >> (24 - (8 * i));
+		= (a & (0xFF000000 >> (8 * i))) >> (24 - (8 * i));
 		cw->id_arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
 		= p->champ->id;
 	}
