@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/14 15:54:01 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:43:40 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,47 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 	char		**arg;
 
 	tmp = (flag == 1) ? "OK" : "FAILED";
+	arg = ft_strsplit(args_to_str(cw, ((t_process*)(ptr))), 32);
+	a = NULL;
+	b = NULL;
 	if (cw)
 	{
-		ft_printf("P\t%d | %s %s %s\n", ((t_process*)(ptr))->id, \
-				op_tab[((t_process*)(ptr))->opcode - 1].name, \
-				args_to_str(cw, ((t_process*)(ptr))), tmp);
+		if (((t_process*)(ptr))->opcode == 12)
+		{
+			a = arg[0];
+			ft_printf("P\t%d", ((t_process*)(ptr))->id);
+			ft_printf("| %s %s(%d)\n",op_tab[((t_process*)(ptr))->opcode - 1].name,\
+				args_to_str(cw, ((t_process*)(ptr))), \
+				ft_atoi(a) + ((t_process*)(ptr))->i);
+		}
+		else
+		{
+			ft_printf("P\t%d", ((t_process*)(ptr))->id);
+			ft_printf("| %s %s%s\n", \
+					op_tab[((t_process*)(ptr))->opcode - 1].name, \
+					args_to_str(cw, ((t_process*)(ptr))), \
+					(((t_process*)(ptr))->opcode == 9) ? tmp : " ");
+		}
 		if (((t_process*)(ptr))->opcode == 11)
 		{
-			arg = ft_strsplit(args_to_str(cw, ((t_process*)(ptr))), 32);
 			a = arg[1];
 			b = arg[2];
-			ft_printf("\t  |-> store to %s + %s (with pc and mod)\n", a, b);
+			ft_printf("\t |-> store to %s + %s = %d (with pc and mod %d)\n", \
+			a, b, (ft_atoi(a) + ft_atoi(b)), \
+			(ft_atoi(a) + ft_atoi(b)) + ((t_process*)(ptr))->i);
 		}
+		if (((t_process*)(ptr))->opcode == 10)
+		{
+			a = arg[0];
+			b = arg[1];
+			ft_printf("\t |-> load to %s + %s = %d (with pc and mod %d)\n", \
+			a, b, (ft_atoi(a) + ft_atoi(b)), \
+			(ft_atoi(a) + ft_atoi(b)) + ((t_process*)(ptr))->i);
+		}
+
 		return (flag);
 	}
+	free_tmp_v_tools(a, b, tmp, arg);
 	return (flag);
 }
 

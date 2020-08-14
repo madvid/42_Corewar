@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 15:55:30 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:09:58 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,6 +361,7 @@ int					vprint_cycle(t_cw *cw, void *ptr, int flag);
 int		 			vprint_op(t_cw *cw, void *ptr, int flag);
 int		 			vprint_deaths(t_cw *cw, void *ptr, int flag);
 int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
+void				free_tmp_v_tools(char *a, char *b, char *tmp, char **arg);
 
 /*
 **<<<<<Visualizer functions>>>>>

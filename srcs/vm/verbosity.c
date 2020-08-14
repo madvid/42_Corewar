@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 15:04:53 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:09:54 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,20 @@ int		vprint_essentials(t_cw *cw, void *ptr, int flag)
 	if (cw || ptr)
 		return (flag);
 	return (flag);
+}
+
+void	free_tmp_v_tools(char *a, char *b, char *tmp, char **arg)
+{
+	int		i;
+
+	ft_memdel((void**)&a);
+	ft_memdel((void**)&b);
+	ft_memdel((void**)&tmp);
+	i = 0;
+	while (arg[i])
+	{
+		ft_memdel((void**)&arg[i]);
+		i++;
+	}
+	ft_memdel((void**)&arg);
 }
