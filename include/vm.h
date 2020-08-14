@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 15:10:17 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:58:01 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ typedef struct		s_corewar
 	int				i_cycle;
 	int				tot_cycle;
 	t_options		options;			// struct with options
+	t_list			*lst_champs;
 }					t_cw;
 
 /*
@@ -422,12 +423,11 @@ void				load_players(t_visu *v, t_parse *p);
 char				*ft_itoa_base2(unsigned long long nb, char *base);
 bool				main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p);
 bool        		main_exe2(t_cw *cw, bool stop_game);
-void    			music_launcher(t_visu *v);
+void    			music_launcher(t_visu *v, t_cw *cw);
 t_visu				visu_breaker(t_visu *v);
 t_visu				visu_breaker2(t_visu *v);
 t_visu				init_details(t_visu *v);
 int					find_nbr_proc(t_cw *cw);
 int					find_nbr_players(t_parse *p);
 void    			arena_texture(t_visu *v, int is_proc, int i);
-
 #endif

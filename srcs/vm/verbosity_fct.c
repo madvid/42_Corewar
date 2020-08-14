@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 15:06:42 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 15:42:48 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,18 @@
 
 int		vprint_lives(t_cw *cw, void *ptr, int flag)
 {
-	if (cw)
-		if (flag == 1)
+	t_list	*xplr;
+
+	xplr = cw->lst_champs;
+	while (xplr && ptr)
+	{
+		if (flag == ((t_champ*)(xplr->cnt))->id)
 			ft_printf("Player %d (%s) is said to be alive\n", \
-					((t_process*)(ptr))->champ->id, \
-					((t_process*)(ptr))->champ->name);
-	return (flag);
+				((t_champ*)(xplr->cnt))->id, \
+				((t_champ*)(xplr->cnt))->name);
+		xplr = xplr->next;
+	}
+	return (1);
 }
 
 int		vprint_cycle(t_cw *cw, void *ptr, int flag)
@@ -34,20 +40,25 @@ int		vprint_cycle(t_cw *cw, void *ptr, int flag)
 int		vprint_op(t_cw *cw, void *ptr, int flag)
 {
 	extern t_op op_tab[17];
+	char		*a;
+	char		*b;
+	char		*tmp;
+	char		**arg;
 
+	tmp = (flag == 1) ? "OK" : "FAILED";
 	if (cw)
 	{
-		if (flag == 1)
+		ft_printf("P\t%d | %s %s %s\n", ((t_process*)(ptr))->id, \
+				op_tab[((t_process*)(ptr))->opcode - 1].name, \
+				args_to_str(cw, ((t_process*)(ptr))), tmp);
+		if (((t_process*)(ptr))->opcode == 11)
 		{
-			ft_printf("P\t%d | %s %sOK\n", ((t_process*)(ptr))->id, \
-					op_tab[((t_process*)(ptr))->opcode - 1].name, \
-					args_to_str(cw, ((t_process*)(ptr))));
-			return (flag);
+			arg = ft_strsplit(args_to_str(cw, ((t_process*)(ptr))), 32);
+			a = arg[1];
+			b = arg[2];
+			ft_printf("\t  |-> store to %s + %s (with pc and mod)\n", a, b);
 		}
-		else
-			ft_printf("P\t%d | %s %sFAIL\n", ((t_process*)(ptr))->id, \
-					op_tab[((t_process*)(ptr))->opcode - 1].name, \
-					args_to_str(cw, ((t_process*)(ptr))));
+		return (flag);
 	}
 	return (flag);
 }
@@ -65,6 +76,7 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	extern t_op op_tab[17];
 	int			widht;
 	int			i;
+	char		*tmp;
 
 	widht = instruction_width(cw->arena[((t_process*)(ptr))->opcode + 1 \
 			% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1].direct_size);
@@ -75,12 +87,13 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	i = -1;
 	while (++i < widht)
 	{
+		tmp = ft_itoa_base2((int)cw->arena[((t_process*)(ptr))->i\
+						+ i] & 255, "0123456789abcdef");
 		if (((int)cw->arena[((t_process*)(ptr))->i + i] & 255) < 16)
-			ft_printf("0%s", ft_itoa_base2((int)cw->arena\
-			[((t_process*)(ptr))->i + i] & 255, "0123456789abcdef"));
+			ft_printf("0%s", tmp);
 		else
-			ft_printf("%s", ft_itoa_base2((int)cw->arena[((t_process*)(ptr))->i\
-						+ i] & 255, "0123456789abcdef"));
+			ft_printf("%s", tmp);
+		ft_memdel((void**)&tmp);
 		ft_printf(" ");
 	}
 	ft_printf("\n");

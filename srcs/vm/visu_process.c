@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 13:40:44 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:28:47 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,35 @@ void		set_coo_process(t_visu *v, int i)
 
 void		get_process_data(t_visu *v, t_cw *cw)
 {
+	char	*tmp;
+	
+	tmp = ft_itoa(cw->cycle_to_die);
 	v->process_name[0] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->cycle_to_die), v->color_title);
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(cw->ctd_lives);
 	v->process_name[1] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->ctd_lives), v->color_title);
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(cw->i_check);
 	v->process_name[2] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->i_check), v->color_title);
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(cw->tot_lives);
 	v->process_name[3] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->tot_lives), v->color_title);
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(cw->i_cycle);
 	v->process_name[4] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->i_cycle), v->color_title);
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(cw->tot_cycle);
 	v->process_name[5] = TTF_RenderText_Blended(v->font_process,\
-			ft_itoa(cw->tot_cycle), v->color_title);
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
 	if (!v->process_name[0] || !v->process_name[1] || !v->process_name[2] \
 		|| !v->process_name[3] || !v->process_name[4] || !v->process_name[5])
-		printf("Error creating text : %s\n", SDL_GetError());
+		printf("Error creating process_name : %s\n", SDL_GetError());
 }
 
 void		process_to_texture(t_visu *v, int i)
@@ -86,7 +100,7 @@ void		process_to_texture(t_visu *v, int i)
 	v->process_vt[i] = SDL_CreateTextureFromSurface(v->r,
 			v->process_title[i]);
 	if (!v->process_vt[i])
-		printf("Error creating texture : %s\n", SDL_GetError());
+		printf("Error creating process_vt : %s\n", SDL_GetError());
 	SDL_QueryTexture(v->process_vt[i], NULL, NULL, &v->process_tc[i].w,
 			&v->process_tc[i].h);
 	SDL_FreeSurface(v->process_title[i]);
@@ -94,7 +108,7 @@ void		process_to_texture(t_visu *v, int i)
 	v->process_vn[i] = SDL_CreateTextureFromSurface(v->r,
 			v->process_name[i]);
 	if (!v->process_vn[i])
-		printf("Error creating texture : %s\n", SDL_GetError());
+		printf("Error creating process_vn : %s\n", SDL_GetError());
 	SDL_QueryTexture(v->process_vn[i], NULL, NULL, &v->process_coo[i].w,
 			&v->process_coo[i].h);
 	SDL_FreeSurface(v->process_name[i]);

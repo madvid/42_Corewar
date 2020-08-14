@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:40:12 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 14:09:31 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/13 12:09:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		get_items_cnt(t_visu *v, t_cw *cw, int i)
 	if (((int)cw->arena[i] & 255) < 16)
 	{
 		v->dst = ft_itoa_base2((int)cw->arena[i] & 255, "0123456789abcdef");
-		if (!(v->final = (char*)malloc(sizeof(char) * ft_strlen(v->dst) + 2)))
+		if (!(v->final = (char*)malloc(sizeof(char) * ft_strlen(v->dst) + 1)))
 			return ;
 		v->final[0] = '0';
 		j = -1;
@@ -62,7 +62,7 @@ void		get_items_cnt(t_visu *v, t_cw *cw, int i)
 			v->final[k] = v->dst[j];
 			k++;
 		}
-		free(v->dst);
+		ft_memdel((void**)&v->dst);;
 	}
 	else
 		v->final = ft_itoa_base2((int)cw->arena[i] & 255, "0123456789abcdef");
@@ -85,6 +85,7 @@ void		get_arena_texture(t_visu *v, int i, t_cw *cw)
 		{
 			v->arena_txt[i] = TTF_RenderText_Blended(v->arena_font,\
 					v->final, v->color_process);
+			ft_memdel((void**)&v->final);
 			is_proc++;
 		}
 		xplr = xplr->next;

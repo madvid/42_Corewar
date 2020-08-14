@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/11 15:20:56 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/14 14:59:01 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -130,7 +130,7 @@ $(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
 $(SRC_DIR)$(VM_DIR)%.o: %.c
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
 	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
-	@#$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
+	@rm -rf $(VM_D)
 
 $(LIBFT): $(LIBFT_DIR)/$(INC_DIR)libft.h
 	@make -sC $(LIBFT_DIR)

@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:10:14 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:58:08 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		op_alive(t_cw *cw, t_process *proc)
 	arg = (arg > 0) ? arg : -arg;
 	if (arg > 0 && arg < cw->n_champ)
 		cw->champ_lives[arg - 1]++;
-	return ((cw->options.verbose == true) ? init_verbotab(cw, proc, 1) : 1);
+	return ((cw->options.verbose == true) ? init_verbotab(cw, proc, arg) : 1);
 }
 
 /*

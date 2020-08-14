@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 15:10:00 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:58:04 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int			main(int ac, char **av)
 		return (vm_error_manager((int)CD_USAGE, NULL, NULL));
 	vm_cw_arena_init(&cw, &p);
 	vm_champion_introduction(&(p->lst_champs));
+	cw->lst_champs = p->lst_champs;
 	// vm_execution(cw, p);
 	ft_printf("<ici 1>\n");
 	tool_print_short_champ_list(p->lst_champs);
@@ -37,6 +38,8 @@ int			main(int ac, char **av)
 		visualizer(cw, p);
 	else
 		vm_execution(cw, p);
+	//system("leaks vm");
 	vm_error_manager(FIN_DU_GAME, &p, &cw);
+
 	return (0);
 }
