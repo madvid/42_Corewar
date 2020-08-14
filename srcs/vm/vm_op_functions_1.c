@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 14:58:08 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 15:53:49 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int		op_alive(t_cw *cw, t_process *proc)
 
 	arg = get_arg_value(cw->arena, proc, proc->i + 1, DIR_CODE);
 	proc->n_lives++;
+	cw->ctd_lives++;
+	cw->tot_lives++;
 	arg = (arg > 0) ? arg : -arg;
 	if (arg > 0 && arg < cw->n_champ)
 		cw->champ_lives[arg - 1]++;
@@ -58,8 +60,11 @@ int		op_load(t_cw *cw, t_process *p)
 	int			arg;
 	int			reg;
 
+	//arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
+	//	% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
 	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
+	ft_printf("    [op_load]: arg = %d\n", arg);
 	reg = instruction_width((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000, op_tab[p->opcode - 1].direct_size);
 	reg = get_arg_value(cw->arena, p, p->i + 2 + reg, \

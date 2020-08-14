@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/14 15:42:48 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 15:54:01 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ int		vprint_deaths(t_cw *cw, void *ptr, int flag)
 {
 	if (flag)
 		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", \
-				((t_process*)(ptr))->id, cw->i_cycle, cw->cycle_to_die);
+			((t_process*)(ptr))->id, cw->i_cycle, cw->cycle_to_die);
 	return (flag);
 }
 
 int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 {
-	extern t_op op_tab[17];
+	extern t_op	op_tab[17];
 	int			widht;
 	int			i;
 	char		*tmp;

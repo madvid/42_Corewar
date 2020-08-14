@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 17:04:36 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/14 13:43:54 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@
 # define M_BD_VAL_2		"must be either 1, 2, 3 or 4."
 # define M_BD_VAL		(M_BD_VAL_1 M_BD_VAL_2)
 # define M_DUPL_N		"Error: [Number flag] <-n id>, repetition of an id."
-# define M_BD_FILE_1	"Error: Champion file must be a bytecode"
-# define M_BD_FILE_2	" with '.cor' extension."
+# define M_BD_FILE_1	"Error: either option flag or champion file error.\n"
+# define M_BD_FILE_2	"Also, champion file must be of '.cor' extension."
 # define M_BD_FILE		(M_BD_FILE_1 M_BD_FILE_2)
 # define M_FILE_BIG		"Error: champion file name too big."
 # define M_MEM_CHAMP_1	"Error: [Mem. allocation] issue during champion"

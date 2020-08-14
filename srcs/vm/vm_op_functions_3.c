@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:10:03 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 15:24:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 	while (++i < 4)
 	{
 		cw->arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
-		= (p->registers[a - 1] & (0xFF000000 >> (8 * i))) >> (24 - (8 * i));
+		= (a & (0xFF000000 >> (8 * i))) >> (24 - (8 * i));
 		cw->id_arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
 		= p->champ->id;
 	}
@@ -121,24 +121,28 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	t_list		*new_link;
 	t_process	*new_proc;
 	int			i;
+	static int	id;
 
-	if (!(new_link = ft_lstnew((void*)(cur_proc), sizeof(t_process))))
-		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
-	new_proc = (t_process*)(new_link->cnt);
+	if (!(new_link = ft_lstnew(NULL, sizeof(t_list))))
+		return (0);
+	if (!(new_proc = (t_process*)ft_memalloc(sizeof(t_process))))
+		return (0);
+	new_link->cnt = new_proc;
 	if (!(new_proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
 	{
+		ft_memdel((void **)&(new_link->cnt));
 		ft_memdel((void **)&new_link);
 		return (0);
 	}
 	i = -1;
 	while (++i < 16)
 		new_proc->registers[i] = cur_proc->registers[i];
-	i = cur_proc->i;
-	new_proc->pc = i + addr;
-	new_proc->id = ((t_process*)(cw->process->cnt))->id + 1;
+	new_proc->id = ++id + cw->n_champ;;
+	// ft_printf(">>>>> new_proc->id = %d -- cw->n_champ = %d -- nvlle process id = %d <<<<<\n", id, cw->n_champ, new_proc->id);
+	new_proc->i = cur_proc->i;
+	new_proc->pc = cur_proc->i + addr;
 	new_proc->n_lives = 0;
 	new_proc->wait_cycles = 0;
-	new_proc->i = cur_proc->i;
 	new_proc->champ = cur_proc->champ;
 	ft_lstadd(&(cw->process), new_link);
 	return (1);
@@ -159,6 +163,7 @@ int		op_fork(t_cw *cw, t_process *cur_proc)
 	int			addr;
 
 	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
+	// ft_printf("valeur de addr = %d\n", addr);
 	if (!fork_creation_process(cw, cur_proc, addr % IDX_MOD)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
 		return (-1); // STOP SIGNAL MEMORY ALLOCATION ISSUE
 	return ((cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);

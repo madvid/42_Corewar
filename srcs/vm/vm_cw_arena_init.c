@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 12:17:52 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 15:53:56 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ static void			*vm_init_cw_registers(t_champ *champ)
 {
 	int				i;
 	t_process		*proc;
-	static int		proc_id;
-
 	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
 		return (NULL);
 	if (!(proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
@@ -109,7 +107,7 @@ static void			*vm_init_cw_registers(t_champ *champ)
 		proc->registers[i] = 0;
 	proc->registers[0] = champ->id;
 	proc->pc = 0;
-	proc->id = ++proc_id;
+	proc->id = champ->id;
 	proc->carry = false;
 	proc->opcode = 0;
 	proc->n_lives = 0;
@@ -134,7 +132,6 @@ static void			*vm_init_cw_registers(t_champ *champ)
 static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 {
 	t_list		*tmp;
-
 	tmp = NULL;
 	if (!(*cw = (t_cw*)ft_memalloc(sizeof(t_cw))))
 		return ((int)CD_CW_STRUCT);
@@ -143,6 +140,12 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 	if (!((*cw)->id_arena = ft_1d_int_table((int)MEM_SIZE)))
 		return ((int)CD_ID_ARENA);
 	(*cw)->process = NULL;
+	(*cw)->lst_champs = NULL;
+	(*cw)->cycle_to_die = CYCLE_TO_DIE;
+	(*cw)->tot_lives = 0;
+	(*cw)->ctd_lives = 0;
+	(*cw)->n_champ = nb_champ;
+	(*cw)->i_check = MAX_CHECKS;
 	while (nb_champ > 0)
 	{
 		if (!(tmp = ft_lstnew(NULL, sizeof(t_process))))
@@ -150,14 +153,10 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 		ft_lstadd(&(*cw)->process, tmp);
 		nb_champ--;
 	}
-	(*cw)->cycle_to_die = CYCLE_TO_DIE;
-	(*cw)->tot_lives = 0;
-	(*cw)->ctd_lives = 0;
-	(*cw)->n_champ = 0;
 	ft_1d_int_table_set((*cw)->champ_lives, 0, 0, 4);
-	(*cw)->i_check = MAX_CHECKS;
 	return (0);
 }
+
 
 /*
 ** Function: vm_cw_arena_init
