@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_op_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/08/04 12:39:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 15:24:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)
 			: arena[(cur_proc->i + (value % IDX_MOD)) % MEM_SIZE]);
 	if ((type % 10) == DIR_CODE)
 	{
-		if (op_tab[(int)(cur_proc->opcode)].direct_size == 1)
+		if (op_tab[(int)(cur_proc->opcode - 1)].direct_size == 1)
 			return (value);
 		value = value << 8 | arena[(index + 2) % MEM_SIZE];
 		return (value = value << 8 | arena[(index + 3) % MEM_SIZE]);

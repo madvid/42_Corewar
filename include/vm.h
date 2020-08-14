@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 15:10:17 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 13:17:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,14 @@ typedef struct		s_corewar
 	char			*arena;			// memory area where champion will fight until death
 	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.id des champs a chaque case.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
+	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
+	int				champ_lives[4];	// Cumulated number of lives for each champion.
+	t_list			*lst_champs;
+	int				i_cycle;
 	int				cycle_to_die;	// 
 	int				tot_lives;		// total number of alive performed since the beginning of the battle.
 	int				ctd_lives;		// number of alives performed during the last CTD period.
-	int				n_champ;		// number of champions in the arena = to nb_champ of parse structure.
-	int				champ_lives[4];	// Cumulated number of lives for each champion.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
-	int				i_cycle;
 	int				tot_cycle;
 	t_options		options;			// struct with options
 }					t_cw;
