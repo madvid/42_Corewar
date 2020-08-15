@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity_fct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/14 16:43:40 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/15 18:25:29 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int		vprint_deaths(t_cw *cw, void *ptr, int flag)
 {
 	if (flag)
 		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", \
-			((t_process*)(ptr))->id, cw->i_cycle, cw->cycle_to_die);
+			((t_process*)(ptr))->id, cw->i_cycle - ((t_process*)(ptr))->last_live, cw->cycle_to_die);
 	return (flag);
 }
 

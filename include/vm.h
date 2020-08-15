@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 16:09:58 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/15 18:25:41 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct		s_process
 	bool			carry;			// flag carry= which can be changed by certain operations and which affects zjmp operation, initialised with value false.
 	int				opcode;			// operation code, before the battle starts it is not initialised. use define and table of correspondance to stock the opcode read and to find the info in op_tab[17]
 	int				n_lives;		// number of lives the process performed DURING THE CURRENT CYCLE_TO_DIE period, meaning that when cw->cycle_to_die becomes 0, value is reset to 0.
+	int				last_live;		// cycle number at which the process did an alive for the last time.
 	int				wait_cycles;	// amount of cycles to wait before operation execution.
 	int				i;				// i is the index of the process in the cw->arena
 	int				pc;				// program counter = register that load the next opcode address that will be executed for the current process
@@ -292,6 +293,7 @@ void				vm_exec_init_pc(t_cw *cw);
 bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
 int					instruction_width(unsigned char encoding, size_t dir_s);
 char				*args_to_str(t_cw *cw, t_process *proc);
+char				*champ_name_via_id(t_list *lst_champs, int id);
 
 /*
 ** Fonctions outils concernant les opcode
@@ -317,7 +319,7 @@ int					vm_proc_perform_opcode(t_cw *cw);
 void				vm_proc_mv_proc_pos(t_cw *cw);
 int					vm_proc_get_lives(t_cw *cw);
 void				vm_proc_set_lives(t_cw *cw, int set);
-void				vm_proc_kill_not_living(t_cw *cw);
+int					vm_proc_kill_not_living(t_cw *cw);
 void				free_one_process(t_list **lst_proc, int id);
 bool				vm_proc_only_one_standing(t_cw *cw);
 
