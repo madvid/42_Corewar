@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_encode_byte.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 09:54:40 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 16:33:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char		*args_to_str(t_cw *cw, t_process *proc)
 		else
 		{
 			arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-			arg = get_arg_value(cw->arena, proc, proc->i + 2, arg);
+			arg = get_arg_value(cw->arena, proc, proc->i + 2, (arg == IND_CODE) ? arg + RELATIVE : arg);
 		}
 		dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
 			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
