@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 13:18:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/14 16:51:12 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static void			*vm_init_cw_registers(t_champ *champ)
 	i = -1;
 	while (++i < 16)
 		proc->registers[i] = 0;
-	proc->registers[0] = champ->id;
+	proc->registers[0] = -champ->id;
 	proc->pc = 0;
 	proc->id = champ->id;
 	proc->carry = false;
