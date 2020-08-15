@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 14:23:33 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/13 12:06:13 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ t_visu		visu_breaker(t_visu *v)
 	return (*v);
 }
 
-void		music_launcher(t_visu *v)
+void		music_launcher(t_visu *v, t_cw *cw)
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT,\
 		MIX_DEFAULT_CHANNELS, 1024) == -1)
 		printf("%s", Mix_GetError());
 	v->musique =\
 		Mix_LoadMUS("./Visu/8-bit-music-chiptune-reloaded(1).mp3");
-	Mix_PlayMusic(v->musique, -1);
+	(cw->options.music == true) ? Mix_PlayMusic(v->musique, -1) : 0;
 }
 
 int			find_nbr_proc(t_cw *cw)

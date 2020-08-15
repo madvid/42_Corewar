@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
+#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/08/11 10:32:05 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/14 15:59:20 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,7 +96,6 @@ LIB_FILES =	ft_memset	\
 			ft_lstaddend	\
 			ft_lstiter	\
 			ft_lstmap	\
-			ft_lst_fdel	\
 			ft_lst_len	\
 			ft_lst_issort	\
 			ft_lst_swap	\

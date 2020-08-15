@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 14:02:33 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:28:15 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ void		arena_texture(t_visu *v, int is_proc, int i)
 	if (is_proc == 0)
 		v->arena_txt[i] = TTF_RenderText_Blended(v->arena_font,\
 				v->final, v->chp_color);
+	ft_memdel((void**)&v->final);
 	if (!v->arena_txt[i])
-		printf("Error creating text : %s\n", SDL_GetError());
+		printf("Error creating arena_txt : %s\n", SDL_GetError());
 	v->arena_vs[i] = SDL_CreateTextureFromSurface(v->r,
 			v->arena_txt[i]);
 	if (!v->arena_vs[i])
-		printf("Error creating texture : %s\n", SDL_GetError());
+		printf("Error creating arena_vs : %s\n", SDL_GetError());
 	SDL_QueryTexture(v->arena_vs[i], NULL, NULL, &v->arena_pos[i].w,
 			&v->arena_pos[i].h);
 	SDL_FreeSurface(v->arena_txt[i]);
 	SDL_SetRenderDrawBlendMode(v->r, SDL_BLENDMODE_BLEND);
-	free(v->final);
 }

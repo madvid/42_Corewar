@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 17:03:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/14 15:53:37 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int		unique_opt(t_parse *p, char *str)
 		return (stat = (p->options->verbose == true) ? 0 : 1);
 	if (ft_strequ(str, "-SDL") == 1)
 		return (stat = (p->options->sdl == true) ? 0 : 1);
+	if (ft_strequ(str, "-m") == 1)
+		return (stat = (p->options->music == true) ? 0 : 1);
 	return (stat);
 }
 
@@ -52,7 +54,7 @@ static int		unique_opt(t_parse *p, char *str)
 int				vm_options_flag(char **av, t_parse **p, int *i)
 {
 	while (av[*i] && (ft_strequ(av[*i], "-dump") || ft_strequ(av[*i], "-v")
-		|| ft_strequ(av[*i], "-a") || ft_strequ(av[*i], "-SDL") || ft_strequ(av[*i], "-m")))
+		|| ft_strequ(av[*i], "-a") || ft_strequ(av[*i], "-SDL") || ft_strequ(av[*i], "-m on")))
 	{
 		if (av[*i] && ft_strequ(av[*i], "-a") == 1)
 		{

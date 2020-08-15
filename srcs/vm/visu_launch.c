@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 10:48:49 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 14:17:47 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:44:12 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void		visualizer(t_cw *cw, t_parse *p)
 	static bool	stop_game;
 
 	init_window(&v);
-	music_launcher(&v);
+	music_launcher(&v, cw);
 	v = init_details(&v);
 	v = init_menu(&v);
 	load_menu(&v);
 	vm_exec_init_pc(cw);
-	cw->cycle_to_die = 200;
+	cw->cycle_to_die = 1500;
 	while (stop_game == false && v.isquit == 0)
 	{
 		if (v.menu_loop == 0)
@@ -93,5 +93,7 @@ void		visualizer(t_cw *cw, t_parse *p)
 			break ;
 		v = visu_breaker(&v);
 	}
+	texture_free(&v);
+	//system("leaks vm");
 	render_destroy(&v);
 }

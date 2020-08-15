@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 14:39:55 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 12:23:10 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:29:24 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ t_visu		init_menu(t_visu *v)
 	v->menu_txt = TTF_RenderText_Blended(v->font_menu,\
 			"Corewar", v->menu_color);
 	if (!v->menu_txt)
-		printf("Error creating text : %s\n", SDL_GetError());
+		printf("Error creating menu_text : %s\n", SDL_GetError());
 	v->menu_vt = SDL_CreateTextureFromSurface(v->r, v->menu_txt);
 	if (!v->menu_vt)
-		printf("Error creating texture : %s\n", SDL_GetError());
+		printf("Error creating menu_vt : %s\n", SDL_GetError());
 	return (*v);
 }
 

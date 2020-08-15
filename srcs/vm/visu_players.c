@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 09:54:08 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/11 14:21:57 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/14 14:27:13 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,24 @@ void		fill_coo_players(t_visu *v, int i)
 void		fill_players_name(t_visu *v, t_list *xplr, int i)
 {
 	char	*dst;
+	char	*tmp;
+	char	*tmp2;
 
-	dst = ft_strjoin("P", ft_itoa(((t_champ*)(xplr->cnt))->id));
-	dst = ft_strjoin(dst, ": ");
+	tmp = ft_itoa(((t_champ*)(xplr->cnt))->id);
+	tmp2 = ft_strjoin("P", tmp);
+	dst = ft_strjoin(tmp2, ": ");
+	ft_memdel((void**)&tmp);
+	ft_memdel((void**)&tmp2);
 	v->pid_name[i] = TTF_RenderText_Blended(v->font_p,\
 			dst, v->color_chp[((t_champ*)(xplr->cnt))->id - 1]);
 	if (!v->pid_name[i])
-		printf("Error creating text : %s\n", SDL_GetError());
+		printf("Error creating pid->name : %s\n", SDL_GetError());
 	v->players_name[i] = TTF_RenderText_Blended(v->font_p,\
 			((t_champ*)(xplr->cnt))->name,\
 			v->color_chp[((t_champ*)(xplr->cnt))->id - 1]);
 	if (!v->players_name[i])
-		printf("Error creating text : %s\n", SDL_GetError());
-	free(dst);
+		printf("Error creating players_name : %s\n", SDL_GetError());
+	ft_memdel((void**)&dst);
 }
 
 void		fill_players_texture(t_visu *v, int i)
@@ -82,8 +87,8 @@ t_visu		init_players(t_visu *v, t_parse *p)
 	}
 	while (++i < 4)
 	{
-		v->players_name[i] = 0;
-		v->players_vn[i] = 0;
+		v->players_name[i] = NULL;
+		v->players_vn[i] = NULL;
 	}
 	return (*v);
 }

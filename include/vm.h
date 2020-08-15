@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 13:17:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/14 16:09:58 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,6 +361,7 @@ int					vprint_cycle(t_cw *cw, void *ptr, int flag);
 int		 			vprint_op(t_cw *cw, void *ptr, int flag);
 int		 			vprint_deaths(t_cw *cw, void *ptr, int flag);
 int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
+void				free_tmp_v_tools(char *a, char *b, char *tmp, char **arg);
 
 /*
 **<<<<<Visualizer functions>>>>>
@@ -423,12 +424,11 @@ void				load_players(t_visu *v, t_parse *p);
 char				*ft_itoa_base2(unsigned long long nb, char *base);
 bool				main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p);
 bool        		main_exe2(t_cw *cw, bool stop_game);
-void    			music_launcher(t_visu *v);
+void    			music_launcher(t_visu *v, t_cw *cw);
 t_visu				visu_breaker(t_visu *v);
 t_visu				visu_breaker2(t_visu *v);
 t_visu				init_details(t_visu *v);
 int					find_nbr_proc(t_cw *cw);
 int					find_nbr_players(t_parse *p);
 void    			arena_texture(t_visu *v, int is_proc, int i);
-
 #endif
