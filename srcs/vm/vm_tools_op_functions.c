@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/08/14 15:24:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/14 16:49:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)
 {
 	int			value;
+	int			ret;
 	extern t_op	op_tab[17];
 
 	if ((type % 10) != REG_CODE && (type % 10) != IND_CODE \
@@ -41,16 +42,21 @@ int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)
 	value = arena[(index) % MEM_SIZE];
 	if ((type % 10) == REG_CODE)
 		return ((type / 10) == 0 ? value : cur_proc->registers[value - 1]);
-	value = value << 8 | arena[(index + 1) % MEM_SIZE];
+	value = value << 8 | (unsigned char)arena[(index + 1) % MEM_SIZE];
 	if ((type % 10) == IND_CODE)
-		return ((type / 10) == 0 ? value \
-			: arena[(cur_proc->i + (value % IDX_MOD)) % MEM_SIZE]);
+	{
+		ret = arena[(cur_proc->i + (value % IDX_MOD)) % MEM_SIZE] << 24
+			| arena[(cur_proc->i + (value % IDX_MOD) + 1) % MEM_SIZE] << 16
+			| arena[(cur_proc->i + (value % IDX_MOD) + 2) % MEM_SIZE] << 8
+			| arena[(cur_proc->i + (value % IDX_MOD) + 3) % MEM_SIZE];
+		return ((type / 10) == 0 ? value : ret);
+	}
 	if ((type % 10) == DIR_CODE)
 	{
 		if (op_tab[(int)(cur_proc->opcode - 1)].direct_size == 1)
 			return (value);
-		value = value << 8 | arena[(index + 2) % MEM_SIZE];
-		return (value = value << 8 | arena[(index + 3) % MEM_SIZE]);
+		value = value << 8 | (unsigned char)arena[(index + 2) % MEM_SIZE];
+		return (value = value << 8 | (unsigned char)arena[(index + 3) % MEM_SIZE]);
 	}
 	return (0);
 }
