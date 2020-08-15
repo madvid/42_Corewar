@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 15:42:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/14 16:50:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int		op_load(t_cw *cw, t_process *p)
 	//	% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
 	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
-	ft_printf("    [op_load]: arg = %d\n", arg);
 	reg = instruction_width((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000, op_tab[p->opcode - 1].direct_size);
 	reg = get_arg_value(cw->arena, p, p->i + 2 + reg, \
@@ -97,7 +96,7 @@ int		op_store(t_cw *cw, t_process *p)
 	b = cw->arena[(p->i + 3) % MEM_SIZE];
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 48) >> 4) == IND_CODE)
 	{
-		b = (b << 8) | cw->arena[(p->i + 4) % MEM_SIZE];
+		b = (b << 8) | (unsigned char)(cw->arena[(p->i + 4) % MEM_SIZE]);
 		i = -1;
 		while (++i < 4)
 		{
