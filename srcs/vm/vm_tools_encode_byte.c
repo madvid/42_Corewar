@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 16:33:30 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/15 20:36:05 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,11 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 	{
 		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
 			& 0b11000000, op_tab[proc->opcode - 1].direct_size);
+		ft_printf("    [ARG2_3_TO_STR]: widht = %d\n", widht);
 		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
+		ft_printf("    [ARG2_3_TO_STR]: type 2nd arg = %d\n", arg);
+		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);
+		ft_printf("    [ARG2_3_TO_STR]: val 2nd arg = %d\n", arg);
 		dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
 			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
 	}
@@ -107,7 +110,7 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
 			& 0b11110000, op_tab[proc->opcode - 1].direct_size);
 		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00001100) >> 2;
-		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
+		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);
 		dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
 			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
 	}
@@ -124,14 +127,21 @@ char		*args_to_str(t_cw *cw, t_process *proc)
 	arg = 0;
 	encoding = cw->arena[(proc->i + 1) % MEM_SIZE];
 	dst = NULL;
+	if (proc->opcode == 3)
+	{
+		ft_printf("    ici1\n");
+		tool_print_processor(proc, 0);
+	}
 	if (op_tab[proc->opcode - 1].n_arg >= 1)
 	{
 		if (opcode_no_encoding(proc->opcode))
 			arg = get_arg_value(cw->arena, proc, proc->i + 1, DIR_CODE);
 		else
 		{
-			arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
+			arg = ((encoding & 0b11000000) >> 6) & 255;
+			ft_printf("    [ARGS_TO_STR]: type 1er arg = %d\n", arg);
 			arg = get_arg_value(cw->arena, proc, proc->i + 2, (arg == IND_CODE) ? arg + RELATIVE : arg);
+			ft_printf("    [ARGS_TO_STR]: val 1er arg = %d\n", arg);
 		}
 		dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
 			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));

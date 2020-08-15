@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/15 17:09:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/15 20:14:42 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		op_alive(t_cw *cw, t_process *proc)
 	proc->n_lives++;
 	cw->ctd_lives++;
 	cw->tot_lives++;
+	proc->last_live = cw->i_cycle;
 	arg = (arg > 0) ? arg : -arg;
 	if (arg > 0 && arg < cw->n_champ)
 		cw->champ_lives[arg - 1]++;
@@ -94,10 +95,12 @@ int		op_store(t_cw *cw, t_process *p)
 
 	a = cw->arena[(p->i + 2) % MEM_SIZE];
 	b = cw->arena[(p->i + 3) % MEM_SIZE];
-	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 48) >> 4) == IND_CODE)
+	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
-		b = (b << 8) | (unsigned char)(cw->arena[(p->i + 4) % MEM_SIZE]);
+		b = (b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE]);
 		i = -1;
+		// ft_printf("    [op_store]: 1er arg = %d\n", a);
+		// ft_printf("    [op_store]: 2nd arg = %d\n", b);
 		while (++i < 4)
 		{
 			cw->arena[(p->i + (b % IDX_MOD) + i) % MEM_SIZE] \
@@ -107,7 +110,7 @@ int		op_store(t_cw *cw, t_process *p)
 			= p->champ->id;
 		}
 	}
-	else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 48) >> 4) == REG_CODE)
+	else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
 		p->registers[b - 1] = p->registers[a - 1];
 	else
 		return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 0) : 0);
