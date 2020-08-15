@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 11:02:30 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 14:44:28 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/15 17:59:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,3 +105,20 @@ int		lst_sort_champion(t_list **champ)
 	*champ = reconstruct_champ_list(chp);
 	return (1);
 }
+
+char	*champ_name_via_id(t_list *lst_champs, int id)
+{
+	t_list		*xplr;
+
+	if (lst_champs == NULL)
+		return (NULL);
+	xplr = lst_champs;
+	while(xplr)
+	{
+		if (((t_champ*)(xplr->cnt))->id == id)
+			return (((t_champ*)(xplr->cnt))->name);
+		xplr = xplr->next;
+	}
+	return (NULL);
+}
+

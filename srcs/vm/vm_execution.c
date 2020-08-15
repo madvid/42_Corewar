@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 17:03:55 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/15 18:00:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,43 @@ void		vm_exec_init_pc(t_cw *cw)
 }
 
 /*
+** Function: declare_winner
+** Description:
+**	Declares the winner of the battle.
+** Return:
+**		1: battle reach the end without any problems
+*/
+
+int		declare_winner(t_cw *cw)
+{
+	int		score;
+	int		winner;
+	char	*name;
+
+	score = cw->champ_lives[0];
+	winner = 1;
+	if (cw->champ_lives[1] > score)
+	{
+		score = cw->champ_lives[1];
+		winner = 2;
+	}
+	if (cw->champ_lives[2] > score)
+	{
+		score = cw->champ_lives[2];
+		winner = 3;
+	}
+	if (cw->champ_lives[3] > score)
+	{
+		score = cw->champ_lives[3];
+		winner = 4;
+	}
+	name = champ_name_via_id(cw->lst_champs, winner);
+	ft_printf("Contestant %d, %c%s%c, has won !", winner, '"', name, '"');
+	return (1);
+}
+
+
+/*
 ** Function: vm_execution
 ** Description:
 **	Main part of the execution of the champion bytecode [bla bla]
@@ -121,7 +158,6 @@ int		vm_execution(t_cw *cw, t_parse * p)
 			cw->tot_cycle++;
 		}
 		//vm_proc_get_lives(cw); <- augmentation de cw->tot_lives/ctd_lives pendant l'action alive, peut etre retiré donc.
-		vm_proc_kill_not_living(cw);
 		// if (cw->ctd_lives == 0 || !vm_proc_only_one_standing(cw))
 		if (cw->ctd_lives == 0 || cw->process == NULL)
 			stop_game = true;
@@ -134,6 +170,8 @@ int		vm_execution(t_cw *cw, t_parse * p)
 			if (cw->options.v_lvl & 2)
 				vprint_cycle(cw, NULL, 1);
 		}
+		if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
+			return (declare_winner(cw));
 	}
 	p = NULL;
 	//tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 14:58:30 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/15 18:24:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,27 +101,32 @@ void		free_one_process(t_list **lst_proc, int id)
 ** Function: vm_proc_kill_no_live
 ** Description:
 **	[put some explanations here !]
+** Return:
+**	1: if at least one process remaind in the list cw->process after killing
+**		concerned processes.
+**	0: if no process remainds or if the number of processes exceed INT_MAX
 */
 
-void		vm_proc_kill_not_living(t_cw *cw)
+int		vm_proc_kill_not_living(t_cw *cw)
 {
 	t_list		*xplr;
 	t_list		*tmp;
 
-	if (!cw->process)
-		return;
 	xplr = cw->process;
 	while (xplr)
 	{
 		if (((t_process*)(xplr->cnt))->n_lives == 0)
 		{
 			tmp = xplr->next;
+			if (cw->options.v_lvl & 0b1000)
+				vprint_deaths(cw, (t_process*)(xplr->cnt), 1);
 			free_one_process(&(cw->process), ((t_process*)(xplr->cnt))->id);
 			xplr = tmp;
 		}
 		else
 			xplr = xplr->next;
 	}
+	return ((ft_lst_len(cw->process) == 0) ? 0 : 1);
 }
 
 /*
