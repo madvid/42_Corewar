@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/15 20:14:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/16 18:32:39 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,9 @@ int		op_alive(t_cw *cw, t_process *proc)
 	cw->ctd_lives++;
 	cw->tot_lives++;
 	proc->last_live = cw->i_cycle;
-	arg = (arg > 0) ? arg : -arg;
-	if (arg > 0 && arg < cw->n_champ)
-		cw->champ_lives[arg - 1]++;
-	return ((cw->options.verbose == true) ? init_verbotab(cw, proc, arg) : 1);
+	if (-arg > 0 && -arg < cw->n_champ)
+		cw->champ_lives[-arg - 1]++;
+	return ((cw->options.verbose == true) ? init_verbotab(cw, proc, -arg) : 1);
 }
 
 /*
@@ -93,28 +92,28 @@ int		op_store(t_cw *cw, t_process *p)
 	int		b;
 	int		i;
 
+	(cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1;
 	a = cw->arena[(p->i + 2) % MEM_SIZE];
 	b = cw->arena[(p->i + 3) % MEM_SIZE];
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
 		b = (b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE]);
-		i = -1;
 		// ft_printf("    [op_store]: 1er arg = %d\n", a);
 		// ft_printf("    [op_store]: 2nd arg = %d\n", b);
+		i = -1;
 		while (++i < 4)
 		{
 			cw->arena[(p->i + (b % IDX_MOD) + i) % MEM_SIZE] \
-			= (p->registers[a - 1] & (0xFF000000 >> (8 * i))) \
-				>> (24 - (8 * i));
-			cw->id_arena[(p->i + (b % IDX_MOD) + i) % MEM_SIZE] \
-			= p->champ->id;
+			= (p->registers[a - 1] & (0xFF000000 >> (8 * i))) >> (24 - 8 * i);
 		}
 	}
-	else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
-		p->registers[b - 1] = p->registers[a - 1];
 	else
-		return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 0) : 0);
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+		p->registers[b - 1] = p->registers[a - 1];
+	// else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
+	// 	p->registers[b - 1] = p->registers[a - 1];
+	// else
+	// 	return ((cw->options.verbose == true) ? vprint_op(cw, (void*)p, 0) : 0);
+	return (1);
 }
 
 /*

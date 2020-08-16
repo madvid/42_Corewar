@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 15:24:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/16 18:28:05 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,13 @@
 int		op_zerojump(t_cw *cw, t_process *p)
 {
 	int		a;
-	int		i;
 
 	if (!p->carry)
-		return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 0) : 0);
+		return ((cw->options.verbose == true) ? init_verbotab(cw, p, 0) : 0);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
 		| (cw->arena[(p->i + 2) % MEM_SIZE]);
 	p->pc = p->i + (a % IDX_MOD);
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/07 09:57:25 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/16 18:18:47 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ int		op_xor(t_cw *cw, t_process *p)
 	int		a;
 	int		b;
 	int		c;
-	int		i;
 
+	(cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1;
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
@@ -133,6 +133,6 @@ int		op_xor(t_cw *cw, t_process *p)
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
 	p->registers[c - 1] = a ^ b;
 	p->carry = (p->registers[c] == 0) ? 1 : 0;
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return (1);
 }
 

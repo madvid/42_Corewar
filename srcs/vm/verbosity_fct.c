@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/15 18:25:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/16 18:35:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 	char		**arg;
 
 	tmp = (flag == 1) ? "OK" : "FAILED";
-	arg = ft_strsplit(args_to_str(cw, ((t_process*)(ptr))), 32);
+	arg = ft_strsplit(args_to_str(cw, (t_process*)(ptr)), 32);
+	// ft_printf("    [vprint_op] arg[0] = %s -- arg[1] = %s\n", arg[0], arg[1]);
 	a = NULL;
 	b = NULL;
 	if (cw)
@@ -105,10 +106,9 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	int			i;
 	char		*tmp;
 
-	widht = instruction_width(cw->arena[((t_process*)(ptr))->opcode + 1 \
-			% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1].direct_size);
-	widht = widht + ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) \
-		? 1 : 2);
+	widht = instruction_width(cw->arena[(((t_process*)(ptr))->i + 1)
+		% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1].direct_size);
+	widht += ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) ? 1 : 2);
 	ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", widht, ((t_process*)(ptr))->i, \
 			(((t_process*)(ptr))->i + widht) % MEM_SIZE);
 	i = -1;
