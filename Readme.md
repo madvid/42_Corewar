@@ -1,5 +1,5 @@
 # Projet Corewar:
-auteurs: armajchr, mdavid, yaye, weilin
+auteurs: armajchr, mdavid, yaye
 
 ## Présentation du projet:
 [source: pdf du sujet 42]
