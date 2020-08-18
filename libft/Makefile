@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
+#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/28 10:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/08/14 15:59:20 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/17 08:02:47 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -Wunused-function -g
 
 SRC_DIR = srcs/
 OBJ_DIR = objs/
