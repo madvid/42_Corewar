@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/18 11:05:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 12:06:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int			main(int ac, char **av)
 	p = NULL;
 	cw = NULL;
 
-	ft_printf("%d\n", -10 % 20);
-	ft_printf("%d\n", -21 % 20);
 	if (ac > 1)
 	{
 		if (!vm_init_parse(&p) || !vm_parsing(av, &p))
