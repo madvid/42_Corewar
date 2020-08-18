@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/16 18:32:39 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 18:58:39 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		op_alive(t_cw *cw, t_process *proc)
 	proc->last_live = cw->i_cycle;
 	if (-arg > 0 && -arg < cw->n_champ)
 		cw->champ_lives[-arg - 1]++;
-	return ((cw->options.verbose == true) ? init_verbotab(cw, proc, -arg) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, proc, -arg) : 1);
 }
 
 /*
@@ -70,7 +70,7 @@ int		op_load(t_cw *cw, t_process *p)
 		((cw->arena[(p->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
-	return ((cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
@@ -92,7 +92,7 @@ int		op_store(t_cw *cw, t_process *p)
 	int		b;
 	int		i;
 
-	(cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1;
+	(cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1;
 	a = cw->arena[(p->i + 2) % MEM_SIZE];
 	b = cw->arena[(p->i + 3) % MEM_SIZE];
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
@@ -112,7 +112,7 @@ int		op_store(t_cw *cw, t_process *p)
 	// else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
 	// 	p->registers[b - 1] = p->registers[a - 1];
 	// else
-	// 	return ((cw->options.verbose == true) ? vprint_op(cw, (void*)p, 0) : 0);
+	// 	return ((cw->options->verbose == true) ? vprint_op(cw, (void*)p, 0) : 0);
 	return (1);
 }
 
@@ -140,9 +140,9 @@ int		op_addition(t_cw *cw, t_process *cur_proc)
 	c = cw->arena[(cur_proc->i + 4) % MEM_SIZE];
 	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
 		|| c < 1 || c > REG_NUMBER)
-		return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
+		return (i = (cw->options->verbose == true) ? init_verbotab(cw, cur_proc, 0) : 0);
 	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] \
 	+ cur_proc->registers[b - 1];
 	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+	return (i = (cw->options->verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }

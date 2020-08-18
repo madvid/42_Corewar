@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa_base2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 10:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/07/21 15:56:36 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/17 10:06:19 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ char	*ft_itoa_base2(unsigned long long nb, char *base)
 	while (tmp >= base_lenght && (tmp /= base_lenght))
 		count++;
 	tmp = nb;
-	if (!(res = (char*)malloc(sizeof(char) - 1)))
+	// if (!(res = (char*)malloc(sizeof(char) - 1)))
+	if (!(res = (char*)malloc(sizeof(char) * (count + 1))))
 		return (NULL);
 	res[count] = '\0';
 	while (tmp >= base_lenght)

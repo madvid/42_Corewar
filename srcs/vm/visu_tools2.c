@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/14 14:28:15 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/17 11:34:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool		main_exe2(t_cw *cw, bool stop_game)
 	{
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
 		cw->i_check = 0;
-		if (cw->options.v_lvl & 2)
+		if (cw->options->v_lvl & 2)
 			vprint_cycle(cw, NULL, 1);
 	}
 	return (stop_game);

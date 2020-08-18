@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/13 12:06:13 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/17 11:33:45 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		music_launcher(t_visu *v, t_cw *cw)
 		printf("%s", Mix_GetError());
 	v->musique =\
 		Mix_LoadMUS("./Visu/8-bit-music-chiptune-reloaded(1).mp3");
-	(cw->options.music == true) ? Mix_PlayMusic(v->musique, -1) : 0;
+	(cw->options->music == true) ? Mix_PlayMusic(v->musique, -1) : 0;
 }
 
 int			find_nbr_proc(t_cw *cw)
@@ -90,9 +90,9 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	{
 		load_visu(v, cw, p);
 		visu_render(v);
-		if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
+		if (cw->options->dump && cw->i_cycle == cw->options->dump_cycle)
 			v->isquit = 1;
-		if (cw->options.v_lvl & 2 && cw->i_cycle != 0)
+		if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 			vprint_cycle(cw, cw, 1);
 		vm_proc_cycle(cw);
 		if ((code_error = vm_proc_perform_opcode(cw)) != 0)

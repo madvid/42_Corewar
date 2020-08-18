@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/15 18:00:55 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 09:52:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int		declare_winner(t_cw *cw)
 	return (1);
 }
 
-
 /*
 ** Function: vm_execution
 ** Description:
@@ -132,6 +131,7 @@ int		declare_winner(t_cw *cw)
 ** Return:
 **	0: No error or issue occured.
 **	code_error: value of the corresponding error/issue which occured
+**
 */
 
 int		vm_execution(t_cw *cw, t_parse * p)
@@ -141,37 +141,40 @@ int		vm_execution(t_cw *cw, t_parse * p)
 
 	code_error = 0;
 	vm_exec_init_pc(cw);
-	cw->tot_cycle = 0;
+	cw->tot_cycle = 1;
 	while (stop_game == false)
 	{
-		cw->i_cycle = -1;
-		while (++cw->i_cycle < cw->cycle_to_die)
+		cw->i_cycle = 0;
+		cw->ctd_lives = 0;
+		while (++cw->i_cycle <= cw->cycle_to_die)
 		{
-			if (cw->options.v_lvl & 2 && cw->i_cycle != 0)
+			vm_proc_mv_proc_pos(cw);
+			vm_proc_cycle(cw);
+			if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 				vprint_cycle(cw, NULL, 0);
-			if (cw->options.dump && cw->i_cycle == cw->options.dump_cycle)
+			if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
 				return (dump_memory(cw->arena));
 			if ((code_error = vm_proc_perform_opcode(cw)) != 0)
 				return (code_error);
-			vm_proc_mv_proc_pos(cw);
-			vm_proc_cycle(cw);
 			cw->tot_cycle++;
 		}
 		//vm_proc_get_lives(cw); <- augmentation de cw->tot_lives/ctd_lives pendant l'action alive, peut etre retiré donc.
 		// if (cw->ctd_lives == 0 || !vm_proc_only_one_standing(cw))
 		if (cw->ctd_lives == 0 || cw->process == NULL)
 			stop_game = true;
-		vm_proc_set_lives(cw, 0);
-		ft_printf("END of the period CTD\n");
-		if (cw->ctd_lives >= NBR_LIVE || cw->i_check++ == MAX_CHECKS)
+		if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
 		{
 			cw->cycle_to_die -= (int)CYCLE_DELTA;
-			cw->i_check = 0;
-			if (cw->options.v_lvl & 2)
+			cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
+			if (cw->options->v_lvl & 2)
+			{
 				vprint_cycle(cw, NULL, 1);
+				// vprint_cycle(cw, NULL, 0);
+			}
 		}
 		if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
 			return (declare_winner(cw));
+		vm_proc_set_lives(cw, 0);
 	}
 	p = NULL;
 	//tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);

@@ -3,26 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/30 14:25:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 15:38:01 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/17 11:30:46 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void	copy_options(t_cw *cw, t_parse *p)
-{
-	cw->options.dump = p->options->dump;
-	cw->options.dump_cycle = p->options->dump_cycle;
-	cw->options.aff = p->options->aff;
-	cw->options.sdl = p->options->sdl;
-	cw->options.verbose = p->options->verbose;
-	cw->options.v_lvl = p->options->v_lvl;
-	cw->options.music = p->options->music;
-
-}
+// void	copy_options(t_cw *cw, t_parse *p)
+// {
+// 	cw->options.dump = p->options->dump;
+// 	cw->options.dump_cycle = p->options->dump_cycle;
+// 	cw->options.aff = p->options->aff;
+// 	cw->options.sdl = p->options->sdl;
+// 	cw->options.verbose = p->options->verbose;
+// 	cw->options.v_lvl = p->options->v_lvl;
+// 	cw->options.music = p->options->music;
+// }
 
 /*
 ** Function: is_dump_option

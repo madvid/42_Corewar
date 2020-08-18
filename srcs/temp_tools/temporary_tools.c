@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temporary_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 15:10:07 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/17 16:43:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,7 @@ void		tool_print_short_processors(t_cw *cw)
 	{
 		proc = (t_process*)(xplr->cnt);
 		index = proc->i;
-		printf("P %d -- is at the memory adress : %d (index = %d)\n", proc->id, proc->i, index);
+		ft_printf("P %d -- is at the memory adress : %d (index = %d) -- opcode = %d(w_c = %d)\n", proc->id, proc->i, index, proc->opcode, proc->wait_cycles);
 		xplr = xplr->next;
 	}
 }

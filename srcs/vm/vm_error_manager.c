@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:50:51 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 11:00:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 
 int			vm_init_cw_error(int cd_error, t_cw **cw)
 {
-	ft_printf("vm_init_cw_error\n");
-	if (cd_error >= (int)CD_INI_PROC)
+	// ft_printf("vm_init_cw_error\n");
+	if (cd_error >= (int)CD_INI_PROC && (*cw)->process)
 		ft_lstdel(&((*cw)->process), &ft_lst_fdel_proc);
 	if (cd_error >= CD_ID_ARENA)
 		ft_1d_int_tabledel(&((*cw)->id_arena), REG_NUMBER);
@@ -45,7 +45,7 @@ int			vm_init_cw_error(int cd_error, t_cw **cw)
 
 int			vm_init_parse_error(int cd_error, t_parse **p)
 {
-	ft_printf("vm_init_parse_error\n");
+	// ft_printf("vm_init_parse_error\n");
 	if (cd_error >= (int)CD_BD_VAL && (*p)->lst_champs)
 		ft_lstdel(&((*p)->lst_champs), &ft_lst_fdel_champ);
 	if (cd_error >= CD_P_OPT)

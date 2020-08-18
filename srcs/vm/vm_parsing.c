@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 15:53:37 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/17 08:57:28 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ int				vm_parsing(char **av, t_parse **p)
 			if (av[++i] && is_valid_nb_champ(av[i]))
 			{
 				(*p)->options->n = 1;
-				(*p)->id_champ = (int)(*av[i++] - '0');
+				(*p)->id_champ = (int)(av[i++][0] - '0');
+				ft_printf("valeur de av[i=%d][0] - '0': %d\n", i-1, (int)(av[i-1][0] - '0'));
 			}
 			else
 				return (vm_error_manager((int)CD_BD_VAL, p, NULL));

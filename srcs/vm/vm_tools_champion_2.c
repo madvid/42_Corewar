@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 11:02:30 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/15 17:59:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 09:27:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,18 @@
 **	new: the sorted list of champions
 */
 
-t_list		*reconstruct_champ_list(t_list *tab_champ[4])
+t_list		*reconstruct_champ_list(t_list **tab_champ, int nb_champ)
 {
-	t_list	*new;
 	int		i;
-	int		stat;
 
 	i = 0;
-	stat = 0;
-	while (i <= 4)
+	while (i + 1 < nb_champ)
 	{
-		if (tab_champ[i])
-		{
-			tab_champ[i]->next = NULL;
-			if (stat == 0)
-			{
-				new = tab_champ[i];
-				stat++;
-			}
-			else
-			{
-				ft_lstaddend(&new, tab_champ[i]);
-			}
-		}
+		tab_champ[i]->next = tab_champ[i + 1];
 		i++;
 	}
-	return (new);
+	tab_champ[i]->next = NULL;
+	return (tab_champ[0]);
 }
 
 /*
@@ -86,25 +72,36 @@ t_list		*get_champ_id(t_list **champ, int id)
 int		lst_sort_champion(t_list **champ)
 {
 	t_list			*xplr;
-	static t_list	*chp[4]={NULL, NULL, NULL, NULL};
+	t_list			**chp;
+	int				nb_champ;
 	int				i;
 	int				id;
 
-	if (ft_lst_len(*champ) == -1)
+	if (ft_lst_len(*champ) == -1 || ft_lst_len(*champ) == 1)
 		return (0);
-	if (ft_lst_len(*champ) == 1)
+	nb_champ = ft_lst_len(*champ);
+	if (!(chp = (t_list**)malloc(sizeof(t_list*) * nb_champ)))
 		return (0);
-	i = 0;
 	id = 0;
-	while (++id <= 4)
+	i = 0;
+	while (++id <= nb_champ)
 	{
 		xplr = get_champ_id(champ, id);
 		if (xplr != NULL)
 			chp[i++] = xplr;
 	}
-	*champ = reconstruct_champ_list(chp);
+	*champ = reconstruct_champ_list(chp, nb_champ);
 	return (1);
 }
+
+/*
+** Function: champ_name_via_id
+** Description:
+**	Looks the champion with the given ID and returns it name.
+** Return:
+** name: the name of the champion associated with the ID
+** NULL: if no champion exists with the given ID
+*/
 
 char	*champ_name_via_id(t_list *lst_champs, int id)
 {

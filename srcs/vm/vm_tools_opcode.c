@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_opcode.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:10:07 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/17 14:44:45 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? CD_PROC_MEM : 0;
 		else
 			op_funct[cur_proc->opcode - 1](cw, cur_proc);
-		
 	}
 	return (code_error);
 }

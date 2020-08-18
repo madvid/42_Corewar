@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/15 18:24:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 18:37:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,20 +111,27 @@ int		vm_proc_kill_not_living(t_cw *cw)
 {
 	t_list		*xplr;
 	t_list		*tmp;
+	t_list		*before;
 
 	xplr = cw->process;
+	before = cw->process;
 	while (xplr)
 	{
 		if (((t_process*)(xplr->cnt))->n_lives == 0)
 		{
 			tmp = xplr->next;
-			if (cw->options.v_lvl & 0b1000)
+			if (cw->options->v_lvl & 0b1000)
 				vprint_deaths(cw, (t_process*)(xplr->cnt), 1);
-			free_one_process(&(cw->process), ((t_process*)(xplr->cnt))->id);
+			ft_lst_fdel_proc(xplr, xplr->cnt_s);
+			//free_one_process(&(cw->process), ((t_process*)(xplr->cnt))->id);
 			xplr = tmp;
+			before->next = xplr;
 		}
 		else
+		{
+			before = xplr;
 			xplr = xplr->next;
+		}
 	}
 	return ((ft_lst_len(cw->process) == 0) ? 0 : 1);
 }

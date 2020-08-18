@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/15 17:09:53 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 14:32:25 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 	(*cw)->tot_lives = 0;
 	(*cw)->ctd_lives = 0;
 	(*cw)->n_champ = nb_champ;
-	(*cw)->i_check = MAX_CHECKS;
+	(*cw)->i_check = 0;
 	while (nb_champ > 0)
 	{
 		if (!(tmp = ft_lstnew(NULL, sizeof(t_process))))
@@ -189,6 +189,7 @@ int				vm_cw_arena_init(t_cw **cw, t_parse **p)
 		xplr = xplr->next;
 		xplr2 = xplr2->next;
 	}
-	copy_options(*cw, *p);
+	(*cw)->options = (*p)->options;
+	//copy_options(*cw, *p);
 	return (1);
 }

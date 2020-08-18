@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/15 18:25:41 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 12:02:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ typedef struct		s_options
 	bool			music;
 	bool			verbose;
 	u_int8_t		v_lvl;
-
 }					t_options;
 
 typedef struct		s_champ
@@ -135,7 +134,7 @@ typedef struct		s_corewar
 	int				ctd_lives;		// number of alives performed during the last CTD period.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 	int				tot_cycle;
-	t_options		options;			// struct with options
+	t_options		*options;			// struct with options
 }					t_cw;
 
 /*
@@ -274,7 +273,7 @@ int					get_champ_l_bcode(int fd);
 char				*get_champ_bcode(int fd, int l_bcode);
 int					lst_sort_champion(t_list **champ);
 int					lst_order_chp(t_list *chp1, t_list *chp2);
-t_list				*reconstruct_champ_list(t_list *tab_champ[4]);
+t_list				*reconstruct_champ_list(t_list **tab_champ, int nb_champ);
 t_list				*get_champ_id(t_list **champ, int id);
 
 
@@ -282,7 +281,7 @@ t_list				*get_champ_id(t_list **champ, int id);
 ** Prototypes des fonctions [initialization et chargement] de l'arene et des cursors
 */
 int					vm_cw_arena_init(t_cw **cw, t_parse **p);
-void				copy_options(t_cw *cw, t_parse *p);
+// void				copy_options(t_cw *cw, t_parse *p);
 
 /*
 ** Lancement et déroulement de corewar.

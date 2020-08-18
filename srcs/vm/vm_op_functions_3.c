@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/16 18:28:05 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 18:58:47 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,15 @@ int		op_zerojump(t_cw *cw, t_process *p)
 	int		a;
 
 	if (!p->carry)
-		return ((cw->options.verbose == true) ? init_verbotab(cw, p, 0) : 0);
+		return ((cw->options->verbose == true) ? init_verbotab(cw, p, 0) : 0);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
-		| (cw->arena[(p->i + 2) % MEM_SIZE]);
-	p->pc = p->i + (a % IDX_MOD);
-	return ((cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+		| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
+	p->pc = (p->i + (a % IDX_MOD));
+	ft_printf("--- p->i = %d -- a = %d -- a %% IDX_MOD = %d -- pc (p->i + (a %% IDX_MOD)) = %d\n", p->i, a, (a % IDX_MOD), p->pc);
+	p->pc = (p->pc > 0) ? p->pc % MEM_SIZE : MEM_SIZE + p->pc;
+	ft_printf("--- p->pc = %d --- arena[pc] = 0x%.4x\n", p->pc, p->pc);
+	// p->pc = (p->i + (a % IDX_MOD)) % MEM_SIZE;
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
@@ -60,7 +64,7 @@ int		op_load_index(t_cw *cw, t_process *p)
 		& 0b11110000, op_tab[p->opcode - 1].direct_size);
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
 	p->registers[c - 1] = cw->arena[(p->i + (a + b) % IDX_MOD) % MEM_SIZE];
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return (i = (cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
@@ -98,7 +102,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 		cw->id_arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
 		= p->champ->id;
 	}
-	return (i = (cw->options.verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 
@@ -140,6 +144,7 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	// ft_printf(">>>>> new_proc->id = %d -- cw->n_champ = %d -- nvlle process id = %d <<<<<\n", id, cw->n_champ, new_proc->id);
 	new_proc->i = cur_proc->i;
 	new_proc->pc = cur_proc->i + addr;
+	new_proc->carry = cur_proc->carry;
 	new_proc->n_lives = 0;
 	new_proc->wait_cycles = 0;
 	new_proc->champ = cur_proc->champ;
@@ -165,5 +170,5 @@ int		op_fork(t_cw *cw, t_process *cur_proc)
 	// ft_printf("valeur de addr = %d\n", addr);
 	if (!fork_creation_process(cw, cur_proc, addr % IDX_MOD)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
 		return (-1); // STOP SIGNAL MEMORY ALLOCATION ISSUE
-	return ((cw->options.verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
 }

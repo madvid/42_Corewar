@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/10 16:45:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/17 08:50:13 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int		vm_init_parse_memalloc(t_parse **p)
 	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
 		return (vm_error_manager(CD_P_STRUCT, p, NULL));
 	(*p)->error = msg;
-	if (!((*p)->id_available = (int *)ft_memalloc(sizeof(int) * MAX_PLAYERS)))
+	if (!((*p)->id_available = ft_1d_int_table(MAX_PLAYERS)))
 		return (vm_error_manager(CD_P_IDTAB, p, NULL));
 	if (!((*p)->options = (t_options*)ft_memalloc(sizeof(t_options))))
 		return (vm_error_manager(CD_P_OPT, p, NULL));
