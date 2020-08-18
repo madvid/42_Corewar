@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/18 14:56:26 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/18 15:26:24 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 
 	tmp = (flag == 1) ? "OK" : "FAILED";
 	arg = ft_strsplit(args_to_str(cw, (t_process*)(ptr)), 32);
-	// ft_printf("    [vprint_op] arg[0] = %s -- arg[1] = %s\n", arg[0], arg[1]);
+	if (arg == NULL)
+		return (0);
 	a = NULL;
 	b = NULL;
 	if (cw)
@@ -84,11 +85,8 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 			a, b, (ft_atoi(a) + ft_atoi(b)), \
 			(((ft_atoi(a) + ft_atoi(b)) % IDX_MOD) + ((t_process*)(ptr))->i) % MEM_SIZE);
 		}
-		// ft_printf("    valeur carry = %d\n", ((t_process*)ptr)->carry);
-		return (flag);
 	}
-	// ft_printf("    valeur carry = %d\n", ((t_process*)ptr)->carry);
-	free_tmp_v_tools(a, b, tmp, arg);
+	//free_tmp_v_tools(a, b, tmp, arg);
 	return (flag);
 }
 
