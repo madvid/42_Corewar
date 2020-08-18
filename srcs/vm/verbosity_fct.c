@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity_fct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/17 17:05:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 10:58:56 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 		}
 		else
 		{
-			ft_printf("P\t%d", ((t_process*)(ptr))->id);
+			ft_printf("P %4d ", ((t_process*)(ptr))->id);
 			ft_printf("| %s %s%s\n", \
 					op_tab[((t_process*)(ptr))->opcode - 1].name, \
 					args_to_str(cw, ((t_process*)(ptr))), \
@@ -72,7 +72,7 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 		{
 			a = arg[1];
 			b = arg[2];
-			ft_printf("\t |-> store to %s + %s = %d (with pc and mod %d)\n", \
+			ft_printf("%7s|-> store to %s + %s = %d (with pc and mod %d)\n", "",\
 			a, b, (ft_atoi(a) + ft_atoi(b)), \
 			(ft_atoi(a) + ft_atoi(b)) + ((t_process*)(ptr))->i);
 		}
@@ -113,7 +113,9 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	else
 		widht = op_tab[((t_process*)(ptr))->opcode - 1].direct_size == 1 ? 2 : 4;
 	widht += ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) ? 1 : 2);
-	ft_printf("ADV %d (0x%.4x(%d) -> 0x%.4x) ", widht, ((t_process*)(ptr))->i, ((t_process*)(ptr))->i, \
+	if (((t_process*)(ptr))->opcode == 9 && flag == 1)
+		return (flag);
+	ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", widht, ((t_process*)(ptr))->i, \
 			(((t_process*)(ptr))->i + widht) % MEM_SIZE);
 	i = -1;
 	while (++i < widht)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 18:58:47 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 10:50:46 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int		op_zerojump(t_cw *cw, t_process *p)
 	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
 		| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
 	p->pc = (p->i + (a % IDX_MOD));
-	ft_printf("--- p->i = %d -- a = %d -- a %% IDX_MOD = %d -- pc (p->i + (a %% IDX_MOD)) = %d\n", p->i, a, (a % IDX_MOD), p->pc);
+	//ft_printf("--- p->i = %d -- a = %d -- a %% IDX_MOD = %d -- pc (p->i + (a %% IDX_MOD)) = %d\n", p->i, a, (a % IDX_MOD), p->pc);
 	p->pc = (p->pc > 0) ? p->pc % MEM_SIZE : MEM_SIZE + p->pc;
-	ft_printf("--- p->pc = %d --- arena[pc] = 0x%.4x\n", p->pc, p->pc);
+	//ft_printf("--- p->pc = %d --- arena[pc] = 0x%.4x\n", p->pc, p->pc);
 	// p->pc = (p->i + (a % IDX_MOD)) % MEM_SIZE;
 	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
