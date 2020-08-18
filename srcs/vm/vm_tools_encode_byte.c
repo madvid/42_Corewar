@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_encode_byte.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 12:23:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 15:05:32 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,16 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		// arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);
 		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
 		// ft_printf("valeur 2nd arg = %d\n", arg);
-		dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
-			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		if (proc->opcode == 11 || proc->opcode == 10)
+		{
+			dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
+			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 1 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
+		}
+		else
+		{
+			dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
+				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		}
 	}
 	if (op_tab[proc->opcode - 1].n_arg >= 3)
 	{
@@ -114,8 +122,16 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		// ft_printf("type 3e arg = %d\n", arg);
 		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);
 		// ft_printf("valeur 3e arg = %d\n", arg);
-		dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
-			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		if (proc->opcode == 11)
+		{
+			dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
+			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
+		}
+		else
+		{
+			dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
+				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		}
 	}
 	return (dst);
 }
@@ -142,8 +158,16 @@ char		*args_to_str(t_cw *cw, t_process *proc)
 			arg = get_arg_value(cw->arena, proc, proc->i + 2, (arg == IND_CODE) ? arg + RELATIVE : arg);
 			// ft_printf("valeur 1er arg = %d\n", arg);
 		}
-		dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
-			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		if (proc->opcode == 10)
+		{
+			dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
+				ft_itoa(get_arg_value(cw->arena, proc, proc->i + 1, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
+		}
+		else
+		{
+			dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
+				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		}
 		// ft_printf("valeur de dest = %s\n", dst);
 	}
 	dst = arg2_3_to_str(cw, proc, dst, encoding);
