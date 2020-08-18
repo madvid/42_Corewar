@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 18:58:47 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 11:26:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int		op_zerojump(t_cw *cw, t_process *p)
 	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
 		| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
 	p->pc = (p->i + (a % IDX_MOD));
-	ft_printf("--- p->i = %d -- a = %d -- a %% IDX_MOD = %d -- pc (p->i + (a %% IDX_MOD)) = %d\n", p->i, a, (a % IDX_MOD), p->pc);
-	p->pc = (p->pc > 0) ? p->pc % MEM_SIZE : MEM_SIZE + p->pc;
-	ft_printf("--- p->pc = %d --- arena[pc] = 0x%.4x\n", p->pc, p->pc);
+	// ft_printf("--- p->i = %d -- a = %d -- a %% IDX_MOD = %d -- pc (p->i + (a %% IDX_MOD)) = %d\n", p->i, a, (a % IDX_MOD), p->pc);
+	p->pc = (p->pc > 0) ? p->pc % MEM_SIZE : MEM_SIZE + (p->pc % MEM_SIZE);
+	// ft_printf("--- p->pc = %d --- arena[pc] = 0x%.4x\n", p->pc, p->pc);
 	// p->pc = (p->i + (a % IDX_MOD)) % MEM_SIZE;
 	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
@@ -84,6 +84,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 	int			b;
 	int			c;
 	int			i;
+	int			pos;
 
 	a = get_arg_value(cw->arena, p, p->i + 2, REG_CODE + RELATIVE);
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
@@ -95,11 +96,17 @@ int		op_store_index(t_cw *cw, t_process *p)
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, ((cw->arena[(p->i + 1) \
 		% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE);
 	i = -1;
+	pos = p->i + ((b + c) % IDX_MOD);
+	pos = (pos > 0) ? pos : MEM_SIZE + (pos % MEM_SIZE);
 	while (++i < 4)
 	{
-		cw->arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
-		= (a & (0xFF000000 >> (8 * i))) >> (24 - (8 * i));
-		cw->id_arena[(p->i + ((b + c) % IDX_MOD) + i) % MEM_SIZE] \
+		if (i == 0)
+			cw->arena[(pos + i) % MEM_SIZE] \
+			= (a & (0xFF000000 >> (8 * i))) >> (24 - (8 * i));
+		else
+			cw->arena[(pos + i) % MEM_SIZE] \
+			= (unsigned char)((a & (0xFF000000 >> (8 * i))) >> (24 - (8 * i)));
+		cw->id_arena[(pos + i) % MEM_SIZE] \
 		= p->champ->id;
 	}
 	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 18:58:39 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 12:02:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,22 +97,20 @@ int		op_store(t_cw *cw, t_process *p)
 	b = cw->arena[(p->i + 3) % MEM_SIZE];
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
-		b = (b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE]);
-		// ft_printf("    [op_store]: 1er arg = %d\n", a);
-		// ft_printf("    [op_store]: 2nd arg = %d\n", b);
-		i = -1;
+		b = ((b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE])) \
+			% IDX_MOD + p->i;
+		i = 0;
+		b = (b >= 0) ? b % MEM_SIZE : MEM_SIZE + (b % MEM_SIZE);
+		cw->arena[b] = (p->registers[a - 1] & 0xFF000000) >> 24;
 		while (++i < 4)
 		{
-			cw->arena[(p->i + (b % IDX_MOD) + i) % MEM_SIZE] \
-			= (p->registers[a - 1] & (0xFF000000 >> (8 * i))) >> (24 - 8 * i);
+			cw->arena[(b + i) % MEM_SIZE] \
+			= (unsigned char)((p->registers[a - 1] & (0xFF000000 >> (8 * i))) \
+				>> (24 - 8 * i));
 		}
 	}
 	else
 		p->registers[b - 1] = p->registers[a - 1];
-	// else if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == REG_CODE)
-	// 	p->registers[b - 1] = p->registers[a - 1];
-	// else
-	// 	return ((cw->options->verbose == true) ? vprint_op(cw, (void*)p, 0) : 0);
 	return (1);
 }
 
