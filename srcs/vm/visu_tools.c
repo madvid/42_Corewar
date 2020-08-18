@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/17 11:33:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 11:23:01 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,21 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	int		code_error;
 
 	cw->i_cycle = -1;
+	cw->i_cycle = 0;
+	cw->ctd_lives = 0;
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0\
 			&& v->isquit == 0)
 	{
 		load_visu(v, cw, p);
 		visu_render(v);
-		if (cw->options->dump && cw->i_cycle == cw->options->dump_cycle)
-			v->isquit = 1;
-		if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
-			vprint_cycle(cw, cw, 1);
-		vm_proc_cycle(cw);
-		if ((code_error = vm_proc_perform_opcode(cw)) != 0)
-			v->isquit = 1;
 		vm_proc_mv_proc_pos(cw);
+		vm_proc_cycle(cw);
+		if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
+			vprint_cycle(cw, NULL, 0);
+		if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
+			return (dump_memory(cw->arena));
+		if ((code_error = vm_proc_perform_opcode(cw)) != 0)
+			return (code_error);
 		cw->tot_cycle++;
 		texture_free(v);
 	}

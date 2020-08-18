@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 14:39:55 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/14 14:29:24 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/18 11:35:03 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ double		menu_move(t_visu *v, double angle)
 	if (angle > 360)
 		angle = 0;
 	angle++;
-	SDL_SetRenderDrawColor(v->r, 0, 0, 0, 255);
 	SDL_RenderClear(v->r);
 	SDL_RenderCopyEx(v->r, v->menu_vt, NULL, &v->menu_pos,\
 			angle, &v->center, v->flip);
