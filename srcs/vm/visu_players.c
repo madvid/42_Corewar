@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 09:54:08 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/14 14:27:13 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/18 16:03:33 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_visu		init_players(t_visu *v, t_parse *p)
 	int		i;
 
 	xplr = p->lst_champs;
+	v->tot_players = find_nbr_players(p);
 	i = -1;
 	while (xplr && ++i < v->tot_players)
 	{
@@ -99,6 +100,7 @@ void		load_players(t_visu *v, t_parse *p)
 
 	i = -1;
 	v->tot_players = find_nbr_players(p);
+	ft_printf("tot = %d\n", v->tot_players);
 	while (++i < v->tot_players)
 	{
 		SDL_QueryTexture(v->players_vn[i], NULL, NULL, &v->players_coo[i].w,\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/17 11:34:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 13:06:51 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,23 @@ int			find_nbr_players(t_parse *p)
 
 bool		main_exe2(t_cw *cw, bool stop_game)
 {
-	vm_proc_get_lives(cw);
-	vm_proc_kill_not_living(cw);
-	if (cw->tot_lives == 0)
+	//vm_proc_get_lives(cw); <- augmentation de cw->tot_lives/ctd_lives pendant l'action alive, peut etre retiré donc.
+	// if (cw->ctd_lives == 0 || !vm_proc_only_one_standing(cw))
+	if (cw->ctd_lives == 0 || cw->process == NULL)
 		stop_game = true;
-	vm_proc_set_lives(cw, 0);
-	if (cw->ctd_lives >= NBR_LIVE || cw->i_check++ == MAX_CHECKS)
+	if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
 	{
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
-		cw->i_check = 0;
+		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
 		if (cw->options->v_lvl & 2)
+		{
 			vprint_cycle(cw, NULL, 1);
+			// vprint_cycle(cw, NULL, 0);
+		}
 	}
+	if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
+		return (declare_winner(cw));
+	vm_proc_set_lives(cw, 0);
 	return (stop_game);
 }
 
