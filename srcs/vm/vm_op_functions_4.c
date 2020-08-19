@@ -29,9 +29,7 @@ int		op_long_load(t_cw *cw, t_process *p)
 	int			i;
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw->arena, p, p->i + 2, a);
-	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6) == IND_CODE)
-		a = cw->arena[(p->i + a) % MEM_SIZE];
+	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
 	b = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1].direct_size);
 	b = get_arg_value(cw->arena, p, p->i + 2 + b, REG_CODE);
@@ -62,11 +60,16 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1].direct_size);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	b = a + get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE) + p->i;
+	b = (b < 0) ? MEM_SIZE + (b % MEM_SIZE) : b % MEM_SIZE;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1].direct_size);
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
-	p->registers[c - 1] = cw->arena[(p->i + a + b) % MEM_SIZE];
+	p->registers[c - 1] = (cw->arena[b] << 24) & 0xFF000000;
+	i = 0;
+	while (++i < 4)
+		p->registers[c - 1] += (((unsigned char)(cw->arena[(b + i) \
+			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
 	return (i = (cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 

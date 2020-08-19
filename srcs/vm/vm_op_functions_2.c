@@ -54,10 +54,10 @@ int		op_soustraction(t_cw *cw, t_process *cur_proc)
 
 int		op_and(t_cw *cw, t_process *p)
 {
+	extern t_op	op_tab[17];
 	int			a;
 	int			b;
 	int			c;
-	extern t_op	op_tab[17];
 	int			i;
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
@@ -85,11 +85,11 @@ int		op_and(t_cw *cw, t_process *p)
 
 int		op_or(t_cw *cw, t_process *p)
 {
-	extern t_op op_tab[17];
-	int		a;
-	int		b;
-	int		c;
-	int		i;
+	extern t_op	op_tab[17];
+	int			a;
+	int			b;
+	int			c;
+	int			i;
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
@@ -116,10 +116,10 @@ int		op_or(t_cw *cw, t_process *p)
 
 int		op_xor(t_cw *cw, t_process *p)
 {
-	extern t_op op_tab[17];
-	int		a;
-	int		b;
-	int		c;
+	extern t_op	op_tab[17];
+	int			a;
+	int			b;
+	int			c;
 
 	(cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1;
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;

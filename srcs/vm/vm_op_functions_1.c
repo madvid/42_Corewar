@@ -60,8 +60,6 @@ int		op_load(t_cw *cw, t_process *p)
 	int			arg;
 	int			reg;
 
-	//arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
-	//	% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
 	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
 	reg = instruction_width((cw->arena[(p->i + 1) \
@@ -99,9 +97,9 @@ int		op_store(t_cw *cw, t_process *p)
 	{
 		b = ((b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE])) \
 			% IDX_MOD + p->i;
-		i = 0;
 		b = (b >= 0) ? b % MEM_SIZE : MEM_SIZE + (b % MEM_SIZE);
 		cw->arena[b] = (p->registers[a - 1] & 0xFF000000) >> 24;
+		i = 0;
 		while (++i < 4)
 		{
 			cw->arena[(b + i) % MEM_SIZE] \
