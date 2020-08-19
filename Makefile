@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
+#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/18 15:27:45 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/19 10:12:48 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SDL2_TTF_PATH = $(FW_PATH)/$(SDL2_TTF)
 SDL2_MXR_PATH = $(FW_PATH)/$(SDL2_MXR)
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -Wunused-function -g -I$(INC_DIR) #-fsanitize=address -fstack-protector -fsanitize=undefined
+FLAGS = -Wall -Wextra -Werror -Wunused-function -g -fsanitize=address -fstack-protector -fsanitize=undefined -I$(INC_DIR)
 RM = rm -rf
 
 ### SOURCES AND OBJECTS VARIABLES: ###
