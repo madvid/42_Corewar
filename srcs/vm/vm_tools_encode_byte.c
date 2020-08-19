@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 16:28:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 18:44:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,106 +90,4 @@ bool	is_valid_encoding(u_int8_t opcode, u_int8_t encoding)
 	if (l_arg[4] != 0)
 		return (false);
 	return (true);
-}
-
-char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
-{
-	int			arg;
-	int			widht;
-	extern t_op	op_tab[17];
-	
-	if (op_tab[proc->opcode - 1].n_arg >= 2)
-	{
-		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11000000, op_tab[proc->opcode - 1]);
-		// ft_printf("width 1er arg = %d\n", widht);
-		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-		// ft_printf("type 2nd arg = %d\n", arg);
-		// arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);
-		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
-		// ft_printf("valeur 2nd arg = %d\n", arg);
-		if (proc->opcode == 11 || proc->opcode == 10 || proc->opcode == 8)
-		{
-			dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
-			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
-		}
-		else if (proc->opcode == 2 || proc->opcode == 3 || proc->opcode == 13)
-		{
-			dst = ft_strjoin(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
-				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
-		}
-		else
-		{
-			dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
-				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
-		}
-	}
-	if (op_tab[proc->opcode - 1].n_arg >= 3)
-	{
-		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11110000, op_tab[proc->opcode - 1]);
-		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00001100) >> 2;
-		// ft_printf("type 3e arg = %d\n", arg);
-		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);
-		// ft_printf("valeur 3e arg = %d\n", arg);
-		if (proc->opcode == 11)
-		{
-			dst = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
-			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
-		}
-		else
-		{
-			dst = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
-				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
-		}
-	}
-	return (dst);
-}
-
-char		*args_to_str(t_cw *cw, t_process *proc)
-{
-	char		*dst;
-	u_int8_t	encoding;
-	int			arg;
-	extern t_op	op_tab[17];
-
-	arg = 0;
-	encoding = cw->arena[(proc->i + 1) % MEM_SIZE];
-	dst = NULL;
-	// ft_printf("\nvaleur du opcode: %d (in proc)| %d (in arena)\n", proc->opcode, cw->arena[proc->i]);
-	if (op_tab[proc->opcode - 1].n_arg >= 1)
-	{
-		if (opcode_no_encoding(proc->opcode))
-			arg = get_arg_value(cw->arena, proc, proc->i + 1, DIR_CODE);
-		else
-		{
-			arg = ((encoding & 0b11000000) >> 6);
-			// ft_printf("type 1er arg = %d\n", arg);
-			arg = get_arg_value(cw->arena, proc, proc->i + 2, (arg == IND_CODE) ? arg + RELATIVE : arg);
-			// ft_printf("valeur 1er arg = %d\n", arg);
-		}
-		if (proc->opcode == 10)
-		{
-			dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
-				ft_itoa(get_arg_value(cw->arena, proc, proc->i + 1, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
-		}
-		else if (proc->opcode == 8)
-		{
-			dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
-				ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
-		}
-		else if (proc->opcode == 1 || proc->opcode == 15 || proc->opcode == 16 || proc->opcode == 12)
-		{
-			dst = ft_strjoin("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
-				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
-		}
-		else
-		{
-			dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
-				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
-		}
-		// ft_printf("valeur de dest = %s\n", dst);
-	}
-	dst = arg2_3_to_str(cw, proc, dst, encoding);
-	return (dst);
 }

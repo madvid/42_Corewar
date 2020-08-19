@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 16:25:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 18:43:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,6 +363,7 @@ int		 			vprint_op(t_cw *cw, void *ptr, int flag);
 int		 			vprint_deaths(t_cw *cw, void *ptr, int flag);
 int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
 void				free_tmp_v_tools(char *tmp, char **arg);
+char				*args_to_str(t_cw *cw, t_process *proc);
 void				opcode_g(t_cw *cw, void *ptr, char *tmp);
 void				opcode_v12(t_cw *cw, void *ptr, char *a, char **arg);
 void				opcode_v11(void *ptr, char *a, char *b, char **arg);
