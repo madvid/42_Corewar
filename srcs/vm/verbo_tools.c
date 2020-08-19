@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbo_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 10:06:36 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 11:01:36 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ void	opcode_g(t_cw *cw, void *ptr, char *tmp)
 	ft_printf("| %s %s%s\n", \
 			op_tab[((t_process*)(ptr))->opcode - 1].name, \
 			args_to_str(cw, ((t_process*)(ptr))), \
-			(((t_process*)(ptr))->opcode == 9) ? tmp : " ");
+			(((t_process*)(ptr))->opcode == 9) ? tmp : "");
 }
 
 void	opcode_v11(void *ptr, char *a, char *b, char **arg)
 {
 	a = arg[1];
 	b = arg[2];
-	ft_printf("%7s|-> store to %s + %s = %d (with pc and mod %d)\n", "", \
+	ft_printf("%7s| -> store to %s + %s = %d (with pc and mod %d)\n", "", \
 		a, b, (ft_atoi(a) + ft_atoi(b)), \
 		(((ft_atoi(a) + ft_atoi(b)) % IDX_MOD) + ((t_process*)(ptr))->i) \
 		% MEM_SIZE);
@@ -48,7 +48,7 @@ void	opcode_v10(void *ptr, char *a, char *b, char **arg)
 {
 	a = arg[0];
 	b = arg[1];
-	ft_printf("%7s|-> load to %s + %s = %d (with pc and mod %d)\n", "", \
+	ft_printf("%7s| -> load to %s + %s = %d (with pc and mod %d)\n", "", \
 		a, b, (ft_atoi(a) + ft_atoi(b)), \
 		(((ft_atoi(a) + ft_atoi(b)) % IDX_MOD) + ((t_process*)(ptr))->i) \
 		% MEM_SIZE);

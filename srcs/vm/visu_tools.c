@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/18 11:23:01 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 11:16:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	{
 		load_visu(v, cw, p);
 		visu_render(v);
+		if (cw->tot_cycle == 110 || cw->tot_cycle == 108)
+			SDL_Delay(2000);
 		vm_proc_mv_proc_pos(cw);
 		vm_proc_cycle(cw);
 		if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
