@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 13:03:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 10:24:27 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,20 @@ int		op_xor(t_cw *cw, t_process *p)
 
 	(cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1;
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
+	cw->tot_cycle >= 6030 ? ft_printf("    [xor]: type de <ARG1> = %d\n", a) : 0;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	cw->tot_cycle >= 6030 ? ft_printf("    [xor]: val de <ARG1> = %d\n", a) : 0;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1].direct_size);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
+	cw->tot_cycle >= 6030 ? ft_printf("    [xor]: type de <ARG2> = %d\n", b) : 0;
 	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	cw->tot_cycle >= 6030 ? ft_printf("    [xor]: val de <ARG2> = %d\n", b) : 0;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1].direct_size);
+	cw->tot_cycle >= 6030 ? ft_printf("    [xor]: largeur de <ARG1> + <ARG2> = %d\n", c) : 0;
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	cw->tot_cycle >= 6030 ? ft_printf("    [xor]: val de <ARG3>(reg attendu) = %d\n", c) : 0;
 	p->registers[c - 1] = a ^ b;
 	p->carry = (p->registers[c - 1] == 0) ? 1 : 0;
 	return (1);
