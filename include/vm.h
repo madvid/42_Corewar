@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:27:02 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 12:28:27 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ typedef struct		s_visu
 */
 	SDL_Color		color_chp[4];
     SDL_Color		chp_color;
-	SDL_Rect		chp_id[4];	//Rect for champion info
+	SDL_Rect		chp_id[13];	//Rect for champion info
 	TTF_Font		*font_p;
 	SDL_Surface		*chp_name[13];
 	SDL_Texture		*chp_vn[13];

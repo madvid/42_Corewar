@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 11:40:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 12:34:31 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,14 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		// arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);
 		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
 		// ft_printf("valeur 2nd arg = %d\n", arg);
-		if (proc->opcode == 11 || proc->opcode == 10)
+		if (proc->opcode == 11 || proc->opcode == 10 || proc->opcode == 8)
 		{
 			dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
 			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
 		}
 		else
 		{
-			dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
+			dst = ft_strjoin(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
 				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
 		}
 	}
@@ -124,12 +124,12 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		// ft_printf("valeur 3e arg = %d\n", arg);
 		if (proc->opcode == 11)
 		{
-			dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
+			dst = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
 			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
 		}
 		else
 		{
-			dst = ft_strjoin_1sp(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
+			dst = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE ? \
 				ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
 		}
 	}
@@ -158,10 +158,15 @@ char		*args_to_str(t_cw *cw, t_process *proc)
 			arg = get_arg_value(cw->arena, proc, proc->i + 2, (arg == IND_CODE) ? arg + RELATIVE : arg);
 			// ft_printf("valeur 1er arg = %d\n", arg);
 		}
-		if (proc->opcode == 10)
+		if (proc->opcode == 10 || proc->opcode == 8)
 		{
 			dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
 				ft_itoa(get_arg_value(cw->arena, proc, proc->i + 1, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
+		}
+		if (proc->opcode == 8)
+		{
+			dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
+				ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 11:40:47 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 12:34:20 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	opcode_v10(void *ptr, char *a, char *b, char **arg)
 {
 	a = arg[0];
 	b = arg[1];
-	ft_printf("%7s| -> load to %s + %s = %d (with pc and mod %d)\n", "", \
+	ft_printf("%7s| -> load from %s + %s = %d (with pc and mod %d)\n", "", \
 		a, b, (ft_atoi(a) + ft_atoi(b)), \
 		(((ft_atoi(a) + ft_atoi(b)) % IDX_MOD) + ((t_process*)(ptr))->i) \
 		% MEM_SIZE);
