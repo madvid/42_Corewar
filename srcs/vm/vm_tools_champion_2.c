@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 11:02:30 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 09:27:58 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 16:52:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,32 @@ int		lst_sort_champion(t_list **champ)
 	int				i;
 	int				id;
 
-	if (ft_lst_len(*champ) == -1 || ft_lst_len(*champ) == 1)
+	if (ft_lst_len(*champ) == -1)
+		return (-1);
+	if (ft_lst_len(*champ) == 1)
 		return (0);
 	nb_champ = ft_lst_len(*champ);
 	if (!(chp = (t_list**)malloc(sizeof(t_list*) * nb_champ)))
-		return (0);
-	id = 0;
+		return (-1);
+	// ================================
+	// id = 0;
+	// i = 0;
+	// while (++id <= 4)
+	// {
+	// 	xplr = get_champ_id(champ, id);
+	// 	if (xplr != NULL)
+	// 		chp[i++] = xplr;
+	// }
+	// ================================
+	id = 4;
 	i = 0;
-	while (++id <= nb_champ)
+	while (id-- > 0)
 	{
 		xplr = get_champ_id(champ, id);
 		if (xplr != NULL)
 			chp[i++] = xplr;
 	}
+	// ================================
 	*champ = reconstruct_champ_list(chp, nb_champ);
 	return (1);
 }
@@ -118,4 +131,30 @@ char	*champ_name_via_id(t_list *lst_champs, int id)
 	}
 	return (NULL);
 }
+
+/*
+** Function: champ_via_id
+** Description:
+**	Looks the champion with the given ID and returns it.
+** Return:
+** champ: the link of the champion associated with the ID
+** NULL: if no champion exists with the given ID
+*/
+
+t_champ		*champ_via_id(t_list *lst_champs, int id)
+{
+	t_list		*xplr;
+
+	if (lst_champs == NULL)
+		return (NULL);
+	xplr = lst_champs;
+	while(xplr)
+	{
+		if (((t_champ*)(xplr->cnt))->id == id)
+			return ((t_champ*)(xplr->cnt));
+		xplr = xplr->next;
+	}
+	return (NULL);
+}
+
 

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 15:57:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/18 17:02:39 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,23 +118,24 @@ void	vm_champion_introduction(t_list **lst_champs)
 {
 	t_list		*xplr;
 	t_champ		*chp;
-	int			id;
+	static int	id;
 
 	ft_putstr("Introducing contestants...\n");
-	// tool_print_short_champ_list(lst_champs);
-	if (lst_sort_champion(lst_champs) == 0)
+	if (lst_sort_champion(lst_champs) == -1)
 	{
-		// ft_printf("erreur dans la fonction de tri des champions.\n");
+		ft_printf("erreur dans la fonction de tri des champions.\n");
 		return ;
 	}
-	xplr = *lst_champs;
-	// tool_print_short_champ_list(lst_champs);
-	while (xplr)
+	while (++id <= 4)
 	{
-		chp = (t_champ *)(xplr->cnt);
-		id = chp->id;
-		ft_printf("* Player %d, weighing %d bytes,", id, chp->l_bytecode);
-		ft_printf(" \"%s\" (\"%s\") !\n", chp->name, chp->comment);
-		xplr = xplr->next;
+		xplr = *lst_champs;
+		while (xplr && ((t_champ*)(xplr->cnt))->id != id)
+			xplr = xplr->next;
+		if (xplr)
+		{
+			chp = (t_champ *)(xplr->cnt);
+			ft_printf("* Player %d, weighing %d bytes,", chp->id, chp->l_bytecode);
+			ft_printf(" \"%s\" (\"%s\") !\n", chp->name, chp->comment);
+		}
 	}
 }

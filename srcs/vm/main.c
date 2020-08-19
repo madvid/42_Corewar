@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/18 15:25:49 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/18 17:05:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int			main(int ac, char **av)
 	}
 	else
 		return (vm_error_manager((int)CD_USAGE, NULL, NULL));
-	vm_cw_arena_init(&cw, &p);
 	vm_champion_introduction(&(p->lst_champs));
+	vm_cw_arena_init(&cw, &p);
 	cw->lst_champs = p->lst_champs;
 	// vm_execution(cw, p);
 	if (p->options->sdl == true)
