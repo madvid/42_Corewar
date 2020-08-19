@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 14:39:55 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/18 11:35:03 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:33:22 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,18 @@ void		load_menu(t_visu *v)
 	v->center.y = v->menu_pos.h / 2;
 }
 
-double		menu_move(t_visu *v, double angle)
+void		menu_move(t_visu *v)
 {
-	if (angle < 0)
-		angle = 360;
-	if (angle > 360)
-		angle = 0;
-	angle++;
+	if (v->angle < 0)
+		v->angle = 360;
+	if (v->angle > 360)
+		v->angle = 0;
+	v->angle++;
+	init_menu(v);
+	load_menu(v);
 	SDL_RenderClear(v->r);
 	SDL_RenderCopyEx(v->r, v->menu_vt, NULL, &v->menu_pos,\
-			angle, &v->center, v->flip);
+			v->angle, &v->center, v->flip);
 	SDL_RenderPresent(v->r);
-	SDL_Delay(20);
-	return (angle);
+	SDL_Delay(10);
 }

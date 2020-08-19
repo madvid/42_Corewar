@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 10:48:49 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/18 11:37:26 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:29:17 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void		visualizer(t_cw *cw, t_parse *p)
 	init_window(&v);
 	music_launcher(&v, cw);
 	v = init_details(&v);
+	v.angle = 0;
 	v = init_menu(&v);
 	load_menu(&v);
 	vm_exec_init_pc(cw);
@@ -86,21 +87,13 @@ void		visualizer(t_cw *cw, t_parse *p)
 	while (stop_game == false && v.isquit == 0)
 	{
 		if (v.menu_loop == 0)
-			v.angle = menu_move(&v, v.angle);
+			menu_move(&v);
 		else
 			stop_game = main_exe(&v, cw, stop_game, p);
 		v = visu_breaker(&v);
 		if (v.isquit == 1)
 			break ;
-
 	}
-	if (v.menu_loop == 0)
-	{
-		SDL_DestroyTexture(v.menu_vt);
-		SDL_DestroyTexture(v.texture_title);
-	}
-	else
-		texture_free(&v);
-	//system("leaks vm");
+	final_render_destroy(&v);
 	render_destroy(&v);
 }

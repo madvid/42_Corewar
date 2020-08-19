@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/18 14:44:47 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:27:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ typedef struct		s_visu
 	SDL_Color		color_chp[4];
     SDL_Color		chp_color;
 	SDL_Rect		chp_id[4];	//Rect for champion info
-	SDL_Rect		chp_info[36];
 	TTF_Font		*font_p;
 	SDL_Surface		*chp_name[13];
 	SDL_Texture		*chp_vn[13];
@@ -363,7 +362,12 @@ int					vprint_cycle(t_cw *cw, void *ptr, int flag);
 int		 			vprint_op(t_cw *cw, void *ptr, int flag);
 int		 			vprint_deaths(t_cw *cw, void *ptr, int flag);
 int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
-void				free_tmp_v_tools(char *a, char *b, char *tmp, char **arg);
+void				free_tmp_v_tools(char *tmp, char **arg);
+void				opcode_g(t_cw *cw, void *ptr, char *tmp);
+void				opcode_v12(t_cw *cw, void *ptr, char *a, char **arg);
+void				opcode_v11(void *ptr, char *a, char *b, char **arg);
+void				opcode_v10(void *ptr, char *a, char *b, char **arg);
+void				pcmv_print_arg(t_cw *cw, void *ptr, int i);
 
 /*
 **<<<<<Visualizer functions>>>>>
@@ -375,7 +379,7 @@ void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
 void     			visualizer(t_cw *cw, t_parse *p);
-double    			menu_move(t_visu *v, double angle);
+void    			menu_move(t_visu *v);
 void    			load_menu(t_visu *v);
 t_visu  			init_menu(t_visu *v);
 void				load_visu(t_visu *v, t_cw *cw, t_parse *p);
@@ -411,6 +415,7 @@ void				texture_free(t_visu *v);
 
 t_visu				init_process(t_visu *v);
 void				load_process(t_visu *v, t_cw *cw);
+void				get_process_data2(t_visu *v, t_cw *cw);
 
 /*
 **Players functions
@@ -433,4 +438,5 @@ t_visu				init_details(t_visu *v);
 int					find_nbr_proc(t_cw *cw);
 int					find_nbr_players(t_parse *p);
 void    			arena_texture(t_visu *v, int is_proc, int i);
+void				final_render_destroy(t_visu *v);
 #endif

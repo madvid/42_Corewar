@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:40:12 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/13 12:09:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:08:22 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void		get_items_cnt(t_visu *v, t_cw *cw, int i)
 			v->final[k] = v->dst[j];
 			k++;
 		}
-		ft_memdel((void**)&v->dst);;
+		ft_memdel((void**)&v->dst);
 	}
 	else
 		v->final = ft_itoa_base2((int)cw->arena[i] & 255, "0123456789abcdef");

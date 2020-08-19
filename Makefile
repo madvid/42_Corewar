@@ -6,7 +6,7 @@
 #    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/18 15:27:45 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/19 10:05:38 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ VM_FILES =	main					\
 			ft_lst_fdel_proc		\
 			verbosity				\
 			verbosity_fct			\
+			verbo_tools				\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\
