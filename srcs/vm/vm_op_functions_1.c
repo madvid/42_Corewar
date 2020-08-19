@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 11:18:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 11:41:31 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int		op_store(t_cw *cw, t_process *p)
 	}
 	else
 		p->registers[b - 1] = p->registers[a - 1];
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1;);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
 /*
