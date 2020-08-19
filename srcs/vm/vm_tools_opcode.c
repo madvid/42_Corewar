@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 18:18:07 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 18:44:47 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 **	0: if the byte does not correspond to an opcode.
 */
 
-bool	`is_valid_opcode(char *arena, t_process *cur_proc)
+bool	is_valid_opcode(char *arena, t_process *cur_proc)
 {
 	u_int8_t	opcode;
 	u_int8_t	encoding;

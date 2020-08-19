@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbo_tools2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 15:08:02 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 15:47:57 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 18:45:37 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char		*arg3_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 	if (op_tab[proc->opcode - 1].n_arg >= 3)
 	{
 		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11110000, op_tab[proc->opcode - 1].direct_size);
+			& 0b11110000, op_tab[proc->opcode - 1]);
 		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00001100) >> 2;
 		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
 		(arg == IND_CODE) ? arg + RELATIVE : arg);
@@ -48,7 +48,7 @@ char		*arg2_into_str(t_cw *cw, t_process *proc, char *dst, int arg)
 
 	encoding = cw->arena[(proc->i + 1) % MEM_SIZE];
 	widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-		& 0b11000000, op_tab[proc->opcode - 1].direct_size);
+		& 0b11000000, op_tab[proc->opcode - 1]);
 	if (proc->opcode == 11 || proc->opcode == 10 || proc->opcode == 8)
 	{
 		dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE \
@@ -77,7 +77,7 @@ char		*arg2_3_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 	if (op_tab[proc->opcode - 1].n_arg >= 2)
 	{
 		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11000000, op_tab[proc->opcode - 1].direct_size);
+			& 0b11000000, op_tab[proc->opcode - 1]);
 		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, arg);
 		dst = arg2_into_str(cw, proc, dst, arg);

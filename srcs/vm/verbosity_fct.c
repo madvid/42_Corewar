@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 16:25:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 19:00:54 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,29 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	while (++i < widht)
 		pcmv_print_arg(cw, ptr, i);
 	ft_printf("\n");
+	return (flag);
+}
+
+int		vprint_pcmv2(t_cw *cw, void *ptr, int flag)
+{
+	extern t_op	op_tab[17];
+	t_process	*p;
+	int			widht;
+	int			i;
+
+	p  = (t_process*)ptr;
+	if (op_tab[p->opcode - 1].encod == 1)
+		widht = instruction_width(flag, op_tab[p->opcode - 1]);
+	else
+		widht = op_tab[p->opcode - 1].direct_size == 1 ? 2 : 4;
+	widht += ((op_tab[p->opcode - 1].encod == 0) ? 1 : 2);
+	if (p->opcode == 9 && flag == 1)
+		return (flag);
+	ft_printf("ADV %d (0x%.4x -> 0x%.4x)", widht, p->i, \
+		(p->i + widht) % MEM_SIZE);
+	i = -1;
+	while (++i < widht)
+		pcmv_print_arg(cw, ptr, i);
+	// ft_printf("\n");
 	return (flag);
 }
