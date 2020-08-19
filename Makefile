@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/19 10:12:48 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/19 10:37:05 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ VM_FILES =	main					\
 			ft_lst_fdel_proc		\
 			verbosity				\
 			verbosity_fct			\
+			verbo_tools				\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\

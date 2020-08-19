@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:30:51 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/14 14:27:59 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:12:07 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		fill_proc_texture(t_visu *v, t_list *xplr, int i)
 	tmp = ft_itoa(((t_process*)(xplr->cnt))->wait_cycles);
 	dst = ft_strjoin("Wait cycle until process:     ", \
 			tmp);
-	ft_memdel((void**)&tmp);	
+	ft_memdel((void**)&tmp);
 	v->chp_size[i] = TTF_RenderText_Blended(v->font_p,\
 			dst, v->color_process);
 	if (!v->chp_size[i])

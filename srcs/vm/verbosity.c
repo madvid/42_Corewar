@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/17 12:42:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 10:18:17 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		init_verbotab(t_cw *cw, void *ptr, int flag)
 	(cw->options->v_lvl & 0b00000001) && ((t_process*)ptr)->opcode == 1 ?
 		verbotab[1](cw, ptr, flag) : flag;
 	(cw->options->v_lvl & 0b00000010) ? verbotab[2](cw, ptr, flag) : flag;
-	//(cw->options->v_lvl & 0b00001000) ? verbotab[4](cw, ptr, flag) : flag;
 	(cw->options->v_lvl & 0b00010000) ? verbotab[5](cw, ptr, flag) : flag;
 	return (flag);
 }
@@ -38,18 +37,21 @@ int		vprint_essentials(t_cw *cw, void *ptr, int flag)
 	return (flag);
 }
 
-void	free_tmp_v_tools(char *a, char *b, char *tmp, char **arg)
+void	free_tmp_v_tools(char *tmp, char **arg)
 {
 	int		i;
 
-	ft_memdel((void**)&a);
-	ft_memdel((void**)&b);
-	ft_memdel((void**)&tmp);
+	if (tmp)
+		ft_memdel((void**)&tmp);
 	i = 0;
-	while (arg[i])
+	if (arg)
 	{
-		ft_memdel((void**)&arg[i]);
-		i++;
+		while (arg[i])
+		{
+			if (arg[i])
+				ft_memdel((void**)&arg[i]);
+			i++;
+		}
+		ft_memdel((void**)&arg);
 	}
-	ft_memdel((void**)&arg);
 }

@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/18 13:06:51 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:17:33 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,12 @@ int			find_nbr_players(t_parse *p)
 
 bool		main_exe2(t_cw *cw, bool stop_game)
 {
-	//vm_proc_get_lives(cw); <- augmentation de cw->tot_lives/ctd_lives pendant l'action alive, peut etre retiré donc.
-	// if (cw->ctd_lives == 0 || !vm_proc_only_one_standing(cw))
 	if (cw->ctd_lives == 0 || cw->process == NULL)
 		stop_game = true;
 	if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
 	{
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
 		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
-		if (cw->options->v_lvl & 2)
-		{
-			vprint_cycle(cw, NULL, 1);
-			// vprint_cycle(cw, NULL, 0);
-		}
 	}
 	if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
 		return (declare_winner(cw));
@@ -65,4 +58,33 @@ void		arena_texture(t_visu *v, int is_proc, int i)
 			&v->arena_pos[i].h);
 	SDL_FreeSurface(v->arena_txt[i]);
 	SDL_SetRenderDrawBlendMode(v->r, SDL_BLENDMODE_BLEND);
+}
+
+void		get_process_data2(t_visu *v, t_cw *cw)
+{
+	char	*tmp;
+
+	tmp = ft_itoa(cw->tot_lives);
+	v->process_name[3] = TTF_RenderText_Blended(v->font_process,\
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(cw->i_cycle);
+	v->process_name[4] = TTF_RenderText_Blended(v->font_process,\
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(cw->tot_cycle);
+	v->process_name[5] = TTF_RenderText_Blended(v->font_process,\
+			tmp, v->color_title);
+	ft_memdel((void**)&tmp);
+}
+
+void		final_render_destroy(t_visu *v)
+{
+	if (v->menu_loop == 0)
+	{
+		SDL_DestroyTexture(v->menu_vt);
+		SDL_DestroyTexture(v->texture_title);
+	}
+	else
+		texture_free(v);
 }

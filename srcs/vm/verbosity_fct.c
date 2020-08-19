@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/18 15:26:24 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:04:54 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int		vprint_lives(t_cw *cw, void *ptr, int flag)
 	while (xplr && ptr)
 	{
 		if (flag == ((t_champ*)(xplr->cnt))->id)
-			ft_printf("Player %d (%s) is said to be alive\n", \
-				((t_champ*)(xplr->cnt))->id, \
-				((t_champ*)(xplr->cnt))->name);
+			ft_printf("Player %d (%s) is said to be alive\n" \
+				, ((t_champ*)(xplr->cnt))->id \
+				, ((t_champ*)(xplr->cnt))->name);
 		xplr = xplr->next;
 	}
 	return (1);
@@ -47,46 +47,19 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 
 	tmp = (flag == 1) ? "OK" : "FAILED";
 	arg = ft_strsplit(args_to_str(cw, (t_process*)(ptr)), 32);
-	if (arg == NULL)
+	if (!arg)
 		return (0);
 	a = NULL;
 	b = NULL;
-	if (cw)
-	{
-		if (((t_process*)(ptr))->opcode == 12)
-		{
-			a = arg[0];
-			ft_printf("P %4d ", ((t_process*)(ptr))->id);
-			ft_printf("| %s %s(%d)\n",op_tab[((t_process*)(ptr))->opcode - 1].name,\
-				args_to_str(cw, ((t_process*)(ptr))), \
-				(((ft_atoi(a)) % IDX_MOD) + ((t_process*)(ptr))->i) % MEM_SIZE);
-		}
-		else
-		{
-			ft_printf("P %4d ", ((t_process*)(ptr))->id);
-			ft_printf("| %s %s%s\n", \
-					op_tab[((t_process*)(ptr))->opcode - 1].name, \
-					args_to_str(cw, ((t_process*)(ptr))), \
-					(((t_process*)(ptr))->opcode == 9) ? tmp : " ");
-		}
-		if (((t_process*)(ptr))->opcode == 11)
-		{
-			a = arg[1];
-			b = arg[2];
-			ft_printf("%7s|-> store to %s + %s = %d (with pc and mod %d)\n", "",\
-			a, b, (ft_atoi(a) + ft_atoi(b)), \
-			(((ft_atoi(a) + ft_atoi(b)) % IDX_MOD) + ((t_process*)(ptr))->i) % MEM_SIZE);
-		}
-		if (((t_process*)(ptr))->opcode == 10)
-		{
-			a = arg[0];
-			b = arg[1];
-			ft_printf("%7s|-> load to %s + %s = %d (with pc and mod %d)\n", "",\
-			a, b, (ft_atoi(a) + ft_atoi(b)), \
-			(((ft_atoi(a) + ft_atoi(b)) % IDX_MOD) + ((t_process*)(ptr))->i) % MEM_SIZE);
-		}
-	}
-	//free_tmp_v_tools(a, b, tmp, arg);
+	if (((t_process*)(ptr))->opcode == 12)
+		opcode_v12(cw, ptr, a, arg);
+	else
+		opcode_g(cw, ptr, tmp);
+	if (((t_process*)(ptr))->opcode == 11)
+		opcode_v11(ptr, a, b, arg);
+	if (((t_process*)(ptr))->opcode == 10)
+		opcode_v10(ptr, a, b, arg);
+	//free_tmp_v_tools(tmp, arg);
 	return (flag);
 }
 
@@ -94,7 +67,8 @@ int		vprint_deaths(t_cw *cw, void *ptr, int flag)
 {
 	if (flag)
 		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", \
-			((t_process*)(ptr))->id, cw->i_cycle - ((t_process*)(ptr))->last_live, cw->cycle_to_die);
+			((t_process*)(ptr))->id, cw->i_cycle - \
+			((t_process*)(ptr))->last_live, cw->cycle_to_die);
 	return (flag);
 }
 
@@ -103,30 +77,21 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	extern t_op	op_tab[17];
 	int			widht;
 	int			i;
-	char		*tmp;
 
 	if (op_tab[((t_process*)(ptr))->opcode - 1].encod == 1)
-		widht = instruction_width(cw->arena[(((t_process*)(ptr))->i + 1)
-		% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1].direct_size);
+		widht = instruction_width(cw->arena[(((t_process*)(ptr))->i + 1) \
+			% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1].direct_size);
 	else
-		widht = op_tab[((t_process*)(ptr))->opcode - 1].direct_size == 1 ? 2 : 4;
+		widht = op_tab[((t_process*)(ptr))->opcode - 1].direct_size == \
+		1 ? 2 : 4;
 	widht += ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) ? 1 : 2);
 	if (((t_process*)(ptr))->opcode == 9 && flag == 1)
 		return (flag);
 	ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", widht, ((t_process*)(ptr))->i, \
-			(((t_process*)(ptr))->i + widht) % MEM_SIZE);
+		(((t_process*)(ptr))->i + widht) % MEM_SIZE);
 	i = -1;
 	while (++i < widht)
-	{
-		tmp = ft_itoa_base2((int)cw->arena[((t_process*)(ptr))->i\
-						+ i] & 255, "0123456789abcdef");
-		if (((int)cw->arena[((t_process*)(ptr))->i + i] & 255) < 16)
-			ft_printf("0%s", tmp);
-		else
-			ft_printf("%s", tmp);
-		ft_memdel((void**)&tmp);
-		ft_printf(" ");
-	}
+		pcmv_print_arg(cw, ptr, i);
 	ft_printf("\n");
 	return (flag);
 }
