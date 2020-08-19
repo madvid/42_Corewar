@@ -51,6 +51,7 @@ int		op_load_index(t_cw *cw, t_process *p)
 	int			a;
 	int			b;
 	int			c;
+	int			i;
 
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
@@ -67,7 +68,7 @@ int		op_load_index(t_cw *cw, t_process *p)
 	i = 0;
 	while (++i < 4)
 		p->registers[c - 1] += (((unsigned char)(cw->arena[(b + i) \
-			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i))
+			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
 	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 

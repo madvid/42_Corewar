@@ -61,7 +61,7 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 		& 0b11000000, op_tab[p->opcode - 1].direct_size);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 	b = a + get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE) + p->i;
-	b = (b < 0) ? MEM_SIZE + (b % MEM_SIZE) : b % MEM_SIZE
+	b = (b < 0) ? MEM_SIZE + (b % MEM_SIZE) : b % MEM_SIZE;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1].direct_size);
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
