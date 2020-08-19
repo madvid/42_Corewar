@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 12:34:20 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 13:00:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	opcode_v12(t_cw *cw, void *ptr, char *a, char **arg)
 
 	a = arg[0];
 	ft_printf("P %4d ", ((t_process*)(ptr))->id);
-	ft_printf("| %s %s(%d)\n", op_tab[((t_process*)(ptr))->opcode - 1].name \
+	ft_printf("| %s %s (%d)\n", op_tab[((t_process*)(ptr))->opcode - 1].name \
 		, args_to_str(cw, ((t_process*)(ptr))), \
 		(((ft_atoi(a)) % IDX_MOD) + ((t_process*)(ptr))->i) % MEM_SIZE);
-}
+}s
 
 void	opcode_g(t_cw *cw, void *ptr, char *tmp)
 {
