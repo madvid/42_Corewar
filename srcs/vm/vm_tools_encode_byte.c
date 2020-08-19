@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 12:56:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 16:28:42 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ bool	is_valid_encoding(u_int8_t opcode, u_int8_t encoding)
 	l_arg[2] = (encoding & 0b00110000) >> 4;
 	l_arg[3] = (encoding & 0b00001100) >> 2;
 	l_arg[4] = (encoding & 0b00000011);
+	l_arg[1] = (l_arg[1] == IND_CODE) ? T_IND : l_arg[1];
+	l_arg[2] = (l_arg[2] == IND_CODE) ? T_IND : l_arg[2];
+	l_arg[3] = (l_arg[3] == IND_CODE) ? T_IND : l_arg[3];
 	// printf("      [is_valid_encoding] l_arg[0] = %d\n", l_arg[0]);
 	// printf("      [is_valid_encoding] l_arg[1] = %d\n", l_arg[1]);
 	// printf("      [is_valid_encoding] l_arg[2] = %d\n", l_arg[2]);
@@ -84,6 +87,8 @@ bool	is_valid_encoding(u_int8_t opcode, u_int8_t encoding)
 			return (false);
 		i++;
 	}
+	if (l_arg[4] != 0)
+		return (false);
 	return (true);
 }
 
@@ -96,7 +101,7 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 	if (op_tab[proc->opcode - 1].n_arg >= 2)
 	{
 		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11000000, op_tab[proc->opcode - 1].direct_size);
+			& 0b11000000, op_tab[proc->opcode - 1]);
 		// ft_printf("width 1er arg = %d\n", widht);
 		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 		// ft_printf("type 2nd arg = %d\n", arg);
@@ -122,7 +127,7 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 	if (op_tab[proc->opcode - 1].n_arg >= 3)
 	{
 		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
-			& 0b11110000, op_tab[proc->opcode - 1].direct_size);
+			& 0b11110000, op_tab[proc->opcode - 1]);
 		arg = (cw->arena[(proc->i + 1) % MEM_SIZE] & 0b00001100) >> 2;
 		// ft_printf("type 3e arg = %d\n", arg);
 		arg = get_arg_value(cw->arena, proc, proc->i + 2 + widht, (arg == IND_CODE) ? arg + RELATIVE : arg);

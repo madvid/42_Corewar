@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity_fct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 10:04:54 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 16:25:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 
 	if (op_tab[((t_process*)(ptr))->opcode - 1].encod == 1)
 		widht = instruction_width(cw->arena[(((t_process*)(ptr))->i + 1) \
-			% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1].direct_size);
+			% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1]);
 	else
 		widht = op_tab[((t_process*)(ptr))->opcode - 1].direct_size == \
 		1 ? 2 : 4;

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:54:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 16:27:53 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ int		op_load_index(t_cw *cw, t_process *p)
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
-		& 0b11000000, op_tab[p->opcode - 1].direct_size);
+		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 	b = (a + get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE)) \
 		% IDX_MOD + p->i;
 	b = (b < 0) ? MEM_SIZE + (b % MEM_SIZE) : b % MEM_SIZE;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
-		& 0b11110000, op_tab[p->opcode - 1].direct_size);
+		& 0b11110000, op_tab[p->opcode - 1]);
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
 	p->registers[c - 1] = (cw->arena[b] << 24) & 0xFF000000;
 	i = 0;
@@ -92,11 +92,11 @@ int		op_store_index(t_cw *cw, t_process *p)
 
 	a = get_arg_value(cw->arena, p, p->i + 2, REG_CODE + RELATIVE);
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
-		& 0b11000000, op_tab[p->opcode - 1].direct_size);
+		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
-		& 0b11110000, op_tab[p->opcode - 1].direct_size);
+		& 0b11110000, op_tab[p->opcode - 1]);
 	c = (b + get_arg_value(cw->arena, p, p->i + 2 + c, ((cw->arena[(p->i + 1) \
 			% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE)) % IDX_MOD + p->i;
 	c = (c < 0) ? MEM_SIZE + (c % MEM_SIZE) : c % MEM_SIZE;
@@ -104,6 +104,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 	// ft_printf("    [sti]: arg c = %d\n", c);
 	// ft_printf("    [sti]: arg a = %d\n", a);
 	cw->arena[c % MEM_SIZE] = (a & 0xFF000000) >> 24;
+	cw->id_arena[c % MEM_SIZE] = p->champ->id;
 	i = 0;
 	while (++i < 4)
 	{

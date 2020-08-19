@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2020/07/29 15:33:38 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 15:55:45 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 */
 
 # define REG_CODE				1
-# define IND_CODE				3
 # define DIR_CODE				2
+# define IND_CODE				3
 
 /*
 ** Macro related to parsing part of corewar(=vm): max players authorized.

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/18 09:52:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 16:32:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 **	width: total length in term of bytes of the different parameters of opcode.
 **	0: if the encoding byte is invalid.
 */
-int		instruction_width(unsigned char encoding, size_t dir_s)
+int		instruction_width(unsigned char encoding, t_op op_elem)
 {
 	u_int8_t	arg_1;
 	u_int8_t	arg_2;
@@ -40,24 +40,16 @@ int		instruction_width(unsigned char encoding, size_t dir_s)
 	int			width;
 
 	width = 0;
-	size_dir = (dir_s == 1) ? 2 : 4;
-	// printf("    [instruction_width] valeur de encoding = %d\n", (int)encoding);
+	size_dir = (op_elem.direct_size == 1) ? 2 : 4;
 	arg_1 = (encoding & 0b11000000) >> 6;
 	arg_2 = (encoding & 0b00110000) >> 4;
 	arg_3 = (encoding & 0b00001100) >> 2;
-	// printf("[instruction_width]: arg1 = %d\n", arg_1);
-	// printf("[instruction_width]: arg2 = %d\n", arg_2);
-	// printf("[instruction_width]: arg3 = %d\n", arg_3);
-	if (arg_1 != 0)
+	if (arg_1 != 0 && op_elem.n_arg >= 1)
 		width += size_dir * (arg_1 / 2) - 2 * (arg_1 / 3) + (1 - arg_1 / 2);
-	// printf("[instruction_width]: width = %d\n", width);
-	if (arg_2 != 0)
+	if (arg_2 != 0 && op_elem.n_arg >= 2)
 		width += size_dir * (arg_2 / 2) - 2 * (arg_2 / 3) + (1 - arg_2 / 2);
-	// printf("[instruction_width]: width = %d\n", width);
-	if (arg_3 != 0)
+	if (arg_3 != 0 && op_elem.n_arg >= 3)
 		width += size_dir * (arg_3 / 2) - 2 * (arg_3 / 3) + (1 - arg_3 / 2);
-	// printf("[instruction_width]: width = %d\n", width);
-	// printf("    [instruction_width] valeur de width = %d\n", width);
 	return (width);
 }
 

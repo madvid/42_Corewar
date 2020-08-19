@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 14:47:56 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 18:18:07 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 **	0: if the byte does not correspond to an opcode.
 */
 
-bool	is_valid_opcode(char *arena, t_process *cur_proc)
+bool	`is_valid_opcode(char *arena, t_process *cur_proc)
 {
 	u_int8_t	opcode;
 	u_int8_t	encoding;
@@ -160,10 +160,7 @@ int		addr_next_opcode(char *arena, int mem_pos)
 	if (opcode > 0 && opcode < 17) // ici, comme on a tester les opcode sans byte d'encodage, ça sera les autres traités ici.
 	{
 		encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
-		if (is_valid_encoding(opcode, encoding) == 1)
-			next_opcode = instruction_width(encoding, op_tab[opcode - 1].direct_size) + 2;
-		else
-			next_opcode = 2;
+		next_opcode = instruction_width(encoding, op_tab[opcode - 1]) + 2;
 		return ((mem_pos + next_opcode) % MEM_SIZE);
 	}
 	return ((mem_pos + 1) % MEM_SIZE);

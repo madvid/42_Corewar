@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 12:28:27 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/19 16:25:22 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,7 @@ void				vm_champion_introduction(t_list **lst_champs);
 int					vm_execution(t_cw *cw, t_parse *p);
 void				vm_exec_init_pc(t_cw *cw);
 bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
-int					instruction_width(unsigned char encoding, size_t dir_s);
+int					instruction_width(unsigned char encoding, t_op op_elem);
 char				*args_to_str(t_cw *cw, t_process *proc);
 char				*champ_name_via_id(t_list *lst_champs, int id);
 
