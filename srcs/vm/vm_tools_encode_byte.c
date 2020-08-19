@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 11:06:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/19 11:40:29 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char		*arg2_3_to_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		if (proc->opcode == 11 || proc->opcode == 10)
 		{
 			dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
-			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 1 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
+			ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, (REG_CODE + RELATIVE))) : ft_itoa(arg)));
 		}
 		else
 		{
