@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 11:47:15 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/20 14:54:28 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,14 @@ int		op_store(t_cw *cw, t_process *p)
 	int		a;
 	int		b;
 	int		i;
+	int		widht;
+	extern t_op	op_tab[17];
 
 	cw->options->v_p = 1;
 	(cw->options->v_lvl & 16) ? init_verbotab(cw, p, 1) : 1;
 	a = cw->arena[(p->i + 2) % MEM_SIZE];
 	b = cw->arena[(p->i + 3) % MEM_SIZE];
+	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], op_tab[p->opcode - 1]);
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
 		b = ((b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE])) \
@@ -101,8 +104,6 @@ int		op_store(t_cw *cw, t_process *p)
 		b = (b >= 0) ? b % MEM_SIZE : MEM_SIZE + (b % MEM_SIZE);
 		cw->arena[b] = (p->registers[a - 1] & 0xFF000000) >> 24;
 		i = 0;
-		cw->options->v_p = 0;
-		(cw->options->verbose == true) ? vprint_pcmv(cw, p, 0) : 1;
 		while (++i < 4)
 		{
 			cw->arena[(b + i) % MEM_SIZE] \
@@ -113,8 +114,8 @@ int		op_store(t_cw *cw, t_process *p)
 	else
 		p->registers[b - 1] = p->registers[a - 1];
 	cw->options->v_p = 0;
-	//return ((cw->options->verbose == true) ? vprint_pcmv(cw, p, 1) : 1);
-	return (1);
+	return ((cw->options->verbose == true) ? vprint_pcmv(cw, p, widht + 2) : 1);
+	//return (1);
 }
 
 /*

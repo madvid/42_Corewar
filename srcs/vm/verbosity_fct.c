@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/20 11:47:26 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/20 15:09:53 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,15 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 		widht += ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) ? 1 : 2);
 		if (((t_process*)(ptr))->opcode == 9 && flag == 1)
 			return (flag);
-		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", widht, ((t_process*)(ptr))->i, \
-			(((t_process*)(ptr))->i + widht) % MEM_SIZE);
+		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", (((t_process*)(ptr))->opcode == 3 || ((t_process*)(ptr))->opcode == 11) ? flag : widht, ((t_process*)(ptr))->i, \
+			((t_process*)(ptr))->i + ((((t_process*)(ptr))->opcode == 3 || ((t_process*)(ptr))->opcode == 11) ? flag : widht) % MEM_SIZE);
 		i = -1;
-		while (++i < widht)
-			pcmv_print_arg(cw, ptr, i);
+		if (flag > 1 && (((t_process*)(ptr))->opcode == 3 || ((t_process*)(ptr))->opcode == 11))
+			while(++i < flag)
+				pcmv_print_arg(cw, ptr, i);
+		else
+			while (++i < widht)
+				pcmv_print_arg(cw, ptr, i);
 		ft_printf("\n");
 	}
 	return (flag);
