@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 12:19:52 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/20 16:02:22 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct		s_options
 	bool			sdl;
 	bool			music;
 	bool			verbose;
+	int				v_p;
 	u_int8_t		v_lvl;
 }					t_options;
 
@@ -305,7 +306,7 @@ char				*champ_name_via_id(t_list *lst_champs, int id);
 bool				is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
-int					addr_next_opcode(char *arena, int mem_pos);
+int					addr_next_opcode(char *arena, t_process *proc);
 int					perform_opcode(t_cw *cw, t_process *cur_proc);
 
 /*

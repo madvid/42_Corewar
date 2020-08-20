@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 14:55:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/20 15:57:56 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ int		instruction_width(unsigned char encoding, t_op op_elem)
 	arg_2 = (encoding & 0b00110000) >> 4;
 	arg_3 = (encoding & 0b00001100) >> 2;
 	if (arg_1 != 0 && op_elem.n_arg >= 1)
-		width += size_dir * (arg_1 / 2) - 2 * (arg_1 / 3) + (1 - arg_1 / 2);
+		width += (arg_1 == 2) ? size_dir : 2 * (arg_1 / 3) + (1 - arg_1 / 2);
 	if (arg_2 != 0 && op_elem.n_arg >= 2)
-		width += size_dir * (arg_2 / 2) - 2 * (arg_2 / 3) + (1 - arg_2 / 2);
+		width += (arg_2 == 2) ? size_dir : 2 * (arg_2 / 3) + (1 - arg_2 / 2);
 	if (arg_3 != 0 && op_elem.n_arg >= 3)
-		width += size_dir * (arg_3 / 2) - 2 * (arg_3 / 3) + (1 - arg_3 / 2);
+		width += (arg_3 == 2) ? size_dir : 2 * (arg_3 / 3) + (1 - arg_3 / 2);
 	return (width);
 }
 
