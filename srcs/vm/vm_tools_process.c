@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 12:14:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/20 15:14:16 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void	vm_proc_mv_proc_pos(t_cw *cw)
 		{
 			cur_proc->i = cur_proc->pc;
 			op_pos = cur_proc->i;
-			cur_proc->pc = addr_next_opcode(cw->arena, op_pos);
+			// cur_proc->pc = addr_next_opcode(cw->arena, cur_proc);
 			cur_proc->opcode = cw->arena[op_pos];
 			if (cur_proc->opcode >= 1 && cur_proc->opcode <= 16)
 				cur_proc->wait_cycles = op_tab[cur_proc->opcode - 1].cycle;

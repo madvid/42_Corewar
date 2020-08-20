@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 16:32:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/20 14:55:24 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,13 @@ void		vm_exec_init_pc(t_cw *cw)
 		p_xplr = (t_process*)l_xplr->cnt;
 		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
 		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
-		p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
+		// ------> Initial
+		//p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
+		// ------> proposition 1
+		// p_xplr->pc = addr_next_opcode(cw->arena, p_xplr);
+		// ------> proposition 2
+		// p_xplr->pc = p_xplr->i + instruction_width((p_xplr->i + 1) % MEM_SIZE, \
+		// 	op_tab[p_xplr->opcode - 1]); // ne marche pas bien si le champion ne commence pas par une instruction valide je pense.
 		l_xplr = l_xplr->next;
 	}
 }
