@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 11:43:45 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/20 14:48:39 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,10 @@ int		op_store_index(t_cw *cw, t_process *p)
 	int			b;
 	int			c;
 	int			i;
+	int			widht;
 
 	cw->options->v_p = 1;
+	widht = 0;
 	(cw->options->v_lvl & 16) ? init_verbotab(cw, p, 1) : 1;
 	a = get_arg_value(cw->arena, p, p->i + 2, REG_CODE + RELATIVE);
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
@@ -108,8 +110,9 @@ int		op_store_index(t_cw *cw, t_process *p)
 	cw->arena[c % MEM_SIZE] = (a & 0xFF000000) >> 24;
 	cw->id_arena[c % MEM_SIZE] = p->champ->id;
 	i = 0;
-			cw->options->v_p = 0;
-		(cw->options->verbose == true) ? vprint_pcmv(cw, p, 0) : 1;
+	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], op_tab[p->opcode - 1]);
+	//cw->options->v_p = 0;
+	//(cw->options->verbose == true) ? vprint_pcmv(cw, p, widht) : 1;
 	while (++i < 4)
 	{
 		cw->arena[(c + i) % MEM_SIZE] \
@@ -118,8 +121,8 @@ int		op_store_index(t_cw *cw, t_process *p)
 	}
 	// ft_printf("        (0x%.4x)---|%.2x|%.2x|%.2x|%.2x|---(0x%.4x)\n", b, cw->arena[(b) % MEM_SIZE], cw->arena[(b + 1) % MEM_SIZE], cw->arena[(pos + 2) % MEM_SIZE], cw->arena[(pos + 3) % MEM_SIZE], pos + 3);
 	cw->options->v_p = 0;
-	return (1);
-	//return ((cw->options->verbose == true) ? vprint_pcmv(cw, p, 1) : 1);
+	//return (1);
+	return ((cw->options->verbose == true) ? vprint_pcmv(cw, p, widht + 2) : 1);
 }
 
 
