@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/20 10:32:06 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/20 11:47:26 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,21 +77,23 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	extern t_op	op_tab[17];
 	int			widht;
 	int			i;
-
-	if (op_tab[((t_process*)(ptr))->opcode - 1].encod == 1)
-		widht = instruction_width(cw->arena[(((t_process*)(ptr))->i + 1) \
-			% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1]);
-	else
-		widht = op_tab[((t_process*)(ptr))->opcode - 1].direct_size == \
-		1 ? 2 : 4;
-	widht += ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) ? 1 : 2);
-	if (((t_process*)(ptr))->opcode == 9 && flag == 1)
-		return (flag);
-	ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", widht, ((t_process*)(ptr))->i, \
-		(((t_process*)(ptr))->i + widht) % MEM_SIZE);
-	i = -1;
-	while (++i < widht)
-		pcmv_print_arg(cw, ptr, i);
-	ft_printf("\n");
+	if (cw->options->v_p == 0)
+	{
+		if (op_tab[((t_process*)(ptr))->opcode - 1].encod == 1)
+			widht = instruction_width(cw->arena[(((t_process*)(ptr))->i + 1) \
+				% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1]);
+		else
+			widht = op_tab[((t_process*)(ptr))->opcode - 1].direct_size == \
+			1 ? 2 : 4;
+		widht += ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) ? 1 : 2);
+		if (((t_process*)(ptr))->opcode == 9 && flag == 1)
+			return (flag);
+		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", widht, ((t_process*)(ptr))->i, \
+			(((t_process*)(ptr))->i + widht) % MEM_SIZE);
+		i = -1;
+		while (++i < widht)
+			pcmv_print_arg(cw, ptr, i);
+		ft_printf("\n");
+	}
 	return (flag);
 }
