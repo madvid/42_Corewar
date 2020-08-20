@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbo_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 18:55:36 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/20 10:31:05 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	pcmv_print_arg(t_cw *cw, void *ptr, int i)
 	tmp = ft_itoa_base2((int)cw->arena[((t_process*)(ptr))->i\
 			+ i] & 255, "0123456789abcdef");
 	if (((int)cw->arena[((t_process*)(ptr))->i + i] & 255) < 16)
-		ft_printf(" 0%s", tmp);
+		ft_printf("0%s", tmp);
 	else
-		ft_printf(" %s", tmp);
+		ft_printf("%s", tmp);
 	ft_memdel((void**)&tmp);
-	// ft_printf(" ");
+	ft_printf(" ");
 }

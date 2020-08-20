@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 18:44:47 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/20 12:12:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		if (!is_valid_opcode(cw->arena, cur_proc))
+		if (!is_valid_opcode(cw, cw->arena, cur_proc))
 			return (0);
 		if (cur_proc->opcode == 12 || cur_proc->opcode == 15)
 			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? CD_PROC_MEM : 0;
@@ -73,21 +73,28 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 **	0: if the byte does not correspond to an opcode.
 */
 
-bool	is_valid_opcode(char *arena, t_process *cur_proc)
+bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 {
 	u_int8_t	opcode;
 	u_int8_t	encoding;
 
-	opcode = arena[cur_proc->i];
+	// opcode = arena[cur_proc->i];
+	opcode = cur_proc->opcode;
 	if (opcode_no_encoding(opcode))
 		return (true);
 	if (opcode >= 1 && opcode <= 16)
 	{
 		encoding = (u_int8_t)arena[(cur_proc->i + 1) % (int)MEM_SIZE];
 		if (is_valid_encoding(opcode, encoding) == false)
+		{
+			(cw->options->v_lvl & 16) ? vprint_pcmv(cw, cur_proc, 0) : 0;
 			return (false);
+		}
 		if (is_valid_reg(arena, cur_proc) == false)
+		{
+			(cw->options->v_lvl & 16) ? vprint_pcmv(cw, cur_proc, 0) : 0;
 			return (false);
+		}
 		return (true);
 	}
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 14:59:59 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/20 11:54:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	{
 		load_visu(v, cw, p);
 		visu_render(v);
-		if (cw->tot_cycle >= 3670)
+		if (cw->tot_cycle >= 4360)
 			SDL_Delay(4000);
 		vm_proc_mv_proc_pos(cw);
 		vm_proc_cycle(cw);
