@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:40:12 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 10:08:22 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/21 16:22:20 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void		get_arena_texture(t_visu *v, int i, t_cw *cw)
 					v->final, v->color_process);
 			ft_memdel((void**)&v->final);
 			is_proc++;
+			break ;
 		}
 		xplr = xplr->next;
 	}

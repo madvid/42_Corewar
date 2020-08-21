@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:18:43 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/21 15:50:27 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/21 15:57:06 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,8 @@ t_visu		visu_breaker2(t_visu *v)
 	return (*v);
 }
 
-
 void		visu_render(t_visu *v)
 {
-	int		i;
-
-	i = 0;
 	SDL_SetRenderDrawColor(v->r, 0, 0, 0, 255);
 	SDL_RenderClear(v->r);
 	SDL_SetRenderDrawColor(v->r, 0, 255, 0, 255);
@@ -83,7 +79,7 @@ void		visu_render(t_visu *v)
 	arena_render(v);
 	SDL_RenderPresent(v->r);
 	*v = visu_breaker2(v);
-}	
+}
 
 void		texture_free(t_visu *v)
 {

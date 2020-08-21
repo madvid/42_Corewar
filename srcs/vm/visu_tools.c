@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/21 09:48:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/21 16:09:43 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ t_visu		init_details(t_visu *v)
 	v->chp_color = v->color_arena;
 	v->color_chp[0] = (SDL_Color) {255, 0, 0, 255};
 	v->color_chp[1] = (SDL_Color) {142, 68, 173, 255};
-	v->color_chp[2] = (SDL_Color) {36, 113, 163, 255};
-	v->color_chp[3] = (SDL_Color) {255, 255, 0, 255};
+	v->color_chp[2] = (SDL_Color) {255, 255, 0, 255};
+	v->color_chp[3] = (SDL_Color) {36, 113, 163, 255};
 	v->color_process = (SDL_Color) {48, 204, 111, 255};
 	return (*v);
 }

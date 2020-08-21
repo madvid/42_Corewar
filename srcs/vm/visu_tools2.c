@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 10:17:33 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/21 16:11:12 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		arena_texture(t_visu *v, int is_proc, int i)
 				v->final, v->chp_color);
 	ft_memdel((void**)&v->final);
 	if (!v->arena_txt[i])
-		printf("Error creating arena_txt : %s\n", SDL_GetError());
+		printf("Error creating arena_txt[%d] : %s\n", i, SDL_GetError());
 	v->arena_vs[i] = SDL_CreateTextureFromSurface(v->r,
 			v->arena_txt[i]);
 	if (!v->arena_vs[i])
