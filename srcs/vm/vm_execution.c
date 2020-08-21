@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 15:57:56 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/21 09:41:29 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,6 @@ int		vm_execution(t_cw *cw, t_parse * p)
 		cw->ctd_lives = 0;
 		while (++cw->i_cycle <= cw->cycle_to_die)
 		{
-			vm_proc_mv_proc_pos(cw);
 			vm_proc_cycle(cw);
 			if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 				vprint_cycle(cw, NULL, 0);

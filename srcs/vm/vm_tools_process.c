@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 15:14:16 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/21 10:28:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,29 +174,19 @@ int		vm_proc_get_lives(t_cw *cw)
 **	after the application of the instruction within process(-es).
 */
 
-void	vm_proc_mv_proc_pos(t_cw *cw)
+void	vm_proc_mv_proc_pos(t_cw *cw, t_process *proc)
 {
 	extern t_op	op_tab[17];
-	t_list		*proc;
-	t_process	*cur_proc;
-	int			op_pos;
 
-	proc = cw->process;
-	while (proc)
+	if (proc->wait_cycles == 0)
 	{
-		cur_proc = ((t_process*)(proc->cnt));
-		if (cur_proc->wait_cycles == 0)
-		{
-			cur_proc->i = cur_proc->pc;
-			op_pos = cur_proc->i;
-			// cur_proc->pc = addr_next_opcode(cw->arena, cur_proc);
-			cur_proc->opcode = cw->arena[op_pos];
-			if (cur_proc->opcode >= 1 && cur_proc->opcode <= 16)
-				cur_proc->wait_cycles = op_tab[cur_proc->opcode - 1].cycle;
-			else
-				cur_proc->wait_cycles = 1;
-		}
-		proc = proc->next;
+		proc->i = proc->pc;
+		// proc->pc = addr_next_opcode(cw->arena, proc);
+		proc->opcode = cw->arena[proc->i];
+		if (proc->opcode >= 1 && proc->opcode <= 16)
+			proc->wait_cycles = op_tab[proc->opcode - 1].cycle;
+		else
+			proc->wait_cycles = 1;
 	}
 }
 
@@ -214,6 +204,7 @@ int		vm_proc_perform_opcode(t_cw *cw)
 	int			code_error;
 	t_list		*xplr;
 	t_process	*cur_proc;
+	int			opfork;
 
 	code_error = 0;
 	xplr = cw->process;
@@ -221,9 +212,24 @@ int		vm_proc_perform_opcode(t_cw *cw)
 	{
 		cur_proc = (t_process*)(xplr->cnt);
 		if (cur_proc->wait_cycles == 0)
+		{
+			// tool_print_processor(cur_proc, cur_proc->id);
 			if ((code_error = perform_opcode(cw, cur_proc) != 0))
 				return (code_error);
-		xplr = xplr->next;
+			opfork = (cur_proc->opcode == 12 || cur_proc->opcode == 15) ? 1 : 0;
+			vm_proc_mv_proc_pos(cw, cur_proc);
+			// tool_print_processor(cur_proc, cur_proc->id);
+			// ft_printf(" >>>>>>>>>><<<<<<<<<<\n");
+		}
+		if (opfork == 1)
+		{
+			xplr = cw->process;
+			cur_proc = (t_process*)(xplr->cnt);
+			opfork = 0;
+			vm_proc_mv_proc_pos(cw, cur_proc);
+		}
+		else
+			xplr = xplr->next;
 	}
 	return (0);
 }

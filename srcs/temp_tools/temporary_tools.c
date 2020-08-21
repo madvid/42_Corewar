@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 16:43:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/21 10:22:43 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,22 +233,22 @@ void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
 
 void		tool_print_processor(t_process *process, int nb)
 {
-	printf(" ______________________________________________________________\n");
-	printf("|_ _ _ _ _ _ _ _ _ _ _ _ _ _PROCESS #%d_ _ _ _ _ _ _ _ _ _ _ _ _|\n", nb);
-	printf("| id:__________%d                                               |\n", process->id);
-	printf("| carry:_______%d                                               |\n", process->carry);
-	printf("| opcode:______%X                                               |\n", process->opcode);
-	printf("| n_lives:_____%2d                                              |\n", process->n_lives);
-	printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
-	printf("| position:____%14d                                  |\n", process->i);
-	printf("| pc:__________%14d                                  |\n", process->pc);
-	printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");
-	printf("| registers:___| %8d | %8d | %8d | %8d |   |\n", process->registers[0], process->registers[1], process->registers[2], process->registers[3]);
-	printf("|            r5| %8d | %8d | %8d | %8d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
-	printf("|            r7| %8d | %8d | %8d | %8d |r12|\n", process->registers[8], process->registers[9], process->registers[10], process->registers[11]);
-	printf("|              | %8d | %8d | %8d | %8d |r16|\n", process->registers[12], process->registers[13], process->registers[14], process->registers[15]);
-	printf("| adrchamp:____%14p                                  |\n", process->champ);
-	printf("|______________________________________________________________|\n");
+	ft_printf(" ______________________________________________________________\n");
+	ft_printf("|_ _ _ _ _ _ _ _ _ _ _ _ _ _PROCESS #%d_ _ _ _ _ _ _ _ _ _ _ _ _|\n", nb);
+	ft_printf("| id:__________%d                                               |\n", process->id);
+	ft_printf("| carry:_______%d                                               |\n", process->carry);
+	ft_printf("| opcode:______%X                                               |\n", process->opcode);
+	ft_printf("| n_lives:_____%2d                                              |\n", process->n_lives);
+	ft_printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
+	ft_printf("| position:____%7d (0x%.4x)                                  |\n", process->i, process->i);
+	ft_printf("| pc:__________%7d (0x%.4x)                                  |\n", process->pc, process->pc);
+	ft_printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");
+	ft_printf("| registers:___| %8d | %8d | %8d | %8d |   |\n", process->registers[0], process->registers[1], process->registers[2], process->registers[3]);
+	ft_printf("|            r5| %8d | %8d | %8d | %8d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
+	ft_printf("|            r7| %8d | %8d | %8d | %8d |r12|\n", process->registers[8], process->registers[9], process->registers[10], process->registers[11]);
+	ft_printf("|              | %8d | %8d | %8d | %8d |r16|\n", process->registers[12], process->registers[13], process->registers[14], process->registers[15]);
+	ft_printf("| adrchamp:____%14p                                  |\n", process->champ);
+	ft_printf("|______________________________________________________________|\n");
 }
 
 
