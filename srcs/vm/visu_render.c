@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:18:43 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/18 11:36:26 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/21 15:50:27 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,26 @@ t_visu		visu_breaker2(t_visu *v)
 		if (v->event.type == SDL_KEYUP)
 			if (v->event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				v->isquit = 1;
+		if (v->event.type == SDL_KEYUP)
+		{
+			if (v->event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+			{
+				if (SDL_WaitEvent(&v->event))
+					if (v->event.type == SDL_KEYUP)
+						if (v->event.key.keysym.scancode == SDL_SCANCODE_R)
+							return (*v);
+			}
+		}
 	}
 	return (*v);
 }
 
+
 void		visu_render(t_visu *v)
 {
+	int		i;
+
+	i = 0;
 	SDL_SetRenderDrawColor(v->r, 0, 0, 0, 255);
 	SDL_RenderClear(v->r);
 	SDL_SetRenderDrawColor(v->r, 0, 255, 0, 255);
@@ -69,7 +83,7 @@ void		visu_render(t_visu *v)
 	arena_render(v);
 	SDL_RenderPresent(v->r);
 	*v = visu_breaker2(v);
-}
+}	
 
 void		texture_free(t_visu *v)
 {
