@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/20 15:33:32 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/21 10:34:04 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,14 @@ int		op_store_index(t_cw *cw, t_process *p)
 	c = (b + get_arg_value(cw->arena, p, p->i + 2 + c, ((cw->arena[(p->i + 1) \
 			% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE)) % IDX_MOD + p->i;
 	c = (c < 0) ? MEM_SIZE + (c % MEM_SIZE) : c % MEM_SIZE;
-	// ft_printf("    [sti]: position = 0x%.4x (%d)\n", b, b);
-	// ft_printf("    [sti]: arg c = %d\n", c);
-	// ft_printf("    [sti]: arg a = %d\n", a);
+	// if (cw->tot_cycle >= 5470)
+	// {
+	// 	ft_printf("    [sti]: position = 0x%.4x (%d)\n", b, b);
+	// 	ft_printf("    [sti]: arg c = %d\n", c);
+	// 	ft_printf("    [sti]: arg b = %d\n", b);
+	// 	ft_printf("    [sti]: arg a = %d\n", a);
+	// 	ft_printf("    (0x%.4x)---|%.2x|%.2x|%.2x|%.2x|---(0x%.4x)\n", c, cw->arena[(c) % MEM_SIZE], cw->arena[(c + 1) % MEM_SIZE], cw->arena[(c + 2) % MEM_SIZE], cw->arena[(c + 3) % MEM_SIZE], b + 3);
+	// }
 	cw->arena[c % MEM_SIZE] = (a & 0xFF000000) >> 24;
 	cw->id_arena[c % MEM_SIZE] = p->champ->id;
 	i = 0;

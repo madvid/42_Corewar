@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 10:31:51 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/21 10:34:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
+		cur_proc->pc = addr_next_opcode(cw->arena, cur_proc);
 		if (!is_valid_opcode(cw, cw->arena, cur_proc))
 			return (0);
 		if (cur_proc->opcode == 12 || cur_proc->opcode == 15)
@@ -80,7 +81,8 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 	int			widht;
 	extern t_op	op_tab[17];
 
-	opcode = arena[cur_proc->i];
+	// opcode = arena[cur_proc->i];
+	opcode = cur_proc->opcode;
 	if (opcode_no_encoding(opcode))
 		return (true);
 	if (opcode >= 1 && opcode <= 16)
@@ -162,24 +164,48 @@ bool	opcode_no_encoding(u_int8_t opcode)
 **	NULL: there is no next opcode right after the ongoing one.
 */
 
-int		addr_next_opcode(char *arena, int mem_pos)
+// ---> origine
+// int		addr_next_opcode(char *arena, int mem_pos)
+// {
+// 	u_int8_t	encoding;
+// 	u_int8_t	opcode;
+// 	int			next_opcode;
+// 	extern t_op	op_tab[17];
+
+// 	opcode = (u_int8_t)arena[mem_pos];
+// 	if (opcode_no_encoding(opcode))
+// 	{
+// 		next_opcode = (mem_pos + arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
+// 		return (next_opcode);
+// 	}
+// 	if (opcode > 0 && opcode < 17) // ici, comme on a tester les opcode sans byte d'encodage, ça sera les autres traités ici.
+// 	{
+// 		encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
+// 		next_opcode = instruction_width(encoding, op_tab[opcode - 1]) + 2;
+// 		return ((mem_pos + next_opcode) % MEM_SIZE);
+// 	}
+// 	return ((mem_pos + 1) % MEM_SIZE);
+// }
+
+/// ----> proposition 1
+int		addr_next_opcode(char *arena, t_process *proc)
 {
 	u_int8_t	encoding;
 	u_int8_t	opcode;
 	int			next_opcode;
 	extern t_op	op_tab[17];
 
-	opcode = (u_int8_t)arena[mem_pos];
+	opcode = proc->opcode;
 	if (opcode_no_encoding(opcode))
 	{
-		next_opcode = (mem_pos + arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
+		next_opcode = (proc->i + arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
 		return (next_opcode);
 	}
 	if (opcode > 0 && opcode < 17) // ici, comme on a tester les opcode sans byte d'encodage, ça sera les autres traités ici.
 	{
-		encoding = (u_int8_t)arena[(mem_pos + 1) % MEM_SIZE];
+		encoding = (u_int8_t)arena[(proc->i + 1) % MEM_SIZE];
 		next_opcode = instruction_width(encoding, op_tab[opcode - 1]) + 2;
-		return ((mem_pos + next_opcode) % MEM_SIZE);
+		return ((proc->i + next_opcode) % MEM_SIZE);
 	}
-	return ((mem_pos + 1) % MEM_SIZE);
+	return ((proc->i + 1) % MEM_SIZE);
 }

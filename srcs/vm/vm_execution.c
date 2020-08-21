@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 16:32:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/21 09:41:29 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ int		instruction_width(unsigned char encoding, t_op op_elem)
 	arg_2 = (encoding & 0b00110000) >> 4;
 	arg_3 = (encoding & 0b00001100) >> 2;
 	if (arg_1 != 0 && op_elem.n_arg >= 1)
-		width += size_dir * (arg_1 / 2) - 2 * (arg_1 / 3) + (1 - arg_1 / 2);
+		width += (arg_1 == 2) ? size_dir : 2 * (arg_1 / 3) + (1 - arg_1 / 2);
 	if (arg_2 != 0 && op_elem.n_arg >= 2)
-		width += size_dir * (arg_2 / 2) - 2 * (arg_2 / 3) + (1 - arg_2 / 2);
+		width += (arg_2 == 2) ? size_dir : 2 * (arg_2 / 3) + (1 - arg_2 / 2);
 	if (arg_3 != 0 && op_elem.n_arg >= 3)
-		width += size_dir * (arg_3 / 2) - 2 * (arg_3 / 3) + (1 - arg_3 / 2);
+		width += (arg_3 == 2) ? size_dir : 2 * (arg_3 / 3) + (1 - arg_3 / 2);
 	return (width);
 }
 
@@ -75,7 +75,13 @@ void		vm_exec_init_pc(t_cw *cw)
 		p_xplr = (t_process*)l_xplr->cnt;
 		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
 		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
-		p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
+		// ------> Initial
+		//p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
+		// ------> proposition 1
+		// p_xplr->pc = addr_next_opcode(cw->arena, p_xplr);
+		// ------> proposition 2
+		// p_xplr->pc = p_xplr->i + instruction_width((p_xplr->i + 1) % MEM_SIZE, \
+		// 	op_tab[p_xplr->opcode - 1]); // ne marche pas bien si le champion ne commence pas par une instruction valide je pense.
 		l_xplr = l_xplr->next;
 	}
 }
@@ -140,7 +146,6 @@ int		vm_execution(t_cw *cw, t_parse * p)
 		cw->ctd_lives = 0;
 		while (++cw->i_cycle <= cw->cycle_to_die)
 		{
-			vm_proc_mv_proc_pos(cw);
 			vm_proc_cycle(cw);
 			if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 				vprint_cycle(cw, NULL, 0);
