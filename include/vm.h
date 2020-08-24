@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 15:30:59 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 17:09:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,6 +331,7 @@ int					vm_proc_kill_not_living(t_cw *cw);
 void				free_one_process(t_list **lst_proc, int id);
 bool				vm_proc_only_one_standing(t_cw *cw);
 int		declare_winner(t_cw *cw);
+void		function_tmp(t_cw* cw, t_list *processes);
 
 /*
 ** Fonctions pour effectuer les instructions asm dans l'arene

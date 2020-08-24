@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 13:44:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 17:08:56 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 {
 	// int		code_error;
 
-	cw->i_cycle = -1;
+	//code_error = 0;
 	cw->i_cycle = 0;
 	cw->ctd_lives = 0;
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0\
@@ -92,8 +92,7 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	{
 		load_visu(v, cw, p);
 		visu_render(v);
-		if (cw->tot_cycle >= 5500)
-			SDL_Delay(3000);
+		function_tmp(cw, cw->process);
 		vm_proc_cycle(cw);
 		if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 			vprint_cycle(cw, NULL, 0);
