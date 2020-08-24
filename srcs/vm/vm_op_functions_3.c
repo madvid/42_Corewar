@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 10:34:04 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/24 12:12:45 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 	c = (b + get_arg_value(cw->arena, p, p->i + 2 + c, ((cw->arena[(p->i + 1) \
 			% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE)) % IDX_MOD + p->i;
 	c = (c < 0) ? MEM_SIZE + (c % MEM_SIZE) : c % MEM_SIZE;
-	// if (cw->tot_cycle >= 5470)
+	// if (cw->tot_cycle >= 7900)
 	// {
 	// 	ft_printf("    [sti]: position = 0x%.4x (%d)\n", b, b);
 	// 	ft_printf("    [sti]: arg c = %d\n", c);
@@ -167,8 +167,12 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 		new_proc->registers[i] = cur_proc->registers[i];
 	new_proc->id = ++id + cw->n_champ;;
 	// ft_printf(">>>>> new_proc->id = %d -- cw->n_champ = %d -- nvlle process id = %d <<<<<\n", id, cw->n_champ, new_proc->id);
-	new_proc->i = cur_proc->i;
-	new_proc->pc = cur_proc->i + addr;
+	// -> Initialement
+	// new_proc->i = cur_proc->i;
+	// new_proc->pc = cur_proc->i + addr;
+	// -> Nouveau
+	new_proc->i = cur_proc->i + addr;
+	// -----------
 	new_proc->carry = cur_proc->carry;
 	new_proc->n_lives = 0;
 	new_proc->wait_cycles = 0;

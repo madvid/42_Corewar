@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 09:41:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 12:13:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ void		vm_exec_init_pc(t_cw *cw)
 	while (l_xplr)
 	{
 		p_xplr = (t_process*)l_xplr->cnt;
-		p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
-		p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
+		// p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
+		// p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
+		p_xplr->wait_cycles = -1;
 		// ------> Initial
 		//p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
 		// ------> proposition 1
@@ -122,6 +123,24 @@ int		declare_winner(t_cw *cw)
 	return (1);
 }
 
+static void		function_tmp(t_cw* cw, t_list *processes)
+{
+	t_list		*xplr;
+	t_process	*proc;
+	
+	xplr = processes;
+	while(xplr)
+	{
+		proc = (t_process*)(xplr->cnt);
+		if (proc->wait_cycles == -1)
+		{
+			vm_proc_mv_proc_pos(cw, proc);
+		}
+		xplr = xplr->next;
+	}
+}
+
+
 /*
 ** Function: vm_execution
 ** Description:
@@ -146,6 +165,7 @@ int		vm_execution(t_cw *cw, t_parse * p)
 		cw->ctd_lives = 0;
 		while (++cw->i_cycle <= cw->cycle_to_die)
 		{
+			function_tmp(cw, cw->process);
 			vm_proc_cycle(cw);
 			if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 				vprint_cycle(cw, NULL, 0);
