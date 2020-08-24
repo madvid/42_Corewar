@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 12:48:31 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/24 15:30:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,7 @@ bool				is_valid_reg(char *arena, t_process *p);
 */
 
 void				vm_proc_cycle(t_cw *cw);
-int					vm_proc_perform_opcode(t_cw *cw);
+int					vm_proc_perform_opcode(t_cw *cw, t_process *proc);
 void				vm_proc_mv_proc_pos(t_cw *cw, t_process *proc);
 int					vm_proc_get_lives(t_cw *cw);
 void				vm_proc_set_lives(t_cw *cw, int set);

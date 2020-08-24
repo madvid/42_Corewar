@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/14 13:43:54 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 12:49:42 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define FILE_BIG		250
 
-# define NB_ERROR_MSG	25
+# define NB_ERROR_MSG	26
 # define CD_USAGE		0
 # define CD_P_STRUCT	1
 # define CD_P_IDTAB		2
@@ -40,7 +40,8 @@
 # define CD_ARENA		21
 # define CD_ID_ARENA	22
 # define CD_INI_PROC	23
-# define FIN_DU_GAME	24
+# define CD_FORK		24
+# define FIN_DU_GAME	25
 
 # define M_USAGE_1		"Usage: ./corewar [[-dump N1] [-v N2] [-a]]"
 # define M_USAGE_2		" [[-n ID] champion1.cor]\n"
@@ -79,6 +80,7 @@
 # define M_ARENA		"Error: [Mem. allocation] failed for cw->arena."
 # define M_ID_ARENA		"Error: [Mem. allocation] failed for cw->id_arena."
 # define M_INI_PROC		"Error: [Mem. allocation] failed for the initial processes."
+# define M_FORK			"Error: [Mem. allocation] failed for a fork/lfork allocation."
 # define M_FIN			"FIN DU GAME."
 
 #endif

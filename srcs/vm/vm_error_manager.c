@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 11:00:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 13:28:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 						M_FILE_BIG, M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
 						M_INV_FD, M_BD_CODE, M_CHP_ERR, M_MAGIC_EXEC,
 						M_PROC_MEM, M_CW_STRUCT, M_ARENA, M_ID_ARENA, M_FIN,
-						M_INI_PROC, NULL};
+						M_INI_PROC, M_FORK, NULL};
 
 	ft_putendl(msg[code_error]);
 	if (p)
@@ -85,5 +85,5 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 		ft_putendl(msg[CD_USAGE]);
 		ft_putendl("########################");
 	}
-	return (0);
+	exit(EXIT_FAILURE);
 }

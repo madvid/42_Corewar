@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 12:13:06 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 15:31:02 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,20 +123,18 @@ int		declare_winner(t_cw *cw)
 	return (1);
 }
 
-static void		function_tmp(t_cw* cw, t_list *processes)
+static void		new_attribut_proc(t_cw *cw, t_process *proc)
 {
-	t_list		*xplr;
-	t_process	*proc;
+	extern t_op		op_tab[17];
 	
-	xplr = processes;
-	while(xplr)
+	if (proc->wait_cycles == -1)
 	{
-		proc = (t_process*)(xplr->cnt);
-		if (proc->wait_cycles == -1)
-		{
-			vm_proc_mv_proc_pos(cw, proc);
-		}
-		xplr = xplr->next;
+		proc->opcode = cw->arena[proc->i];
+		if (proc->opcode >= 1 && proc->opcode <= 16)
+			proc->wait_cycles = op_tab[proc->opcode - 1].cycle;
+		else
+			proc->wait_cycles = 1;
+		// proc->pc = addr_next_opcode(cw->arena, proc);
 	}
 }
 
@@ -151,10 +149,12 @@ static void		function_tmp(t_cw* cw, t_list *processes)
 **
 */
 
-int		vm_execution(t_cw *cw, t_parse * p)
+int		vm_execution(t_cw *cw, t_parse *p)
 {
 	static bool	stop_game;
 	int			code_error;
+	t_list		*xplr;
+	t_process	*proc;
 
 	code_error = 0;
 	vm_exec_init_pc(cw);
@@ -165,14 +165,19 @@ int		vm_execution(t_cw *cw, t_parse * p)
 		cw->ctd_lives = 0;
 		while (++cw->i_cycle <= cw->cycle_to_die)
 		{
-			function_tmp(cw, cw->process);
-			vm_proc_cycle(cw);
 			if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 				vprint_cycle(cw, NULL, 0);
+			xplr = cw->process;
+			while (xplr)
+			{
+				proc = (t_process*)(xplr->cnt);
+				new_attribut_proc(cw, proc);
+				proc->wait_cycles--;
+				vm_proc_perform_opcode(cw, proc);
+				xplr = xplr->next;
+			}
 			if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
 				return (dump_memory(cw->arena));
-			if ((code_error = vm_proc_perform_opcode(cw)) != 0)
-				return (code_error);
 			cw->tot_cycle++;
 		}
 		//vm_proc_get_lives(cw); <- augmentation de cw->tot_lives/ctd_lives pendant l'action alive, peut etre retiré donc.

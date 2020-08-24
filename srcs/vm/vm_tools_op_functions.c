@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/08/19 16:28:56 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 16:30:37 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,15 @@ bool		is_valid_reg(char *arena, t_process *p)
 	while (n < op_tab[p->opcode - 1].n_arg)
 	{
 		mask = ft_power(2, 7 - (2 * n)) + ft_power(2, 6 - (2 * n));
-		arg = get_arg_value(arena, p, p->i + 1 + j, arena[p->i + 1] & mask \
+		arg = get_arg_value(arena, p, p->i + 2 + j, (arena[(p->i + 1) % MEM_SIZE] & mask) \
 			>> (6 - (2 * n)));
-		j = j + instruction_width(arena[p->i + 1] \
+		j = j + instruction_width(arena[(p->i + 1) % MEM_SIZE] \
 			& mask, op_tab[p->opcode - 1]);
-		if ((arena[p->i + 1] & mask >> (6 - (2 * n))) == REG_CODE)
+		if (((arena[(p->i + 1) % MEM_SIZE] & mask) >> (6 - (2 * n))) == REG_CODE)
+		{
 			if (arg < 1 || arg > REG_NUMBER)
 				return (false);
+		}
 		n += 1;
 	}
 	return (true);

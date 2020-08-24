@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 11:25:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 17:03:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,23 +88,15 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 	if (opcode >= 1 && opcode <= 16)
 	{
 		encoding = (u_int8_t)arena[(cur_proc->i + 1) % (int)MEM_SIZE];
+		widht = (cur_proc->pc < cur_proc->i) ? MEM_SIZE - cur_proc->i \
+			+ cur_proc->pc : cur_proc->pc - cur_proc->i;
 		if (is_valid_encoding(opcode, encoding) == false)
 		{
-			widht = 0;
-			if (opcode == 3 || opcode == 11)
-				widht = instruction_width(cw->arena[(cur_proc->i) % MEM_SIZE], op_tab[cur_proc->opcode - 1]) + 6;
-			else
-				widht = instruction_width(cw->arena[(cur_proc->i) % MEM_SIZE], op_tab[cur_proc->opcode - 1]);
 			(cw->options->v_lvl & 16) ? vprint_pcmv(cw, cur_proc, widht) : 0;
 			return (false);
 		}
 		if (is_valid_reg(arena, cur_proc) == false)
 		{
-			widht = 0;
-			if (opcode == 3 || opcode == 11)
-				widht = instruction_width(cw->arena[(cur_proc->i) % MEM_SIZE], op_tab[cur_proc->opcode - 1]) + 6;
-			else
-				widht = instruction_width(cw->arena[(cur_proc->i) % MEM_SIZE], op_tab[cur_proc->opcode - 1]);
 			(cw->options->v_lvl & 16) ? vprint_pcmv(cw, cur_proc, widht) : 0;
 			return (false);
 		}
