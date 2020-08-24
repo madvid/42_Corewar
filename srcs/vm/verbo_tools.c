@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 16:53:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 22:47:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	opcode_v12(t_cw *cw, void *ptr, char *a, char **arg)
 
 	a = arg[0];
 	tmp = ft_atoi(a) % IDX_MOD;
-	// tmp = (tmp < 0) ? MEM_SIZE + tmp : tmp;
 	ft_printf("P %4d ", ((t_process*)(ptr))->id);
 	ft_printf("| %s %s (%d)\n", op_tab[((t_process*)(ptr))->opcode - 1].name \
 		, args_to_str(cw, ((t_process*)(ptr))), \
@@ -44,7 +43,6 @@ void	opcode_v11(void *ptr, char *a, char *b, char **arg)
 	a = arg[1];
 	b = arg[2];
 	tmp = (ft_atoi(a) + ft_atoi(b)) % IDX_MOD;
-	// tmp = (tmp < 0) ? MEM_SIZE + tmp : tmp;
 	ft_printf("%7s| -> store to %s + %s = %d (with pc and mod %d)\n", "", \
 		a, b, (ft_atoi(a) + ft_atoi(b)), \
 		(tmp + ((t_process*)(ptr))->i));
@@ -57,7 +55,6 @@ void	opcode_v10(void *ptr, char *a, char *b, char **arg)
 	a = arg[0];
 	b = arg[1];
 	tmp = (ft_atoi(a) + ft_atoi(b)) % IDX_MOD;
-	// tmp = (tmp < 0) ? MEM_SIZE + tmp : tmp;
 	ft_printf("%7s| -> load from %s + %s = %d (with pc and mod %d)\n", "", \
 		a, b, (ft_atoi(a) + ft_atoi(b)), \
 		(tmp + ((t_process*)(ptr))->i));

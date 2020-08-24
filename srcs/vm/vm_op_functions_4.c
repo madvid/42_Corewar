@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 17:06:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 23:51:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int		op_long_fork(t_cw *cw, t_process *cur_proc)
 	int			addr;
 
 	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
-	if (!fork_creation_process(cw, cur_proc, addr)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
-		return (vm_error_manager(CD_FORK, NULL, &cw)); // STOP SIGNAL MEMORY ALLOCATION ISSUE
-	return ((cw->options->verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+	if (!fork_creation_process(cw, cur_proc, addr))
+		return (vm_error_manager(CD_FORK, NULL, &cw));
+	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
 }
 
 /*
@@ -109,5 +109,5 @@ int		op_aff(t_cw *cw, t_process *cur_proc)
 	arg = cur_proc->registers[reg - 1];
 	if (cw->options->aff == true)
 		ft_printf("Aff: %s\n", ft_itoa(arg));
-	return ((cw->options->verbose == true) ? init_verbotab(cw, cur_proc,1) : 1);
+	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
 }

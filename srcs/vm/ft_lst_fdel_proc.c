@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/07 11:42:44 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:02:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 22:36:36 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,4 @@ void	ft_lst_fdel_proc(void *link, size_t link_size)
 	}
 	((t_list*)link)->file_d = 0;
 	((t_list*)link)->cnt_s = 0;
-	//((t_list*)link)->next = NULL;
 }

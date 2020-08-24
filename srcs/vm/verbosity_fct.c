@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 16:57:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 22:47:07 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 		opcode_v11(ptr, a, b, arg);
 	if (((t_process*)(ptr))->opcode == 10)
 		opcode_v10(ptr, a, b, arg);
-	//free_tmp_v_tools(tmp, arg);
 	return (flag);
 }
 
@@ -77,23 +76,23 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	extern t_op	op_tab[17];
 	int			widht;
 	int			i;
+	t_process	*p;
+
+	proc = (t_process*)ptr;
 	if (cw->options->v_p == 0)
 	{
-		if (op_tab[((t_process*)(ptr))->opcode - 1].encod == 1)
-			widht = instruction_width(cw->arena[(((t_process*)(ptr))->i + 1) \
-				% MEM_SIZE], op_tab[((t_process*)(ptr))->opcode - 1]);
+		if (op_tab[p->opcode - 1].encod == 1)
+			widht = instruction_width(cw->arena[(p->i + 1) \
+				% MEM_SIZE], op_tab[p->opcode - 1]);
 		else
-			widht = op_tab[((t_process*)(ptr))->opcode - 1].direct_size == \
-			1 ? 2 : 4;
-		widht += ((op_tab[((t_process*)(ptr))->opcode - 1].encod == 0) ? 1 : 2);
-				//ft_printf("flag = %d | widht = %d<<<<<<<<<<<<<<<<<\n", flag, widht);
-		if (((t_process*)(ptr))->opcode == 9 && flag == 1)
+			widht = op_tab[p->opcode - 1].direct_size == 1 ? 2 : 4;
+		widht += ((op_tab[p->opcode - 1].encod == 0) ? 1 : 2);
+		if (p->opcode == 9 && flag == 1) // peut etre ajouter dans la condition du 1er if ? (a coté de v_p)
 			return (flag);
-		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", (((t_process*)(ptr))->opcode == 3 || ((t_process*)(ptr))->opcode == 11) ? flag : widht, ((t_process*)(ptr))->i, \
-			((t_process*)(ptr))->i + ((((t_process*)(ptr))->opcode == 3 || ((t_process*)(ptr))->opcode == 11) ? flag : widht) % MEM_SIZE);
+		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", (p->opcode == 3 || p->opcode == 11) ? flag : widht, p->i, \
+			p->i + ((p->opcode == 3 || p->opcode == 11) ? flag : widht) % MEM_SIZE);
 		i = -1;
-
-		if (flag > 1 && (((t_process*)(ptr))->opcode == 3 || ((t_process*)(ptr))->opcode == 11))
+		if (flag > 1 && (p->opcode == 3 || p->opcode == 11))
 			while(++i < flag)
 				pcmv_print_arg(cw, ptr, i);
 		else

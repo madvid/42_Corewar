@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 14:32:25 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 22:35:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 **	0: otherwise (mem. allocation issue).
 */
 
-static int		load_champions(t_cw *cw, t_champ *chp, int nb_champ)
+static int	load_champions(t_cw *cw, t_champ *chp, int nb_champ)
 {
 	int			mem_pos;
 	static int	t_mem_pos[4] = {-1, -1, -1, -1};
@@ -59,7 +59,7 @@ static int		load_champions(t_cw *cw, t_champ *chp, int nb_champ)
 **	0: otherwise.
 */
 
-static void		arena_and_champions_placement(t_cw *cw, t_parse *p)
+static void	arena_and_champions_placement(t_cw *cw, t_parse *p)
 {
 	t_list	*xplr;
 
@@ -94,10 +94,11 @@ static void		arena_and_champions_placement(t_cw *cw, t_parse *p)
 **	0: [via vm_init_cw_error] otherwise.
 */
 
-static void			*vm_init_cw_registers(t_champ *champ)
+static void	*vm_init_cw_registers(t_champ *champ)
 {
 	int				i;
 	t_process		*proc;
+
 	if (!(proc = (t_process*)ft_memalloc(sizeof(t_process))))
 		return (NULL);
 	if (!(proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
@@ -120,18 +121,20 @@ static void			*vm_init_cw_registers(t_champ *champ)
 /*
 ** Function: vm_init_cw_memalloc
 ** Description:
-**	Allocations of the inner variables of cw (corewar struct) which need memory allocation.
-**	Exception for the processes which are allocated in vm_init_cw_registers function.
-**	If there is a allocation memory issue, the error manager for the cw struct is in charge
-**	of freeing the memory and print a message about this memory issue.
+**	Allocations of the inner variables of cw (corewar struct).
+**	Exception for the processes which are allocated in vm_init_cw_registers
+**	function.
+**	If there is an allocation memory issue, the error manager for the cw struct
+**	is in charge of freeing the memory and print a related error message.
 ** Return:
 **	0: if no memory allocation issue.
-**	CD____: [via vm_init_cw_error after return] otherwise.
+**	code_error: [via vm_init_cw_error after return] otherwise.
 */
 
-static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
+static int	vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 {
 	t_list		*tmp;
+
 	tmp = NULL;
 	if (!(*cw = (t_cw*)ft_memalloc(sizeof(t_cw))))
 		return ((int)CD_CW_STRUCT);
@@ -157,20 +160,19 @@ static int		vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 	return (0);
 }
 
-
 /*
 ** Function: vm_cw_arena_init
 ** Description:
 **	Creation and initialization of the arena:
-**		- memory allocation of the arena,
-**		- loading of bytecodes of the champions at the correct memory adresses,
-**		- memory allocation + initialization of inner variables of the processes.
+**	- memory allocation of the arena,
+**	- loading of bytecodes of the champions at the correct memory adresses,
+**	- memory allocation + initialization of inner variables of the processes.
 ** Return:
 **	1: If arena, champions loading or registers creation is ok.
 **	0: otherwise (memory allocation issue at some point).
 */
 
-int				vm_cw_arena_init(t_cw **cw, t_parse **p)
+int			vm_cw_arena_init(t_cw **cw, t_parse **p)
 {
 	int			code_error;
 	t_list		*xplr;
@@ -190,6 +192,5 @@ int				vm_cw_arena_init(t_cw **cw, t_parse **p)
 		xplr2 = xplr2->next;
 	}
 	(*cw)->options = (*p)->options;
-	//copy_options(*cw, *p);
 	return (1);
 }

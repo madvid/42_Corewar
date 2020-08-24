@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 18:15:20 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 22:51:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,15 @@ int			find_nbr_proc(t_cw *cw)
 
 bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 {
-	int		code_error;
+	int			code_error;
 	t_list		*xplr;
 	t_process	*proc;
 
 	code_error = 0;
 	cw->i_cycle = 0;
 	cw->ctd_lives = 0;
-	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0\
-			&& v->isquit == 0)
+	// while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0 && v->isquit == 0)
+	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop && !v->isquit)
 	{
 		xplr = cw->process;
 		while (xplr)
@@ -107,6 +107,5 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 		cw->tot_cycle++;
 		texture_free(v);
 	}
-	stop_game = main_exe2(cw, stop_game);
-	return (stop_game);
+	return (stop_game = main_exe2(cw, stop_game));
 }

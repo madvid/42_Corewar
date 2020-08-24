@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 13:36:28 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 23:50:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int		op_zerojump(t_cw *cw, t_process *p)
 	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
 		| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
 	p->pc = (p->i + (a % IDX_MOD));
-	// ft_printf("--- p->i = %d -- a = %d -- a %% IDX_MOD = %d -- pc (p->i + (a %% IDX_MOD)) = %d\n", p->i, a, (a % IDX_MOD), p->pc);
 	p->pc = (p->pc > 0) ? p->pc % MEM_SIZE : MEM_SIZE + (p->pc % MEM_SIZE);
-	// ft_printf("--- p->pc = %d --- arena[pc] = 0x%.4x\n", p->pc, p->pc);
 	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
@@ -104,32 +102,20 @@ int		op_store_index(t_cw *cw, t_process *p)
 	c = (b + get_arg_value(cw->arena, p, p->i + 2 + c, ((cw->arena[(p->i + 1) \
 			% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE)) % IDX_MOD + p->i;
 	c = (c < 0) ? MEM_SIZE + (c % MEM_SIZE) : c % MEM_SIZE;
-	// if (cw->tot_cycle >= 7900)
-	// {
-	// 	ft_printf("    [sti]: position = 0x%.4x (%d)\n", b, b);
-	// 	ft_printf("    [sti]: arg c = %d\n", c);
-	// 	ft_printf("    [sti]: arg b = %d\n", b);
-	// 	ft_printf("    [sti]: arg a = %d\n", a);
-	// 	ft_printf("    (0x%.4x)---|%.2x|%.2x|%.2x|%.2x|---(0x%.4x)\n", c, cw->arena[(c) % MEM_SIZE], cw->arena[(c + 1) % MEM_SIZE], cw->arena[(c + 2) % MEM_SIZE], cw->arena[(c + 3) % MEM_SIZE], b + 3);
-	// }
 	cw->arena[c % MEM_SIZE] = (a & 0xFF000000) >> 24;
 	cw->id_arena[c % MEM_SIZE] = p->champ->id;
 	i = 0;
-	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], op_tab[p->opcode - 1]);
-	//cw->options->v_p = 0;
-	//(cw->options->verbose == true) ? vprint_pcmv(cw, p, widht) : 1;
+	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], \
+		op_tab[p->opcode - 1]);
 	while (++i < 4)
 	{
-		cw->arena[(c + i) % MEM_SIZE] \
-			= (unsigned char)((a & (0xFF000000 >> (8 * i))) >> (24 - (8 * i)));
+		cw->arena[(c + i) % MEM_SIZE] = \
+			(unsigned char)((a & (0xFF000000 >> (8 * i))) >> (24 - (8 * i)));
 		cw->id_arena[(c + i) % MEM_SIZE] = p->champ->id;
 	}
-	// ft_printf("        (0x%.4x)---|%.2x|%.2x|%.2x|%.2x|---(0x%.4x)\n", b, cw->arena[(b) % MEM_SIZE], cw->arena[(b + 1) % MEM_SIZE], cw->arena[(pos + 2) % MEM_SIZE], cw->arena[(pos + 3) % MEM_SIZE], pos + 3);
 	cw->options->v_p = 0;
-	//return (1);
 	return ((cw->options->verbose == true) ? vprint_pcmv(cw, p, widht + 2) : 1);
 }
-
 
 /*
 ** Function:
@@ -151,9 +137,8 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	int			i;
 	static int	id;
 
-	if (!(new_link = ft_lstnew(NULL, sizeof(t_list))))
-		return (0);
-	if (!(new_proc = (t_process*)ft_memalloc(sizeof(t_process))))
+	if (!(new_link = ft_lstnew(NULL, sizeof(t_list)))
+		|| !(new_proc = (t_process*)ft_memalloc(sizeof(t_process))))
 		return (0);
 	new_link->cnt = new_proc;
 	if (!(new_proc->registers = (int*)ft_memalloc(sizeof(int) * REG_NUMBER)))
@@ -176,7 +161,6 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	return (1);
 }
 
-
 /*
 ** Function: op_fork
 ** Description:
@@ -191,8 +175,7 @@ int		op_fork(t_cw *cw, t_process *cur_proc)
 	int			addr;
 
 	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
-	// ft_printf("valeur de addr = %d\n", addr);
-	if (!fork_creation_process(cw, cur_proc, addr % IDX_MOD)) // check with negative number, during correction with rcourtoi we talk about the issue of '%' with negative nb
-		return (vm_error_manager(CD_FORK, NULL, &cw)); // STOP SIGNAL MEMORY ALLOCATION ISSUE
-	return ((cw->options->verbose == true) ? init_verbotab(cw, cur_proc, 1) : 1);
+	if (!fork_creation_process(cw, cur_proc, addr % IDX_MOD))
+		return (vm_error_manager(CD_FORK, NULL, &cw));
+	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
 }
