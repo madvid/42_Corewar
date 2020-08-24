@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 10:28:57 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 12:12:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,15 +178,25 @@ void	vm_proc_mv_proc_pos(t_cw *cw, t_process *proc)
 {
 	extern t_op	op_tab[17];
 
-	if (proc->wait_cycles == 0)
+	if (proc->wait_cycles == -1)
 	{
-		proc->i = proc->pc;
-		// proc->pc = addr_next_opcode(cw->arena, proc);
 		proc->opcode = cw->arena[proc->i];
 		if (proc->opcode >= 1 && proc->opcode <= 16)
 			proc->wait_cycles = op_tab[proc->opcode - 1].cycle;
 		else
 			proc->wait_cycles = 1;
+		proc->pc = addr_next_opcode(cw->arena, proc);
+	}
+	else if (proc->wait_cycles == 0)
+	{
+		proc->i = proc->pc;
+		proc->wait_cycles = -1;
+		// proc->pc = addr_next_opcode(cw->arena, proc);
+		// proc->opcode = cw->arena[proc->i];
+		// if (proc->opcode >= 1 && proc->opcode <= 16)
+		// 	proc->wait_cycles = op_tab[proc->opcode - 1].cycle;
+		// else
+		// 	proc->wait_cycles = 1;
 	}
 }
 
@@ -220,13 +230,15 @@ int		vm_proc_perform_opcode(t_cw *cw)
 			vm_proc_mv_proc_pos(cw, cur_proc);
 			// tool_print_processor(cur_proc, cur_proc->id);
 			// ft_printf(" >>>>>>>>>><<<<<<<<<<\n");
-		}
-		if (opfork == 1)
-		{
-			xplr = cw->process;
-			cur_proc = (t_process*)(xplr->cnt);
-			opfork = 0;
-			vm_proc_mv_proc_pos(cw, cur_proc);
+			if (opfork == 1)
+			{
+				xplr = cw->process;
+				cur_proc = (t_process*)(xplr->cnt);
+				opfork = 0;
+				vm_proc_mv_proc_pos(cw, cur_proc);
+			}
+			else
+				xplr = xplr->next;
 		}
 		else
 			xplr = xplr->next;
@@ -252,7 +264,8 @@ void	vm_proc_cycle(t_cw *cw)
 	while (xplr)
 	{
 		cur_proc = (t_process*)(xplr->cnt);
-		cur_proc->wait_cycles -= 1;
+		if (cur_proc->wait_cycles > 0)
+			cur_proc->wait_cycles -= 1;
 		xplr = xplr->next;
 	}
 }
