@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 17:08:46 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 19:10:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 **	width: total length in term of bytes of the different parameters of opcode.
 **	0: if the encoding byte is invalid.
 */
+
 int		instruction_width(unsigned char encoding, t_op op_elem)
 {
 	u_int8_t	arg_1;
@@ -53,8 +54,6 @@ int		instruction_width(unsigned char encoding, t_op op_elem)
 	return (width);
 }
 
-
-
 /*
 ** Function: vm_exec_init_pc
 ** Description:
@@ -63,27 +62,18 @@ int		instruction_width(unsigned char encoding, t_op op_elem)
 **	the wait_cycles and jump.
 */
 
-void		vm_exec_init_pc(t_cw *cw)
+void	vm_exec_init_pc(t_cw *cw)
 {
 	extern t_op	op_tab[17];
-	t_list		*l_xplr;
-	t_process	*p_xplr;
+	t_list		*xplr;
+	t_process	*proc;
 
-	l_xplr = cw->process;
-	while (l_xplr)
+	xplr = cw->process;
+	while (xplr)
 	{
-		p_xplr = (t_process*)l_xplr->cnt;
-		// p_xplr->opcode = cw->arena[p_xplr->champ->mem_pos];
-		// p_xplr->wait_cycles = op_tab[p_xplr->opcode - 1].cycle;
-		p_xplr->wait_cycles = -1;
-		// ------> Initial
-		//p_xplr->pc = addr_next_opcode(cw->arena, p_xplr->champ->mem_pos);
-		// ------> proposition 1
-		// p_xplr->pc = addr_next_opcode(cw->arena, p_xplr);
-		// ------> proposition 2
-		// p_xplr->pc = p_xplr->i + instruction_width((p_xplr->i + 1) % MEM_SIZE, \
-		// 	op_tab[p_xplr->opcode - 1]); // ne marche pas bien si le champion ne commence pas par une instruction valide je pense.
-		l_xplr = l_xplr->next;
+		proc = (t_process*)xplr->cnt;
+		proc->wait_cycles = -1;
+		xplr = xplr->next;
 	}
 }
 
@@ -100,33 +90,38 @@ int		declare_winner(t_cw *cw)
 	int		score;
 	int		winner;
 	char	*name;
+	int		i;
 
 	score = cw->champ_lives[0];
 	winner = 1;
-	if (cw->champ_lives[1] > score)
+	i = 1;
+	while (i < 4)
 	{
-		score = cw->champ_lives[1];
-		winner = 2;
-	}
-	if (cw->champ_lives[2] > score)
-	{
-		score = cw->champ_lives[2];
-		winner = 3;
-	}
-	if (cw->champ_lives[3] > score)
-	{
-		score = cw->champ_lives[3];
-		winner = 4;
+		if (cw->champ_lives[i] > score)
+		{
+			score = cw->champ_lives[i];
+			winner = i + 1;
+		}
+		i++;
 	}
 	name = champ_name_via_id(cw->lst_champs, winner);
 	ft_printf("Contestant %d, %c%s%c, has won !", winner, '"', name, '"');
 	return (1);
 }
 
-static void		new_attribut_proc(t_cw *cw, t_process *proc)
+/*
+** Function: new_attribut_proc
+** Description:
+**	Attributes to the process the value of the opcode at the position proc->i
+**	in the arena.
+**	If the opcode value is invalid (not in [1;16]), wait_cycles is set to 1
+**	otherwise it is set to the corresponding value in op_tab (see op.c).
+*/
+
+void	new_attribut_proc(t_cw *cw, t_process *proc)
 {
 	extern t_op		op_tab[17];
-	
+
 	if (proc->wait_cycles == -1)
 	{
 		proc->opcode = cw->arena[proc->i];
@@ -134,27 +129,84 @@ static void		new_attribut_proc(t_cw *cw, t_process *proc)
 			proc->wait_cycles = op_tab[proc->opcode - 1].cycle;
 		else
 			proc->wait_cycles = 1;
-		// proc->pc = addr_next_opcode(cw->arena, proc);
 	}
 }
 
+/*
+** Function: procedural_loop
+** Description:
+**	Performs the loop on the processes.
+**	More specifically, it go through all the processes and makes:
+**	* the attributions of the opcode and wait_cycles,
+**	* performs the instructions and get the next pc,
+**	* deals the dump option.
+** Return:
+**	0: If no error has been encounter,
+**	code_error: code of the error encounters.
+*/
+
+int		procedural_loop(t_cw *cw)
+{
+	int			code_error;
+	t_list		*xplr;
+	t_process	*proc;
+
+	if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
+		vprint_cycle(cw, NULL, 0);
+	xplr = cw->process;
+	while (xplr)
+	{
+		proc = (t_process*)(xplr->cnt);
+		new_attribut_proc(cw, proc);
+		proc->wait_cycles--;
+		code_error = vm_proc_perform_opcode(cw, proc);
+		xplr = xplr->next;
+	}
+	if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
+		return (dump_memory(cw->arena));
+	return (0);
+}
+
+/*
+** Function: ctd_control
+** Description:
+**	Checks if the parameter Cycle_To_Died (ctd) must be decreased.
+**	Two cases can be distinguished:
+**	* total nb of lives during the 'current period' > NBR_LIVE,
+**	* cycle_to_die hasn't be decrease since MAX_CHECKS verification.
+*/
+
+void	ctd_control(t_cw *cw)
+{
+	if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
+	{
+		cw->cycle_to_die -= (int)CYCLE_DELTA;
+		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
+		if (cw->options->v_lvl & 2)
+			vprint_cycle(cw, NULL, 1);
+		if (cw->cycle_to_die < 0)
+			vprint_cycle(cw, NULL, 0);
+	}
+}
 
 /*
 ** Function: vm_execution
 ** Description:
-**	Main part of the execution of the champion bytecode [bla bla]
+**	Main part of the VM execution
+**	* Initialization of the primary processes,
+**	* Proceeding of the 'temporal' loop and run of the procedural loop.
+**	* Control of the Cycle_To_Die parameter,
+**	* Managment of the supression of died processes,
+**	* Reset of the number of live realized by the whole processes.
 ** Return:
 **	0: No error or issue occured.
 **	code_error: value of the corresponding error/issue which occured
-**
 */
 
-int		vm_execution(t_cw *cw, t_parse *p)
+int		vm_execution(t_cw *cw)
 {
 	static bool	stop_game;
 	int			code_error;
-	t_list		*xplr;
-	t_process	*proc;
 
 	code_error = 0;
 	vm_exec_init_pc(cw);
@@ -165,40 +217,16 @@ int		vm_execution(t_cw *cw, t_parse *p)
 		cw->ctd_lives = 0;
 		while (++cw->i_cycle <= cw->cycle_to_die)
 		{
-			if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
-				vprint_cycle(cw, NULL, 0);
-			xplr = cw->process;
-			while (xplr)
-			{
-				proc = (t_process*)(xplr->cnt);
-				new_attribut_proc(cw, proc);
-				proc->wait_cycles--;
-				vm_proc_perform_opcode(cw, proc);
-				xplr = xplr->next;
-			}
-			if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
-				return (dump_memory(cw->arena));
+			if ((code_error = procedural_loop(cw)) != 0)
+				return (code_error);
 			cw->tot_cycle++;
 		}
-		//vm_proc_get_lives(cw); <- augmentation de cw->tot_lives/ctd_lives pendant l'action alive, peut etre retiré donc.
-		// if (cw->ctd_lives == 0 || !vm_proc_only_one_standing(cw))
 		if (cw->ctd_lives == 0 || cw->process == NULL)
 			stop_game = true;
-		if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
-		{
-			cw->cycle_to_die -= (int)CYCLE_DELTA;
-			cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
-			if (cw->options->v_lvl & 2)
-			{
-				vprint_cycle(cw, NULL, 1);
-				// vprint_cycle(cw, NULL, 0);
-			}
-		}
+		ctd_control(cw);
 		if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
 			return (declare_winner(cw));
 		vm_proc_set_lives(cw, 0);
 	}
-	p = NULL;
-	//tool_print_arena(cw->arena, (size_t)MEM_SIZE, p);
-	return (0); // <- changer le num par l'id du champion vainqueur ? ou alors faire gérer la fin par only_one_standing.
+	return (0);
 }

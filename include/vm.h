@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 17:09:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 18:51:26 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,10 +292,13 @@ int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 /*
 ** Lancement et déroulement de corewar.
 */
-
 void				vm_champion_introduction(t_list **lst_champs);
-int					vm_execution(t_cw *cw, t_parse *p);
+int					vm_execution(t_cw *cw);
 void				vm_exec_init_pc(t_cw *cw);
+int					procedural_loop(t_cw *cw);
+void				new_attribut_proc(t_cw *cw, t_process *proc);
+void				ctd_control(t_cw *cw);
+
 bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
 int					instruction_width(unsigned char encoding, t_op op_elem);
 char				*champ_name_via_id(t_list *lst_champs, int id);
@@ -303,7 +306,6 @@ char				*champ_name_via_id(t_list *lst_champs, int id);
 /*
 ** Fonctions outils concernant les opcode
 */
-
 bool				is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
@@ -313,7 +315,6 @@ int					perform_opcode(t_cw *cw, t_process *cur_proc);
 /*
 ** Fonctions outils concernant l'octet d'encodage
 */
-
 int					get_nb_arg_b_encoding(u_int8_t encoding);
 bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
 bool				is_valid_reg(char *arena, t_process *p);
@@ -321,7 +322,6 @@ bool				is_valid_reg(char *arena, t_process *p);
 /*
 ** Fonctions concernant le déroulement des processus au sein de la VM
 */
-
 void				vm_proc_cycle(t_cw *cw);
 int					vm_proc_perform_opcode(t_cw *cw, t_process *proc);
 void				vm_proc_mv_proc_pos(t_cw *cw, t_process *proc);
@@ -330,13 +330,11 @@ void				vm_proc_set_lives(t_cw *cw, int set);
 int					vm_proc_kill_not_living(t_cw *cw);
 void				free_one_process(t_list **lst_proc, int id);
 bool				vm_proc_only_one_standing(t_cw *cw);
-int		declare_winner(t_cw *cw);
-void		function_tmp(t_cw* cw, t_list *processes);
+int					declare_winner(t_cw *cw);
 
 /*
 ** Fonctions pour effectuer les instructions asm dans l'arene
 */
-
 int					op_alive(t_cw *cw, t_process *cur_proc);
 int					op_load(t_cw *cw, t_process *cur_proc);
 int					op_store(t_cw *cw, t_process *cur_proc);
@@ -359,7 +357,6 @@ int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 /*
 ** Fonctions pour la gestion des options de ./corewar
 */
-
 int					dump_memory(char *arena);
 
 /*

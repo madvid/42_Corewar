@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:35:11 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/24 18:52:25 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int			main(int ac, char **av)
 	if (p->options->sdl == true)
 		visualizer(cw, p);
 	else
-		vm_execution(cw, p);
+		vm_execution(cw);
 	vm_error_manager(FIN_DU_GAME, &p, &cw);
 	//system("leaks vm");
 	return (0);
