@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 12:13:06 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/24 13:12:43 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		declare_winner(t_cw *cw)
 	return (1);
 }
 
-static void		function_tmp(t_cw* cw, t_list *processes)
+void		function_tmp(t_cw* cw, t_list *processes)
 {
 	t_list		*xplr;
 	t_process	*proc;
