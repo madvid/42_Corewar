@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:35:18 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/25 10:57:59 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int		unique_opt(t_parse *p, char *str)
 int				vm_options_flag(char **av, t_parse **p, int *i)
 {
 	while (av[*i] && (ft_strequ(av[*i], "-dump") || ft_strequ(av[*i], "-v")
-		|| ft_strequ(av[*i], "-a") || ft_strequ(av[*i], "-SDL") || ft_strequ(av[*i], "-m on")))
+		|| ft_strequ(av[*i], "-a") || ft_strequ(av[*i], "-SDL") || ft_strequ(av[*i], "-m")))
 	{
 		if (av[*i] && ft_strequ(av[*i], "-a") == 1)
 		{
