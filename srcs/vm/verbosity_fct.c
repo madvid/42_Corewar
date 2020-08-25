@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 16:42:05 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 18:13:41 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int		vprint_lives(t_cw *cw, void *ptr, int flag)
 {
 	t_list	*xplr;
 
-	if (cw->tot_cycle < 16360) // temporaire
-		return (1); // temporaire
 	xplr = cw->lst_champs;
 	while (xplr && ptr)
 	{
@@ -32,8 +30,6 @@ int		vprint_lives(t_cw *cw, void *ptr, int flag)
 
 int		vprint_cycle(t_cw *cw, void *ptr, int flag)
 {
-	if (cw->tot_cycle < 16360) // temporaire
-		return (1); // temporaire
 	if (flag == 1 && !ptr)
 		ft_printf("Cycle to die is now %d\n", cw->cycle_to_die);
 	if (flag == 0 && !ptr)
@@ -49,8 +45,6 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 	char		*tmp;
 	char		**arg;
 
-	if (cw->tot_cycle < 16360) // temporaire
-		return (1); // temporaire
 	tmp = (flag == 1) ? "OK" : "FAILED";
 	arg = ft_strsplit(args_to_str(cw, (t_process*)(ptr)), 32);
 	if (!arg)
@@ -70,8 +64,6 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 
 int		vprint_deaths(t_cw *cw, void *ptr, int flag)
 {
-	if (cw->tot_cycle < 16360) // temporaire
-		return (1); // temporaire
 	if (flag)
 		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", \
 			((t_process*)(ptr))->id, cw->tot_cycle - \
@@ -86,8 +78,6 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	int			i;
 	t_process	*p;
 
-	if (cw->tot_cycle < 16360) // temporaire
-		return (1); // temporaire
 	p = (t_process*)ptr;
 	if (cw->options->v_p == 0)
 	{
@@ -97,7 +87,7 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 		else
 			widht = op_tab[p->opcode - 1].direct_size == 1 ? 2 : 4;
 		widht += ((op_tab[p->opcode - 1].encod == 0) ? 1 : 2);
-		if (p->opcode == 9 && flag == 1) // peut etre ajouter dans la condition du 1er if ? (a coté de v_p)
+		if (p->opcode == 9 && flag == 1)
 			return (flag);
 		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", (p->opcode == 3 || p->opcode == 11) ? flag : widht, p->i, \
 			p->i + ((p->opcode == 3 || p->opcode == 11) ? flag : widht) % MEM_SIZE);
