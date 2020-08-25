@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_opcode.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 17:03:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 10:20:25 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 			+ cur_proc->pc : cur_proc->pc - cur_proc->i;
 		if (is_valid_encoding(opcode, encoding) == false)
 		{
-			(cw->options->v_lvl & 16) ? vprint_pcmv(cw, cur_proc, widht) : 0;
+			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, widht) : 0;
 			return (false);
 		}
 		if (is_valid_reg(arena, cur_proc) == false)
 		{
-			(cw->options->v_lvl & 16) ? vprint_pcmv(cw, cur_proc, widht) : 0;
+			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, widht) : 0;
 			return (false);
 		}
 		return (true);
