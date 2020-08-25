@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 15:08:02 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 16:39:38 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/25 16:52:00 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char		*arg3_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 	int			arg;
 	int			widht;
 	char		*tmp;
+	char		*tmp2;
+	char		*tmp3;
 	extern t_op	op_tab[17];
 
 	tmp = NULL;
@@ -29,14 +31,20 @@ char		*arg3_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		(arg == IND_CODE) ? arg + RELATIVE : arg);
 		if (proc->opcode == 11)
 		{
+			tmp2 = ft_itoa(arg);
+			tmp3 = ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
+				(REG_CODE + RELATIVE)));
 			tmp = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE \
-				? ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
-				(REG_CODE + RELATIVE))) : ft_itoa(arg)));
+				? tmp3 : tmp2));
+			ft_memdel((void*)&tmp2);
+			ft_memdel((void*)&tmp3);
 		}
 		else
 		{
+			tmp2 = ft_itoa(arg);
+			tmp3 = ft_strjoin("r", tmp2);
 			tmp = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE \
-				? ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+				? tmp3 : tmp2));
 		}
 	}
 	dst = tmp;
@@ -49,6 +57,8 @@ char		*arg2_into_str(t_cw *cw, t_process *proc, char *dst, int arg)
 	u_int8_t	encoding;
 	int			widht;
 	char		*tmp;
+	char		*tmp2;
+	char		*tmp3;
 	extern t_op	op_tab[17];
 
 	encoding = cw->arena[(proc->i + 1) % MEM_SIZE];
@@ -57,19 +67,31 @@ char		*arg2_into_str(t_cw *cw, t_process *proc, char *dst, int arg)
 	tmp = NULL;
 	if (proc->opcode == 11 || proc->opcode == 10 || proc->opcode == 8)
 	{
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
+			(REG_CODE + RELATIVE)));
 		tmp = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE \
-			? ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
-			(REG_CODE + RELATIVE))) : ft_itoa(arg)));
+			? tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	else if (proc->opcode == 2 || proc->opcode == 3 || proc->opcode == 13)
 	{
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
 		tmp = ft_strjoin(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
-			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+			tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	else
 	{
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
 		tmp = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE \
-			? ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+			? tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	dst = tmp;
 	ft_memdel((void*)&tmp);
@@ -119,16 +141,20 @@ char		*arg_into_str(t_cw *cw, t_process *proc, char *dst, int arg)
 		|| proc->opcode == 12)
 	{
 		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
 		tmp = ft_strjoin("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
-			ft_strjoin("r", tmp2) : tmp2));
+			tmp3 : tmp2));
 		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	else
 	{
 		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
 		tmp = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
-			ft_strjoin("r", tmp2) : tmp2));
+			tmp3 : tmp2));
 		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	dst = tmp;
 	ft_memdel((void*)&tmp);
