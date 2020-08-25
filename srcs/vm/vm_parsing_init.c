@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 08:50:13 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 10:29:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,8 @@ static void		vm_init_parse_value(t_parse *p)
 
 static int		vm_init_parse_memalloc(t_parse **p)
 {
-	static	char	*msg[] = {M_USAGE, M_DUMP, M_BD_VAL, M_BD_FILE,
-						M_MEM_CHAMP, M_EMPTY_CHP, M_MAX_CHAMP,
-						M_BD_CODE, M_CHP_ERR, M_INV_FD, M_MAGIC_EXEC,
-						M_VERB, NULL}; // Est-ce nécessaire les messages d'erreurs dans p ?
-
 	if (!(*p = (t_parse*)ft_memalloc(sizeof(t_parse))))
 		return (vm_error_manager(CD_P_STRUCT, p, NULL));
-	(*p)->error = msg;
 	if (!((*p)->id_available = ft_1d_int_table(MAX_PLAYERS)))
 		return (vm_error_manager(CD_P_IDTAB, p, NULL));
 	if (!((*p)->options = (t_options*)ft_memalloc(sizeof(t_options))))

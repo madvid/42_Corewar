@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:35:18 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/25 10:50:47 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 **	1: if the option flag is unique
 **	0: if we already encounter the option flag
 */
+
 static int		unique_opt(t_parse *p, char *str)
 {
 	int		stat;
@@ -40,10 +41,64 @@ static int		unique_opt(t_parse *p, char *str)
 }
 
 /*
+** Function: is_options_flag
+** Description:
+**	Verifies if the specific argument (av) is an authorized flag.
+** Return:
+**	true: if flag is correct
+**	false: otherwise
+*/
+
+static bool		is_options_flag(char *av)
+{
+	if (ft_strequ(av, "-dump") || ft_strequ(av, "-v")
+		|| ft_strequ(av, "-a") || ft_strequ(av, "-SDL")
+		|| ft_strequ(av, "-m"))
+		return (true);
+	return (false);
+}
+
+/*
+** Function: vm_options_flag2
+** Description:
+**	Second part of vm_options_flag.
+**	Here it's check if argument is the verbose, the music or the visualizer.
+** Return:
+**	0: if no error encounter.
+**	CD_[ERROR]: the associate error code.
+*/
+
+static int		vm_options_flag2(char **av, t_parse **p, int *i)
+{
+	if (av[*i] && ((*p)->options->verbose = ft_strequ(av[*i], "-v")) == 1)
+	{
+		if (av[++(*i)] && in_verbose_range(av[*i]))
+			(*p)->options->v_lvl = (u_int8_t)ft_atoi(av[(*i)++]);
+		else
+			return ((int)CD_VERB);
+	}
+	if (av[*i] && ft_strequ(av[*i], "-m") == 1)
+	{
+		if (av[++(*i)] && ft_strequ(av[(*i)++], "on") == 1)
+			(*p)->options->music = true;
+		else
+			return ((int)CD_MUSIC);
+	}
+	if (av[*i] && ft_strequ(av[*i], "-SDL") == 1)
+	{
+		(*i)++;
+		(*p)->options->sdl = true;
+	}
+	if (unique_opt(*p, av[*i]) == 0)
+		return ((int)CD_UNIQ);
+	return (0);
+}
+
+/*
 ** Function:
 ** Description:
-**	Checks the precense of option flags and their arguments. It stocks the
-**	presence of options and option arguments in p->options.
+**	Checks the presence of option flags and their arguments. It stocks the
+**	setting of options and option arguments in p->options.
 **	The first argument option invalid brings a return of the associated CODE
 **	ERROR.
 ** Return:
@@ -51,10 +106,12 @@ static int		unique_opt(t_parse *p, char *str)
 **		CODE ERROR: if the option argument is invalid.
 */
 
-int				vm_options_flag(char **av, t_parse **p, int *i)
+int				vm_options_flag1(char **av, t_parse **p, int *i)
 {
-	while (av[*i] && (ft_strequ(av[*i], "-dump") || ft_strequ(av[*i], "-v")
-		|| ft_strequ(av[*i], "-a") || ft_strequ(av[*i], "-SDL") || ft_strequ(av[*i], "-m on")))
+	int		code_error;
+
+	code_error = 0;
+	while (av[*i] && is_options_flag(av[*i]))
 	{
 		if (av[*i] && ft_strequ(av[*i], "-a") == 1)
 		{
@@ -68,27 +125,8 @@ int				vm_options_flag(char **av, t_parse **p, int *i)
 			else
 				return ((int)CD_DUMP);
 		}
-		if (av[*i] && ((*p)->options->verbose = ft_strequ(av[*i], "-v")) == 1)
-		{
-			if (av[++(*i)] && in_verbose_range(av[*i]))
-				(*p)->options->v_lvl = (u_int8_t)ft_atoi(av[(*i)++]);
-			else
-				return ((int)CD_VERB);
-		}
-		if (av[*i] && ft_strequ(av[*i], "-m") == 1)
-		{
-			if (av[++(*i)] && ft_strequ(av[(*i)++], "on") == 1)
-				(*p)->options->music = true;
-			else
-				return ((int)CD_MUSIC);
-		}
-		if (av[*i] && ft_strequ(av[*i], "-SDL") == 1)
-		{
-			(*i)++;
-			(*p)->options->sdl = true;
-		}
-		if (unique_opt(*p, av[*i]) == 0)
-			return ((int)CD_UNIQ);
+		if ((code_error = vm_options_flag2(av, p, i)) != 0)
+			return (code_error);
 	}
 	return (0);
 }
@@ -114,6 +152,30 @@ static int		is_valid_nb_champ(char *nb)
 }
 
 /*
+** Function: id_number_chp_flag
+** Description:
+**	
+** Return:
+**	1:
+**	0:
+*/
+
+static int	id_number_chp_flag(t_parse **p, char **av, int *i)
+{
+	if (ft_strequ(av[*i], "-n") == 1)
+	{
+		if (av[++(*i)] && is_valid_nb_champ(av[*i]))
+		{
+			(*p)->options->n = 1;
+			(*p)->id_champ = (int)(av[(*i)++][0] - '0');
+		}
+		else
+			return (0);
+	}
+	return (1);
+}
+
+/*
 ** Function: vm_parsing
 ** Description:
 **	Parsing of the standard inputs of the executable corewar (the VM)
@@ -128,20 +190,22 @@ int				vm_parsing(char **av, t_parse **p)
 	int		code_error;
 
 	i = 1;
-	if ((code_error = vm_options_flag(av, p, &i)) != 0)
-		return(vm_error_manager(code_error, p, NULL));
+	if ((code_error = vm_options_flag1(av, p, &i)) != 0)
+		return (vm_error_manager(code_error, p, NULL));
 	while (av[i] && (*p)->nb_champ < 5)
 	{
-		if (ft_strequ(av[i], "-n") == 1)
-		{
-			if (av[++i] && is_valid_nb_champ(av[i]))
-			{
-				(*p)->options->n = 1;
-				(*p)->id_champ = (int)(av[i++][0] - '0');
-			}
-			else
-				return (vm_error_manager((int)CD_BD_VAL, p, NULL));
-		}
+		if (id_number_chp_flag(p, av, &i) == 0)
+			return (vm_error_manager((int)CD_BD_VAL, p, NULL));
+		// if (ft_strequ(av[i], "-n") == 1)
+		// {
+		// 	if (av[++i] && is_valid_nb_champ(av[i]))
+		// 	{
+		// 		(*p)->options->n = 1;
+		// 		(*p)->id_champ = (int)(av[i++][0] - '0');
+		// 	}
+		// 	else
+		// 		return (vm_error_manager((int)CD_BD_VAL, p, NULL));
+		// }
 		if (av[i] && !is_valid_champ_filename(av[i]))
 			return (vm_error_manager((int)CD_BD_FILE, p, NULL));
 		if (av[i] && (code_error = vm_create_champion(&((*p)->lst_champs), av[i++], *p)))

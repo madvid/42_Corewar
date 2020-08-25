@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 22:47:07 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 09:56:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	int			i;
 	t_process	*p;
 
-	proc = (t_process*)ptr;
+	p = (t_process*)ptr;
 	if (cw->options->v_p == 0)
 	{
 		if (op_tab[p->opcode - 1].encod == 1)
