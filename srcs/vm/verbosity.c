@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 14:23:55 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 16:57:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,18 @@ int		vprint_essentials(t_cw *cw, void *ptr, int flag)
 	return (flag);
 }
 
-void	free_tmp_v_tools(char *tmp, char **arg)
+void	pcmv_print(t_cw *cw, void *ptr, int flag, int widht)
 {
-	int		i;
+	t_process	*p;
+	int			i;
 
-	if (tmp)
-		ft_memdel((void**)&tmp);
-	i = 0;
-	if (arg)
-	{
-		while (arg[i])
-		{
-			if (arg[i])
-				ft_memdel((void**)&arg[i]);
-			i++;
-		}
-		ft_memdel((void**)&arg);
-	}
+	p = (t_process*)ptr;
+	i = -1;
+	if (flag > 1 && (p->opcode == 3 || p->opcode == 11))
+		while (++i < flag)
+			pcmv_print_arg(cw, ptr, i);
+	else
+		while (++i < widht)
+			pcmv_print_arg(cw, ptr, i);
+	ft_printf("\n");
 }

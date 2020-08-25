@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 18:51:26 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 16:22:08 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,13 +372,14 @@ int					vprint_cycle(t_cw *cw, void *ptr, int flag);
 int		 			vprint_op(t_cw *cw, void *ptr, int flag);
 int		 			vprint_deaths(t_cw *cw, void *ptr, int flag);
 int		 			vprint_pcmv(t_cw *cw, void *ptr, int flag);
-void				free_tmp_v_tools(char *tmp, char **arg);
 char				*args_to_str(t_cw *cw, t_process *proc);
 void				opcode_g(t_cw *cw, void *ptr, char *tmp);
 void				opcode_v12(t_cw *cw, void *ptr, char *a, char **arg);
 void				opcode_v11(void *ptr, char *a, char *b, char **arg);
 void				opcode_v10(void *ptr, char *a, char *b, char **arg);
 void				pcmv_print_arg(t_cw *cw, void *ptr, int i);
+void				pcmv_print(t_cw *cw, void *ptr, int flag, int widht);
+void				free_args(char **arg, char *a, char *b);
 
 /*
 **<<<<<Visualizer functions>>>>>

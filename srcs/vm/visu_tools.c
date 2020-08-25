@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 10:43:28 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/25 12:02:15 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	code_error = 0;
 	cw->i_cycle = 0;
 	cw->ctd_lives = 0;
-	// while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0 && v->isquit == 0)
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop && !v->isquit)
 	{
 		load_visu(v, cw, p);
