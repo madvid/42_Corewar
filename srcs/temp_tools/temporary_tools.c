@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 10:22:43 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 16:12:54 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,7 @@ void		tool_print_processor(t_process *process, int nb)
 	ft_printf("| carry:_______%d                                               |\n", process->carry);
 	ft_printf("| opcode:______%X                                               |\n", process->opcode);
 	ft_printf("| n_lives:_____%2d                                              |\n", process->n_lives);
+	ft_printf("| last_live:___%2d                                              |\n", process->last_live);
 	ft_printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
 	ft_printf("| position:____%7d (0x%.4x)                                  |\n", process->i, process->i);
 	ft_printf("| pc:__________%7d (0x%.4x)                                  |\n", process->pc, process->pc);
@@ -247,7 +248,6 @@ void		tool_print_processor(t_process *process, int nb)
 	ft_printf("|            r5| %8d | %8d | %8d | %8d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
 	ft_printf("|            r7| %8d | %8d | %8d | %8d |r12|\n", process->registers[8], process->registers[9], process->registers[10], process->registers[11]);
 	ft_printf("|              | %8d | %8d | %8d | %8d |r16|\n", process->registers[12], process->registers[13], process->registers[14], process->registers[15]);
-	ft_printf("| adrchamp:____%14p                                  |\n", process->champ);
 	ft_printf("|______________________________________________________________|\n");
 }
 

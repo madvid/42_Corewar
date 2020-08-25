@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 19:10:30 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 15:23:00 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,12 +221,12 @@ int		vm_execution(t_cw *cw)
 				return (code_error);
 			cw->tot_cycle++;
 		}
+		if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die < 0)
+			return (declare_winner(cw));
+		ctd_control(cw);
 		if (cw->ctd_lives == 0 || cw->process == NULL)
 			stop_game = true;
-		ctd_control(cw);
-		if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
-			return (declare_winner(cw));
-		vm_proc_set_lives(cw, 0);
+		// vm_proc_set_lives(cw, 0);
 	}
 	return (0);
 }

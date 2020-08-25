@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/08/24 16:30:37 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 14:09:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,15 @@ int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)
 	value = value << 8 | (unsigned char)arena[(index + 1) % MEM_SIZE];
 	if ((type % 10) == IND_CODE)
 	{
-		ret = arena[(cur_proc->i + (value % IDX_MOD)) % MEM_SIZE] << 24
-			| arena[(cur_proc->i + (value % IDX_MOD) + 1) % MEM_SIZE] << 16
-			| arena[(cur_proc->i + (value % IDX_MOD) + 2) % MEM_SIZE] << 8
-			| arena[(cur_proc->i + (value % IDX_MOD) + 3) % MEM_SIZE];
+		if (type / 10 != 0)
+		{
+			value = cur_proc->i + (value % IDX_MOD);
+			value = (value < 0) ? MEM_SIZE + value : value;
+			ret = arena[value % MEM_SIZE] << 24
+				| ((unsigned int)arena[(value + 1) % MEM_SIZE] & 255) << 16
+				| ((unsigned int)arena[(value + 2) % MEM_SIZE] & 255) << 8
+				| ((unsigned int)arena[(value + 3) % MEM_SIZE] & 255);
+		}
 		return ((type / 10) == 0 ? value : ret);
 	}
 	if ((type % 10) == DIR_CODE)

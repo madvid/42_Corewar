@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 10:29:36 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/25 16:14:05 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,8 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	new_proc->i = (cur_proc->i + addr) % MEM_SIZE;
 	new_proc->i = (new_proc->i < 0) ? MEM_SIZE + new_proc->i : new_proc->i;
 	new_proc->carry = cur_proc->carry;
-	new_proc->n_lives = 0;
+	new_proc->n_lives = cur_proc->n_lives;
+	new_proc->last_live = cur_proc->last_live;
 	new_proc->wait_cycles = -1;
 	new_proc->champ = cur_proc->champ;
 	ft_lstadd(&(cw->process), new_link);
