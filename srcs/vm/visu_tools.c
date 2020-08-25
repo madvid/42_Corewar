@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 22:51:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 10:43:28 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ int			find_nbr_proc(t_cw *cw)
 bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 {
 	int			code_error;
-	t_list		*xplr;
-	t_process	*proc;
 
 	code_error = 0;
 	cw->i_cycle = 0;
@@ -92,20 +90,12 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	// while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop != 0 && v->isquit == 0)
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop && !v->isquit)
 	{
-		xplr = cw->process;
-		while (xplr)
-		{
-			proc = (t_process*)(xplr->cnt);
-			load_visu(v, cw, p);
-			visu_render(v);
-			new_attribut_proc(cw, proc);
-			proc->wait_cycles--;
-			if ((code_error = vm_proc_perform_opcode(cw, proc)) != 0)
-				return (code_error);
-			xplr = xplr->next;
-		}
+		load_visu(v, cw, p);
+		visu_render(v);
+		if ((code_error = procedural_loop(cw)) != 0)
+			return (code_error);
 		cw->tot_cycle++;
-		texture_free(v);
 	}
+	texture_free(v);
 	return (stop_game = main_exe2(cw, stop_game));
 }

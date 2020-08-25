@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity_fct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 22:47:07 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 10:27:53 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 		return (0);
 	a = NULL;
 	b = NULL;
-	if (((t_process*)(ptr))->opcode == 12)
+	if (((t_process*)(ptr))->opcode == 12 || ((t_process*)(ptr))->opcode == 15)
 		opcode_v12(cw, ptr, a, arg);
 	else
 		opcode_g(cw, ptr, tmp);
@@ -78,7 +78,7 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 	int			i;
 	t_process	*p;
 
-	proc = (t_process*)ptr;
+	p = (t_process*)ptr;
 	if (cw->options->v_p == 0)
 	{
 		if (op_tab[p->opcode - 1].encod == 1)

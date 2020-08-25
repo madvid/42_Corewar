@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 13:07:16 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/25 10:42:18 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,7 @@ bool		main_exe2(t_cw *cw, bool stop_game)
 {
 	if (cw->ctd_lives == 0 || cw->process == NULL)
 		stop_game = true;
-	if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
-	{
-		cw->cycle_to_die -= (int)CYCLE_DELTA;
-		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
-	}
+	ctd_control(cw);
 	if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
 		return (declare_winner(cw));
 	vm_proc_set_lives(cw, 0);

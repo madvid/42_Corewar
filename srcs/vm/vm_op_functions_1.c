@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 22:59:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/25 10:29:25 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int		op_store(t_cw *cw, t_process *p)
 	extern t_op	op_tab[17];
 
 	cw->options->v_p = 1;
-	(cw->options->v_lvl & 16) ? init_verbotab(cw, p, 1) : 1;
+	(cw->options->v_lvl) ? init_verbotab(cw, p, 1) : 1;
 	a = cw->arena[(p->i + 2) % MEM_SIZE];
 	b = cw->arena[(p->i + 3) % MEM_SIZE];
 	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], \
@@ -115,7 +115,7 @@ int		op_store(t_cw *cw, t_process *p)
 	else
 		p->registers[b - 1] = p->registers[a - 1];
 	cw->options->v_p = 0;
-	return (cw->options->verbose ? vprint_pcmv(cw, p, widht + 2) : 1);
+	return ((cw->options->verbose == true && cw->options->v_lvl > 15) ? vprint_pcmv(cw, p, widht + 2) : 1);
 }
 
 /*

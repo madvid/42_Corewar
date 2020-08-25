@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:18:43 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/21 15:57:06 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/25 10:45:18 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_visu		visu_breaker2(t_visu *v)
 			if (v->event.key.keysym.scancode == SDL_SCANCODE_SPACE)
 			{
 				if (SDL_WaitEvent(&v->event))
-					if (v->event.type == SDL_KEYUP)
+					if (v->event.type == SDL_KEYDOWN)
 						if (v->event.key.keysym.scancode == SDL_SCANCODE_R)
 							return (*v);
 			}
