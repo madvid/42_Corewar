@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 15:46:31 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 00:54:02 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 ** Description:
 **	[put some explanations here !]
 ** Return:
-**	[value_1]:
-**	[value_2]:
+**	0:
 */
 
 int		op_long_load(t_cw *cw, t_process *p)
@@ -34,7 +33,8 @@ int		op_long_load(t_cw *cw, t_process *p)
 	b = get_arg_value(cw->arena, p, p->i + 2 + b, REG_CODE);
 	p->carry = (a == 0) ? 1 : 0;
 	p->registers[b - 1] = a;
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 1);
+	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0));
+	return (0);
 }
 
 /*
@@ -42,8 +42,7 @@ int		op_long_load(t_cw *cw, t_process *p)
 ** Description:
 **	[put some explanations here !]
 ** Return:
-**	[value_1]:
-**	[value_2]:
+**	0:
 */
 
 int		op_long_load_index(t_cw *cw, t_process *p)
@@ -69,7 +68,8 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 	while (++i < 4)
 		p->registers[c - 1] += (((unsigned char)(cw->arena[(b + i) \
 			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 1) : 1);
+	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
+	return (0);
 }
 
 /*
@@ -77,8 +77,8 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 ** Description:
 **	[put some explanations here !]
 ** Return:
-**	[value_1]:
-**	[value_2]:
+**	0: the process is correctly created
+**	CD_FORK: a memory allocation issue occurs during the lfork instruction
 */
 
 int		op_long_fork(t_cw *cw, t_process *p)
@@ -88,7 +88,8 @@ int		op_long_fork(t_cw *cw, t_process *p)
 	addr = get_arg_value(cw->arena, p, p->i + 1, DIR_CODE);
 	if (!fork_creation_process(cw, p, addr))
 		return (vm_error_manager(CD_FORK, NULL, &cw));
-	return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, addr, 0, 0), 1) : 1);
+	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, addr, 0, 0));
+	return (0);
 }
 
 /*
@@ -96,8 +97,7 @@ int		op_long_fork(t_cw *cw, t_process *p)
 ** Description:
 **	[put some explanations here !]
 ** Return:
-**	[value_1]:
-**	[value_2]:
+**	0:
 */
 
 int		op_aff(t_cw *cw, t_process *p)
@@ -109,5 +109,6 @@ int		op_aff(t_cw *cw, t_process *p)
 	arg = p->registers[reg - 1];
 	if (cw->options->aff == true)
 		ft_printf("Aff: %s\n", ft_itoa(arg));
-	return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, arg, 0, 0), 1) : 1);
+	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, arg, 0, 0));
+	return (0);
 }

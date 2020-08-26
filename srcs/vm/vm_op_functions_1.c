@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 18:59:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 01:46:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@
 **	corresponding champion (cw->champ_lives[x]) is increased, and the nb of
 **	lives made by the process also as long as the champ id is a correct one.
 ** Return:
-**	1:	the instruction is valid (= encoding byte coherent) or no encoding byte
-**		needed by the instruction thus it is performed in any case.
-**	0:	if the encoding byte is not coherent with what the instruction takes
-**		as argument(s).
+**	0:	The instruction alive doesn't take any encoded byte, it doesn't matter.
 */
 
 int		op_alive(t_cw *cw, t_process *proc)
@@ -44,7 +41,7 @@ int		op_alive(t_cw *cw, t_process *proc)
 		cw->champ_lives[-arg - 1]++;
 	if (cw->options->verbose == true)
 		verbotab(cw, proc, op_arg(0, proc, arg, 0, 0));
-	return (1);
+	return (0);
 }
 
 /*
@@ -52,7 +49,6 @@ int		op_alive(t_cw *cw, t_process *proc)
 ** Description:
 **	[put some explanations here !]
 ** Return:
-**	1:
 **	0:
 */
 
@@ -72,8 +68,11 @@ int		op_load(t_cw *cw, t_process *p)
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
 	if (cw->options->verbose == true)
-		verbotab(cw, p, op_arg(encod + 10, p, arg, reg, 0), 1);
-	return (1);
+	{
+		tool_print_t_arg(op_arg(encod, p, arg, reg, 0));
+		verbotab(cw, p, op_arg(encod, p, arg, reg, 0));
+	}
+	return (0);
 }
 
 /*
@@ -94,15 +93,12 @@ int		op_store(t_cw *cw, t_process *p)
 	int			a;
 	int			b;
 	int			i;
-	int			widht;
 	extern t_op	op_tab[17];
 
 	a = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
 	b = get_arg_value(cw->arena, p, p->i + 3, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b00110000) >> 4));
-	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], \
-		op_tab[p->opcode - 1]);
 	cw->options->v_p = 1;
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
@@ -123,7 +119,7 @@ int		op_store(t_cw *cw, t_process *p)
 		p->registers[b - 1] = a;
 	if (cw->options->v_lvl & 16)
 		vprint_pcmv(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0));
-	return (1);
+	return (0);
 }
 
 /*
@@ -134,8 +130,8 @@ int		op_store(t_cw *cw, t_process *p)
 **	- cur->carry = 1 (if value == 0)
 **				   0 (else)
 ** Return:
-**	[value_1]: 1 if encoding byte and arguments are valid
-**	[value_2]: 0 else
+**	0: if encoding byte and arguments are valid.
+**	-1: otherwise.
 */
 
 int		op_addition(t_cw *cw, t_process *p)
@@ -149,9 +145,14 @@ int		op_addition(t_cw *cw, t_process *p)
 	c = cw->arena[(p->i + 4) % MEM_SIZE];
 	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
 		|| c < 1 || c > REG_NUMBER)
-		return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 0) : 0);
+		{
+			verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
+			return (-1);
+		}
 	p->registers[c - 1] = p->registers[a - 1] \
 	+ p->registers[b - 1];
 	p->carry = (p->registers[c - 1] == 0) ? 1 : 0;
-	return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 1) : 1);
+	if (cw->options->verbose == true)
+		verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
+	return (0);
 }

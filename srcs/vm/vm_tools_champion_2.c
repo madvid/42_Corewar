@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_champion_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 11:02:30 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:35:25 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 22:46:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "vm.h"
 
 /*

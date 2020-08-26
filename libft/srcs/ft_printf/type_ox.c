@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 19:08:09 by weilin            #+#    #+#             */
-/*   Updated: 2020/08/04 12:02:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 22:11:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	fillwidth_base(t_data *t, int n)
 
 	if (n == 0)
 		n = (t->flag.width && !t->flag.prec) ? 0 : 1;
-	i = (n) ? (t->flag.width - ft_strlen(t->bf)) : t->flag.width;
+	i = (n) ? (t->flag.width - (int)ft_strlen(t->bf)) : t->flag.width;
 	while (i > 0)
 	{
 		t->nb_print += ((t->flag.zero) == 1 ?

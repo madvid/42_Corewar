@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 16:04:45 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 22:40:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ int			main(int ac, char **av)
 	vm_champion_introduction(&(p->lst_champs));
 	vm_cw_arena_init(&cw, &p);
 	cw->lst_champs = p->lst_champs;
-	if (p->options->sdl == true)
-		visualizer(cw, p);
-	else
-		vm_execution(cw);
+	vm_execution(cw);
+	// if (p->options->sdl == true)
+	// 	visualizer(cw, p);
+	// else
+	// 	vm_execution(cw);
 	vm_error_manager(FIN_DU_GAME, &p, &cw);
 	//system("leaks vm");
 	return (0);

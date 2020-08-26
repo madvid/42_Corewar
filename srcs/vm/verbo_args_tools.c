@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:07:22 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 18:46:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 01:58:18 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	op_arg_init(t_arg *arg)
 **	with what type is expected based on the opcode.
 */
 
-static void	op_arg_type(t_op op_elem, int encod, t_process *p, t_arg *ag)
+static void	op_arg_type(t_op op_elem, int encod, t_arg *ag)
 {
 	int		i;
 
@@ -51,7 +51,7 @@ static void	op_arg_type(t_op op_elem, int encod, t_process *p, t_arg *ag)
 		{
 			if (i < (int)op_elem.n_arg)
 			{
-				ag->type[i] = (encod & 192 >> 2 * i) >> (8 - 2 * i) : 0;
+				ag->type[i] = (encod & 192 >> (2 * i)) >> (8 - 2 * i);
 				ag->type[i] = (ag->type[i] == 3) ? 4 & op_elem.type[i] \
 					: ag->type[i] & op_elem.type[i];
 			}
@@ -68,7 +68,7 @@ static void	op_arg_type(t_op op_elem, int encod, t_process *p, t_arg *ag)
 **	It is necessary to transforms the type if ...
 */
 
-static void	op_arg_type_shift(t_op op_elem, int encod, t_process *p, t_arg *ag)
+static void	op_arg_type_shift(int encod, t_arg *ag)
 {
 	if (encod - 10 > 0 && encod - 10 < 4)
 		ag->type[0] = DIR_CODE;
@@ -92,8 +92,9 @@ t_arg		op_arg(int encod, t_process *p, int a1, int a2, int a3)
 	t_arg	arg;
 	
 	op_arg_init(&arg);
-	op_arg_type(op_tab[p->opcode - 1], encod % RELATIVE, p, &arg);
-	op_arg_type_shift(op_tab[p->opcode - 1], encod, p, &arg);
+	ft_printf("   op_arg: encod = %x\n", encod);
+	op_arg_type(op_tab[p->opcode - 1], encod % RELATIVE, &arg);
+	op_arg_type_shift(encod, &arg);
 	if (arg.type[0] != 0)
 		arg.arg[0] = a1;
 	if (arg.type[1] != 0)

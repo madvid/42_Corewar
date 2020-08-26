@@ -6,10 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 10:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 22:36:15 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 01:07:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "vm.h"
 
 char	*ft_itoa_base2(unsigned long long nb, char *base)

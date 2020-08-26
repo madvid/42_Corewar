@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 15:43:43 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 01:01:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,10 @@ bool		vm_proc_only_one_standing(t_cw *cw)
 
 void		free_one_process(t_list **lst_proc, int id)
 {
-	int			i;
 	t_list		*xplr;
 	t_list		*to_del;
 
 	xplr = *lst_proc;
-	i = -1;
 	if (!xplr)
 		return;
 	if (((t_process*)(xplr->cnt))->id == id)
@@ -121,7 +119,7 @@ int		vm_proc_kill_not_living(t_cw *cw)
 		{
 			next = xplr->next;
 			if (cw->options->v_lvl & 0b1000)
-				vprint_deaths(cw, (t_process*)(xplr->cnt), op_arg(0, (t_process*)(xplr->cnt), 0, 0, 0), 1);
+				vprint_deaths(cw, (t_process*)(xplr->cnt));
 			if (xplr - cw->process == 0)
 			{
 				ft_lstdelone(&xplr, &ft_lst_fdel_proc);

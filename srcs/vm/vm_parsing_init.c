@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:07:10 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 10:29:23 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 22:45:51 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 
 static void		vm_init_parse_value(t_parse *p)
 {
-	int			i;
-
-	i = -1;
 	p->nb_champ = 0;
 	p->id_champ = 0;
 	p->options->dump = false;

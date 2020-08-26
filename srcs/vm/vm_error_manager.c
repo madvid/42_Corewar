@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 10:38:48 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 00:51:51 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,5 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 		ft_putendl(msg[CD_USAGE]);
 		ft_putendl("########################");
 	}
-	return (0);
+	return (code_error);
 }

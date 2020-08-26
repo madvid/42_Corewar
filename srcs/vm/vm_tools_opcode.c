@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 15:41:32 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 00:18:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 int		perform_opcode(t_cw *cw, t_process *cur_proc)
 {
 	int				code_error;
-	extern t_op		op_tab[17];
 	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
 
 	code_error = 0;
@@ -60,7 +59,7 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 		if (cur_proc->opcode == 12 || cur_proc->opcode == 15)
 			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? CD_PROC_MEM : 0;
 		else
-			op_funct[cur_proc->opcode - 1](cw, cur_proc);
+			code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
 	}
 	return (code_error);
 }
@@ -80,7 +79,6 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 	u_int8_t	encoding;
 	int			widht;
 	t_arg		a;
-	extern t_op	op_tab[17];
 
 	// opcode = arena[cur_proc->i];
 	opcode = cur_proc->opcode;
@@ -95,12 +93,12 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 		a.widht = widht;
 		if (is_valid_encoding(opcode, encoding) == false)
 		{
-			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, a, widht) : 0;
+			vprint_pcmv(cw, cur_proc, a);
 			return (false);
 		}
 		if (is_valid_reg(arena, cur_proc) == false)
 		{
-			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, a, widht) : 0;
+			vprint_pcmv(cw, cur_proc, a);
 			return (false);
 		}
 		return (true);

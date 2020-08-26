@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 17:42:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 00:59:16 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void		verbotab(t_cw *cw, t_process *p, t_arg arg)
 	// verbotab[3] = &vprint_op;
 	// verbotab[4] = &vprint_deaths;
 	// verbotab[5] = &vprint_pcmv;
-	(cw->options->v_lvl & 0b00000100) ? vprint_op();
-	(cw->options->v_lvl & 0b00000001) && vprint_lives();
-	(cw->options->v_lvl & 0b00000010) ? vprint_cycle();
-	(cw->options->v_lvl & 0b00010000) ? vprint_pcmv();
+	(cw->options->v_lvl & 0b00000100) ? vprint_op(p, arg) : 0;
+	(cw->options->v_lvl & 0b00000001) ? vprint_lives(cw, arg) : 0;
+	// (cw->options->v_lvl & 0b00000010) ? vprint_cycle() : 0;
+	(cw->options->v_lvl & 0b00010000) ? vprint_pcmv(cw, p, arg) : 0;
 }
 
 int		vprint_essentials(t_cw *cw, void *ptr, t_arg a, int flag)

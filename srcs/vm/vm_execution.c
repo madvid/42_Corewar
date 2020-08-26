@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 15:51:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 01:27:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ int		instruction_width(unsigned char encoding, t_op op_elem)
 	arg_2 = (encoding & 0b00110000) >> 4;
 	arg_3 = (encoding & 0b00001100) >> 2;
 	if (arg_1 != 0 && op_elem.n_arg >= 1)
-		width += (arg_1 == 2) ? size_dir : 2 * (arg_1 / 3) + (1 - arg_1 / 2);
+		width += (arg_1 == 2) ? (int)size_dir : 2 * (arg_1 / 3) + (1 - arg_1 / 2);
 	if (arg_2 != 0 && op_elem.n_arg >= 2)
-		width += (arg_2 == 2) ? size_dir : 2 * (arg_2 / 3) + (1 - arg_2 / 2);
+		width += (arg_2 == 2) ? (int)size_dir : 2 * (arg_2 / 3) + (1 - arg_2 / 2);
 	if (arg_3 != 0 && op_elem.n_arg >= 3)
-		width += (arg_3 == 2) ? size_dir : 2 * (arg_3 / 3) + (1 - arg_3 / 2);
+		width += (arg_3 == 2) ? (int)size_dir : 2 * (arg_3 / 3) + (1 - arg_3 / 2);
 	return (width);
 }
 
@@ -64,7 +64,6 @@ int		instruction_width(unsigned char encoding, t_op op_elem)
 
 void	vm_exec_init_pc(t_cw *cw)
 {
-	extern t_op	op_tab[17];
 	t_list		*xplr;
 	t_process	*proc;
 
@@ -152,9 +151,10 @@ int		procedural_loop(t_cw *cw)
 	t_process	*proc;
 
 	xplr = cw->process;
+	code_error = 0;
 	if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
-		vprint_cycle(cw, NULL, op_arg(0, (t_process*)(xplr), 0, 0, 0), 0);
-	while (xplr)
+		vprint_cycle(cw, 1);
+	while (xplr && code_error == 0)
 	{
 		proc = (t_process*)(xplr->cnt);
 		new_attribut_proc(cw, proc);
@@ -164,7 +164,7 @@ int		procedural_loop(t_cw *cw)
 	}
 	if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
 		return (dump_memory(cw->arena));
-	return (0);
+	return (code_error);
 }
 
 /*
@@ -183,9 +183,9 @@ void	ctd_control(t_cw *cw)
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
 		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
 		if (cw->options->v_lvl & 2)
-			vprint_cycle(cw, NULL, op_arg(0, (t_process*)(cw->process), 0, 0, 0),  1);
+			vprint_cycle(cw, 0);
 		if (cw->cycle_to_die < 0)
-			vprint_cycle(cw, NULL, op_arg(0, (t_process*)(cw->process), 0, 0, 0), 0);
+			vprint_cycle(cw, 1);
 	}
 }
 
