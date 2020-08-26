@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 14:31:22 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 16:06:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		init_verbotab(t_cw *cw, void *ptr, t_arg *a, int flag)
+int		init_verbotab(t_cw *cw, void *ptr, t_arg a, int flag)
 {
-	int (*verbotab[6])(t_cw *cw, void *ptr, t_arg *a, int flag);
+	int (*verbotab[6])(t_cw *cw, void *ptr, t_arg a, int flag);
 
 	verbotab[0] = &vprint_essentials;
 	verbotab[1] = &vprint_lives;
@@ -30,9 +30,9 @@ int		init_verbotab(t_cw *cw, void *ptr, t_arg *a, int flag)
 	return (flag);
 }
 
-int		vprint_essentials(t_cw *cw, void *ptr, t_arg *a, int flag)
+int		vprint_essentials(t_cw *cw, void *ptr, t_arg a, int flag)
 {
-	if (cw || ptr || a)
+	if (cw || ptr || !a.type[0])
 		return (flag);
 	return (flag);
 }
@@ -57,20 +57,20 @@ char		*ito_arg(char *s, int n)
 	return (s);
 }
 
-char		*args_to_str(t_arg *a)
+char		*args_to_str(t_arg a)
 {
 	char	*str;
 	int		i;
 
-	if (!(str = malloc(sizeof(char * 128))))
+	if (!(str = ft_strnew(128)))
 		return (NULL);
 	i = -1;
-	while (++i < 3 && a->type[i] != 0)
+	while (++i < 3 && a.type[i] != 0)
 	{
-		if (a->type[i] == REG_CODE)
+		if (a.type[i] == REG_CODE)
 			str = ft_strcat(str, "r");
-		str = ito_arg(str, a->arg[i]);
-		if ((i + 1) < 3 && a->type[i + 1] != 0)
+		str = ito_arg(str, a.arg[i]);
+		if ((i + 1) < 3 && a.type[i + 1] != 0)
 			str = ft_strcat(str, " ");
 	}
 	return (str);

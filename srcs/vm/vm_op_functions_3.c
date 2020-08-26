@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 16:14:05 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 15:45:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int		op_zerojump(t_cw *cw, t_process *p)
 {
 	int		a;
 
-	if (!p->carry)
-		return ((cw->options->verbose == true) ? init_verbotab(cw, p, 0) : 0);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
 		| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
+	if (!p->carry)
+		return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, 0, 0), 0) : 0);
 	p->pc = (p->i + (a % IDX_MOD));
 	p->pc = (p->pc > 0) ? p->pc % MEM_SIZE : MEM_SIZE + (p->pc % MEM_SIZE);
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, 0, 0), 1) : 1);
 }
 
 /*
@@ -67,7 +67,7 @@ int		op_load_index(t_cw *cw, t_process *p)
 	while (++i < 4)
 		p->registers[c - 1] += (((unsigned char)(cw->arena[(b + i) \
 			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 1) : 1);
 }
 
 /*
@@ -91,7 +91,6 @@ int		op_store_index(t_cw *cw, t_process *p)
 
 	cw->options->v_p = 1;
 	widht = 0;
-	(cw->options->v_lvl) ? init_verbotab(cw, p, 1) : 1;
 	a = get_arg_value(cw->arena, p, p->i + 2, REG_CODE + RELATIVE);
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
@@ -102,6 +101,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 	c = (b + get_arg_value(cw->arena, p, p->i + 2 + c, ((cw->arena[(p->i + 1) \
 			% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE)) % IDX_MOD + p->i;
 	c = (c < 0) ? MEM_SIZE + (c % MEM_SIZE) : c % MEM_SIZE;
+	(cw->options->v_lvl) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 1) : 1;
 	cw->arena[c % MEM_SIZE] = (a & 0xFF000000) >> 24;
 	cw->id_arena[c % MEM_SIZE] = p->champ->id;
 	i = 0;
@@ -114,7 +114,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 		cw->id_arena[(c + i) % MEM_SIZE] = p->champ->id;
 	}
 	cw->options->v_p = 0;
-	return ((cw->options->verbose == true && cw->options->v_lvl > 15) ? vprint_pcmv(cw, p, widht + 2) : 1);
+	return ((cw->options->verbose == true && cw->options->v_lvl > 15) ? vprint_pcmv(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 1) : 1);
 }
 
 /*
@@ -171,12 +171,12 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 **	0: a memory allocation issue occurs during the fork instruction
 */
 
-int		op_fork(t_cw *cw, t_process *cur_proc)
+int		op_fork(t_cw *cw, t_process *p)
 {
 	int			addr;
 
-	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
-	if (!fork_creation_process(cw, cur_proc, addr % IDX_MOD))
+	addr = get_arg_value(cw->arena, p, p->i + 1, DIR_CODE);
+	if (!fork_creation_process(cw, p, addr % IDX_MOD))
 		return (vm_error_manager(CD_FORK, NULL, &cw));
-	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
+	return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, addr, 0, 0), 1) : 1);
 }

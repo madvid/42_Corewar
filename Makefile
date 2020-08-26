@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
+#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/26 14:29:25 by armajchr         ###   ########.fr        #
+#    Updated: 2020/08/26 16:04:24 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SDL2_TTF_PATH = $(FW_PATH)/$(SDL2_TTF)
 SDL2_MXR_PATH = $(FW_PATH)/$(SDL2_MXR)
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -Wunused-function -g -I$(INC_DIR) #-fsanitize=address -fstack-protector -fsanitize=undefined
+FLAGS = -Wall -Wextra -Werror -Wunused-function -g  -I$(INC_DIR) -fsanitize=address -fstack-protector -fsanitize=undefined
 RM = rm -rf
 
 ### SOURCES AND OBJECTS VARIABLES: ###
@@ -65,6 +65,7 @@ VM_FILES =	main					\
 			verbosity				\
 			verbosity_fct			\
 			verbo_tools				\
+			verbo_args_tools		\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\

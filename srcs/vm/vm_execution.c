@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 15:23:00 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 15:51:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ int		procedural_loop(t_cw *cw)
 	t_list		*xplr;
 	t_process	*proc;
 
-	if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
-		vprint_cycle(cw, NULL, 0);
 	xplr = cw->process;
+	if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
+		vprint_cycle(cw, NULL, op_arg(0, (t_process*)(xplr), 0, 0, 0), 0);
 	while (xplr)
 	{
 		proc = (t_process*)(xplr->cnt);
@@ -183,9 +183,9 @@ void	ctd_control(t_cw *cw)
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
 		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
 		if (cw->options->v_lvl & 2)
-			vprint_cycle(cw, NULL, 1);
+			vprint_cycle(cw, NULL, op_arg(0, (t_process*)(cw->process), 0, 0, 0),  1);
 		if (cw->cycle_to_die < 0)
-			vprint_cycle(cw, NULL, 0);
+			vprint_cycle(cw, NULL, op_arg(0, (t_process*)(cw->process), 0, 0, 0), 0);
 	}
 }
 
