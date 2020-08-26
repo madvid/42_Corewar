@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 16:22:08 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 11:35:09 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,13 @@ typedef struct		s_options
 	int				v_p;
 	u_int8_t		v_lvl;
 }					t_options;
+
+typedef struct		s_arg
+{
+	int				type[3];
+	int				arg[3]
+	int				widht;
+}					t_arg;
 
 typedef struct		s_champ
 {

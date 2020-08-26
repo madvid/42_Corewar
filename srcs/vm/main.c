@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 14:53:58 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 10:30:49 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int			main(int ac, char **av)
 	else
 		vm_execution(cw);
 	//vm_error_manager(FIN_DU_GAME, &p, &cw);
-	system("leaks vm");
+	//system("leaks vm");
 	return (0);
 }
