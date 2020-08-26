@@ -6,18 +6,18 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 11:40:16 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 14:28:18 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		vprint_lives(t_cw *cw, void *ptr, int flag)
+int		vprint_lives(t_cw *cw, void *ptr, t_arg *a, int flag)
 {
 	t_list	*xplr;
 
 	xplr = cw->lst_champs;
-	while (xplr && ptr)
+	while (xplr && ptr && a)
 	{
 		if (flag == ((t_champ*)(xplr->cnt))->id)
 			ft_printf("Player %d (%s) is said to be alive\n" \
@@ -28,55 +28,33 @@ int		vprint_lives(t_cw *cw, void *ptr, int flag)
 	return (1);
 }
 
-int		vprint_cycle(t_cw *cw, void *ptr, int flag)
+int		vprint_cycle(t_cw *cw, void *ptr, t_arg *a, int flag)
 {
-	if (flag == 1 && !ptr)
+	if (flag == 1 && !ptr && a)
 		ft_printf("Cycle to die is now %d\n", cw->cycle_to_die);
-	if (flag == 0 && !ptr)
+	if (flag == 0 && !ptr && a)
 		ft_printf("It is now cycle %d\n", cw->tot_cycle);
 	return (flag);
 }
-/*
-void	free_args(char **arg, char *a, char *b)
-{
-	int		i;
 
-	i = -1;
-	while (arg[++i])
-		ft_memdel((void*)&arg[i]);
-	ft_memdel((void*)&arg);
-	if (a)
-		ft_memdel((void*)&a);
-	if (b)
-		ft_memdel((void*)&b);
-}
-*/
-int		vprint_op(t_cw *cw, void *ptr, int flag)
+int		vprint_op(t_cw *cw, void *ptr, t_arg *a, int flag)
 {
 	extern t_op op_tab[17];
-	char		*a;
-	char		*b;
 	char		*tmp;
-	char		**arg;
 
 	tmp = (flag == 1) ? "OK" : "FAILED";
-	arg = ft_strsplit(args_to_str(cw, (t_process*)(ptr)), 32);
-	if (!arg)
-		return (0);
-	a = NULL;
-	b = NULL;
 	if (((t_process*)(ptr))->opcode == 12 || ((t_process*)(ptr))->opcode == 15)
-		opcode_v12(cw, ptr, a, arg);
+		opcode_v12(cw, ptr, a);
 	else
-		opcode_g(cw, ptr, tmp);
+		opcode_g(cw, ptr, tmp, a);
 	if (((t_process*)(ptr))->opcode == 11)
-		opcode_v11(ptr, a, b, arg);
+		opcode_v11(ptr, a);
 	if (((t_process*)(ptr))->opcode == 10)
-		opcode_v10(ptr, a, b, arg);
+		opcode_v10(ptr, a);
 	return (flag);
 }
 
-int		vprint_deaths(t_cw *cw, void *ptr, int flag)
+int		vprint_deaths(t_cw *cw, void *ptr, t_arg *a, int flag)
 {
 	if (flag)
 		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", \
@@ -85,34 +63,23 @@ int		vprint_deaths(t_cw *cw, void *ptr, int flag)
 	return (flag);
 }
 
-int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
+int		vprint_pcmv(t_cw *cw, void *ptr, t_arg *a, int flag)
 {
 	extern t_op	op_tab[17];
-	int			widht;
-	int			i;
 	t_process	*p;
+	char		*all_args;
 
 	p = (t_process*)ptr;
 	if (cw->options->v_p == 0)
 	{
-		if (op_tab[p->opcode - 1].encod == 1)
-			widht = instruction_width(cw->arena[(p->i + 1) \
-				% MEM_SIZE], op_tab[p->opcode - 1]);
-		else
-			widht = op_tab[p->opcode - 1].direct_size == 1 ? 2 : 4;
-		widht += ((op_tab[p->opcode - 1].encod == 0) ? 1 : 2);
-		if (p->opcode == 9 && flag == 1) // peut etre ajouter dans la condition du 1er if ? (a coté de v_p)
+		if (p->opcode == 9 && flag == 1)
 			return (flag);
-		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", (p->opcode == 3 || p->opcode == 11) ? flag : widht, p->i, \
-			p->i + ((p->opcode == 3 || p->opcode == 11) ? flag : widht) % MEM_SIZE);
-		i = -1;
-		if (flag > 1 && (p->opcode == 3 || p->opcode == 11))
-			while(++i < flag)
-				pcmv_print_arg(cw, ptr, i);
-		else
-			while (++i < widht)
-				pcmv_print_arg(cw, ptr, i);
-		ft_printf("\n");
+		if (!(all_args = args_to_str(a)))
+			return ;
+		ft_printf("ADV %d (0x%.4x -> 0x%.4x) %s \n", a->widht, p->i, \
+			(p->i + a->widht) % MEM_SIZE, all_args);
+		if (all_args)
+			ft_memdel((void **)&all_args);
 	}
 	return (flag);
 }

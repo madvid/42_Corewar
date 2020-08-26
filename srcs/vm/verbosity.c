@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 11:40:37 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 14:31:22 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,48 @@ int		init_verbotab(t_cw *cw, void *ptr, t_arg *a, int flag)
 	return (flag);
 }
 
-int		vprint_essentials(t_cw *cw, void *ptr, int flag)
+int		vprint_essentials(t_cw *cw, void *ptr, t_arg *a, int flag)
 {
-	if (cw || ptr)
+	if (cw || ptr || a)
 		return (flag);
 	return (flag);
 }
 
-void	pcmv_print(t_cw *cw, void *ptr, int flag, int widht)
+char		*ito_arg(char *s, int n)
 {
-	t_process	*p;
-	int			i;
+	unsigned int	u;
+	char			c[2];
 
-	p = (t_process*)ptr;
-	i = -1;
-	if (flag > 1 && (p->opcode == 3 || p->opcode == 11))
-		while (++i < flag)
-			pcmv_print_arg(cw, ptr, i);
+	if (n < 0)
+	{
+		s = ft_strcat(s, "-");
+		u = -n;
+	}
 	else
-		while (++i < widht)
-			pcmv_print_arg(cw, ptr, i);
-	ft_printf("\n");
+		u = n;
+	c[0] = u % 10 + '0';
+	c[1] = 0;
+	if (u > 9)
+		ito_arg(s, u / 10);
+	s = ft_strcat(s, c);
+	return (s);
+}
+
+char		*args_to_str(t_arg *a)
+{
+	char	*str;
+	int		i;
+
+	if (!(str = malloc(sizeof(char * 128))))
+		return (NULL);
+	i = -1;
+	while (++i < 3 && a->type[i] != 0)
+	{
+		if (a->type[i] == REG_CODE)
+			str = ft_strcat(str, "r");
+		str = ito_arg(str, a->arg[i]);
+		if ((i + 1) < 3 && a->type[i + 1] != 0)
+			str = ft_strcat(str, " ");
+	}
+	return (str);
 }

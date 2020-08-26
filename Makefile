@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
+#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/24 13:44:48 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/26 14:29:25 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,6 @@ VM_FILES =	main					\
 			verbosity				\
 			verbosity_fct			\
 			verbo_tools				\
-			verbo_tools2			\
 			ft_itoa_base2			\
 			visu_arena				\
 			visu_process			\
