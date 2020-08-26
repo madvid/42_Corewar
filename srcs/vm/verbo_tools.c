@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbo_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 16:39:10 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 09:43:07 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 void	opcode_v12(t_cw *cw, void *ptr, char *a, char **arg)
 {
 	int			tmp;
+	int			tmp2;
 	extern t_op	op_tab[17];
 
 	a = arg[0];
-	tmp = ft_atoi(a);
-	tmp = (((t_process*)(ptr))->opcode == 12) ? tmp % IDX_MOD : tmp;
+	tmp = ((t_process*)(ptr))->opcode  == 12 ? ft_atoi(a) % IDX_MOD : ft_atoi(a);
+	tmp2 = tmp + ((t_process*)(ptr))->i;
+	tmp2 = ((t_process*)(ptr))->opcode  == 12 ? tmp2 % MEM_SIZE : tmp2;
 	ft_printf("P %4d ", ((t_process*)(ptr))->id);
 	ft_printf("| %s %s (%d)\n", op_tab[((t_process*)(ptr))->opcode - 1].name \
 		, args_to_str(cw, ((t_process*)(ptr))), \
-		(tmp + ((t_process*)(ptr))->i) % MEM_SIZE);
+		tmp2);
 }
 
 void	opcode_g(t_cw *cw, void *ptr, char *tmp)
