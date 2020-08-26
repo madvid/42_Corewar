@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 16:11:04 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 17:09:18 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,19 @@ int		vprint_pcmv(t_cw *cw, void *ptr, t_arg a, int flag)
 {
 	extern t_op	op_tab[17];
 	t_process	*p;
-	char		*all_args;
+	int			j;
 
 	p = (t_process*)ptr;
 	if (cw->options->v_p == 0)
 	{
 		if (p->opcode == 9 && flag == 1)
 			return (flag);
-		if (!(all_args = args_to_str(a)))
-			return (flag);
-		ft_printf("ADV %d (0x%.4x -> 0x%.4x) %s \n", a.widht, p->i, \
-			(p->i + a.widht) % MEM_SIZE, all_args);
-		if (all_args)
-			ft_memdel((void **)&all_args);
+		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", a.widht, p->i, \
+			(p->i + a.widht) % MEM_SIZE);
+		j = -1;
+		while(++j < a.widht)
+			ft_printf("%2.2x ", (unsigned char)cw->arena[(p->i + j) % MEM_SIZE]);
+		ft_putchar('\n');
 	}
 	return (flag);
 }
