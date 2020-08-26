@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 15:57:52 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 17:44:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,7 +372,7 @@ int					dump_memory(char *arena);
 **<<<<<Verbosity>>>>>
 */
 
-int					init_verbotab(t_cw *cw, void *ptr, t_arg a, int flag);
+void				verbotab(t_cw *cw, t_process *p, t_arg a);
 int		 			vprint_essentials(t_cw *cw, void *ptr, t_arg a,int flag);
 int		 			vprint_lives(t_cw *cw, void *ptr, t_arg a, int flag);
 int					vprint_cycle(t_cw *cw, void *ptr, t_arg a, int flag);

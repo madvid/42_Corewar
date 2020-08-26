@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 16:07:57 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 18:59:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ int		op_alive(t_cw *cw, t_process *proc)
 	proc->last_live = cw->tot_cycle;
 	if (-arg > 0 && -arg < cw->n_champ)
 		cw->champ_lives[-arg - 1]++;
-	return ((cw->options->verbose == true) ? \
-		init_verbotab(cw, proc, op_arg(0, proc, arg, 0, 0), -arg) : 1);
+	if (cw->options->verbose == true)
+		verbotab(cw, proc, op_arg(0, proc, arg, 0, 0));
+	return (1);
 }
 
 /*
@@ -59,21 +60,20 @@ int		op_load(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
 	int			arg;
+	u_int8_t	encod;
 	int			reg;
 
-	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
-		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
-
-	reg = instruction_width((cw->arena[(p->i + 1) \
-		% MEM_SIZE]) & 0b11000000, op_tab[p->opcode - 1]);
+	encod = cw->arena[(p->i + 1) % MEM_SIZE];
+	arg = get_arg_value(cw->arena, p, p->i + 2, \
+		((encod & 0b11000000) >> 6) + RELATIVE);
+	reg = instruction_width(encod & 0b11000000, op_tab[p->opcode - 1]);
 	reg = get_arg_value(cw->arena, p, p->i + 2 + reg, \
-		((cw->arena[(p->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
+		(encod & 0b00110000) >> 4);
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
-	// p->id == 2 ? ft_printf("    => valeur r2 = %d\n", p->registers[1]) : 0;
-	//tool_print_t_arg(op_arg(0, p, arg, 0, 0));
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) \
-		% MEM_SIZE], p, arg, reg, 0), 1) : 1);
+	if (cw->options->verbose == true)
+		verbotab(cw, p, op_arg(encod + 10, p, arg, reg, 0), 1);
+	return (1);
 }
 
 /*
@@ -97,7 +97,6 @@ int		op_store(t_cw *cw, t_process *p)
 	int			widht;
 	extern t_op	op_tab[17];
 
-	// a = cw->arena[(p->i + 2) % MEM_SIZE];
 	a = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
 	b = get_arg_value(cw->arena, p, p->i + 3, (((cw->arena[(p->i + 1) \
@@ -105,14 +104,12 @@ int		op_store(t_cw *cw, t_process *p)
 	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], \
 		op_tab[p->opcode - 1]);
 	cw->options->v_p = 1;
-	cw->options->v_lvl & 4 ? vprint_op(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 0;
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
 		b = p->i + (b % IDX_MOD);
 		b = (b < 0) ? MEM_SIZE + b : b;
-		// b = ((b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE])) \
-		// 	% IDX_MOD + p->i;
-		// b = (b >= 0) ? b % MEM_SIZE : MEM_SIZE + (b % MEM_SIZE);
+		if (cw->options->v_lvl & 4)
+			vprint_op(p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE] + 20, p, a, b, 0));
 		cw->arena[b % MEM_SIZE] = (a & 0xFF000000) >> 24;
 		i = 0;
 		while (++i < 4)
@@ -124,9 +121,8 @@ int		op_store(t_cw *cw, t_process *p)
 	}
 	else
 		p->registers[b - 1] = a;
-	cw->options->v_p = 0;
-	(cw->options->verbose == true && cw->options->v_lvl > 15) ? \
-		vprint_pcmv(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 0;
+	if (cw->options->v_lvl & 16)
+		vprint_pcmv(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0));
 	return (1);
 }
 
