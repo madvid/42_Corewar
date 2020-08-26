@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 11:40:09 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 14:36:00 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int		op_load(t_cw *cw, t_process *p)
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
 	// p->id == 2 ? ft_printf("    => valeur r2 = %d\n", p->registers[1]) : 0;
+	tool_print_t_arg(op_arg(0, proc, arg, 0, 0));
 	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
 }
 
@@ -153,5 +154,5 @@ int		op_addition(t_cw *cw, t_process *cur_proc)
 	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] \
 	+ cur_proc->registers[b - 1];
 	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
-	return (cw->options->verbose == true ? init_verbotab(cw, cur_proc, 1) : 1);
+	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
 }

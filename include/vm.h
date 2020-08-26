@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 13:12:18 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 14:34:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct		s_options
 typedef struct		s_arg
 {
 	int				type[3];
-	int				arg[3]
+	int				arg[3];
 	int				widht;
 }					t_arg;
 
@@ -387,6 +387,9 @@ void				opcode_v10(void *ptr, char *a, char *b, char **arg);
 void				pcmv_print_arg(t_cw *cw, void *ptr, int i);
 void				pcmv_print(t_cw *cw, void *ptr, int flag, int widht);
 void				free_args(char **arg, char *a, char *b);
+t_arg				op_arg(int encod, t_process *p, int a1, int a2, int a3);
+void				tool_print_t_arg(t_arg arg);
+int					*int_array(int ag1, int ag2, int ag3);
 
 /*
 **<<<<<Visualizer functions>>>>>
