@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity_fct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 09:45:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 11:40:16 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,21 @@ int		vprint_cycle(t_cw *cw, void *ptr, int flag)
 		ft_printf("It is now cycle %d\n", cw->tot_cycle);
 	return (flag);
 }
+/*
+void	free_args(char **arg, char *a, char *b)
+{
+	int		i;
 
+	i = -1;
+	while (arg[++i])
+		ft_memdel((void*)&arg[i]);
+	ft_memdel((void*)&arg);
+	if (a)
+		ft_memdel((void*)&a);
+	if (b)
+		ft_memdel((void*)&b);
+}
+*/
 int		vprint_op(t_cw *cw, void *ptr, int flag)
 {
 	extern t_op op_tab[17];
