@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 14:37:24 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 16:07:57 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int		op_alive(t_cw *cw, t_process *proc)
 	proc->last_live = cw->tot_cycle;
 	if (-arg > 0 && -arg < cw->n_champ)
 		cw->champ_lives[-arg - 1]++;
-	return ((cw->options->verbose == true) ? init_verbotab(cw, proc, -arg) : 1);
+	return ((cw->options->verbose == true) ? \
+		init_verbotab(cw, proc, op_arg(0, proc, arg, 0, 0), -arg) : 1);
 }
 
 /*
@@ -62,8 +63,7 @@ int		op_load(t_cw *cw, t_process *p)
 
 	arg = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
-	// p->id == 2 ? ft_printf("    => valeur dec ffffffb9 = %d\n", 0xffffffb9) : 0;
-	// p->id == 2 ? ft_printf("    => valeur de arg = %d\n", (unsigned int)arg) : 0;
+
 	reg = instruction_width((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000, op_tab[p->opcode - 1]);
 	reg = get_arg_value(cw->arena, p, p->i + 2 + reg, \
@@ -71,8 +71,9 @@ int		op_load(t_cw *cw, t_process *p)
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
 	// p->id == 2 ? ft_printf("    => valeur r2 = %d\n", p->registers[1]) : 0;
-	tool_print_t_arg(op_arg(0, proc, arg, 0, 0));
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	//tool_print_t_arg(op_arg(0, p, arg, 0, 0));
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) \
+		% MEM_SIZE], p, arg, reg, 0), 1) : 1);
 }
 
 /*
@@ -96,8 +97,6 @@ int		op_store(t_cw *cw, t_process *p)
 	int			widht;
 	extern t_op	op_tab[17];
 
-	cw->options->v_p = 1;
-	(cw->options->v_lvl) ? init_verbotab(cw, p, 1) : 1;
 	// a = cw->arena[(p->i + 2) % MEM_SIZE];
 	a = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
@@ -105,6 +104,8 @@ int		op_store(t_cw *cw, t_process *p)
 		% MEM_SIZE]) & 0b00110000) >> 4));
 	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], \
 		op_tab[p->opcode - 1]);
+	cw->options->v_p = 1;
+	cw->options->v_lvl & 4 ? vprint_op(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 0;
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
 	{
 		b = p->i + (b % IDX_MOD);
@@ -124,7 +125,9 @@ int		op_store(t_cw *cw, t_process *p)
 	else
 		p->registers[b - 1] = a;
 	cw->options->v_p = 0;
-	return ((cw->options->verbose == true && cw->options->v_lvl > 15) ? vprint_pcmv(cw, p, widht + 2) : 1);
+	(cw->options->verbose == true && cw->options->v_lvl > 15) ? \
+		vprint_pcmv(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 0;
+	return (1);
 }
 
 /*
@@ -139,20 +142,20 @@ int		op_store(t_cw *cw, t_process *p)
 **	[value_2]: 0 else
 */
 
-int		op_addition(t_cw *cw, t_process *cur_proc)
+int		op_addition(t_cw *cw, t_process *p)
 {
 	int		a;
 	int		b;
 	int		c;
 
-	a = cw->arena[(cur_proc->i + 2) % MEM_SIZE];
-	b = cw->arena[(cur_proc->i + 3) % MEM_SIZE];
-	c = cw->arena[(cur_proc->i + 4) % MEM_SIZE];
+	a = cw->arena[(p->i + 2) % MEM_SIZE];
+	b = cw->arena[(p->i + 3) % MEM_SIZE];
+	c = cw->arena[(p->i + 4) % MEM_SIZE];
 	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
 		|| c < 1 || c > REG_NUMBER)
-		return (cw->options->verbose ? init_verbotab(cw, cur_proc, 0) : 0);
-	cur_proc->registers[c - 1] = cur_proc->registers[a - 1] \
-	+ cur_proc->registers[b - 1];
-	cur_proc->carry = (cur_proc->registers[c - 1] == 0) ? 1 : 0;
-	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
+		return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 0) : 0);
+	p->registers[c - 1] = p->registers[a - 1] \
+	+ p->registers[b - 1];
+	p->carry = (p->registers[c - 1] == 0) ? 1 : 0;
+	return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 1) : 1);
 }

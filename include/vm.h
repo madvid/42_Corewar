@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 14:39:11 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 15:57:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,18 +372,18 @@ int					dump_memory(char *arena);
 **<<<<<Verbosity>>>>>
 */
 
-int					init_verbotab(t_cw *cw, void *ptr, t_arg *a, int flag);
-int		 			vprint_essentials(t_cw *cw, void *ptr, t_arg *a,int flag);
-int		 			vprint_lives(t_cw *cw, void *ptr, t_arg *a, int flag);
-int					vprint_cycle(t_cw *cw, void *ptr, t_arg *a, int flag);
-int		 			vprint_op(t_cw *cw, void *ptr, t_arg *a, int flag);
-int		 			vprint_deaths(t_cw *cw, void *ptr, t_arg *a, int flag);
-int		 			vprint_pcmv(t_cw *cw, void *ptr, t_arg *a, int flag);
-char				*args_to_str(t_arg *a);
-void				opcode_g(t_cw *cw, void *ptr, char *tmp, t_arg *a);
-void				opcode_v12(t_cw *cw, void *ptr, t_arg *a);
-void				opcode_v11(void *ptr, t_arg *a);
-void				opcode_v10(void *ptr, t_arg *a);
+int					init_verbotab(t_cw *cw, void *ptr, t_arg a, int flag);
+int		 			vprint_essentials(t_cw *cw, void *ptr, t_arg a,int flag);
+int		 			vprint_lives(t_cw *cw, void *ptr, t_arg a, int flag);
+int					vprint_cycle(t_cw *cw, void *ptr, t_arg a, int flag);
+int		 			vprint_op(t_cw *cw, void *ptr, t_arg a, int flag);
+int		 			vprint_deaths(t_cw *cw, void *ptr, t_arg a, int flag);
+int		 			vprint_pcmv(t_cw *cw, void *ptr, t_arg a, int flag);
+char				*args_to_str(t_arg a);
+void				opcode_g(void *ptr, char *tmp, t_arg a);
+void				opcode_v12(void *ptr, t_arg a);
+void				opcode_v11(void *ptr, t_arg a);
+void				opcode_v10(void *ptr, t_arg a);
 t_arg				op_arg(int encod, t_process *p, int a1, int a2, int a3);
 void				tool_print_t_arg(t_arg arg);
 

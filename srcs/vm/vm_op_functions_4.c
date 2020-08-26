@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 23:51:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 15:46:31 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		op_long_load(t_cw *cw, t_process *p)
 	b = get_arg_value(cw->arena, p, p->i + 2 + b, REG_CODE);
 	p->carry = (a == 0) ? 1 : 0;
 	p->registers[b - 1] = a;
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 1);
 }
 
 /*
@@ -69,7 +69,7 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 	while (++i < 4)
 		p->registers[c - 1] += (((unsigned char)(cw->arena[(b + i) \
 			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
-	return ((cw->options->verbose == true) ? init_verbotab(cw, p, 1) : 1);
+	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c), 1) : 1);
 }
 
 /*
@@ -81,14 +81,14 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 **	[value_2]:
 */
 
-int		op_long_fork(t_cw *cw, t_process *cur_proc)
+int		op_long_fork(t_cw *cw, t_process *p)
 {
 	int			addr;
 
-	addr = get_arg_value(cw->arena, cur_proc, cur_proc->i + 1, DIR_CODE);
-	if (!fork_creation_process(cw, cur_proc, addr))
+	addr = get_arg_value(cw->arena, p, p->i + 1, DIR_CODE);
+	if (!fork_creation_process(cw, p, addr))
 		return (vm_error_manager(CD_FORK, NULL, &cw));
-	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
+	return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, addr, 0, 0), 1) : 1);
 }
 
 /*
@@ -100,14 +100,14 @@ int		op_long_fork(t_cw *cw, t_process *cur_proc)
 **	[value_2]:
 */
 
-int		op_aff(t_cw *cw, t_process *cur_proc)
+int		op_aff(t_cw *cw, t_process *p)
 {
 	int			arg;
 	u_int8_t	reg;
 
-	reg = get_arg_value(cw->arena, cur_proc, cur_proc->i, REG_CODE);
-	arg = cur_proc->registers[reg - 1];
+	reg = get_arg_value(cw->arena, p, p->i, REG_CODE);
+	arg = p->registers[reg - 1];
 	if (cw->options->aff == true)
 		ft_printf("Aff: %s\n", ft_itoa(arg));
-	return (cw->options->verbose ? init_verbotab(cw, cur_proc, 1) : 1);
+	return (cw->options->verbose ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, arg, 0, 0), 1) : 1);
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 13:07:35 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 15:41:32 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 	u_int8_t	opcode;
 	u_int8_t	encoding;
 	int			widht;
+	t_arg		a;
 	extern t_op	op_tab[17];
 
 	// opcode = arena[cur_proc->i];
@@ -90,14 +91,16 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 		encoding = (u_int8_t)arena[(cur_proc->i + 1) % (int)MEM_SIZE];
 		widht = (cur_proc->pc < cur_proc->i) ? MEM_SIZE - cur_proc->i \
 			+ cur_proc->pc : cur_proc->pc - cur_proc->i;
+		a = op_arg(encoding, cur_proc, 0, 0, 0);
+		a.widht = widht;
 		if (is_valid_encoding(opcode, encoding) == false)
 		{
-			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, widht) : 0;
+			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, a, widht) : 0;
 			return (false);
 		}
 		if (is_valid_reg(arena, cur_proc) == false)
 		{
-			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, widht) : 0;
+			(cw->options->v_lvl & 16 && cw->options->v_lvl > 15) ? vprint_pcmv(cw, cur_proc, a, widht) : 0;
 			return (false);
 		}
 		return (true);
