@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   verbo_tools2.c                                     :+:      :+:    :+:   */
+/*   ntbf_verbo_tools2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 15:08:02 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 11:40:27 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 09:34:46 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@ char		*arg3_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 {
 	int			arg;
 	int			widht;
+	char		*tmp;
+	char		*tmp2;
+	char		*tmp3;
 	extern t_op	op_tab[17];
 
+	tmp = NULL;
 	if (op_tab[proc->opcode - 1].n_arg >= 3)
 	{
 		widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
@@ -27,16 +31,24 @@ char		*arg3_str(t_cw *cw, t_process *proc, char *dst, u_int8_t encoding)
 		(arg == IND_CODE) ? arg + RELATIVE : arg);
 		if (proc->opcode == 11)
 		{
-			dst = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE \
-				? ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
-				(REG_CODE + RELATIVE))) : ft_itoa(arg)));
+			tmp2 = ft_itoa(arg);
+			tmp3 = ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
+				(REG_CODE + RELATIVE)));
+			tmp = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE \
+				? tmp3 : tmp2));
+			ft_memdel((void*)&tmp2);
+			ft_memdel((void*)&tmp3);
 		}
 		else
 		{
-			dst = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE \
-				? ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+			tmp2 = ft_itoa(arg);
+			tmp3 = ft_strjoin("r", tmp2);
+			tmp = ft_strjoin(dst, (((encoding & 0b00001100) >> 2) == REG_CODE \
+				? tmp3 : tmp2));
 		}
 	}
+	dst = tmp;
+	ft_memdel((void*)&tmp);
 	return (dst);
 }
 
@@ -44,27 +56,45 @@ char		*arg2_into_str(t_cw *cw, t_process *proc, char *dst, int arg)
 {
 	u_int8_t	encoding;
 	int			widht;
+	char		*tmp;
+	char		*tmp2;
+	char		*tmp3;
 	extern t_op	op_tab[17];
 
 	encoding = cw->arena[(proc->i + 1) % MEM_SIZE];
 	widht = instruction_width(cw->arena[(proc->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[proc->opcode - 1]);
+	tmp = NULL;
 	if (proc->opcode == 11 || proc->opcode == 10 || proc->opcode == 8)
 	{
-		dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE \
-			? ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
-			(REG_CODE + RELATIVE))) : ft_itoa(arg)));
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_itoa(get_arg_value(cw->arena, proc, proc->i + 2 + widht, \
+			(REG_CODE + RELATIVE)));
+		tmp = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE \
+			? tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	else if (proc->opcode == 2 || proc->opcode == 3 || proc->opcode == 13)
 	{
-		dst = ft_strjoin(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
-			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
+		tmp = ft_strjoin(dst, (((encoding & 0b00110000) >> 4) == REG_CODE ? \
+			tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	else
 	{
-		dst = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE \
-			? ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
+		tmp = ft_strjoin_1sp(dst, (((encoding & 0b00110000) >> 4) == REG_CODE \
+			? tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
+	dst = tmp;
+	ft_memdel((void*)&tmp);
 	return (dst);
 }
 
@@ -90,26 +120,44 @@ char		*arg_into_str(t_cw *cw, t_process *proc, char *dst, int arg)
 {
 	u_int8_t	encoding;
 	int			a;
+	char		*tmp;
+	char		*tmp2;
+	char		*tmp3;
 
 	encoding = cw->arena[(proc->i + 1) % MEM_SIZE];
+	tmp = NULL;
 	if (proc->opcode == 10 || proc->opcode == 8)
 	{
 		a = (proc->opcode == 10) ? proc->i + 1 : proc->i + 2;
-		dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
-			ft_itoa(get_arg_value(cw->arena, proc, a, \
-			(REG_CODE + RELATIVE))) : ft_itoa(arg)));
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_itoa(get_arg_value(cw->arena, proc, a, \
+			(REG_CODE + RELATIVE)));
+		tmp = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ? \
+			tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	else if (proc->opcode == 1 || proc->opcode == 15 || proc->opcode == 16 \
 		|| proc->opcode == 12)
 	{
-		dst = ft_strjoin("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
-			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
+		tmp = ft_strjoin("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
+			tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
 	else
 	{
-		dst = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
-			ft_strjoin("r", ft_itoa(arg)) : ft_itoa(arg)));
+		tmp2 = ft_itoa(arg);
+		tmp3 = ft_strjoin("r", tmp2);
+		tmp = ft_strjoin_1sp("", (((encoding & 0b11000000) >> 6) == REG_CODE ?\
+			tmp3 : tmp2));
+		ft_memdel((void*)&tmp2);
+		ft_memdel((void*)&tmp3);
 	}
+	dst = tmp;
+	ft_memdel((void*)&tmp);
 	return (dst);
 }
 

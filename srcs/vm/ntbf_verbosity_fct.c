@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   verbosity_fct.c                                    :+:      :+:    :+:   */
+/*   ntbf_verbosity_fct.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 11:40:16 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/26 09:45:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		vprint_cycle(t_cw *cw, void *ptr, int flag)
 		ft_printf("It is now cycle %d\n", cw->tot_cycle);
 	return (flag);
 }
-/*
+
 void	free_args(char **arg, char *a, char *b)
 {
 	int		i;
@@ -50,7 +50,7 @@ void	free_args(char **arg, char *a, char *b)
 	if (b)
 		ft_memdel((void*)&b);
 }
-*/
+
 int		vprint_op(t_cw *cw, void *ptr, int flag)
 {
 	extern t_op op_tab[17];
@@ -73,6 +73,7 @@ int		vprint_op(t_cw *cw, void *ptr, int flag)
 		opcode_v11(ptr, a, b, arg);
 	if (((t_process*)(ptr))->opcode == 10)
 		opcode_v10(ptr, a, b, arg);
+	free_args(arg, a, b);
 	return (flag);
 }
 
@@ -89,7 +90,6 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 {
 	extern t_op	op_tab[17];
 	int			widht;
-	int			i;
 	t_process	*p;
 
 	p = (t_process*)ptr;
@@ -101,18 +101,13 @@ int		vprint_pcmv(t_cw *cw, void *ptr, int flag)
 		else
 			widht = op_tab[p->opcode - 1].direct_size == 1 ? 2 : 4;
 		widht += ((op_tab[p->opcode - 1].encod == 0) ? 1 : 2);
-		if (p->opcode == 9 && flag == 1) // peut etre ajouter dans la condition du 1er if ? (a coté de v_p)
+		if (p->opcode == 9 && flag == 1)
 			return (flag);
-		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", (p->opcode == 3 || p->opcode == 11) ? flag : widht, p->i, \
-			p->i + ((p->opcode == 3 || p->opcode == 11) ? flag : widht) % MEM_SIZE);
-		i = -1;
-		if (flag > 1 && (p->opcode == 3 || p->opcode == 11))
-			while(++i < flag)
-				pcmv_print_arg(cw, ptr, i);
-		else
-			while (++i < widht)
-				pcmv_print_arg(cw, ptr, i);
-		ft_printf("\n");
+		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", \
+			(p->opcode == 3 || p->opcode == 11) ? flag : widht, p->i, \
+			p->i + ((p->opcode == 3 || p->opcode == 11) ? flag : widht) \
+			% MEM_SIZE);
+		pcmv_print(cw, ptr, flag, widht);
 	}
 	return (flag);
 }
