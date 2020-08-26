@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 17:52:38 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 22:53:11 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 10:38:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,27 @@
 
 int			vm_init_cw_error(int cd_error, t_cw **cw)
 {
+	ft_printf("[vm_init_cw_error] valeur de cd_error = %d\n", cd_error);
 	if (cd_error >= (int)CD_INI_PROC && (*cw)->process)
+	{
+		ft_printf("[vm_init_cw_error]ici 1\n");
 		ft_lstdel(&((*cw)->process), &ft_lst_fdel_proc);
+	}
 	if (cd_error >= CD_ID_ARENA)
+	{
+		ft_printf("[vm_init_cw_error]ici 2\n");
 		ft_1d_int_tabledel(&((*cw)->id_arena), REG_NUMBER);
+	}
 	if (cd_error >= CD_ARENA)
+	{
+		ft_printf("[vm_init_cw_error]ici 3\n");
 		ft_strdel(&((*cw)->arena));
+	}
 	if (cd_error >= CD_CW_STRUCT)
+	{
+		ft_printf("[vm_init_cw_error]ici 4\n");
 		ft_memdel((void **)cw);
+	}
 	return (0);
 }
 
@@ -83,5 +96,5 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 		ft_putendl(msg[CD_USAGE]);
 		ft_putendl("########################");
 	}
-	exit(EXIT_FAILURE);
+	return (0);
 }
