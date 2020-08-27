@@ -23,27 +23,14 @@
 
 int			vm_init_cw_error(int cd_error, t_cw **cw)
 {
-	ft_printf("[vm_init_cw_error] valeur de cd_error = %d\n", cd_error);
 	if (cd_error >= (int)CD_INI_PROC && (*cw)->process)
-	{
-		ft_printf("[vm_init_cw_error]ici 1\n");
 		ft_lstdel(&((*cw)->process), &ft_lst_fdel_proc);
-	}
 	if (cd_error >= CD_ID_ARENA)
-	{
-		ft_printf("[vm_init_cw_error]ici 2\n");
 		ft_1d_int_tabledel(&((*cw)->id_arena), REG_NUMBER);
-	}
 	if (cd_error >= CD_ARENA)
-	{
-		ft_printf("[vm_init_cw_error]ici 3\n");
 		ft_strdel(&((*cw)->arena));
-	}
 	if (cd_error >= CD_CW_STRUCT)
-	{
-		ft_printf("[vm_init_cw_error]ici 4\n");
 		ft_memdel((void **)cw);
-	}
 	return (0);
 }
 
@@ -85,7 +72,8 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 						M_PROC_MEM, M_CW_STRUCT, M_ARENA, M_ID_ARENA, M_FIN,
 						M_INI_PROC, M_FORK, NULL};
 
-	ft_putendl(msg[code_error]);
+	if (code_error != FIN_DU_GAME)
+		ft_putendl(msg[code_error]);
 	if (p)
 		vm_init_parse_error(code_error, p);
 	if (cw)

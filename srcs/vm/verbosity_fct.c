@@ -37,16 +37,16 @@ void	vprint_cycle(t_cw *cw, int flag)
 
 void	vprint_op(t_process *p, t_arg a)
 {
-	char		*tmp;
+	char		*zjmp_test;
 
-	tmp = (!p->carry) ? " OK" : " FAILED";
+	zjmp_test = (!p->carry) ? " OK" : " FAILED";
 	if (p->opcode == 12 || p->opcode == 15)
 		opcode_v12(p, a);
 	else
-		opcode_g(p, tmp, a);
+		opcode_g(p, zjmp_test, a);
 	if (p->opcode == 11)
 		opcode_v11(p, a);
-	if (p->opcode == 10)
+	else if (p->opcode == 10)
 		opcode_v10(p, a);
 }
 

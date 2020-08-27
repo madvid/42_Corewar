@@ -13,23 +13,6 @@
 #include "vm.h"
 
 /*
-** Function: op_arg_init
-** Description:
-**	Initialize table type and arg to 0 and width to -1;
-*/
-
-static void	op_arg_init(t_arg *arg)
-{
-	arg->type[0] = 0;
-	arg->type[1] = 0;
-	arg->type[2] = 0;
-	arg->arg[0] = 0;
-	arg->arg[1] = 0;
-	arg->arg[2] = 0;
-	arg->widht = -1;
-}
-
-/*
 ** Function: op_arg_type
 ** Description:
 **	Records of the type of the arguments.
@@ -51,8 +34,8 @@ static void	op_arg_type(t_op op_elem, int encod, t_arg *ag)
 		{
 			if (i < (int)op_elem.n_arg)
 			{
-				ag->type[i] = (encod & (192 >> (2 * i))) >> (8 - 2 * i);
-				ft_printf(" [(encod & (192 >> (2 * i))) = %d] ag->type[%d] = %d\n", (encod & (192 >> (2 * i))), i, ag->type[i]);
+				ag->type[i] = (encod & (192 >> (2 * i))) >> (8 - 2 * i);		// type en CODE
+				//ft_printf(" [(encod & (192 >> (2 * i))) = %d] ag->type[%d] = %d\n", (encod & (192 >> (2 * i))), i, ag->type[i]);
 				ag->type[i] = (ag->type[i] == 3) ? 4 & op_elem.type[i] \
 					: ag->type[i] & op_elem.type[i];
 			}
@@ -92,8 +75,8 @@ t_arg		op_arg(int encod, t_process *p, int a1, int a2, int a3)
 	extern t_op	op_tab[17];
 	t_arg	arg;
 	
-	op_arg_init(&arg);
-	op_arg_type(op_tab[p->opcode - 1], encod % RELATIVE, &arg);
+	op_arg_init(&arg, 0, 0);
+	op_arg_type(op_tab[p->opcode - 1], encod, &arg);
 	op_arg_type_shift(encod - (encod % RELATIVE), &arg);
 	if (arg.type[0] != 0)
 		arg.arg[0] = a1;

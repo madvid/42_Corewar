@@ -16,6 +16,7 @@ int			main(int ac, char **av)
 {
 	t_parse		*p;
 	t_cw		*cw;
+	int			code_error;
 
 	p = NULL;
 	cw = NULL;
@@ -32,12 +33,12 @@ int			main(int ac, char **av)
 	vm_champion_introduction(&(p->lst_champs));
 	vm_cw_arena_init(&cw, &p);
 	cw->lst_champs = p->lst_champs;
-	vm_execution(cw);
+	code_error = vm_execution(cw);
 	// if (p->options->sdl == true)
 	// 	visualizer(cw, p);
 	// else
 	// 	vm_execution(cw);
-	vm_error_manager(FIN_DU_GAME, &p, &cw);
+	vm_error_manager(code_error, &p, &cw);
 	//system("leaks vm");
 	return (0);
 }

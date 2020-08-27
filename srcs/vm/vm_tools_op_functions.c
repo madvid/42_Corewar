@@ -12,6 +12,38 @@
 
 #include "vm.h"
 
+void	write_in_arena(t_cw *cw, t_process *p, int arg[3])
+{
+	int			i;
+
+	cw->arena[arg[2] % MEM_SIZE] = (arg[0] & 0xFF000000) >> 24;
+	cw->id_arena[arg[2] % MEM_SIZE] = p->champ->id;
+	i = 0;
+	while (++i < 4)
+	{
+		cw->arena[(arg[2] + i) % MEM_SIZE] = \
+			(unsigned char)((arg[0] & (0xFF000000 >> (8 * i))) >> (24 - (8 * i)));
+		cw->id_arena[(arg[2] + i) % MEM_SIZE] = p->champ->id;
+	}
+}
+
+/*
+** Function: op_arg_init
+** Description:
+**	Initialize table type and arg to 0 and width to -1;
+*/
+
+void	op_arg_init(t_arg *arg, int type0, int type_select)
+{
+	arg->type[0] = (type_select & 0b00000001) ? type0 : 0;
+	arg->type[1] = (type_select & 0b00000010) ? type0 : 0;
+	arg->type[2] = (type_select & 0b00000100) ? type0 : 0;
+	arg->arg[0] = 0;
+	arg->arg[1] = 0;
+	arg->arg[2] = 0;
+	arg->widht = -1;
+}
+
 /*
 ** Function: get_arg_value
 ** Description:

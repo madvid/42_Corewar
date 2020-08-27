@@ -190,7 +190,7 @@ int		vm_proc_perform_opcode(t_cw *cw, t_process *proc)
 	if (proc->wait_cycles == 0)
 	{
 		proc->pc = addr_next_opcode(cw->arena, proc);
-		if ((code_error = perform_opcode(cw, proc) != 0))
+		if ((code_error = perform_opcode(cw, proc) > 0))
 			return (code_error);
 		proc->i = proc->pc;
 		proc->wait_cycles = -1;

@@ -14,16 +14,16 @@
 
 void	opcode_v12(void *ptr, t_arg a)
 {
-	int			tmp;
-	int			tmp2;
+	int			range;
+	int			dest;
 	extern t_op	op_tab[17];
 
-	tmp = ((t_process*)(ptr))->opcode  == 12 ? a.arg[0] % IDX_MOD \
+	range = ((t_process*)(ptr))->opcode  == 12 ? a.arg[0] % IDX_MOD \
 		: a.arg[0];
-	tmp2 = tmp + ((t_process*)(ptr))->i;
-	tmp2 = ((t_process*)(ptr))->opcode  == 12 ? tmp2 % MEM_SIZE : tmp2;
+	dest = range + ((t_process*)(ptr))->i;
+	dest = ((t_process*)(ptr))->opcode  == 12 ? dest % MEM_SIZE : dest;
 	ft_printf("P %4d | %s %d (%d)\n", ((t_process*)(ptr))->id, \
-		op_tab[((t_process*)(ptr))->opcode - 1].name, a.arg[0], tmp2);
+		op_tab[((t_process*)(ptr))->opcode - 1].name, a.arg[0], dest);
 }
 
 void	opcode_g(void *ptr, char *tmp, t_arg a)

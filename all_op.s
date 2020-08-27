@@ -31,9 +31,10 @@
 # Pour l'affichage des REG dans la verbose, on écrit le numéro du REG dans la plupart des
 # opcodes mais pas tous.
 # Liste des opcodes où les REG sont écrit en RELATIF:
-#		LLDI, OR, XOR, AND	(RELATIF, RELATIF, ABSOLU)
-#		LDI					(RELATIF, RELATIF, ABSOLU)
-#		STI					(ABSOLU, RELATIF, RELATIF)
+#		LLDI(14) LDI(10), OR(7), XOR(8), AND(6)
+#			(RELATIF, RELATIF, ABSOLU)
+#		STI	
+#			(ABSOLU, RELATIF, RELATIF)
 # Toutes les autre opérations sont en ABSOLU
 
 

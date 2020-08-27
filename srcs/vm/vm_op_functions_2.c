@@ -26,23 +26,17 @@
 
 int		op_soustraction(t_cw *cw, t_process *p)
 {
-	int		a;
-	int		b;
-	int		c;
+	t_arg		v_arg;
 
-	a = cw->arena[(p->i + 2) % MEM_SIZE];
-	b = cw->arena[(p->i + 3) % MEM_SIZE];
-	c = cw->arena[(p->i + 4) % MEM_SIZE];
-	if (a < 1 || a > REG_NUMBER || b < 1 || b > REG_NUMBER \
-		|| c < 1 || c > REG_NUMBER)
-		{
-			verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
-			return (-1);
-		}
-	p->registers[c - 1] = p->registers[a - 1] \
-	- p->registers[b - 1];
-	p->carry = (p->registers[c - 1] == 0) ? 1 : 0;
-	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
+	op_arg_init(&v_arg, REG_CODE, 7);
+	v_arg.arg[0] = cw->arena[(p->i + 2) % MEM_SIZE];
+	v_arg.arg[1] = cw->arena[(p->i + 3) % MEM_SIZE];
+	v_arg.arg[2] = cw->arena[(p->i + 4) % MEM_SIZE];
+	p->registers[v_arg.arg[2] - 1] = p->registers[v_arg.arg[0] - 1] \
+		- p->registers[v_arg.arg[1] - 1];
+	p->carry = (p->registers[v_arg.arg[2] - 1] == 0) ? 1 : 0;
+	if (cw->options->verbose == true)
+		verbotab(cw, p, v_arg);
 	return (0);
 }
 
@@ -57,22 +51,28 @@ int		op_soustraction(t_cw *cw, t_process *p)
 int		op_and(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
+	t_arg		v_arg;
 	int			a;
 	int			b;
 	int			c;
 
+	op_arg_init(&v_arg, DIR_CODE, 3);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	v_arg.arg[0] = a;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	v_arg.arg[1] = b;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	v_arg.arg[2] = c;
+	v_arg.type[2] = REG_CODE;
 	p->registers[c - 1] = a & b;
 	p->carry = (p->registers[c - 1] == 0) ? 1 : 0;
-	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
+	verbotab(cw, p, v_arg);
 	return (0);
 }
 
@@ -87,22 +87,28 @@ int		op_and(t_cw *cw, t_process *p)
 int		op_or(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
+	t_arg		v_arg;
 	int			a;
 	int			b;
 	int			c;
 
+	op_arg_init(&v_arg, DIR_CODE, 3);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	v_arg.arg[0] = a;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	v_arg.arg[1] = b;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	v_arg.arg[2] = c;
+	v_arg.type[2] = REG_CODE;
 	p->registers[c - 1] = a | b;
 	p->carry = (p->registers[c - 1] == 0) ? 1 : 0;
-	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
+	verbotab(cw, p, v_arg);
 	return (0);
 }
 
@@ -117,21 +123,27 @@ int		op_or(t_cw *cw, t_process *p)
 int		op_xor(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
+	t_arg		v_arg;
 	int			a;
 	int			b;
 	int			c;
 
+	op_arg_init(&v_arg, DIR_CODE, 3);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
 	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	v_arg.arg[0] = a;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
 	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	v_arg.arg[1] = b;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
 	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
-	verbotab(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, c));
+	v_arg.arg[2] = c;
+	v_arg.type[2] = REG_CODE;
 	p->registers[c - 1] = a ^ b;
 	p->carry = (p->registers[c - 1] == 0) ? 1 : 0;
+	verbotab(cw, p, v_arg);
 	return (0);
 }

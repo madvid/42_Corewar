@@ -25,7 +25,7 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 	t_op_funct[8] = &op_zerojump;
 	t_op_funct[9] = &op_load_index;
 	t_op_funct[10] = &op_store_index;
-	 t_op_funct[11] = &op_fork;
+	t_op_funct[11] = &op_fork;
 	t_op_funct[12] = &op_long_load;
 	t_op_funct[13] = &op_long_load_index;
 	t_op_funct[14] = &op_long_fork;
@@ -56,10 +56,7 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 		// cur_proc->pc = addr_next_opcode(cw->arena, cur_proc);
 		if (!is_valid_opcode(cw, cw->arena, cur_proc))
 			return (0);
-		if (cur_proc->opcode == 12 || cur_proc->opcode == 15)
-			code_error = (op_funct[cur_proc->opcode - 1](cw, cur_proc) == -1) ? CD_PROC_MEM : 0;
-		else
-			code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
+		code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
 	}
 	return (code_error);
 }
