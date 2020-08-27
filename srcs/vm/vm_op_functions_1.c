@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 01:46:06 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 12:44:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int		op_load(t_cw *cw, t_process *p)
 	p->registers[reg - 1] = arg;
 	if (cw->options->verbose == true)
 	{
-		tool_print_t_arg(op_arg(encod, p, arg, reg, 0));
-		verbotab(cw, p, op_arg(encod, p, arg, reg, 0));
+		tool_print_t_arg(op_arg(encod + 10, p, arg, reg, 0));
+		verbotab(cw, p, op_arg(encod + 10, p, arg, reg, 0));
 	}
 	return (0);
 }
