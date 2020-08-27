@@ -109,7 +109,7 @@ WHITE = \033[1;37m
 
 all: $(VM)
 
-$(VM): $(VM_OBJ)
+$(VM): $(VM_OBJ) $(LIBFT)
 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB)
 	@echo "\n $(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@"
 
@@ -131,7 +131,7 @@ $(VM): $(VM_OBJ)
 #	-include $(DEP)
 #	@endif
 
-$(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
+$(VM_OBJ): $(INC_DIR)/vm.h
 
  $(SRC_DIR)$(VM_DIR)%.o: %.c
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
@@ -143,7 +143,7 @@ $(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
 #	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
 #	@rm -rf $(VM_D)
 
-$(LIBFT): $(LIBFT_DIR)/$(INC_DIR)libft.h
+$(LIBFT): FORCE
 	@make -sC $(LIBFT_DIR)
 
 show:
@@ -154,6 +154,8 @@ show:
 norm:
 	@echo "\n $(VIOLET)[norminette]$(NOC) $(CYAN)Checking norm of:$(NOC) $(VM) $(LIBFT)"
 	@norminette $(SRC_DIR)$(VM) $(INC_DIR) $(LIBFT_DIR)/$(SRC_DIR) | grep _visu Norme -B1 || echo "$(VIOLET)[norm] vm and libft: $(GREEN)All clear$(NOC)"
+
+FORCE:
 
 clean:
 	@make clean -C $(LIBFT_DIR)
