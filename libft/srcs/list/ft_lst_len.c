@@ -29,7 +29,7 @@ int		ft_lst_len(t_list *lst)
 
 	len = 0;
 	if (lst == NULL)
-		return (-1);
+		return (0);
 	xplr = lst;
 	while (xplr)
 	{
