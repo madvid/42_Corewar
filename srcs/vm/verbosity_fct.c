@@ -19,7 +19,7 @@ void	vprint_lives(t_cw *cw, t_arg a)
 	xplr = cw->lst_champs;
 	while (xplr)
 	{
-		if (a.arg[0] == ((t_champ*)(xplr->cnt))->id)
+		if (-a.arg[0] == ((t_champ*)(xplr->cnt))->id)
 			ft_printf("Player %d (%s) is said to be alive\n" \
 				, ((t_champ*)(xplr->cnt))->id \
 				, ((t_champ*)(xplr->cnt))->name);
@@ -39,7 +39,7 @@ void	vprint_op(t_process *p, t_arg a)
 {
 	char		*zjmp_test;
 
-	zjmp_test = (!p->carry) ? " OK" : " FAILED";
+	zjmp_test = (p->carry) ? " OK" : " FAILED";
 	if (p->opcode == 12 || p->opcode == 15)
 		opcode_v12(p, a);
 	else
@@ -60,7 +60,7 @@ void	vprint_pcmv(t_cw *cw, t_process *p, t_arg a)
 {
 	int			j;
 
-	if (p->opcode == 9 && !p->carry)
+	if (p->opcode == 9 && p->carry)
 		return ;
 	ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", a.widht, p->i, \
 		(p->i + a.widht) % MEM_SIZE);

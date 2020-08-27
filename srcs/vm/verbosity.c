@@ -25,6 +25,8 @@ void		verbotab(t_cw *cw, t_process *p, t_arg arg)
 	if (p->opcode == 1 || p->opcode == 9 \
 		|| p->opcode == 12 || p->opcode == 15)
 		arg.widht = 5 - 2 * op_tab[p->opcode -1].direct_size;
+	else if (p->opcode == 3)
+		arg.widht = 3 + arg.type[1];
 	else
 		arg.widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE]\
 			, op_tab[p->opcode - 1]) + 1 + op_tab[p->opcode - 1].encod;

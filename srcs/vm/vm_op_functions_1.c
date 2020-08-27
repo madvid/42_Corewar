@@ -35,7 +35,7 @@ int		op_alive(t_cw *cw, t_process *proc)
 
 	op_arg_init(&v_arg, 0, 0);
 	arg = get_arg_value(cw->arena, proc, proc->i + 1, DIR_CODE);
-	v_arg.arg[0] = -arg;
+	v_arg.arg[0] = arg;
 	v_arg.type[0] = DIR_CODE;
 	proc->n_lives++;
 	cw->ctd_lives++;

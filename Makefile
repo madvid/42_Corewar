@@ -177,4 +177,4 @@ fclean: clean
 
 re : fclean all
 
-.PHONY: all show norm clean fclean re
+.PHONY: all show norm FORCE clean fclean re

@@ -94,6 +94,7 @@ int		op_store_index(t_cw *cw, t_process *p)
 	extern t_op	op_tab[17];
 	t_arg		v_arg;
 	int			arg[3];
+	int			encod;
 
 	op_arg_init(&v_arg, DIR_CODE, 7);
 	v_arg.type[0] = REG_CODE;
@@ -101,12 +102,14 @@ int		op_store_index(t_cw *cw, t_process *p)
 	arg[0] = p->registers[v_arg.arg[0] - 1];
 	arg[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
-	arg[1] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	arg[1] = get_arg_value(cw->arena, p, p->i + 2 + arg[2], arg[1] + RELATIVE);
-	arg[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
-		& 0b11110000, op_tab[p->opcode - 1]);
-	arg[2] = (arg[1] + get_arg_value(cw->arena, p, p->i + 2 + arg[2], ((cw->arena[(p->i + 1) \
-			% MEM_SIZE] & 0b00001100) >> 2) + RELATIVE)) % IDX_MOD + p->i;
+	encod = cw->arena[(p->i + 1) % MEM_SIZE];
+	arg[1] = get_arg_value(cw->arena, p, p->i + 2 + arg[2]\
+		, ((encod & 0b00110000) >> 4) + RELATIVE);
+	v_arg.arg[1] = arg[1];
+	arg[2] = instruction_width(encod & 0b11110000, op_tab[p->opcode - 1]);
+	v_arg.arg[2] = get_arg_value(cw->arena, p, p->i + 2 + arg[2]\
+		, ((encod & 0b00001100) >> 2) + RELATIVE);
+	arg[2] = (arg[1] + v_arg.arg[2]) % IDX_MOD + p->i;
 	arg[2] = (arg[2] < 0) ? MEM_SIZE + (arg[2] % MEM_SIZE) : arg[2] % MEM_SIZE;
 	write_in_arena(cw, p, arg);
 	verbotab(cw, p, v_arg);
