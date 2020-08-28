@@ -6,16 +6,23 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 17:06:52 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 02:10:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 13:01:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-void	ft_lstdelone(t_list **alst, void (*del)(void*, size_t))
+void	ft_lstdelone(t_list **alst, void (*del)(void*))
 {
-	(del)((*alst)->cnt, 1);
+	if (!alst || !(*alst))
+		return ;
+	if ((*alst)->cnt)
+	{
+		(del)((*alst)->cnt);
+		(*alst)->next = NULL;
+		free((*alst)->cnt);
+	}
 	free(*alst);
 	*alst = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/11 10:53:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 13:01:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@
 */
 typedef struct		s_list
 {
-	int				file_d;
 	void			*cnt;
-	size_t			cnt_s;
 	struct s_list	*next;
 }					t_list;
 
@@ -103,9 +101,9 @@ void				ft_putnbr_fd(int n, int fd);
 /*
 ** Fonctions de la partie bonus
 */
-t_list				*ft_lstnew(void const *content, size_t content_size);
-void				ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
-void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
+t_list				*ft_lstnew(void const *content);
+void				ft_lstdelone(t_list **alst, void (*del)(void*));
+void				ft_lstdel(t_list **alst, void (*del)(void *));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));

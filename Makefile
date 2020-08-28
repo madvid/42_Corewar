@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by weilin            #+#    #+#              #
-#    Updated: 2020/08/27 01:11:16 by mdavid           ###   ########.fr        #
+#    Updated: 2020/08/28 12:52:16 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,7 +109,7 @@ WHITE = \033[1;37m
 
 all: $(VM)
 
-$(VM): $(VM_OBJ) $(LIBFT)
+$(VM): $(LIBFT) $(VM_OBJ)
 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB)
 	@echo "\n $(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@"
 

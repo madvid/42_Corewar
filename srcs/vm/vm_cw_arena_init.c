@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 22:35:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 11:55:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ static int	vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 	(*cw)->i_check = 0;
 	while (nb_champ > 0)
 	{
-		if (!(tmp = ft_lstnew(NULL, sizeof(t_process))))
+		if (!(tmp = ft_lstnew(NULL)))
 			return ((int)CD_INI_PROC);
 		ft_lstadd(&(*cw)->process, tmp);
 		nb_champ--;

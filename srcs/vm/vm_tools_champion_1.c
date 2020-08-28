@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_champion_1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/19 10:35:23 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/28 12:17:07 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,15 @@ static int	set_champ_value(t_champ *champ, t_parse *p, char *str)
 int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 {
 	t_list		*nw_link;
-	t_champ		champ;
+	t_champ		*champ;
 	int			code_error;
 
 	nw_link = NULL;
-	if ((code_error = set_champ_value(&champ, p, av)) != 0)
+	if (!(champ = (t_champ*)malloc(sizeof(t_champ))))
+		return ((int)CD_MEM_CHAMP);
+	if ((code_error = set_champ_value(champ, p, av)) != 0)
 		return (code_error);
-	if (!(nw_link = ft_lstnew(&champ, sizeof(champ))))
+	if (!(nw_link = ft_lstnew(champ)))
 		return ((int)CD_MEM_CHAMP);
 	ft_lstadd(lst_champs, nw_link);
 	p->nb_champ++;

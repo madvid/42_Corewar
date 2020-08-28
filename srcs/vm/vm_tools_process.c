@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 01:01:58 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 12:24:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		vm_proc_kill_not_living(t_cw *cw)
 		if (((t_process*)(xplr->cnt))->n_lives == 0)
 		{
 			next = xplr->next;
-			if (cw->options->v_lvl & 0b1000)
+			if (cw->options->v_lvl & 0b00001000)
 				vprint_deaths(cw, (t_process*)(xplr->cnt));
 			if (xplr - cw->process == 0)
 			{

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 00:52:56 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 12:53:20 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	int			i;
 	static int	id;
 
-	if (!(new_link = ft_lstnew(NULL, sizeof(t_list)))
+	if (!(new_link = ft_lstnew(NULL))
 		|| !(new_proc = (t_process*)ft_memalloc(sizeof(t_process))))
 		return (0);
 	new_link->cnt = new_proc;

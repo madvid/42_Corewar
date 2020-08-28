@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 11:02:30 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 22:46:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 13:10:07 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_list		*get_champ_id(t_list **champ, int id)
 int		lst_sort_champion(t_list **champ)
 {
 	t_list			*xplr;
-	t_list			**chp;
+	t_list			*chp[4];
 	int				nb_champ;
 	int				i;
 	int				id;
@@ -83,18 +83,6 @@ int		lst_sort_champion(t_list **champ)
 	if (ft_lst_len(*champ) == 1)
 		return (0);
 	nb_champ = ft_lst_len(*champ);
-	if (!(chp = (t_list**)malloc(sizeof(t_list*) * nb_champ)))
-		return (-1);
-	// ================================
-	// id = 0;
-	// i = 0;
-	// while (++id <= 4)
-	// {
-	// 	xplr = get_champ_id(champ, id);
-	// 	if (xplr != NULL)
-	// 		chp[i++] = xplr;
-	// }
-	// ================================
 	id = 4;
 	i = 0;
 	while (id-- > 0)
@@ -103,7 +91,6 @@ int		lst_sort_champion(t_list **champ)
 		if (xplr != NULL)
 			chp[i++] = xplr;
 	}
-	// ================================
 	*champ = reconstruct_champ_list(chp, nb_champ);
 	return (1);
 }

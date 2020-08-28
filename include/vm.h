@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 23:26:09 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 12:28:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,8 +162,8 @@ void				tool_print_short_champ_list(t_list *lst_champs);					// a retirer
 int					vm_error_manager(int code_error, t_parse **p, t_cw **cw);
 int					vm_init_parse_error(int code_error, t_parse **p);	// print error message if memory allocation issue at initialization
 int					vm_init_cw_error(int cd_error, t_cw **cw);
-void				ft_lst_fdel_champ(void *link, size_t link_size);
-void				ft_lst_fdel_proc(void *link, size_t link_size);
+void				ft_lst_fdel_champ(void *link);
+void				ft_lst_fdel_proc(void *proc);
 
 /*
 ** Prototypes des fonctions de parsing des arguments en STDIN
