@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 16:09:11 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 23:26:52 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void	opcode_v11(void *ptr, t_arg a)
 	int		tmp;
 	int		ret;
 
-	tmp =  (a.arg[0] + a.arg[1]) % IDX_MOD;
-	ret =a.arg[0] + a.arg[1];
+	tmp =  (a.arg[1] + a.arg[2]) % IDX_MOD;
+	ret =a.arg[1] + a.arg[2];
 	ft_printf("%7s| -> store to %d + %d = %d (with pc and mod %d)\n", "", \
-		a.arg[0], a.arg[1], ret, \
+		a.arg[1], a.arg[2], ret, \
 		(tmp + ((t_process*)(ptr))->i));
 }
 
@@ -62,4 +62,13 @@ void	opcode_v10(void *ptr, t_arg a)
 	ft_printf("%7s| -> load from %d + %d = %d (with pc and mod %d)\n", "", \
 		a.arg[0], a.arg[1], ret, \
 		(tmp + ((t_process*)(ptr))->i));
+}
+
+void	opcode_v14(void *ptr, t_arg a)
+{
+	int		ret;
+
+	ret = a.arg[0] + a.arg[1];
+	ft_printf("%7s| -> load from %d + %d = %d (with pc %d)\n", "", \
+		a.arg[0], a.arg[1], ret, ((t_process*)(ptr))->i + ret);
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/07 11:42:44 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 22:36:36 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 02:03:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ void	ft_lst_fdel_proc(void *link, size_t link_size)
 		((t_process*)(((t_list*)link)->cnt))->i = 0;
 		((t_process*)(((t_list*)link)->cnt))->pc = 0;
 		((t_process*)(((t_list*)link)->cnt))->champ = NULL;
-		ft_1d_int_tabledel(&(((t_process*)(((t_list*)link)->cnt))->registers),
-			REG_NUMBER);
+		free(((t_process*)(((t_list*)link)->cnt))->registers);
+		//ft_1d_int_tabledel(&(((t_process*)(((t_list*)link)->cnt))->registers),
+		//	REG_NUMBER);
 	}
 	((t_list*)link)->file_d = 0;
 	((t_list*)link)->cnt_s = 0;

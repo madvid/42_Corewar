@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 00:54:02 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 23:13:22 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,22 +107,35 @@ int		op_long_fork(t_cw *cw, t_process *p)
 /*
 ** Function: op_aff
 ** Description:
-**	[put some explanations here !]
+**	Aff simply shows the content of the specified register.
 ** Return:
-**	0:
+**	0: if no memory allocation occurs.
+**	-1: if allocation of the string failed
+** Remarks:
+**	We chosen to not raise an error (a specific cd_error) due to the role
+**	of Aff: it does not modify the arena or the content of a register. Thus
+**	it success or fail does not affect the run of the game.
 */
 
 int		op_aff(t_cw *cw, t_process *p)
 {
 	t_arg		v_arg;
 	int			arg;
+	char		*str;
 	u_int8_t	reg;
 
 	op_arg_init(&v_arg, 0, 0);
+	v_arg.widht = 3;
 	reg = get_arg_value(cw->arena, p, p->i, REG_CODE);
 	arg = p->registers[reg - 1];
 	if (cw->options->aff == true)
-		ft_printf("Aff: %s\n", ft_itoa(arg));
-	verbotab(cw, p, v_arg);
+	{
+		if (!(str = ft_itoa(arg)))
+			return (-1);
+		ft_printf("Aff: %s\n", str);
+		ft_strdel(&str);
+	}
+	if (cw->options->v_lvl & 0b00010000)
+		vprint_pcmv(cw, p, v_arg);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/27 01:31:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 00:35:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,17 @@ void	vprint_op(t_process *p, t_arg a)
 		opcode_v11(p, a);
 	else if (p->opcode == 10)
 		opcode_v10(p, a);
+	else if (p->opcode == 14)
+		opcode_v14(p, a);
 }
 
 void	vprint_deaths(t_cw *cw, t_process *p)
 {
+	int		offset;
+
+	offset = (cw->cycle_to_die > 0) ? -1 : 0;
 	ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", \
-		p->id, cw->i_cycle - p->last_live, cw->cycle_to_die);
+		p->id, cw->tot_cycle - p->last_live + offset, cw->cycle_to_die);
 }
 
 void	vprint_pcmv(t_cw *cw, t_process *p, t_arg a)

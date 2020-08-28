@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 00:18:08 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 23:57:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,12 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 		a.widht = widht;
 		if (is_valid_encoding(opcode, encoding) == false)
 		{
-			vprint_pcmv(cw, cur_proc, a);
+			cw->options->v_lvl & 0b00010000  ? vprint_pcmv(cw, cur_proc, a) : 0;
 			return (false);
 		}
 		if (is_valid_reg(arena, cur_proc) == false)
 		{
-			vprint_pcmv(cw, cur_proc, a);
+			cw->options->v_lvl & 0b00010000 ? vprint_pcmv(cw, cur_proc, a) : 0;
 			return (false);
 		}
 		return (true);

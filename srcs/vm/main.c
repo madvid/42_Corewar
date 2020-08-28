@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 22:40:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 00:48:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ int			main(int ac, char **av)
 	// else
 	// 	vm_execution(cw);
 	vm_error_manager(code_error, &p, &cw);
-	//system("leaks vm");
+	// system("leaks vm");
 	return (0);
 }

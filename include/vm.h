@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 01:28:05 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 23:26:09 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,9 +286,10 @@ void	 			vprint_deaths(t_cw *cw, t_process *ptr);
 void	 			vprint_pcmv(t_cw *cw, t_process *p, t_arg a);
 char				*args_to_str(t_arg a);
 void				opcode_g(void *ptr, char *tmp, t_arg a);
-void				opcode_v12(void *ptr, t_arg a);
-void				opcode_v11(void *ptr, t_arg a);
 void				opcode_v10(void *ptr, t_arg a);
+void				opcode_v11(void *ptr, t_arg a);
+void				opcode_v12(void *ptr, t_arg a);
+void				opcode_v14(void *ptr, t_arg a);
 void				op_arg_init(t_arg *arg, int type0, int type_select);
 t_arg				op_arg(int encod, t_process *p, int a1, int a2, int a3);
 void				tool_print_t_arg(t_arg arg);

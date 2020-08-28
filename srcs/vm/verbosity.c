@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/27 00:59:16 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/27 23:11:38 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void		verbotab(t_cw *cw, t_process *p, t_arg arg)
 	(cw->options->v_lvl & 0b00000100) ? vprint_op(p, arg) : 0;
 	((cw->options->v_lvl & 0b00000001) && p->opcode == 1) \
 		? vprint_lives(cw, arg) : 0;
-	// (cw->options->v_lvl & 0b00000010) ? vprint_cycle() : 0;
 	(cw->options->v_lvl & 0b00010000) ? vprint_pcmv(cw, p, arg) : 0;
 }
 

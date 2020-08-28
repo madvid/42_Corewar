@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 01:27:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 00:29:18 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	ctd_control(t_cw *cw)
 		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
 		if (cw->options->v_lvl & 2)
 			vprint_cycle(cw, 0);
-		if (cw->cycle_to_die < 0)
+		if (cw->cycle_to_die < 0 && cw->options->v_lvl & 2)
 			vprint_cycle(cw, 1);
 	}
 }
