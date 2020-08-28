@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:37:37 by weilin            #+#    #+#             */
-/*   Updated: 2020/08/04 10:39:43 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/28 10:28:21 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,19 @@
 # include <stdarg.h>
 //# include <limits.h>
 # include <stdint.h>
+
+# define EOC		"\033[0m"
+# define HIGHLIGHT	"\033[1m"
+# define UNDERLINE	"\033[4m"
+# define BLINK		"\033[5m"
+# define BLACK		"\033[30m"
+# define RED		"\033[31m"
+# define GREEN 		"\033[32m"
+# define YELLOW		"\033[33m"
+# define BLUE		"\033[34m"
+# define PURPLE		"\033[35m"
+# define CYAN		"\033[36m"
+# define WHITE		"\033[37m"
 
 typedef	enum	e_stat
 {
