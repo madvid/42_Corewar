@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbo_args_tools.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:07:22 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 14:34:27 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 17:11:48 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	op_arg_type(t_op op_tab[17], int encod, t_process *p, t_arg *ag)
 		while (++i < 3)
 		{
 			ag->type[i] = ((int)op_tab[p->opcode -1].n_arg >= i + 1) ? \
-				(encod & 192) >> (8 - 2 * (i + 1)) : 0;
+				((encod & 192) >> (2 * i)) >> (8 - 2 * (i + 1)) : 0;
 			if ((int)op_tab[p->opcode -1].n_arg >= i + 1)
 				ag->type[i] = (ag->type[i] == 3) ? \
 				4 & op_tab[p->opcode -1].type[0] \
@@ -87,7 +87,7 @@ t_arg		op_arg(int encod, t_process *p, int a1, int a2, int a3)
 	if (p->opcode == 1 || p->opcode == 9 || p->opcode == 12 || p->opcode == 15)
 		arg.widht = 5 - 2 * op_tab[p->opcode -1].direct_size;
 	else
-		arg.widht = instruction_width(encod, op_tab[p->opcode - 1]);
+		arg.widht = instruction_width(encod, op_tab[p->opcode - 1]) + 1 + op_tab[p->opcode - 1].encod;
 	return (arg);
 }
 

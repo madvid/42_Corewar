@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 16:07:57 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 17:08:15 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int		op_store(t_cw *cw, t_process *p)
 
 	// a = cw->arena[(p->i + 2) % MEM_SIZE];
 	a = get_arg_value(cw->arena, p, p->i + 2, (((cw->arena[(p->i + 1) \
-		% MEM_SIZE]) & 0b11000000) >> 6) + RELATIVE);
+		% MEM_SIZE]) & 0b11000000) >> 6));
 	b = get_arg_value(cw->arena, p, p->i + 3, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b00110000) >> 4));
 	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], \
@@ -113,17 +113,18 @@ int		op_store(t_cw *cw, t_process *p)
 		// b = ((b << 8) | (u_int8_t)(cw->arena[(p->i + 4) % MEM_SIZE])) \
 		// 	% IDX_MOD + p->i;
 		// b = (b >= 0) ? b % MEM_SIZE : MEM_SIZE + (b % MEM_SIZE);
-		cw->arena[b % MEM_SIZE] = (a & 0xFF000000) >> 24;
+		cw->arena[b % MEM_SIZE] = (p->registers[a - 1] & 0xFF000000) >> 24;
 		i = 0;
 		while (++i < 4)
 		{
 			cw->arena[(b + i) % MEM_SIZE] = \
-			(unsigned char)((a & (0xFF000000 >> (8 * i))) \
+			(unsigned char)((p->registers[a - 1] & (0xFF000000 >> (8 * i))) \
 				>> (24 - 8 * i));
 		}
 	}
 	else
 		p->registers[b - 1] = a;
+	tool_print_t_arg(op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0));
 	cw->options->v_p = 0;
 	(cw->options->verbose == true && cw->options->v_lvl > 15) ? \
 		vprint_pcmv(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 0;

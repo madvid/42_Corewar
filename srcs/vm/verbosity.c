@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbosity.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 16:06:59 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/26 17:14:54 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,18 @@ char		*ito_arg(char *s, int n)
 
 char		*args_to_str(t_arg a)
 {
-	char	*str;
-	int		i;
+	extern t_op	op_tab[17];
+	char		*str;
+	int			i;
 
 	if (!(str = ft_strnew(128)))
 		return (NULL);
 	i = -1;
 	while (++i < 3 && a.type[i] != 0)
 	{
-		if (a.type[i] == REG_CODE)
+		//if ((p->opcode == 10 || p->opcode == 11) && i == 0)
+			//str = ft_strcat(str, "r");
+		if (a.type[i] == T_REG && i == 0)
 			str = ft_strcat(str, "r");
 		str = ito_arg(str, a.arg[i]);
 		if ((i + 1) < 3 && a.type[i + 1] != 0)
