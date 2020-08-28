@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:07:22 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 17:11:48 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/28 10:22:36 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ static void	op_arg_type(t_op op_tab[17], int encod, t_process *p, t_arg *ag)
 		i = -1;
 		while (++i < 3)
 		{
-			ag->type[i] = ((int)op_tab[p->opcode -1].n_arg >= i + 1) ? \
+			ag->type[i] = (i < (int)op_tab[p->opcode -1].n_arg) ? \
 				((encod & 192) >> (2 * i)) >> (8 - 2 * (i + 1)) : 0;
-			if ((int)op_tab[p->opcode -1].n_arg >= i + 1)
+			if (i < (int)op_tab[p->opcode -1].n_arg)
 				ag->type[i] = (ag->type[i] == 3) ? \
-				4 & op_tab[p->opcode -1].type[0] \
+				4 & op_tab[p->opcode -1].type[i] \
 				: ag->type[i] & op_tab[p->opcode -1].type[i];
+			if (ag->type[i] == 4)
+				ag->type[i] = 3;
 		}
 	}
 }
@@ -93,12 +95,12 @@ t_arg		op_arg(int encod, t_process *p, int a1, int a2, int a3)
 
 void		tool_print_t_arg(t_arg arg)
 {
-	ft_printf(">> T_ARG <<");
+	ft_printf(PURPLE">> T_ARG <<");
 	ft_printf(" - arg.type[0] = %d", arg.type[0]);
 	ft_printf(" - arg.type[1] = %d", arg.type[1]);
 	ft_printf(" - arg.type[2] = %d", arg.type[2]);
 	ft_printf(" - arg.arg[0] = %d", arg.arg[0]);
 	ft_printf(" - arg.arg[1] = %d", arg.arg[1]);
 	ft_printf(" - arg.arg[2] = %d", arg.arg[2]);
-	ft_printf(" - arg.widht = %d\n", arg.widht);
+	ft_printf(" - arg.widht = %d\n"EOC, arg.widht);
 }

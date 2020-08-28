@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 17:05:00 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/28 09:52:23 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		vprint_deaths(t_cw *cw, void *ptr, t_arg a, int flag)
 int		vprint_pcmv(t_cw *cw, void *ptr, t_arg a, int flag)
 {
 	t_process	*p;
-	int			i;
+	int			j;
 
 	p = (t_process*)ptr;
 	if (cw->options->v_p == 0)
@@ -77,10 +77,10 @@ int		vprint_pcmv(t_cw *cw, void *ptr, t_arg a, int flag)
 			return (flag);
 		ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", a.widht, p->i, \
 			(p->i + a.widht) % MEM_SIZE);
-		i = -1;
-		while (++i < a.widht)
-			ft_printf("%.2x ", (unsigned char)cw->arena[(p->i + i) % MEM_SIZE]);
-		ft_printf("\n");
+		j = -1;
+		while(++j < a.widht)
+			ft_printf("%2.2x ", (unsigned char)cw->arena[(p->i + j) % MEM_SIZE]);
+		ft_putchar('\n');
 	}
 	return (flag);
 }

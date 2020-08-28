@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 17:14:54 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/28 10:03:28 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char		*ito_arg(char *s, int n)
 	return (s);
 }
 
-char		*args_to_str(t_arg a)
+char		*args_to_str(t_process *p, t_arg a)
 {
 	extern t_op	op_tab[17];
 	char		*str;
@@ -68,9 +68,10 @@ char		*args_to_str(t_arg a)
 	i = -1;
 	while (++i < 3 && a.type[i] != 0)
 	{
-		//if ((p->opcode == 10 || p->opcode == 11) && i == 0)
 			//str = ft_strcat(str, "r");
 		if (a.type[i] == T_REG && i == 0)
+			str = ft_strcat(str, "r");
+		if ((a.type[i] == T_REG && i > 0) && (p->opcode == 2))
 			str = ft_strcat(str, "r");
 		str = ito_arg(str, a.arg[i]);
 		if ((i + 1) < 3 && a.type[i + 1] != 0)

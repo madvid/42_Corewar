@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 17:15:05 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/28 10:26:03 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -379,7 +379,7 @@ int					vprint_cycle(t_cw *cw, void *ptr, t_arg a, int flag);
 int		 			vprint_op(t_cw *cw, void *ptr, t_arg a, int flag);
 int		 			vprint_deaths(t_cw *cw, void *ptr, t_arg a, int flag);
 int		 			vprint_pcmv(t_cw *cw, void *ptr, t_arg a, int flag);
-char				*args_to_str(t_arg a);
+char				*args_to_str(t_process *p, t_arg a);
 void				opcode_g(void *ptr, char *tmp, t_arg a);
 void				opcode_v12(void *ptr, t_arg a);
 void				opcode_v11(void *ptr, t_arg a);

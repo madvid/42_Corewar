@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/26 17:15:28 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/28 10:15:58 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ void	opcode_g(void *ptr, char *tmp, t_arg a)
 	extern t_op	op_tab[17];
 	char		*all_args;
 
-	if (!(all_args = args_to_str(a)))
+	if (!(all_args = args_to_str(((t_process*)(ptr)), a)))
 		return ;
+	ft_printf(GREEN"args = %s\n"EOC, all_args);
 	ft_printf("P %4d | %s %s%s\n", ((t_process*)(ptr))->id, \
 			op_tab[((t_process*)(ptr))->opcode - 1].name, \
 			all_args, (((t_process*)(ptr))->opcode == 9) ? tmp : "");

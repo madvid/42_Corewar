@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/26 17:08:15 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/08/28 10:19:22 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,10 @@ int		op_load(t_cw *cw, t_process *p)
 		((cw->arena[(p->i + 1) % MEM_SIZE]) & 0b00110000) >> 4);
 	p->carry = (arg == 0) ? 1 : 0;
 	p->registers[reg - 1] = arg;
+	ft_printf(YELLOW"reg = %d\n"EOC, reg);
 	// p->id == 2 ? ft_printf("    => valeur r2 = %d\n", p->registers[1]) : 0;
-	//tool_print_t_arg(op_arg(0, p, arg, 0, 0));
+	tool_print_t_arg(op_arg(cw->arena[(p->i + 1) \
+		% MEM_SIZE], p, arg, reg, 0));
 	return ((cw->options->verbose == true) ? init_verbotab(cw, p, op_arg(cw->arena[(p->i + 1) \
 		% MEM_SIZE], p, arg, reg, 0), 1) : 1);
 }
@@ -94,7 +96,6 @@ int		op_store(t_cw *cw, t_process *p)
 	int			a;
 	int			b;
 	int			i;
-	int			widht;
 	extern t_op	op_tab[17];
 
 	// a = cw->arena[(p->i + 2) % MEM_SIZE];
@@ -102,8 +103,6 @@ int		op_store(t_cw *cw, t_process *p)
 		% MEM_SIZE]) & 0b11000000) >> 6));
 	b = get_arg_value(cw->arena, p, p->i + 3, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b00110000) >> 4));
-	widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE], \
-		op_tab[p->opcode - 1]);
 	cw->options->v_p = 1;
 	cw->options->v_lvl & 4 ? vprint_op(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 0;
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)
@@ -124,7 +123,7 @@ int		op_store(t_cw *cw, t_process *p)
 	}
 	else
 		p->registers[b - 1] = a;
-	tool_print_t_arg(op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0));
+	//tool_print_t_arg(op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0));
 	cw->options->v_p = 0;
 	(cw->options->verbose == true && cw->options->v_lvl > 15) ? \
 		vprint_pcmv(cw, p, op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, a, b, 0), 1) : 0;
