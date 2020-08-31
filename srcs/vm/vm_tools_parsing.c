@@ -6,22 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/30 14:25:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/17 11:30:46 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 20:26:27 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
-// void	copy_options(t_cw *cw, t_parse *p)
-// {
-// 	cw->options.dump = p->options->dump;
-// 	cw->options.dump_cycle = p->options->dump_cycle;
-// 	cw->options.aff = p->options->aff;
-// 	cw->options.sdl = p->options->sdl;
-// 	cw->options.verbose = p->options->verbose;
-// 	cw->options.v_lvl = p->options->v_lvl;
-// 	cw->options.music = p->options->music;
-// }
 
 /*
 ** Function: is_dump_option
@@ -58,6 +47,5 @@ int		in_verbose_range(char *arg)
 	option = ft_atoi(arg);
 	if (!(option >= 0 && option <= 31))
 		return (0);
-	
 	return (1);
 }

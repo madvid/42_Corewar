@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 12:17:07 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 19:54:17 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 **	Introduces the different champions before the battle.
 */
 
-void	vm_champion_introduction(t_list **lst_champs)
+void		vm_champion_introduction(t_list **lst_champs)
 {
 	t_list		*xplr;
 	t_champ		*chp;
@@ -136,7 +136,8 @@ void	vm_champion_introduction(t_list **lst_champs)
 		if (xplr)
 		{
 			chp = (t_champ *)(xplr->cnt);
-			ft_printf("* Player %d, weighing %d bytes,", chp->id, chp->l_bytecode);
+			ft_printf("* Player %d, weighing %d bytes,", chp->id, \
+				chp->l_bytecode);
 			ft_printf(" \"%s\" (\"%s\") !\n", chp->name, chp->comment);
 		}
 	}

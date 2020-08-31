@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 12:47:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 20:13:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 **	code_error: Can only be an memory allocation issue during process creation
 */
 
-int		perform_opcode(t_cw *cw, t_process *cur_proc)
+int			perform_opcode(t_cw *cw, t_process *cur_proc)
 {
 	int				code_error;
 	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
@@ -53,7 +53,6 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		// cur_proc->pc = addr_next_opcode(cw->arena, cur_proc);
 		if (!is_valid_opcode(cw, cw->arena, cur_proc))
 			return (0);
 		code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
@@ -70,14 +69,13 @@ int		perform_opcode(t_cw *cw, t_process *cur_proc)
 **	0: if the byte does not correspond to an opcode.
 */
 
-bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
+bool		is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 {
 	u_int8_t	opcode;
 	u_int8_t	encoding;
 	int			widht;
 	t_arg		a;
 
-	// opcode = arena[cur_proc->i];
 	opcode = cur_proc->opcode;
 	if (opcode_no_encoding(opcode))
 		return (true);
@@ -86,14 +84,10 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 		encoding = (u_int8_t)arena[(cur_proc->i + 1) % (int)MEM_SIZE];
 		widht = (cur_proc->pc < cur_proc->i) ? MEM_SIZE - cur_proc->i \
 			+ cur_proc->pc : cur_proc->pc - cur_proc->i;
-		a = op_arg(encoding, cur_proc, 0, 0, 0);
+		op_arg_init(&a, 0, 0);
 		a.widht = widht;
-		if (is_valid_encoding(opcode, encoding) == false)
-		{
-			cw->options->v_lvl & 0b00010000  ? vprint_pcmv(cw, cur_proc, a) : 0;
-			return (false);
-		}
-		if (is_valid_reg(arena, cur_proc) == false)
+		if (is_valid_encoding(opcode, encoding) == false \
+			|| is_valid_reg(arena, cur_proc) == false)
 		{
 			cw->options->v_lvl & 0b00010000 ? vprint_pcmv(cw, cur_proc, a) : 0;
 			return (false);
@@ -113,7 +107,7 @@ bool	is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 **	-1: if the opcode value is not within (1 ; 9 ; 12 ; 15)
 */
 
-int		arg_size_opcode_no_encode(u_int8_t opcode)
+int			arg_size_opcode_no_encode(u_int8_t opcode)
 {
 	if (opcode == 1)
 		return (4);
@@ -135,14 +129,13 @@ int		arg_size_opcode_no_encode(u_int8_t opcode)
 **	false: otherwise
 */
 
-bool	opcode_no_encoding(u_int8_t opcode)
+bool		opcode_no_encoding(u_int8_t opcode)
 {
 	if (opcode == 1 || opcode == 9 || opcode == 12 || opcode == 15)
 		return (true);
 	else
 		return (false);
 }
-
 
 /*
 ** Function: addr_next_opcode
@@ -154,7 +147,7 @@ bool	opcode_no_encoding(u_int8_t opcode)
 **	NULL: there is no next opcode right after the ongoing one.
 */
 
-int		addr_next_opcode(char *arena, t_process *proc)
+int			addr_next_opcode(char *arena, t_process *proc)
 {
 	u_int8_t	encoding;
 	u_int8_t	opcode;
@@ -164,10 +157,11 @@ int		addr_next_opcode(char *arena, t_process *proc)
 	opcode = proc->opcode;
 	if (opcode_no_encoding(opcode))
 	{
-		next_opcode = (proc->i + arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
+		next_opcode = (proc->i \
+			+ arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
 		return (next_opcode);
 	}
-	if (opcode > 0 && opcode < 17) // ici, comme on a tester les opcode sans byte d'encodage, ça sera les autres traités ici.
+	if (opcode > 0 && opcode < 17)
 	{
 		encoding = (u_int8_t)arena[(proc->i + 1) % MEM_SIZE];
 		next_opcode = instruction_width(encoding, op_tab[opcode - 1]) + 2;

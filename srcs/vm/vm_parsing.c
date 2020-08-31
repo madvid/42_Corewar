@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 16:57:02 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 20:48:22 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,13 +154,15 @@ static int		is_valid_nb_champ(char *nb)
 /*
 ** Function: id_number_chp_flag
 ** Description:
-**	
+**	Checks if the argument is the flag to specify the id of the champion.
+**	Plus if the flag is the good one, function checks if the specify ID
+**	is available.
 ** Return:
-**	1:
-**	0:
+**	1: if av[i] is "-n" and ID is available
+**	0: otherwise
 */
 
-static int	id_number_chp_flag(t_parse **p, char **av, int *i)
+static int		id_number_chp_flag(t_parse **p, char **av, int *i)
 {
 	if (ft_strequ(av[*i], "-n") == 1)
 	{
@@ -181,7 +183,10 @@ static int	id_number_chp_flag(t_parse **p, char **av, int *i)
 **	Parsing of the standard inputs of the executable corewar (the VM)
 **	the informations are stored in the structure p of type t_parse.
 **	Notice that we just verified the validity of the arguments on the stdin
-** and not the validity of the bytecode files (which is performed later).
+**	and not the validity of the bytecode files (which is performed later).
+** Return:
+**	0: No error has been risen
+**	CD_ERROR: code error specific to the first detected error.
 */
 
 int				vm_parsing(char **av, t_parse **p)
@@ -196,24 +201,15 @@ int				vm_parsing(char **av, t_parse **p)
 	{
 		if (id_number_chp_flag(p, av, &i) == 0)
 			return (vm_error_manager((int)CD_BD_VAL, p, NULL));
-		// if (ft_strequ(av[i], "-n") == 1)
-		// {
-		// 	if (av[++i] && is_valid_nb_champ(av[i]))
-		// 	{
-		// 		(*p)->options->n = 1;
-		// 		(*p)->id_champ = (int)(av[i++][0] - '0');
-		// 	}
-		// 	else
-		// 		return (vm_error_manager((int)CD_BD_VAL, p, NULL));
-		// }
 		if (av[i] && !is_valid_champ_filename(av[i]))
 			return (vm_error_manager((int)CD_BD_FILE, p, NULL));
-		if (av[i] && (code_error = vm_create_champion(&((*p)->lst_champs), av[i++], *p)))
+		if (av[i] && (code_error = vm_create_champion(&((*p)->lst_champs), \
+			av[i++], *p)))
 			return (vm_error_manager(code_error, p, NULL));
 	}
 	if ((*p)->nb_champ == 0)
 		return (vm_error_manager((int)CD_EMPTY_CHP, p, NULL));
 	if ((*p)->nb_champ > (int)MAX_PLAYERS)
 		return (vm_error_manager((int)CD_MAX_CHAMP, p, NULL));
-	return (1);
+	return (0);
 }

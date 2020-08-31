@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 18:22:58 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/04 12:27:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 20:14:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		dump_memory(char *arena)
 {
 	int		i;
 	int		j;
-	
+
 	i = 0;
 	while (i < MEM_SIZE && arena)
 	{

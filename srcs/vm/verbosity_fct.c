@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/28 00:35:06 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 17:50:36 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	vprint_pcmv(t_cw *cw, t_process *p, t_arg a)
 	ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", a.widht, p->i, \
 		(p->i + a.widht) % MEM_SIZE);
 	j = -1;
-	while(++j < a.widht)
+	while (++j < a.widht)
 		ft_printf("%2.2x ", (unsigned char)cw->arena[(p->i + j) % MEM_SIZE]);
 	ft_putchar('\n');
 }

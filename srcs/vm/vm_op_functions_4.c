@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:06:21 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 23:13:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 18:27:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 	extern t_op	op_tab[17];
 	t_arg		v_arg;
 	int			arg[3];
-	int			i;
 
 	op_arg_init(&v_arg, DIR_CODE, 3);
 	arg[0] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
@@ -64,7 +63,8 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 	arg[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	arg[1] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	v_arg.arg[1] = get_arg_value(cw->arena, p, p->i + 2 + arg[2], arg[1] + RELATIVE);
+	v_arg.arg[1] = get_arg_value(cw->arena, p, p->i + 2 + arg[2], \
+		arg[1] + RELATIVE);
 	arg[1] = arg[0] + v_arg.arg[1] + p->i;
 	arg[1] = (arg[1] < 0) ? MEM_SIZE + (arg[1] % MEM_SIZE) : arg[1] % MEM_SIZE;
 	arg[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
@@ -73,10 +73,7 @@ int		op_long_load_index(t_cw *cw, t_process *p)
 	v_arg.arg[2] = arg[2];
 	v_arg.type[2] = REG_CODE;
 	p->registers[arg[2] - 1] = (cw->arena[arg[1]] << 24) & 0xFF000000;
-	i = 0;
-	while (++i < 4)
-		p->registers[arg[2] - 1] += (((unsigned char)(cw->arena[(arg[1] + i) \
-			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
+	write_in_reg(cw, p, arg);
 	verbotab(cw, p, v_arg);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 12:53:20 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 18:49:04 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 **	-1: otherwise
 */
 
-int		op_zerojump(t_cw *cw, t_process *p)
+int			op_zerojump(t_cw *cw, t_process *p)
 {
 	t_arg		v_arg;
 	int			a;
@@ -49,33 +49,30 @@ int		op_zerojump(t_cw *cw, t_process *p)
 **	0:
 */
 
-int		op_load_index(t_cw *cw, t_process *p)
+int			op_load_index(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
 	t_arg		v_arg;
-	int			arg[3];
-	int			i;
+	int			ag[3];
 
 	op_arg_init(&v_arg, DIR_CODE, 3);
-	arg[0] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	arg[0] = get_arg_value(cw->arena, p, p->i + 2, arg[0] + RELATIVE);
-	v_arg.arg[0] = arg[0];
-	arg[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+	ag[0] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
+	ag[0] = get_arg_value(cw->arena, p, p->i + 2, ag[0] + RELATIVE);
+	v_arg.arg[0] = ag[0];
+	ag[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
-	arg[1] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	v_arg.arg[1] = get_arg_value(cw->arena, p, p->i + 2 + arg[2], arg[1] + RELATIVE);
-	arg[1] = (arg[0] + v_arg.arg[1]) % IDX_MOD + p->i;
-	arg[1] = (arg[1] < 0) ? MEM_SIZE + (arg[1] % MEM_SIZE) : arg[1] % MEM_SIZE;
-	arg[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
+	ag[1] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
+	v_arg.arg[1] = get_arg_value(cw->arena, p, p->i + 2 + ag[2], \
+		ag[1] + RELATIVE);
+	ag[1] = (ag[0] + v_arg.arg[1]) % IDX_MOD + p->i;
+	ag[1] = (ag[1] < 0) ? MEM_SIZE + (ag[1] % MEM_SIZE) : ag[1] % MEM_SIZE;
+	ag[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
-	arg[2] = get_arg_value(cw->arena, p, p->i + 2 + arg[2], REG_CODE);
-	v_arg.arg[2] = arg[2];
+	ag[2] = get_arg_value(cw->arena, p, p->i + 2 + ag[2], REG_CODE);
+	v_arg.arg[2] = ag[2];
 	v_arg.type[2] = REG_CODE;
-	p->registers[arg[2] - 1] = (cw->arena[arg[1]] << 24) & 0xFF000000;
-	i = 0;
-	while (++i < 4)
-		p->registers[arg[2] - 1] += (((unsigned char)(cw->arena[(arg[1] + i) \
-			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
+	p->registers[ag[2] - 1] = (cw->arena[ag[1]] << 24) & 0xFF000000;
+	write_in_reg(cw, p, ag);
 	verbotab(cw, p, v_arg);
 	return (0);
 }
@@ -89,7 +86,7 @@ int		op_load_index(t_cw *cw, t_process *p)
 **	0:
 */
 
-int		op_store_index(t_cw *cw, t_process *p)
+int			op_store_index(t_cw *cw, t_process *p)
 {
 	extern t_op	op_tab[17];
 	t_arg		v_arg;
@@ -117,6 +114,27 @@ int		op_store_index(t_cw *cw, t_process *p)
 }
 
 /*
+** Function: init_newproc_fork
+** Description:
+**	Initiates the differents arguments of the new processus created
+**	by the fork.
+*/
+
+static void	init_newproc_fork(t_process *new_proc, t_process *cur_proc)
+{
+	int			i;
+
+	i = -1;
+	while (++i < 16)
+		new_proc->registers[i] = cur_proc->registers[i];
+	new_proc->carry = cur_proc->carry;
+	new_proc->n_lives = cur_proc->n_lives;
+	new_proc->last_live = cur_proc->last_live;
+	new_proc->wait_cycles = -1;
+	new_proc->champ = cur_proc->champ;
+}
+
+/*
 ** Function:
 ** Description:
 **	The function will creates a new process and copy the value of the inner
@@ -129,11 +147,10 @@ int		op_store_index(t_cw *cw, t_process *p)
 **	0: otherwise.
 */
 
-int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
+int			fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 {
 	t_list		*new_link;
 	t_process	*new_proc;
-	int			i;
 	static int	id;
 
 	if (!(new_link = ft_lstnew(NULL))
@@ -146,17 +163,10 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 		ft_memdel((void **)&new_link);
 		return (0);
 	}
-	i = -1;
-	while (++i < 16)
-		new_proc->registers[i] = cur_proc->registers[i];
 	new_proc->id = ++id + cw->n_champ;
 	new_proc->i = (cur_proc->i + addr) % MEM_SIZE;
 	new_proc->i = (new_proc->i < 0) ? MEM_SIZE + new_proc->i : new_proc->i;
-	new_proc->carry = cur_proc->carry;
-	new_proc->n_lives = cur_proc->n_lives;
-	new_proc->last_live = cur_proc->last_live;
-	new_proc->wait_cycles = -1;
-	new_proc->champ = cur_proc->champ;
+	init_newproc_fork(new_proc, cur_proc);
 	ft_lstadd(&(cw->process), new_link);
 	return (1);
 }
@@ -170,7 +180,7 @@ int		fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 **	CD_FORK: a memory allocation issue occurs during the fork instruction
 */
 
-int		op_fork(t_cw *cw, t_process *p)
+int			op_fork(t_cw *cw, t_process *p)
 {
 	t_arg		v_arg;
 	int			addr;

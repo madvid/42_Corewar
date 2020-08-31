@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 12:28:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 18:19:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,8 @@ int					op_aff(t_cw *cw, t_process *cur_proc);
 int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
 void				write_in_arena(t_cw *cw, t_process *p, int arg[3]);
+void				write_in_reg(t_cw *cw, t_process *p, int arg[3]);
+
 
 /*
 ** Fonctions pour la gestion des options de ./corewar
@@ -291,7 +293,6 @@ void				opcode_v11(void *ptr, t_arg a);
 void				opcode_v12(void *ptr, t_arg a);
 void				opcode_v14(void *ptr, t_arg a);
 void				op_arg_init(t_arg *arg, int type0, int type_select);
-t_arg				op_arg(int encod, t_process *p, int a1, int a2, int a3);
 void				tool_print_t_arg(t_arg arg);
 
 #endif

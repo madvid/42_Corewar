@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/27 23:11:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 17:50:00 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,9 @@ void		verbotab(t_cw *cw, t_process *p, t_arg arg)
 {
 	extern t_op		op_tab[17];
 
-	// verbotab[0] = &vprint_essentials;
-	// verbotab[1] = &vprint_lives;
-	// verbotab[2] = &vprint_cycle;
-	// verbotab[3] = &vprint_op;
-	// verbotab[4] = &vprint_deaths;
-	// verbotab[5] = &vprint_pcmv;
 	if (p->opcode == 1 || p->opcode == 9 \
 		|| p->opcode == 12 || p->opcode == 15)
-		arg.widht = 5 - 2 * op_tab[p->opcode -1].direct_size;
+		arg.widht = 5 - 2 * op_tab[p->opcode - 1].direct_size;
 	else if (p->opcode == 3)
 		arg.widht = 3 + arg.type[1];
 	else
@@ -36,7 +30,7 @@ void		verbotab(t_cw *cw, t_process *p, t_arg arg)
 	(cw->options->v_lvl & 0b00010000) ? vprint_pcmv(cw, p, arg) : 0;
 }
 
-int		vprint_essentials(t_cw *cw, void *ptr, t_arg a, int flag)
+int			vprint_essentials(t_cw *cw, void *ptr, t_arg a, int flag)
 {
 	if (cw || ptr || !a.type[0])
 		return (flag);

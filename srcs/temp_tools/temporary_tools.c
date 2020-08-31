@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/25 16:12:54 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 17:26:16 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,4 +292,20 @@ void		tool_print_short_processors(t_cw *cw)
 		ft_printf("P %d -- is at the memory adress : %d (index = %d) -- opcode = %d(w_c = %d)\n", proc->id, proc->i, index, proc->opcode, proc->wait_cycles);
 		xplr = xplr->next;
 	}
+}
+
+/*
+** Affiche le contenue de la variable de structure t_arg
+*/
+
+void		tool_print_t_arg(t_arg arg)
+{
+	ft_printf(">> T_ARG <<");
+	ft_printf(" - arg.type[0] = %d", arg.type[0]);
+	ft_printf(" - arg.type[1] = %d", arg.type[1]);
+	ft_printf(" - arg.type[2] = %d", arg.type[2]);
+	ft_printf(" - arg.arg[0] = %d", arg.arg[0]);
+	ft_printf(" - arg.arg[1] = %d", arg.arg[1]);
+	ft_printf(" - arg.arg[2] = %d", arg.arg[2]);
+	ft_printf(" - arg.widht = %d\n", arg.widht);
 }

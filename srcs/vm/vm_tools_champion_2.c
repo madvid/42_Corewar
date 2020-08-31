@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 11:02:30 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 13:10:07 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 19:53:37 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_list		*get_champ_id(t_list **champ, int id)
 **	0: if the list to sort is NULL
 */
 
-int		lst_sort_champion(t_list **champ)
+int			lst_sort_champion(t_list **champ)
 {
 	t_list			*xplr;
 	t_list			*chp[4];
@@ -104,14 +104,14 @@ int		lst_sort_champion(t_list **champ)
 ** NULL: if no champion exists with the given ID
 */
 
-char	*champ_name_via_id(t_list *lst_champs, int id)
+char		*champ_name_via_id(t_list *lst_champs, int id)
 {
 	t_list		*xplr;
 
 	if (lst_champs == NULL)
 		return (NULL);
 	xplr = lst_champs;
-	while(xplr)
+	while (xplr)
 	{
 		if (((t_champ*)(xplr->cnt))->id == id)
 			return (((t_champ*)(xplr->cnt))->name);
@@ -136,7 +136,7 @@ t_champ		*champ_via_id(t_list *lst_champs, int id)
 	if (lst_champs == NULL)
 		return (NULL);
 	xplr = lst_champs;
-	while(xplr)
+	while (xplr)
 	{
 		if (((t_champ*)(xplr->cnt))->id == id)
 			return ((t_champ*)(xplr->cnt));
@@ -144,5 +144,3 @@ t_champ		*champ_via_id(t_list *lst_champs, int id)
 	}
 	return (NULL);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 12:24:55 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 20:19:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 **	[put some explanations here !]
 */
 
-void	vm_proc_set_lives(t_cw *cw, int set)
+void		vm_proc_set_lives(t_cw *cw, int set)
 {
 	t_list		*xplr;
 	t_process	*cur_proc;
@@ -38,6 +38,7 @@ void	vm_proc_set_lives(t_cw *cw, int set)
 ** Description:
 **	[put some explanations here !]
 */
+
 bool		vm_proc_only_one_standing(t_cw *cw)
 {
 	int			tmp;
@@ -52,7 +53,7 @@ bool		vm_proc_only_one_standing(t_cw *cw)
 		if (tmp != cur_proc->champ->id)
 		{
 			tmp = -1;
-			break;
+			break ;
 		}
 		xplr = xplr->next;
 	}
@@ -76,7 +77,7 @@ void		free_one_process(t_list **lst_proc, int id)
 
 	xplr = *lst_proc;
 	if (!xplr)
-		return;
+		return ;
 	if (((t_process*)(xplr->cnt))->id == id)
 	{
 		*lst_proc = xplr->next;
@@ -93,7 +94,7 @@ void		free_one_process(t_list **lst_proc, int id)
 	((t_process*)(to_del->cnt))->registers = NULL;
 	ft_memdel(&(to_del->cnt));
 	ft_memdel((void**)(&(to_del)));
-}	
+}
 
 /*
 ** Function: vm_proc_kill_no_live
@@ -105,7 +106,7 @@ void		free_one_process(t_list **lst_proc, int id)
 **	0: if no process remainds or if the number of processes exceed INT_MAX
 */
 
-int		vm_proc_kill_not_living(t_cw *cw)
+int			vm_proc_kill_not_living(t_cw *cw)
 {
 	t_list		*xplr;
 	t_list		*next;
@@ -153,7 +154,7 @@ int		vm_proc_kill_not_living(t_cw *cw)
 **	0: if no alive has been made.
 */
 
-int		vm_proc_get_lives(t_cw *cw)
+int			vm_proc_get_lives(t_cw *cw)
 {
 	t_list		*xplr;
 	t_process	*cur_proc;
@@ -182,7 +183,7 @@ int		vm_proc_get_lives(t_cw *cw)
 **	0: No error/issue occured
 */
 
-int		vm_proc_perform_opcode(t_cw *cw, t_process *proc)
+int			vm_proc_perform_opcode(t_cw *cw, t_process *proc)
 {
 	int			code_error;
 
@@ -207,7 +208,7 @@ int		vm_proc_perform_opcode(t_cw *cw, t_process *proc)
 **	0: At least one process has wait_cycles at 0 before the decrementation.
 */
 
-void	vm_proc_cycle(t_cw *cw)
+void		vm_proc_cycle(t_cw *cw)
 {
 	t_list		*xplr;
 	t_process	*cur_proc;

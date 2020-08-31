@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 13:07:22 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 12:49:55 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 17:45:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ static void	op_arg_type(t_op op_elem, int encod, t_arg *ag)
 		{
 			if (i < (int)op_elem.n_arg)
 			{
-				ag->type[i] = (encod & (192 >> (2 * i))) >> (8 - 2 * i);		// type en CODE
-				//ft_printf(" [(encod & (192 >> (2 * i))) = %d] ag->type[%d] = %d\n", (encod & (192 >> (2 * i))), i, ag->type[i]);
+				ag->type[i] = (encod & (192 >> (2 * i))) >> (8 - 2 * i);
 				ag->type[i] = (ag->type[i] == 3) ? 4 & op_elem.type[i] \
 					: ag->type[i] & op_elem.type[i];
 			}
@@ -65,16 +64,18 @@ static void	op_arg_type_shift(int shift, t_arg *ag)
 /*
 ** Function: op_arg
 ** Description:
-**	
+**	Fills a t_arg variable based on the arguments received.
+**	The variable contains type and value of the arguments of the opcode
+**	plus the width of the arguments field.
 ** Return:
-**	
+**	arg: variable of type t_arg
 */
 
 t_arg		op_arg(int encod, t_process *p, int a1, int a2, int a3)
 {
 	extern t_op	op_tab[17];
-	t_arg	arg;
-	
+	t_arg		arg;
+
 	op_arg_init(&arg, 0, 0);
 	op_arg_type(op_tab[p->opcode - 1], encod, &arg);
 	op_arg_type_shift(encod - (encod % RELATIVE), &arg);
@@ -85,21 +86,9 @@ t_arg		op_arg(int encod, t_process *p, int a1, int a2, int a3)
 	if (arg.type[2] != 0)
 		arg.arg[2] = a3;
 	if (p->opcode == 1 || p->opcode == 9 || p->opcode == 12 || p->opcode == 15)
-		arg.widht = 5 - 2 * op_tab[p->opcode -1].direct_size;
+		arg.widht = 5 - 2 * op_tab[p->opcode - 1].direct_size;
 	else
 		arg.widht = instruction_width(encod, op_tab[p->opcode - 1]) \
 			+ 1 + op_tab[p->opcode - 1].encod;
 	return (arg);
-}
-
-void		tool_print_t_arg(t_arg arg)
-{
-	ft_printf(">> T_ARG <<");
-	ft_printf(" - arg.type[0] = %d", arg.type[0]);
-	ft_printf(" - arg.type[1] = %d", arg.type[1]);
-	ft_printf(" - arg.type[2] = %d", arg.type[2]);
-	ft_printf(" - arg.arg[0] = %d", arg.arg[0]);
-	ft_printf(" - arg.arg[1] = %d", arg.arg[1]);
-	ft_printf(" - arg.arg[2] = %d", arg.arg[2]);
-	ft_printf(" - arg.widht = %d\n", arg.widht);
 }

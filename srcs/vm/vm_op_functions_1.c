@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/27 12:44:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 17:58:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ int		op_load(t_cw *cw, t_process *p)
 	p->carry = (arg[0] == 0) ? 1 : 0;
 	p->registers[arg[1] - 1] = arg[0];
 	if (cw->options->verbose == true)
-	{
-		// tool_print_t_arg(op_arg(cw->arena[(p->i + 1) % MEM_SIZE], p, v_arg)); //ft_test()
 		verbotab(cw, p, v_arg);
-	}
 	return (0);
 }
 

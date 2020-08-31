@@ -6,11 +6,21 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/08/25 20:48:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/08/31 20:01:37 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+void	write_in_reg(t_cw *cw, t_process *p, int arg[3])
+{
+	int		i;
+
+	i = 0;
+	while (++i < 4)
+		p->registers[arg[2] - 1] += (((unsigned char)(cw->arena[(arg[1] + i) \
+			% MEM_SIZE])) << (24 - 8 * i)) & (0xFF000000 >> (8 * i));
+}
 
 void	write_in_arena(t_cw *cw, t_process *p, int arg[3])
 {
@@ -21,8 +31,8 @@ void	write_in_arena(t_cw *cw, t_process *p, int arg[3])
 	i = 0;
 	while (++i < 4)
 	{
-		cw->arena[(arg[2] + i) % MEM_SIZE] = \
-			(unsigned char)((arg[0] & (0xFF000000 >> (8 * i))) >> (24 - (8 * i)));
+		cw->arena[(arg[2] + i) % MEM_SIZE] = (unsigned char)((arg[0] \
+			& (0xFF000000 >> (8 * i))) >> (24 - (8 * i)));
 		cw->id_arena[(arg[2] + i) % MEM_SIZE] = p->champ->id;
 	}
 }
@@ -64,36 +74,36 @@ void	op_arg_init(t_arg *arg, int type0, int type_select)
 
 int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)
 {
-	int			value;
+	int			val;
 	int			ret;
 	extern t_op	op_tab[17];
 
 	if ((type % 10) != REG_CODE && (type % 10) != IND_CODE \
 		&& (type % 10) != DIR_CODE)
 		return (0);
-	value = arena[(index) % MEM_SIZE];
+	val = arena[(index) % MEM_SIZE];
 	if ((type % 10) == REG_CODE)
-		return ((type / 10) == 0 ? value : cur_proc->registers[value - 1]);
-	value = value << 8 | (unsigned char)arena[(index + 1) % MEM_SIZE];
+		return ((type / 10) == 0 ? val : cur_proc->registers[val - 1]);
+	val = val << 8 | (unsigned char)arena[(index + 1) % MEM_SIZE];
 	if ((type % 10) == IND_CODE)
 	{
 		if (type / 10 != 0)
 		{
-			value = cur_proc->i + (value % IDX_MOD);
-			value = (value < 0) ? MEM_SIZE + value : value;
-			ret = arena[value % MEM_SIZE] << 24
-				| ((unsigned int)arena[(value + 1) % MEM_SIZE] & 255) << 16
-				| ((unsigned int)arena[(value + 2) % MEM_SIZE] & 255) << 8
-				| ((unsigned int)arena[(value + 3) % MEM_SIZE] & 255);
+			val = cur_proc->i + (val % IDX_MOD);
+			val = (val < 0) ? MEM_SIZE + val : val;
+			ret = arena[val % MEM_SIZE] << 24
+				| ((unsigned int)arena[(val + 1) % MEM_SIZE] & 255) << 16
+				| ((unsigned int)arena[(val + 2) % MEM_SIZE] & 255) << 8
+				| ((unsigned int)arena[(val + 3) % MEM_SIZE] & 255);
 		}
-		return ((type / 10) == 0 ? value : ret);
+		return ((type / 10) == 0 ? val : ret);
 	}
 	if ((type % 10) == DIR_CODE)
 	{
 		if (op_tab[(int)(cur_proc->opcode - 1)].direct_size == 1)
-			return (value);
-		value = value << 8 | (unsigned char)arena[(index + 2) % MEM_SIZE];
-		return (value = value << 8 | (unsigned char)arena[(index + 3) % MEM_SIZE]);
+			return (val);
+		val = val << 8 | (unsigned char)arena[(index + 2) % MEM_SIZE];
+		return (val = val << 8 | (unsigned char)arena[(index + 3) % MEM_SIZE]);
 	}
 	return (0);
 }
@@ -109,7 +119,7 @@ int		get_arg_value(char *arena, t_process *cur_proc, int index, int type)
 **	n = 2		mask = 2^(7 - 2 * n) + 2^(6 - 2 * n) = 0b00001100
 */
 
-bool		is_valid_reg(char *arena, t_process *p)
+bool	is_valid_reg(char *arena, t_process *p)
 {
 	extern t_op	op_tab[17];
 	size_t		n;
@@ -122,11 +132,12 @@ bool		is_valid_reg(char *arena, t_process *p)
 	while (n < op_tab[p->opcode - 1].n_arg)
 	{
 		mask = ft_power(2, 7 - (2 * n)) + ft_power(2, 6 - (2 * n));
-		arg = get_arg_value(arena, p, p->i + 2 + j, (arena[(p->i + 1) % MEM_SIZE] & mask) \
-			>> (6 - (2 * n)));
+		arg = get_arg_value(arena, p, p->i + 2 + j, \
+			(arena[(p->i + 1) % MEM_SIZE] & mask) >> (6 - (2 * n)));
 		j = j + instruction_width(arena[(p->i + 1) % MEM_SIZE] \
 			& mask, op_tab[p->opcode - 1]);
-		if (((arena[(p->i + 1) % MEM_SIZE] & mask) >> (6 - (2 * n))) == REG_CODE)
+		if (((arena[(p->i + 1) % MEM_SIZE] & mask) >> (6 - (2 * n))) \
+			== REG_CODE)
 		{
 			if (arg < 1 || arg > REG_NUMBER)
 				return (false);
