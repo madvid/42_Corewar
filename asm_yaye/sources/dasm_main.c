@@ -12,6 +12,12 @@
 
 #include "dasm.h"
 
+/*
+** Writes error message
+** Resets champion_s[] and chamion_cor[] to 0
+** Exits program 
+*/
+
 void	leave(t_dasm *a, char *s)
 {
 	write(2, "ERROR", 5);
@@ -24,35 +30,42 @@ void	leave(t_dasm *a, char *s)
 	exit(EXIT_FAILURE);
 }
 
-void	get_champion(t_dasm *a, char **av)
+/*
+** Checks name input is printable and has .cor extension
+** Opens it
+** Read and save it in a->cor[]
+*/
+
+void	get_champion_cor(t_dasm *a, char **av)
 {
 	int				r;
 	int				fd;
-	char			buf[4096];
+	char			buf[COR_MAX];
 	int				i;
-	int				j;
 
 	r = -1;
 	while (av[1][++r])
 		if (!ft_isprint(av[1][r]))
-			exit(write(2, "ERROR: unprintable character in filename.cor\n", 45));
+			exit(write(2, "ERROR: unprintable char in filename.cor\n", 40));
 	if (!ft_strequ(av[1] + r - 4, ".cor"))
 		exit(write(2, "ERROR: filename extension must be .cor\n", 37));
 	if ((fd = open(av[1], O_RDONLY)) < 0)
 		exit(write(2, "ERROR: failed to open file.cor\n", 29));
-	i = 0;
-	while ((r = read(fd, buf, 4095)) > 0)
-	{
-		j = 0;
-		while (j < r)
-			a->cor[i++] = buf[j++];
-	}
+	i = -1;
+	if ((r = read(fd, buf, COR_MAX - 1)) > 0)
+		while (++i < r)
+			a->cor[i] = buf[i];
 	close(fd);
 	if (r < 0)
 		leave(a, ": failed to read file.cor\n");
+	a->cor[r] = 0;
 }
 
-void	gen_s(t_dasm *a, char *filename)
+/*
+** Writes the .s conversion from a->chp in championfile.s
+*/
+
+void	generate_champion_s(t_dasm *a, char *filename)
 {
 	char	new[NAME_SIZE];
 	int		len;
@@ -70,7 +83,9 @@ void	gen_s(t_dasm *a, char *filename)
 		leave(NULL, ": FAILED TO CREATE championfile.s\n");
 	write(i, a->chp, ft_strlen(a->chp));
 	close(i);
-	ft_printf("Writing output program to %s\n", new);
+	write(1, "Writing output program to ", 26);
+	write(1, new, ft_strlen(new));
+	write(1, "\n", 1);
 }
 
 int		main(int ac, char **av)
@@ -84,9 +99,9 @@ int		main(int ac, char **av)
 		return (0);
 	}
 	a.op_tab = op_tab;
-	get_champion(&a, av);
+	get_champion_cor(&a, av);
 	get_s(&a);
-	gen_s(&a, av[1]);
+	generate_champion_s(&a, av[1]);
 	ft_memset(a.chp, 0, CHP_SIZE);
 	ft_memset(a.cor, 0, COR_MAX);
 }

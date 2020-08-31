@@ -10,16 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef ASM_H
 # define ASM_H
 # include "libft.h"
 # include "op.h"
 
-# define OP "abcdefghijklmnopqrstuvwxyz"
-# define HEXA_BASE "0123456789abcdef"
-# define COR_MAX (PROG_NAME_LENGTH + COMMENT_LENGTH + CHAMP_MAX_SIZE + 16)
 # define NAME_SIZE 4096
+# define COR_MAX (PROG_NAME_LENGTH + COMMENT_LENGTH + CHAMP_MAX_SIZE + 16)
+
 /*
 ** >----------------------------- ASM STRUCTURES -----------------------------<
 */

@@ -90,9 +90,3 @@ typedef struct					s_op
 	size_t				encod;
 	size_t				direct_size;
 }								t_op;
-
-// direct_size == 0 => 4 - (0 * 2) octets pour l'argument direct
-// direct_size == 1 => 4 - (1 * 2) octets pour l'argument direct
-
-
-

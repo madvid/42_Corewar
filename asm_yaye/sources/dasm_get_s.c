@@ -12,6 +12,10 @@
 
 #include "dasm.h"
 
+/*
+** Appends in a->chp[] the string s
+*/
+
 void	addto_s(t_dasm *a, char *s, int n)
 {
 	static int	i = 0;
@@ -26,6 +30,10 @@ void	addto_s(t_dasm *a, char *s, int n)
 	}
 	a->chp[i] = 0;
 }
+
+/*
+** Appends in a->chp[] the int n
+*/
 
 void	ito_s(t_dasm *a, int n)
 {
@@ -53,6 +61,10 @@ void	ito_s(t_dasm *a, int n)
 		addto_s(a, &c, 1);
 	}
 }
+
+/*
+** Returns the argument's value in the .cor at position a->i
+*/
 
 int		get_arg_value(t_dasm *a, t_op op_line, int type)
 {
@@ -83,6 +95,10 @@ int		get_arg_value(t_dasm *a, t_op op_line, int type)
 	return (0);
 }
 
+/*
+** Writes in a->chp all the successive commands of the champion
+*/
+
 void	get_oparg(t_dasm *a, t_op op_line)
 {
 	int		enc_byte;
@@ -109,6 +125,11 @@ void	get_oparg(t_dasm *a, t_op op_line)
 		nb_arg += 1;
 	}
 }
+
+/*
+** Gets the .s from the .cor
+** Saves it in a->chp
+*/
 
 void	get_s(t_dasm *a)
 {
