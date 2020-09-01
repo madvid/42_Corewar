@@ -119,17 +119,17 @@ LIB_FILES =	ft_memset	\
 
 
 PRINTF_FILES =	ft_printf	\
-				base		\
 				parse		\
-				print_chars	\
-				print_int	\
-				tool		\
-				type_csp	\
-				type_di		\
-				type_ox		\
-				type_uint	\
-				parse_flags	\
-				print_addr
+				parse_b		\
+				parse_c		\
+				parse_di	\
+				parse_f		\
+				parse_o		\
+				parse_p		\
+				parse_s		\
+				parse_u		\
+				parse_x		\
+				parse_xcap
 
 PRINTF_SRCS = $(addsuffix .c, $(PRINTF_FILES))
 PRINTF_OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(PRINTF_FILES)))
