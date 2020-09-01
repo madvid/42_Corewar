@@ -24,14 +24,11 @@
 int			op_zerojump(t_cw *cw, t_process *p)
 {
 	t_arg		v_arg;
-	u_int8_t	tmp;
 	int			a;
 
 	op_arg_init(&v_arg, DIR_CODE, 1);
-	tmp = cw->arena[(p->i + 1) % MEM_SIZE];
-	a = (tmp << 8) | ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
-	// a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
-	// 	| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
+	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
+		| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
 	v_arg.arg[0] = a;
 	if (!p->carry)
 	{
