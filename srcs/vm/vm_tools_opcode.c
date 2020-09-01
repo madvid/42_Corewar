@@ -33,34 +33,6 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 }
 
 /*
-** Function: perform_opcode
-** Description:
-**	Checks the validity of the encoded byte (if there is one) associated to
-**	the opcode in the current process and performs the corresponding
-**	instruction if wait_cycles of the process is 0.
-** Return:
-**	0: No error has been raised by any opcode functions (by return -1)
-**	code_error: Can only be an memory allocation issue during process creation
-*/
-
-int			perform_opcode(t_cw *cw, t_process *cur_proc)
-{
-	int				code_error;
-	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
-
-	code_error = 0;
-	if (op_funct[0] == NULL)
-		init_op_funct(op_funct);
-	if (cur_proc->wait_cycles == 0)
-	{
-		if (!is_valid_opcode(cw, cur_proc))
-			return (0);
-		code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
-	}
-	return (code_error);
-}
-
-/*
 ** Function: is_opcode
 ** Description:
 **	[put some explanations here]
@@ -96,6 +68,36 @@ bool		is_valid_opcode(t_cw *cw, t_process *cur_proc)
 	}
 	return (false);
 }
+
+/*
+** Function: perform_opcode
+** Description:
+**	Checks the validity of the encoded byte (if there is one) associated to
+**	the opcode in the current process and performs the corresponding
+**	instruction if wait_cycles of the process is 0.
+** Return:
+**	0: No error has been raised by any opcode functions (by return -1)
+**	code_error: Can only be an memory allocation issue during process creation
+*/
+
+int			perform_opcode(t_cw *cw, t_process *cur_proc)
+{
+	int				code_error;
+	static int		(*op_funct[16])(t_cw*, t_process*) = {NULL};
+
+	code_error = 0;
+	if (op_funct[0] == NULL)
+		init_op_funct(op_funct);
+	if (cur_proc->wait_cycles == 0)
+	{
+		if (!is_valid_opcode(cw, cur_proc))
+			return (0);
+		code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
+	}
+	return (code_error);
+}
+
+
 
 /*
 ** Function: arg_size_opcode_no_encode
@@ -135,37 +137,4 @@ bool		opcode_no_encoding(u_int8_t opcode)
 		return (true);
 	else
 		return (false);
-}
-
-/*
-** Function: addr_next_opcode
-** Description:
-**	Gets the address of the next opcode, without distinguish if the opcode is
-**	related to the 'current' champion.
-** Return:
-**	addr: address of the next opcode.
-**	NULL: there is no next opcode right after the ongoing one.
-*/
-
-int			addr_next_opcode(char *arena, t_process *proc)
-{
-	u_int8_t	encoding;
-	u_int8_t	opcode;
-	int			next_opcode;
-	extern t_op	op_tab[17];
-
-	opcode = proc->opcode;
-	if (opcode_no_encoding(opcode))
-	{
-		next_opcode = (proc->i \
-			+ arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
-		return (next_opcode);
-	}
-	if (opcode > 0 && opcode < 17)
-	{
-		encoding = (u_int8_t)arena[(proc->i + 1) % MEM_SIZE];
-		next_opcode = instruction_width(encoding, op_tab[opcode - 1]) + 2;
-		return ((proc->i + next_opcode) % MEM_SIZE);
-	}
-	return ((proc->i + 1) % MEM_SIZE);
 }
