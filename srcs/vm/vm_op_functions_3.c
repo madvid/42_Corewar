@@ -57,18 +57,18 @@ int			op_load_index(t_cw *cw, t_process *p)
 
 	op_arg_init(&v_arg, DIR_CODE, 3);
 	ag[0] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	ag[0] = get_arg_value(cw->arena, p, p->i + 2, ag[0] + RELATIVE);
+	ag[0] = get_arg_value(cw, p, p->i + 2, ag[0] + RELATIVE);
 	v_arg.arg[0] = ag[0];
 	ag[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	ag[1] = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	v_arg.arg[1] = get_arg_value(cw->arena, p, p->i + 2 + ag[2], \
+	v_arg.arg[1] = get_arg_value(cw, p, p->i + 2 + ag[2], \
 		ag[1] + RELATIVE);
 	ag[1] = (ag[0] + v_arg.arg[1]) % IDX_MOD + p->i;
 	ag[1] = (ag[1] < 0) ? MEM_SIZE + (ag[1] % MEM_SIZE) : ag[1] % MEM_SIZE;
 	ag[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
-	ag[2] = get_arg_value(cw->arena, p, p->i + 2 + ag[2], REG_CODE);
+	ag[2] = get_arg_value(cw, p, p->i + 2 + ag[2], REG_CODE);
 	v_arg.arg[2] = ag[2];
 	v_arg.type[2] = REG_CODE;
 	p->registers[ag[2] - 1] = (cw->arena[ag[1]] << 24) & 0xFF000000;
@@ -95,16 +95,16 @@ int			op_store_index(t_cw *cw, t_process *p)
 
 	op_arg_init(&v_arg, DIR_CODE, 7);
 	v_arg.type[0] = REG_CODE;
-	v_arg.arg[0] = get_arg_value(cw->arena, p, p->i + 2, REG_CODE);
+	v_arg.arg[0] = get_arg_value(cw, p, p->i + 2, REG_CODE);
 	arg[0] = p->registers[v_arg.arg[0] - 1];
 	arg[2] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	encod = cw->arena[(p->i + 1) % MEM_SIZE];
-	arg[1] = get_arg_value(cw->arena, p, p->i + 2 + arg[2]\
+	arg[1] = get_arg_value(cw, p, p->i + 2 + arg[2]\
 		, ((encod & 0b00110000) >> 4) + RELATIVE);
 	v_arg.arg[1] = arg[1];
 	arg[2] = instruction_width(encod & 0b11110000, op_tab[p->opcode - 1]);
-	v_arg.arg[2] = get_arg_value(cw->arena, p, p->i + 2 + arg[2]\
+	v_arg.arg[2] = get_arg_value(cw, p, p->i + 2 + arg[2]\
 		, ((encod & 0b00001100) >> 2) + RELATIVE);
 	arg[2] = (arg[1] + v_arg.arg[2]) % IDX_MOD + p->i;
 	arg[2] = (arg[2] < 0) ? MEM_SIZE + (arg[2] % MEM_SIZE) : arg[2] % MEM_SIZE;
@@ -186,7 +186,7 @@ int			op_fork(t_cw *cw, t_process *p)
 	int			addr;
 
 	op_arg_init(&v_arg, DIR_CODE, 1);
-	addr = get_arg_value(cw->arena, p, p->i + 1, DIR_CODE);
+	addr = get_arg_value(cw, p, p->i + 1, DIR_CODE);
 	v_arg.arg[0] = addr;
 	if (!fork_creation_process(cw, p, addr % IDX_MOD))
 		return (CD_FORK);

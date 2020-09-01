@@ -87,7 +87,7 @@ bool		is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 		op_arg_init(&a, 0, 0);
 		a.widht = widht;
 		if (is_valid_encoding(opcode, encoding) == false \
-			|| is_valid_reg(arena, cur_proc) == false)
+			|| is_valid_reg(cw, cur_proc) == false)
 		{
 			cw->options->v_lvl & 0b00010000 ? vprint_pcmv(cw, cur_proc, a) : 0;
 			return (false);

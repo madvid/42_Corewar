@@ -174,6 +174,7 @@ static int	vm_init_cw_memalloc(t_cw **cw, int nb_champ)
 
 int			vm_cw_arena_init(t_cw **cw, t_parse **p)
 {
+	extern t_op	op_tab[17];
 	int			code_error;
 	t_list		*xplr;
 	t_list		*xplr2;
@@ -181,6 +182,7 @@ int			vm_cw_arena_init(t_cw **cw, t_parse **p)
 	xplr = (*p)->lst_champs;
 	if ((code_error = vm_init_cw_memalloc(cw, (*p)->nb_champ)) != 0)
 		return (vm_error_manager(code_error, p, cw));
+	(*cw)->op_tab = op_tab;
 	arena_and_champions_placement(*cw, *p);
 	xplr2 = (*cw)->process;
 	while (xplr)

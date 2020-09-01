@@ -126,6 +126,7 @@ typedef struct		s_process
 
 typedef struct		s_corewar
 {
+	t_op			*op_tab;
 	char			*arena;			// memory area where champion will fight until death
 	int				*id_arena;		// memory area where id champion are placed on the arena to keep a track of which champion occuped which bytes.id des champs a chaque case.
 	t_list			*process;		// "incarnation of the champion", part which will read & execute the champion code (~ish, not exactly)
@@ -228,7 +229,7 @@ int					perform_opcode(t_cw *cw, t_process *cur_proc);
 */
 int					get_nb_arg_b_encoding(u_int8_t encoding);
 bool				is_valid_encoding(unsigned char opcode, unsigned char encoding);
-bool				is_valid_reg(char *arena, t_process *p);
+bool				is_valid_reg(t_cw *cw, t_process *p);
 
 /*
 ** Fonctions concernant le déroulement des processus au sein de la VM
@@ -263,7 +264,7 @@ int					op_long_load_index(t_cw *cw, t_process *cur_proc);
 int					op_long_fork(t_cw *cw, t_process *cur_proc);
 int					op_aff(t_cw *cw, t_process *cur_proc);
 int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
-int					get_arg_value(char *arena, t_process *cur_proc, int index, int type);
+int					get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type);
 void				write_in_arena(t_cw *cw, t_process *p, int arg[3]);
 void				write_in_reg(t_cw *cw, t_process *p, int arg[3]);
 
