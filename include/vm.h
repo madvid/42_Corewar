@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 19:39:34 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 20:20:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,5 +202,6 @@ void				opcode_v12(void *ptr, t_arg a);
 void				opcode_v14(void *ptr, t_arg a);
 void				op_arg_init(t_arg *arg, int type0, int type_select);
 void				tool_print_t_arg(t_arg arg);
+void				visualizer(t_cw *cw, t_parse *p);
 
 #endif

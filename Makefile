@@ -6,7 +6,7 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/09/01 20:05:26 by mdavid           ###   ########.fr        #
+#    Updated: 2020/09/01 20:20:45 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -144,7 +144,7 @@ VIOLET = \033[1;35m
 CYAN = \033[1;36m
 WHITE = \033[1;37m
 
-### RULES: ###
+### RULES: ###i
 
 all: $(ODIR) $(VM) $(ASM) $(DASM)
 
@@ -195,7 +195,7 @@ $(OP_OBJ) : $(ODIR)%.o: %.c $(OP_H)
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
 	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
 
-$(LIBFT): FORCE
+$(LIBFT): $(LIBFT_DIR)/$(INC_DIR)libft.h
 	@make -sC $(LIBFT_DIR)
 
 $(ODIR) :

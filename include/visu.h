@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 00:10:11 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 19:40:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 20:20:16 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 /*
 ** fichiers entête externes pour visu
 */
+
 # include <math.h>
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_timer.h>
