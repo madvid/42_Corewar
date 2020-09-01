@@ -185,17 +185,26 @@ int			vm_proc_get_lives(t_cw *cw)
 
 int			vm_proc_perform_opcode(t_cw *cw, t_process *proc)
 {
+	u_int8_t	encoding;
+	int			range;
 	int			code_error;
 
-	code_error = 0;
-	if (proc->wait_cycles == 0)
+	if (proc->wait_cycles > 0)
+		return (0);
+	if (proc->opcode < 1 || proc->opcode > 16)	// si opcode invalide => proc->i++
+		range = 1;
+	else
 	{
-		proc->pc = addr_next_opcode(cw->arena, proc);
-		if ((code_error = perform_opcode(cw, proc) > 0))
-			return (code_error);
-		proc->i = proc->pc;
-		proc->wait_cycles = -1;
+		encoding = (u_int8_t)cw->arena[(proc->i + 1) % MEM_SIZE];
+		range = (opcode_no_encoding(proc->opcode)) \
+			? 5 - (cw->op_tab[proc->opcode - 1].direct_size * 2) \
+			: instruction_width(encoding, cw->op_tab[proc->opcode - 1]) + 2;
 	}
+	proc->pc = (proc->i + range) % MEM_SIZE;
+	if ((code_error = perform_opcode(cw, proc) > 0))
+		return (code_error);
+	proc->i = proc->pc;
+	proc->wait_cycles = -1;
 	return (0);
 }
 

@@ -34,7 +34,7 @@ int		op_alive(t_cw *cw, t_process *proc)
 	int		arg;
 
 	op_arg_init(&v_arg, 0, 0);
-	arg = get_arg_value(cw->arena, proc, proc->i + 1, DIR_CODE);
+	arg = get_arg_value(cw, proc, proc->i + 1, DIR_CODE);
 	v_arg.arg[0] = arg;
 	v_arg.type[0] = DIR_CODE;
 	proc->n_lives++;
@@ -63,13 +63,13 @@ int		op_load(t_cw *cw, t_process *p)
 	int			arg[2];
 
 	op_arg_init(&v_arg, 0, 0);
-	arg[0] = get_arg_value(cw->arena, p, p->i + 2, \
+	arg[0] = get_arg_value(cw, p, p->i + 2, \
 		((cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6) + RELATIVE);
 	v_arg.arg[0] = arg[0];
 	v_arg.type[0] = DIR_CODE;
 	arg[1] = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
-	arg[1] = get_arg_value(cw->arena, p, p->i + 2 + arg[1], REG_CODE);
+	arg[1] = get_arg_value(cw, p, p->i + 2 + arg[1], REG_CODE);
 	v_arg.arg[1] = arg[1];
 	v_arg.type[1] = REG_CODE;
 	p->carry = (arg[0] == 0) ? 1 : 0;
@@ -99,9 +99,9 @@ int		op_store(t_cw *cw, t_process *p)
 	int			arg[3];
 
 	op_arg_init(&v_arg, REG_CODE, 3);
-	arg[0] = get_arg_value(cw->arena, p, p->i + 2, REG_CODE + RELATIVE);
-	v_arg.arg[0] = get_arg_value(cw->arena, p, p->i + 2, REG_CODE);
-	arg[1] = get_arg_value(cw->arena, p, p->i + 3, (((cw->arena[(p->i + 1) \
+	arg[0] = get_arg_value(cw, p, p->i + 2, REG_CODE + RELATIVE);
+	v_arg.arg[0] = get_arg_value(cw, p, p->i + 2, REG_CODE);
+	arg[1] = get_arg_value(cw, p, p->i + 3, (((cw->arena[(p->i + 1) \
 		% MEM_SIZE]) & 0b00110000) >> 4));
 	v_arg.arg[1] = arg[1];
 	if (((cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4) == IND_CODE)

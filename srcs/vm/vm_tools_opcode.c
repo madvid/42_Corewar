@@ -33,6 +33,43 @@ static void	init_op_funct(int (**t_op_funct)(t_cw*, t_process*))
 }
 
 /*
+** Function: is_opcode
+** Description:
+**	[put some explanations here]
+** Return:
+**	1: if the byte is an opcode.
+**	0: if the byte does not correspond to an opcode.
+*/
+
+bool		is_valid_opcode(t_cw *cw, t_process *cur_proc)
+{
+	u_int8_t	opcode;
+	u_int8_t	encoding;
+	int			widht;
+	t_arg		a;
+
+	opcode = cur_proc->opcode;
+	if (opcode_no_encoding(opcode))
+		return (true);
+	if (opcode >= 1 && opcode <= 16)
+	{
+		encoding = (u_int8_t)cw->arena[(cur_proc->i + 1) % (int)MEM_SIZE];
+		widht = (cur_proc->pc < cur_proc->i) ? MEM_SIZE - cur_proc->i \
+			+ cur_proc->pc : cur_proc->pc - cur_proc->i;
+		op_arg_init(&a, 0, 0);
+		a.widht = widht;
+		if (is_valid_encoding(opcode, encoding) == false \
+			|| is_valid_reg(cw, cur_proc) == false)
+		{
+			cw->options->v_lvl & 0b00010000 ? vprint_pcmv(cw, cur_proc, a) : 0;
+			return (false);
+		}
+		return (true);
+	}
+	return (false);
+}
+
+/*
 ** Function: perform_opcode
 ** Description:
 **	Checks the validity of the encoded byte (if there is one) associated to
@@ -53,49 +90,14 @@ int			perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		if (!is_valid_opcode(cw, cw->arena, cur_proc))
+		if (!is_valid_opcode(cw, cur_proc))
 			return (0);
 		code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
 	}
 	return (code_error);
 }
 
-/*
-** Function: is_opcode
-** Description:
-**	[put some explanations here]
-** Return:
-**	1: if the byte is an opcode.
-**	0: if the byte does not correspond to an opcode.
-*/
 
-bool		is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
-{
-	u_int8_t	opcode;
-	u_int8_t	encoding;
-	int			widht;
-	t_arg		a;
-
-	opcode = cur_proc->opcode;
-	if (opcode_no_encoding(opcode))
-		return (true);
-	if (opcode >= 1 && opcode <= 16)
-	{
-		encoding = (u_int8_t)arena[(cur_proc->i + 1) % (int)MEM_SIZE];
-		widht = (cur_proc->pc < cur_proc->i) ? MEM_SIZE - cur_proc->i \
-			+ cur_proc->pc : cur_proc->pc - cur_proc->i;
-		op_arg_init(&a, 0, 0);
-		a.widht = widht;
-		if (is_valid_encoding(opcode, encoding) == false \
-			|| is_valid_reg(arena, cur_proc) == false)
-		{
-			cw->options->v_lvl & 0b00010000 ? vprint_pcmv(cw, cur_proc, a) : 0;
-			return (false);
-		}
-		return (true);
-	}
-	return (false);
-}
 
 /*
 ** Function: arg_size_opcode_no_encode
@@ -135,37 +137,4 @@ bool		opcode_no_encoding(u_int8_t opcode)
 		return (true);
 	else
 		return (false);
-}
-
-/*
-** Function: addr_next_opcode
-** Description:
-**	Gets the address of the next opcode, without distinguish if the opcode is
-**	related to the 'current' champion.
-** Return:
-**	addr: address of the next opcode.
-**	NULL: there is no next opcode right after the ongoing one.
-*/
-
-int			addr_next_opcode(char *arena, t_process *proc)
-{
-	u_int8_t	encoding;
-	u_int8_t	opcode;
-	int			next_opcode;
-	extern t_op	op_tab[17];
-
-	opcode = proc->opcode;
-	if (opcode_no_encoding(opcode))
-	{
-		next_opcode = (proc->i \
-			+ arg_size_opcode_no_encode(opcode) + 1) % MEM_SIZE;
-		return (next_opcode);
-	}
-	if (opcode > 0 && opcode < 17)
-	{
-		encoding = (u_int8_t)arena[(proc->i + 1) % MEM_SIZE];
-		next_opcode = instruction_width(encoding, op_tab[opcode - 1]) + 2;
-		return ((proc->i + next_opcode) % MEM_SIZE);
-	}
-	return ((proc->i + 1) % MEM_SIZE);
 }

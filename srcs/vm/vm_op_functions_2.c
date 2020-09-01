@@ -56,16 +56,16 @@ int		op_and(t_cw *cw, t_process *p)
 
 	op_arg_init(&v_arg, DIR_CODE, 3);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	a = get_arg_value(cw, p, p->i + 2, a + RELATIVE);
 	v_arg.arg[0] = a;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	b = get_arg_value(cw, p, p->i + 2 + c, b + RELATIVE);
 	v_arg.arg[1] = b;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
-	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	c = get_arg_value(cw, p, p->i + 2 + c, REG_CODE);
 	v_arg.arg[2] = c;
 	v_arg.type[2] = REG_CODE;
 	p->registers[c - 1] = a & b;
@@ -92,16 +92,16 @@ int		op_or(t_cw *cw, t_process *p)
 
 	op_arg_init(&v_arg, DIR_CODE, 3);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	a = get_arg_value(cw, p, p->i + 2, a + RELATIVE);
 	v_arg.arg[0] = a;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	b = get_arg_value(cw, p, p->i + 2 + c, b + RELATIVE);
 	v_arg.arg[1] = b;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
-	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	c = get_arg_value(cw, p, p->i + 2 + c, REG_CODE);
 	v_arg.arg[2] = c;
 	v_arg.type[2] = REG_CODE;
 	p->registers[c - 1] = a | b;
@@ -128,16 +128,16 @@ int		op_xor(t_cw *cw, t_process *p)
 
 	op_arg_init(&v_arg, DIR_CODE, 3);
 	a = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b11000000) >> 6;
-	a = get_arg_value(cw->arena, p, p->i + 2, a + RELATIVE);
+	a = get_arg_value(cw, p, p->i + 2, a + RELATIVE);
 	v_arg.arg[0] = a;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11000000, op_tab[p->opcode - 1]);
 	b = (cw->arena[(p->i + 1) % MEM_SIZE] & 0b00110000) >> 4;
-	b = get_arg_value(cw->arena, p, p->i + 2 + c, b + RELATIVE);
+	b = get_arg_value(cw, p, p->i + 2 + c, b + RELATIVE);
 	v_arg.arg[1] = b;
 	c = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE] \
 		& 0b11110000, op_tab[p->opcode - 1]);
-	c = get_arg_value(cw->arena, p, p->i + 2 + c, REG_CODE);
+	c = get_arg_value(cw, p, p->i + 2 + c, REG_CODE);
 	v_arg.arg[2] = c;
 	v_arg.type[2] = REG_CODE;
 	p->registers[c - 1] = a ^ b;
