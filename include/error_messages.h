@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/24 12:49:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 12:39:02 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@
 # define M_P_IDTAB		"Error: [Mem. allocation] failed for p->id_available"
 # define M_P_OPT		"Error: [Mem. allocation] failed for p->options."
 # define M_DUMP_1		"Error: [Dump flag] <-dump nbr_cycles> nbr_cycles need"
-# define M_DUMP_2		" to exist, be non null and positive INT."
+# define M_DUMP_2		" to exist and be a positive INT."
 # define M_DUMP			(M_DUMP_1 M_DUMP_2)
 # define M_VERB			"Error: [Verbose flag] invalid parameter."
 # define M_MUSIC		"Error: [Music flag] invalid parameter."

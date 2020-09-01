@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 17:53:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 12:30:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int		procedural_loop(t_cw *cw)
 	code_error = 0;
 	if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
 		vprint_cycle(cw, 1);
-	while (xplr && code_error <= 0)
+	while (xplr && code_error <= 0 )
 	{
 		proc = (t_process*)(xplr->cnt);
 		new_attribut_proc(cw, proc);
@@ -162,8 +162,7 @@ int		procedural_loop(t_cw *cw)
 		code_error = vm_proc_perform_opcode(cw, proc);
 		xplr = xplr->next;
 	}
-	if (code_error <= 0 && cw->options->dump \
-		&& cw->tot_cycle == cw->options->dump_cycle)
+	if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
 		return (dump_memory(cw->arena));
 	return (code_error);
 }
@@ -212,6 +211,8 @@ int		vm_execution(t_cw *cw)
 	code_error = 0;
 	vm_exec_init_pc(cw);
 	cw->tot_cycle = 1;
+	if (cw->options->dump && cw->options->dump_cycle == 0)
+		return (dump_memory(cw->arena));
 	while (stop_game == false)
 	{
 		cw->i_cycle = 0;

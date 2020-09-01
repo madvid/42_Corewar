@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 20:46:58 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 10:48:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int			main(int ac, char **av)
 	{
 		if (vm_init_parse(&p) != 0 || vm_parsing(av, &p) != 0)
 			return (0);
-		if (vm_champ_parse(&(p->lst_champs), &p) == 0)
+		if (vm_champ_parse(&(p->lst_champs), &p) != 0)
 			return (0);
 	}
 	else
