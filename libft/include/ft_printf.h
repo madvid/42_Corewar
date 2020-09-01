@@ -15,125 +15,64 @@
 
 # include "libft.h"
 # include <stdarg.h>
-//# include <limits.h>
 # include <stdint.h>
-
-# define EOC		"\033[0m"
-# define HIGHLIGHT	"\033[1m"
-# define UNDERLINE	"\033[4m"
-# define BLINK		"\033[5m"
-# define BLACK		"\033[30m"
-# define RED		"\033[31m"
-# define GREEN 		"\033[32m"
-# define YELLOW		"\033[33m"
-# define BLUE		"\033[34m"
-# define PURPLE		"\033[35m"
-# define CYAN		"\033[36m"
-# define WHITE		"\033[37m"
-
-typedef	enum	e_stat
-{
-	STAT_OK,
-	STAT_ERR
-}				t_stat;
-
-typedef	enum	e_mod
-{
-	MOD_n,
-	MOD_l,
-	MOD_ll,
-	MOD_h,
-	MOD_hh,
-	MOD_j,
-	MOD_z,
-}				t_mod;
-
-typedef	struct	s_flag
-{
-	int plus;
-	int minus;
-	int zero;
-	int space;
-	int hash;
-	int width;
-	int prec;
-}				t_flag;
-
-typedef	struct	s_data
-{
-	va_list	valist;
-	t_flag	flag;
-	char	*bf;
-	int		i;
-	int		fd;
-	int		nb_print;
-	int		len;
-	t_mod	mod;
-}				t_data;
-
-int				ft_printf(
-	const char *fmt, ...) __attribute__((format(printf,1,2)));
+# define PF_BUF 5000
 
 /*
-** Functions related to the parsing
-** File(s): parse.c
+** >------------------------------ FT_PRINTF ---------------------------------<
 */
-void			parse(const char *fmt, t_data *t);
-void			parse_flag(const char *fmt, t_data *t);
-void			parse_width(t_data *t);
-void			parse_prec(const char *fmt, t_data *t);
-void			parse_mod(const char *fmt, t_data *t);
-void			parse_type(const char *fmt, t_data *t);
 
-/*
-** Functions related to the process of char, str, addr ...
-** File(s): type_csp.c, print_chars.c, print_addr.c
-*/
-void			type_chars(char type, t_data *t);
-void			type_percent(t_data *t);
-void			type_addr(t_data *t);
-void			type_base(char type, t_data *t);
-void			print_char(t_data *t, unsigned char ch);
-void			print_str(t_data *t);
-void			print_addr(t_data *t);
-void			print_base(char type, t_data *t, int n);
-void			print_hash(char type, t_data *t);
-void			fillwidth_str(t_data *t);
-void			fillwidth_char(t_data *t);
-void			fillwidth_addr(t_data *t);
-void			fillwidth_base(t_data *t, int n);
+typedef struct		s_pf
+{
+	va_list			vali;
+	char			str[PF_BUF];
+	int				i;
+	int				len;
+}					t_pf;
 
-void			init_flag(t_data *t);
-void			init_int_arg(t_data *t, long int *val);
-void			init_uint_arg(t_data *t, unsigned long *val);
-int				addr_precision(t_data *t);
-int				base_hash(char tp, t_data *t);
-int				base_width(char tp, t_data *t);
+typedef struct		s_flg
+{
+	int				hsh;
+	int				spc;
+	int				pls;
+	int				zro;
+	int				neg;
+}					t_flg;
 
-void			conv_hexa(t_data *t, unsigned long val);
-void			conv_octal(t_data *t, unsigned long val);
-char			*ft_ulltoa(unsigned long long n);
-char			*ft_uitoa(unsigned int n);
-char			*ft_uitoa_base(unsigned int n, unsigned int base);
-char			*ft_ultoa_base(unsigned long n, unsigned long base);
-char			*ft_ulltoa_base(unsigned long long n, unsigned long long base);
+typedef	struct		s_pfarg
+{
+	t_flg			flg;
+	int				fld;
+	int				prc;
+	int				mod;
+	int				typ;
+	int				len;
+	int				fill;
+	int				extra;
+	int				i;
+	char			*p;
+	char			f[81];
+	char			inf[81];
+	char			nan[81];
+}					t_pfarg;
 
-/*
-** Functions related to the processing of an integer arg
-** File(s): type_di.c
-*/
-void			type_int(t_data *t);
-int				ft_width_for_int(t_data *t, char **val, size_t len, int neg);
-int				ft_minus_for_int(t_data *t, char **val, char **str_w, int neg);
-char			ft_zero_for_int(t_data *t);
-int				ft_plus_space_for_int(t_data *t, char **val, int neg);
-int				ft_prec_for_int(t_data *t, char **val);
-void			print_int(t_data *t);
-
-/*
-** Functions related to the processing of an unsigned integer arg
-** File(s): type_uint.c
-*/
-void			type_uint(t_data *t);
+int					ft_printf(const char *str, ...);
+void				fill_buf(t_pf *env, char c);
+void				new_arg(t_pfarg *new);
+void				to_u(unsigned long u, char *s, t_pfarg *arg);
+void				to_bi(long double f, char *s);
+int					parse(const char *str, t_pf *env);
+void				parse_di(t_pf *env, t_pfarg *arg);
+void				parse_o(t_pf *env, t_pfarg *arg);
+void				parse_u(t_pf *env, t_pfarg *arg);
+void				parse_x(t_pf *env, t_pfarg *arg);
+void				parse_xcap(t_pf *env, t_pfarg *arg);
+void				parse_c(t_pf *env, t_pfarg *arg);
+void				parse_s(t_pf *env, t_pfarg *arg);
+void				parse_p(t_pf *env, t_pfarg *arg);
+void				parse_f(t_pf *env, t_pfarg *arg);
+void				parse_percent(t_pf *env, t_pfarg *arg);
+void				parse_b(t_pf *env, t_pfarg *arg);
+int					naninf(long double n, char *s, t_pfarg *arg);
 
 #endif

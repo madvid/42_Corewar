@@ -66,8 +66,7 @@ VM_FILES =	main					\
 			verbosity				\
 			verbosity_fct			\
 			verbo_tools				\
-			ft_itoa_base2			\
-			temporary_tools
+			ft_itoa_base2			
 
 VM_SIU =	visu_arena				\
 			visu_process			\

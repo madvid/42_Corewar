@@ -219,7 +219,6 @@ char				*champ_name_via_id(t_list *lst_champs, int id);
 ** Fonctions outils concernant les opcode
 */
 bool				opcode_no_encoding(u_int8_t opcode);
-int					perform_opcode(t_cw *cw, t_process *cur_proc);
 
 /*
 ** Fonctions outils concernant l'octet d'encodage

@@ -97,29 +97,38 @@ int			perform_opcode(t_cw *cw, t_process *cur_proc)
 	return (code_error);
 }
 
-
-
 /*
-** Function: arg_size_opcode_no_encode
+** Function: vm_proc_perform_opcode
 ** Description:
-**	[put some explanation here]
+**	[put some explanations !]
 ** Return:
-**	4: length of the argument of the instruction live (opcode = 1).
-**	1: length of the argument of zjmp/fork/lfork (opcode 9/12/15).
-**	-1: if the opcode value is not within (1 ; 9 ; 12 ; 15)
+**	code_error: value of the corresponding error
+**	0: No error/issue occured
 */
 
-int			arg_size_opcode_no_encode(u_int8_t opcode)
+int			vm_proc_perform_opcode(t_cw *cw, t_process *proc)
 {
-	if (opcode == 1)
-		return (4);
-	if (opcode == 9)
-		return (2);
-	if (opcode == 12)
-		return (2);
-	if (opcode == 15)
-		return (2);
-	return (-1);
+	u_int8_t	encoding;
+	int			range;
+	int			code_error;
+
+	if (proc->wait_cycles > 0)
+		return (0);
+	if (proc->opcode < 1 || proc->opcode > 16)	// si opcode invalide => proc->i++
+		range = 1;
+	else
+	{
+		encoding = (u_int8_t)cw->arena[(proc->i + 1) % MEM_SIZE];
+		range = (opcode_no_encoding(proc->opcode)) \
+			? 5 - (cw->op_tab[proc->opcode - 1].direct_size * 2) \
+			: instruction_width(encoding, cw->op_tab[proc->opcode - 1]) + 2;
+	}
+	proc->pc = (proc->i + range) % MEM_SIZE;
+	if ((code_error = perform_opcode(cw, proc) > 0))
+		return (code_error);
+	proc->i = proc->pc;
+	proc->wait_cycles = -1;
+	return (0);
 }
 
 /*

@@ -18,6 +18,7 @@
 */
 # include <unistd.h>
 # include <string.h>
+# include "ft_printf.h"
 
 /*
 ** Definition of some constants
