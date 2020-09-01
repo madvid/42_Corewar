@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 18:49:04 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 12:51:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@
 int			op_zerojump(t_cw *cw, t_process *p)
 {
 	t_arg		v_arg;
+	u_int8_t	tmp;
 	int			a;
 
 	op_arg_init(&v_arg, DIR_CODE, 1);
-	a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
-		| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
+	tmp = cw->arena[(p->i + 1) % MEM_SIZE];
+	a = (tmp << 8) | ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
+	// a = (cw->arena[(p->i + 1) % MEM_SIZE]) << 8 \
+	// 	| ((unsigned char)cw->arena[(p->i + 2) % MEM_SIZE]);
 	v_arg.arg[0] = a;
 	if (!p->carry)
 	{

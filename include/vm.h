@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 18:19:21 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 12:33:12 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 */
 
 # define RELATIVE 10
-# define DUMP_SIG -20
+# define DUMP_SIG FIN_DU_GAME
 
 /*
 ** structure pour exploiter le fichier op.c

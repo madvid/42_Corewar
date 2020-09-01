@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 17:44:39 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 18:50:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 12:22:03 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 ** Description:
 **	[put some description here]
 ** Return:
-**	1:	success in getting magic_key, name, comment and bytecode
-**		of the current champion.
-**	0: otherwise
+**	0: success in getting magic_key, name, comment and bytecode
+**	   of the current champion.
+**	1: otherwise
 */
 
 static int		vm_champ_file_parse(t_champ *ichamp, t_parse **p)
@@ -43,7 +43,7 @@ static int		vm_champ_file_parse(t_champ *ichamp, t_parse **p)
 	close(fd);
 	if (!(ichamp->name) || !(ichamp->comment) || !(ichamp->bytecode))
 		return (vm_error_manager((int)CD_CHP_ERR, p, NULL));
-	return (1);
+	return (0);
 }
 
 /*
@@ -52,22 +52,23 @@ static int		vm_champ_file_parse(t_champ *ichamp, t_parse **p)
 **	Parsing of the champions bytecode, this part couple the parsing and basics
 **	tests on the contains of the files.
 ** Return:
-**	1: If parsing of champion is fine.
-**	0: otherwise.
+**	0: If parsing of champion is fine.
+**	CODE_ERROR: otherwise.
 */
 
 int				vm_champ_parse(t_list **lst_champs, t_parse **p)
 {
 	t_list		*xplr;
 	t_champ		*ichamp;
+	int			code_error;
 
 	xplr = *lst_champs;
 	while (xplr)
 	{
-		ichamp = (t_champ*)xplr->cnt;
-		if (vm_champ_file_parse(ichamp, p) == 0)
-			return (0);
+		ichamp = (t_champ*)(xplr->cnt);
+		if ((code_error = vm_champ_file_parse(ichamp, p)) != 0)
+			return (code_error);
 		xplr = xplr->next;
 	}
-	return (1);
+	return (0);
 }
