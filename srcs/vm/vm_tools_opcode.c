@@ -53,7 +53,7 @@ int			perform_opcode(t_cw *cw, t_process *cur_proc)
 		init_op_funct(op_funct);
 	if (cur_proc->wait_cycles == 0)
 	{
-		if (!is_valid_opcode(cw, cw->arena, cur_proc))
+		if (!is_valid_opcode(cw, cur_proc))
 			return (0);
 		code_error = op_funct[cur_proc->opcode - 1](cw, cur_proc);
 	}
@@ -69,7 +69,7 @@ int			perform_opcode(t_cw *cw, t_process *cur_proc)
 **	0: if the byte does not correspond to an opcode.
 */
 
-bool		is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
+bool		is_valid_opcode(t_cw *cw, t_process *cur_proc)
 {
 	u_int8_t	opcode;
 	u_int8_t	encoding;
@@ -81,7 +81,7 @@ bool		is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc)
 		return (true);
 	if (opcode >= 1 && opcode <= 16)
 	{
-		encoding = (u_int8_t)arena[(cur_proc->i + 1) % (int)MEM_SIZE];
+		encoding = (u_int8_t)cw->arena[(cur_proc->i + 1) % (int)MEM_SIZE];
 		widht = (cur_proc->pc < cur_proc->i) ? MEM_SIZE - cur_proc->i \
 			+ cur_proc->pc : cur_proc->pc - cur_proc->i;
 		op_arg_init(&a, 0, 0);

@@ -109,29 +109,6 @@ int		declare_winner(t_cw *cw)
 }
 
 /*
-** Function: new_attribut_proc
-** Description:
-**	Attributes to the process the value of the opcode at the position proc->i
-**	in the arena.
-**	If the opcode value is invalid (not in [1;16]), wait_cycles is set to 1
-**	otherwise it is set to the corresponding value in op_tab (see op.c).
-*/
-
-void	new_attribut_proc(t_cw *cw, t_process *proc)
-{
-	extern t_op		op_tab[17];
-
-	if (proc->wait_cycles == -1)
-	{
-		proc->opcode = cw->arena[proc->i];
-		if (proc->opcode >= 1 && proc->opcode <= 16)
-			proc->wait_cycles = op_tab[proc->opcode - 1].cycle;
-		else
-			proc->wait_cycles = 1;
-	}
-}
-
-/*
 ** Function: procedural_loop
 ** Description:
 **	Performs the loop on the processes.
@@ -150,20 +127,25 @@ int		procedural_loop(t_cw *cw)
 	t_list		*xplr;
 	t_process	*proc;
 
-	xplr = cw->process;
 	code_error = 0;
-	if (cw->options->v_lvl & 2 && cw->i_cycle != 0)
+	if (cw->options->v_lvl & 2)
 		vprint_cycle(cw, 1);
-	while (xplr && code_error <= 0)
+	xplr = cw->process;
+	while (xplr)
 	{
 		proc = (t_process*)(xplr->cnt);
-		new_attribut_proc(cw, proc);
+		if (proc->wait_cycles == -1)	//  ++ c'est new_attribut_proc()
+		{
+			proc->opcode = cw->arena[proc->i];
+			proc->wait_cycles = (proc->opcode >= 1 && proc->opcode <= 16) \
+				? cw->op_tab[proc->opcode - 1].cycle : 1;
+		}
 		proc->wait_cycles--;
-		code_error = vm_proc_perform_opcode(cw, proc);
+		if ((code_error = vm_proc_perform_opcode(cw, proc)) > 0)
+			return (code_error);
 		xplr = xplr->next;
 	}
-	if (code_error <= 0 && cw->options->dump \
-		&& cw->tot_cycle == cw->options->dump_cycle)
+	if (cw->options->dump && cw->tot_cycle == cw->options->dump_cycle)
 		return (dump_memory(cw->arena));
 	return (code_error);
 }

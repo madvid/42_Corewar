@@ -218,7 +218,7 @@ char				*champ_name_via_id(t_list *lst_champs, int id);
 /*
 ** Fonctions outils concernant les opcode
 */
-bool				is_valid_opcode(t_cw *cw, char *arena, t_process *cur_proc);
+bool				is_valid_opcode(t_cw *cw, t_process *cur_proc);
 int					arg_size_opcode_no_encode(u_int8_t opcode);
 bool				opcode_no_encoding(u_int8_t opcode);
 int					addr_next_opcode(char *arena, t_process *proc);
