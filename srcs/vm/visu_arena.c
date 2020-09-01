@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_arena.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:40:12 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/21 16:22:20 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:38:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 /*
 **Initialisation of arena Rect coord, arena and champions colors, champions id

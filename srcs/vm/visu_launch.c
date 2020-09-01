@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_launch.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 10:48:49 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/24 13:12:40 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:42:40 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 void		init_window(t_visu *v)
 {
@@ -71,7 +72,7 @@ void		load_visu(t_visu *v, t_cw *cw, t_parse *p)
 	load_players(v, p);
 }
 
-void		visualizer(t_cw *cw, t_parse *p)
+int		visualizer(t_cw *cw, t_parse *p)
 {
 	t_visu		v;
 	static bool	stop_game;
@@ -97,4 +98,5 @@ void		visualizer(t_cw *cw, t_parse *p)
 	}
 	final_render_destroy(&v);
 	render_destroy(&v);
+	return (FIN_DU_GAME);
 }

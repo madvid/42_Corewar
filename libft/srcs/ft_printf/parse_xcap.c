@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_xcap.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 15:52:10 by yaye              #+#    #+#             */
-/*   Updated: 2019/07/25 15:52:12 by yaye             ###   ########.fr       */
+/*   Updated: 2020/09/01 17:33:22 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include "ft_printf.h"
 #include "libft.h"
 
 void	to_xcap(unsigned long u, char *s, t_pfarg *arg)

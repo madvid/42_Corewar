@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 11:28:15 by yaye              #+#    #+#             */
-/*   Updated: 2019/07/20 11:28:16 by yaye             ###   ########.fr       */
+/*   Updated: 2020/09/01 17:30:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include "ft_printf.h"
 #include "libft.h"
 
 void	new_arg(t_pfarg *new)

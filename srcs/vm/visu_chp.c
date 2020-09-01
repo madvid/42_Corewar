@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_chp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:30:51 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 14:37:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:41:42 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 void		fill_coo_proc(t_visu *v, int i)
 {

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 10:42:18 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:43:28 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 int			find_nbr_players(t_parse *p)
 {

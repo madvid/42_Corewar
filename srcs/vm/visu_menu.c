@@ -6,11 +6,12 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 14:39:55 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 10:55:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 19:42:10 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 t_visu		init_menu(t_visu *v)
 {

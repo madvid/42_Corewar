@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/19 10:16:34 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:41:15 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 t_visu		init_process(t_visu *v)
 {

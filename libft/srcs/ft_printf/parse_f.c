@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_f.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/27 11:25:11 by yaye              #+#    #+#             */
-/*   Updated: 2019/07/27 11:25:12 by yaye             ###   ########.fr       */
+/*   Updated: 2020/09/01 17:31:41 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include "ft_printf.h"
 #include "libft.h"
 
 void	to_f(long double n, char *s, t_pfarg *arg)

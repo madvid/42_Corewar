@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_players.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 09:54:08 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 14:37:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:42:55 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 void		fill_coo_players(t_visu *v, int i)
 {

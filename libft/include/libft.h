@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:11:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 13:01:58 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 17:29:16 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 */
 # include <unistd.h>
 # include <string.h>
-# include "ft_printf.h"
 
 /*
 ** Definition of some constants

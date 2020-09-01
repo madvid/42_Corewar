@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 00:10:11 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 00:32:46 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 19:40:50 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,13 @@
 # include <SDL2_ttf/SDL_ttf.h>
 # include <SDL2_mixer/SDL_mixer.h>
 
+# include "op_and_op_struct.h"
+
 /*
-**
+** Inclusion des structures de la partie vm (parsing etc...)
 */
+
+# include "corewar_struct.h"
 
 typedef struct		s_visu
 {
@@ -122,10 +126,10 @@ typedef struct		s_visu
 void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
-void     			visualizer(t_cw *cw, t_parse *p);
-void    			menu_move(t_visu *v);
-void    			load_menu(t_visu *v);
-t_visu  			init_menu(t_visu *v);
+int					visualizer(t_cw *cw, t_parse *p);
+void				menu_move(t_visu *v);
+void				load_menu(t_visu *v);
+t_visu				init_menu(t_visu *v);
 void				load_visu(t_visu *v, t_cw *cw, t_parse *p);
 
 /*
@@ -165,7 +169,7 @@ void				get_process_data2(t_visu *v, t_cw *cw);
 **Players functions
 */
 
-t_visu      		init_players(t_visu *v, t_parse *p);
+t_visu				init_players(t_visu *v, t_parse *p);
 void				load_players(t_visu *v, t_parse *p);
 
 /*
@@ -173,14 +177,15 @@ void				load_players(t_visu *v, t_parse *p);
 */
 
 bool				main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p);
-bool        		main_exe2(t_cw *cw, bool stop_game);
-void    			music_launcher(t_visu *v, t_cw *cw);
+bool				main_exe2(t_cw *cw, bool stop_game);
+void				music_launcher(t_visu *v, t_cw *cw);
 t_visu				visu_breaker(t_visu *v);
 t_visu				visu_breaker2(t_visu *v);
 t_visu				init_details(t_visu *v);
 int					find_nbr_proc(t_cw *cw);
 int					find_nbr_players(t_parse *p);
-void    			arena_texture(t_visu *v, int is_proc, int i);
+void				arena_texture(t_visu *v, int is_proc, int i);
 void				final_render_destroy(t_visu *v);
+char				*ft_itoa_base2(unsigned long long nb, char *base);
 
 #endif

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 12:02:15 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:43:06 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 t_visu		init_details(t_visu *v)
 {
