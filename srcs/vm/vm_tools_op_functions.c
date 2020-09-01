@@ -72,38 +72,32 @@ void	op_arg_init(t_arg *arg, int type0, int type_select)
 **										<=> valeur du registre[arg_value]
 */
 
-int		get_arg_value(t_cw *cw, t_process *cur_proc, int i, int t)
+int		get_arg_value(t_cw *cw, t_process *p, int i, int t)
 {
 	int			arg;
 	int			relative_ind;
 
-	if ((t % 10) != REG_CODE && (t % 10) != IND_CODE && (t % 10) != DIR_CODE)
-		return (0);
 	arg = cw->arena[i % MEM_SIZE];
 	if ((t % 10) == REG_CODE)
-		return ((t / 10) == 0 ? arg : cur_proc->registers[arg - 1]);
+		return ((t - REG_CODE) == RELATIVE ? p->registers[arg - 1] : arg);
 	arg = arg << 8 | (unsigned char)cw->arena[(i + 1) % MEM_SIZE];
 	if ((t % 10) == IND_CODE)
 	{
-		if (t / 10 == 1)
+		if ((t - IND_CODE) == RELATIVE)
 		{
-			arg = cur_proc->i + (arg % IDX_MOD);
+			arg = p->i + (arg % IDX_MOD);
 			arg = (arg < 0) ? MEM_SIZE + arg : arg;
 			relative_ind = cw->arena[arg % MEM_SIZE] << 24
 				| ((unsigned int)cw->arena[(arg + 1) % MEM_SIZE] & 255) << 16
 				| ((unsigned int)cw->arena[(arg + 2) % MEM_SIZE] & 255) << 8
 				| ((unsigned int)cw->arena[(arg + 3) % MEM_SIZE] & 255);
-		}
-		return ((t / 10) == 0 ? arg : relative_ind);
+		}		
+		return ((t - IND_CODE) == RELATIVE ? relative_ind : arg);
 	}
-	if ((t % 10) == DIR_CODE)
-	{
-		if (cw->op_tab[(int)(cur_proc->opcode - 1)].direct_size == 1)
-			return (arg);
-		arg = arg << 8 | (unsigned char)cw->arena[(i + 2) % MEM_SIZE];
-		return (arg = arg << 8 | (unsigned char)cw->arena[(i + 3) % MEM_SIZE]);
-	}
-	return (0);
+	if (cw->op_tab[(int)(p->opcode - 1)].direct_size == 1)
+		return (arg);
+	arg = arg << 8 | (unsigned char)cw->arena[(i + 2) % MEM_SIZE];
+	return (arg << 8 | (unsigned char)cw->arena[(i + 3) % MEM_SIZE]);
 }
 
 /*
