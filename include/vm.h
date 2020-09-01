@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 12:33:12 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 16:36:01 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 /*
 ** fichiers entête externes à Corewar
 */
-#include <stdbool.h>
+# include <stdbool.h>
 # include <unistd.h>
 
 /*
@@ -31,8 +31,8 @@
 */
 # include "../libft/include/libft.h"
 # include "../libft/include/ft_printf.h"
-// # include "visu.h"
-#include "define_uint_linux.h"
+# include "visu.h"
+# include "define_uint_linux.h"
 # include "error_messages.h"
 
 /*
@@ -291,5 +291,6 @@ void				opcode_v12(void *ptr, t_arg a);
 void				opcode_v14(void *ptr, t_arg a);
 void				op_arg_init(t_arg *arg, int type0, int type_select);
 void				tool_print_t_arg(t_arg arg);
+void				visualizer(t_cw *cw, t_parse *p);
 
 #endif

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
+#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/09/01 15:31:05 by mdavid           ###   ########.fr        #
+#    Updated: 2020/09/01 16:54:00 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SDL2_TTF_PATH = $(FW_PATH)/$(SDL2_TTF)
 SDL2_MXR_PATH = $(FW_PATH)/$(SDL2_MXR)
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -Wunused-function -g -I$(INC_DIR)# -fsanitize=address -fstack-protector -fsanitize=undefined
+FLAGS = -Wall -Wextra -Werror -Wunused-function -g -I $(INC_DIR)# -fsanitize=address -fstack-protector -fsanitize=undefined
 RM = rm -rf
 
 ### SOURCES AND OBJECTS VARIABLES: ###
@@ -66,9 +66,8 @@ VM_FILES =	main					\
 			verbosity				\
 			verbosity_fct			\
 			verbo_tools				\
-			ft_itoa_base2			
-
-VM_SIU =	visu_arena				\
+			ft_itoa_base2			\
+			visu_arena				\
 			visu_process			\
 			visu_render				\
 			visu_chp				\
@@ -103,45 +102,40 @@ VIOLET = \033[1;35m
 CYAN = \033[1;36m
 WHITE = \033[1;37m
 
-### RULES: ###
+### RULES: ###i
 
 all: $(VM)
 
-$(VM): $(LIBFT) $(VM_OBJ)
-	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB)
+# $(VM): $(VM_OBJ)
+# 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB)
+# 	@echo "\n $(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@"
+
+$(VM): $(VM_OBJ)
+	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) -F $(FW_PATH)\
+		-framework SDL2\
+		-framework SDL2_image\
+		-framework SDL2_ttf\
+		-framework SDL2_mixer
 	@echo "\n $(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@"
+	@install_name_tool -change @rpath/$(SDL2) $(SDL2_PATH) $@
+	@install_name_tool -change @rpath/$(SDL2_IMG) $(SDL2_IMG_PATH) $@
+	@install_name_tool -change @rpath/$(SDL2_TTF) $(SDL2_TTF_PATH) $@
+	@install_name_tool -change @rpath/$(SDL2_MXR) $(SDL2_MXR_PATH) $@
+-include $(DEP)
 
-#$(VM): $(VM_OBJ)
-#	@ifeq ($(OS), "Linux")
-#	@sudo apt install libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-ttf-2.0-0
-#	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(FLAG_LINUX_SDL) $(LIB)
-#	@else
-#	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(LIB) -F $(FW_PATH)\
-#	-framework SDL2\
-#	-framework SDL2_image\
-#	-framework SDL2_ttf\
-#	-framework SDL2_mixer
-#	@echo "\n $(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@"
-#	@install_name_tool -change @rpath/$(SDL2) $(SDL2_PATH) $@
-#	@install_name_tool -change @rpath/$(SDL2_IMG) $(SDL2_IMG_PATH) $@
-#	@install_name_tool -change @rpath/$(SDL2_TTF) $(SDL2_TTF_PATH) $@
-#	@install_name_tool -change @rpath/$(SDL2_MXR) $(SDL2_MXR_PATH) $@
-#	-include $(DEP)
-#	@endif
+$(VM_OBJ): $(INC_DIR)/vm.h $(LIBFT)
 
-$(VM_OBJ): $(INC_DIR)/vm.h
+# $(SRC_DIR)$(VM_DIR)%.o: %.c
+# 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
+# 	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
+# 	@#$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
 
- $(SRC_DIR)$(VM_DIR)%.o: %.c
+$(SRC_DIR)$(VM_DIR)%.o: %.c
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
-	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR)
-	@#$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
+	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
+	@rm -rf $(VM_D)
 
-#$(SRC_DIR)$(VM_DIR)%.o: %.c
-#	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
-#	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
-#	@rm -rf $(VM_D)
-
-$(LIBFT): FORCE
+$(LIBFT): $(LIBFT_DIR)/$(INC_DIR)libft.h
 	@make -sC $(LIBFT_DIR)
 
 show:

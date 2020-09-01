@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 00:10:11 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/21 00:32:46 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 16:36:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 /*
 ** fichiers entête externes pour visu
 */
+
 # include <math.h>
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_timer.h>

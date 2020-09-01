@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 10:48:30 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/01 16:52:32 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "vm.h"
+# include "vm.h"
 
 int			main(int ac, char **av)
 {
@@ -34,10 +34,10 @@ int			main(int ac, char **av)
 	vm_cw_arena_init(&cw, &p);
 	cw->lst_champs = p->lst_champs;
 	code_error = vm_execution(cw);
-	// if (p->options->sdl == true)
-	// 	visualizer(cw, p);
-	// else
-	// 	vm_execution(cw);
+	if (p->options->sdl == true)
+		visualizer(cw, p);
+	else
+		vm_execution(cw);
 	vm_error_manager(code_error, &p, &cw);
 	return (0);
 }
