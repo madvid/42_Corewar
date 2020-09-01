@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2020/07/08 13:37:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/07/06 11:28:23 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 
 
 # define REG_CODE				1
-# define IND_CODE				3
 # define DIR_CODE				2
+# define IND_CODE				3
 
 
 #define MAX_ARGS_NUMBER			4
 #define MAX_PLAYERS				4
 #define MEM_SIZE				(4*1024)
 #define IDX_MOD					(MEM_SIZE / 8)
-#define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
+#define CHAMP_MAX_SIZE			(MEM_SIZE / 4)
 
 #define COMMENT_CHAR			'#'
 #define LABEL_CHAR				':'
@@ -67,10 +67,26 @@ typedef char	t_arg_type;
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-typedef struct		header_s
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
+typedef struct					header_s
 {
-  unsigned int		magic;
-  char				prog_name[PROG_NAME_LENGTH + 1];
-  unsigned int		prog_size;
-  char				comment[COMMENT_LENGTH + 1];
-}					header_t;
+	unsigned int		magic;
+	char				prog_name[PROG_NAME_LENGTH + 1];
+	unsigned int		prog_size;
+	char				comment[COMMENT_LENGTH + 1];
+}								header_t;
+
+typedef struct					s_op
+{
+	char				*name;
+	size_t				n_arg;
+	size_t				type[MAX_ARGS_NUMBER];
+	size_t				code;
+	size_t				cycle;
+	char				*desc;
+	size_t				encod;
+	size_t				direct_size;
+}								t_op;
