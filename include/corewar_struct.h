@@ -103,6 +103,7 @@ typedef struct		s_corewar
 	int				ctd_lives;		// number of alives performed during the last CTD period.
 	int				i_check;		// Number of check to perform before cycle_to_die is decreased (no matter if nb_lives is reached or not)
 	int				tot_cycle;
+	int				last_champ;
 	t_options		*options;			// struct with options
 }					t_cw;
 

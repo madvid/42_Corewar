@@ -41,8 +41,11 @@ int		op_alive(t_cw *cw, t_process *proc)
 	cw->ctd_lives++;
 	cw->tot_lives++;
 	proc->last_live = cw->tot_cycle;
-	if (-arg > 0 && -arg < cw->n_champ)
+	if (-arg > 0 && -arg <= cw->n_champ)
+	{
+		cw->last_champ = -arg;
 		cw->champ_lives[-arg - 1]++;
+	}
 	if (cw->options->verbose == true)
 		verbotab(cw, proc, v_arg);
 	return (0);

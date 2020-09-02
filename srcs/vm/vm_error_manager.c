@@ -73,16 +73,19 @@ int			vm_error_manager(int code_error, t_parse **p, t_cw **cw)
 						M_INI_PROC, M_FORK, NULL};
 
 	if (code_error != FIN_DU_GAME)
-		ft_putendl(msg[code_error]);
+	{
+		write(2, msg[code_error], ft_strlen(msg[code_error]));
+		write(2, "\n", 1);
+	}
 	if (p)
 		vm_init_parse_error(code_error, p);
 	if (cw)
 		vm_init_cw_error(code_error, cw);
 	if (code_error != CD_USAGE && code_error != FIN_DU_GAME)
 	{
-		ft_putendl("Remainder:\n########################");
-		ft_putendl(msg[CD_USAGE]);
-		ft_putendl("########################");
+		write(2, "Remainder:\n########################\n", 36);
+		write(2, msg[CD_USAGE], ft_strlen(msg[CD_USAGE]));
+		write(2, "\n########################\n", 26);
 	}
 	return (code_error);
 }
