@@ -120,7 +120,7 @@ int					vm_execution(t_cw *cw);
 void				vm_exec_init_pc(t_cw *cw);
 int					procedural_loop(t_cw *cw);
 void				new_attribut_proc(t_cw *cw, t_process *proc);
-void				ctd_control(t_cw *cw);
+int					ctd_control(t_cw *cw);
 
 bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
 int					instruction_width(unsigned char encoding, t_op op_elem);

@@ -159,19 +159,25 @@ int		procedural_loop(t_cw *cw)
 **	* cycle_to_die hasn't be decrease since MAX_CHECKS verification.
 */
 
-void	ctd_control(t_cw *cw)
+int		ctd_control(t_cw *cw)
 {
-	if (cw->i_check == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
+	int			code_error;
+
+	if (++cw->i_check == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
 	{
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
-		cw->i_check = (cw->i_check == MAX_CHECKS) ? 1 : cw->i_check;
+		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
 		if (cw->options->v_lvl & 2)
 			vprint_cycle(cw, 0);
-		if (cw->cycle_to_die < 0 && cw->options->v_lvl & 2)
-			vprint_cycle(cw, 1);
+		if (cw->cycle_to_die < 1)
+		{
+			if ((code_error = procedural_loop(cw)) > 0)
+				return (code_error);
+			if (vm_proc_kill_not_living(cw) == 0)
+				return (declare_winner(cw));
+		}
 	}
-	else
-		cw->i_check++;
+	return (0);
 }
 
 /*
