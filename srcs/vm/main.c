@@ -6,13 +6,17 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 20:19:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 12:27:48 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/utsname.h>
 #include "visu.h"
 #include "vm.h"
+
+/*
+**__attribute__((destructor)) void foo(void){while (1); }
+*/
 
 int			main(int ac, char **av)
 {
@@ -25,7 +29,7 @@ int			main(int ac, char **av)
 	cw = NULL;
 	if (ac > 1)
 	{
-		if (vm_init_parse(&p) != 0 || vm_parsing(av, &p) != 0 \
+		if (vm_init_parse(&p) != 0 || vm_parsing(av, &p) != 0
 			|| vm_champ_parse(&(p->lst_champs), &p) != 0)
 			return (0);
 	}

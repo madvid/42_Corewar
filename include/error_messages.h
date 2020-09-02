@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 15:03:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 10:34:51 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 # define M_DUMP_1		"Error: [Dump flag] <-dump nbr_cycles> nbr_cycles need"
 # define M_DUMP_2		" to exist and be a positive INT. Only digits also."
 # define M_DUMP			(M_DUMP_1 M_DUMP_2)
-# define M_VERB			"Error: [Verbose flag] invalid parameter."
+# define M_VERB			"Error: [Verbose flag] invalid or no parameter."
 # define M_MUSIC		"Error: [Music flag] invalid parameter."
 # define M_UNIQ			"Error: [Flag] dupplicate option flag."
 # define M_BD_VAL_1		"Error: [Number flag] <-n id>, id "
