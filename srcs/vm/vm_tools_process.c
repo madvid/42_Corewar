@@ -111,12 +111,14 @@ int			vm_proc_kill_not_living(t_cw *cw)
 	t_list		*xplr;
 	t_list		*next;
 	t_list		*before;
+	int			offset;
 
+	offset = (cw->cycle_to_die > 0) ? -1 : 0;
 	xplr = cw->process;
 	before = cw->process;
 	while (xplr)
 	{
-		if (((t_process*)(xplr->cnt))->n_lives == 0)
+		if (cw->tot_cycle - ((t_process*)(xplr->cnt))->last_live + offset >= cw->cycle_to_die)
 		{
 			next = xplr->next;
 			if (cw->options->v_lvl & 0b00001000)

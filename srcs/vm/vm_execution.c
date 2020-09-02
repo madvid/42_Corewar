@@ -86,25 +86,25 @@ void	vm_exec_init_pc(t_cw *cw)
 
 int		declare_winner(t_cw *cw)
 {
-	int		score;
-	int		winner;
-	char	*name;
-	int		i;
+	char		*name;
+	t_list		*xplr;
 
-	score = cw->champ_lives[0];
-	winner = 1;
-	i = 1;
-	while (i < 4)
+	if (cw->lst_champs == NULL)
+		return (0);
+	name = NULL;
+	xplr = cw->lst_champs;
+	while (xplr)
 	{
-		if (cw->champ_lives[i] > score)
+		if (((t_champ*)(xplr->cnt))->id == cw->last_champ)
 		{
-			score = cw->champ_lives[i];
-			winner = i + 1;
+			name = ((t_champ*)(xplr->cnt))->name;
+			break ;
 		}
-		i++;
+		xplr = xplr->next;
 	}
-	name = champ_name_via_id(cw->lst_champs, winner);
-	ft_printf("Contestant %d, \"%s\", has won !\n", winner, name);
+	if (!name)
+		return (0);
+	ft_printf("Contestant %d, \"%s\", has won !\n", cw->last_champ, name);
 	return (FIN_DU_GAME);
 }
 
