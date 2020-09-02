@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 14:46:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/31 17:50:00 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 17:14:46 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,7 @@
 
 void		verbotab(t_cw *cw, t_process *p, t_arg arg)
 {
-	extern t_op		op_tab[17];
-
-	if (p->opcode == 1 || p->opcode == 9 \
-		|| p->opcode == 12 || p->opcode == 15)
-		arg.widht = 5 - 2 * op_tab[p->opcode - 1].direct_size;
-	else if (p->opcode == 3)
-		arg.widht = 3 + arg.type[1];
-	else
-		arg.widht = instruction_width(cw->arena[(p->i + 1) % MEM_SIZE]\
-			, op_tab[p->opcode - 1]) + 1 + op_tab[p->opcode - 1].encod;
+	arg.widht = (p->pc < p->i) ? MEM_SIZE - p->i + p->pc : p->pc - p->i;
 	(cw->options->v_lvl & 0b00000100) ? vprint_op(p, arg) : 0;
 	((cw->options->v_lvl & 0b00000001) && p->opcode == 1) \
 		? vprint_lives(cw, arg) : 0;
