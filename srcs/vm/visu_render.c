@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   visu_render.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:18:43 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 10:45:18 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/01 19:41:29 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 void		arena_render(t_visu *v)
 {

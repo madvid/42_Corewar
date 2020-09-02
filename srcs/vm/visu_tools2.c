@@ -6,11 +6,12 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/25 10:42:18 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/02 15:10:44 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "visu.h"
 
 int			find_nbr_players(t_parse *p)
 {
@@ -29,12 +30,14 @@ int			find_nbr_players(t_parse *p)
 
 bool		main_exe2(t_cw *cw, bool stop_game)
 {
+	if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
+	{
+		stop_game = true;
+		return (declare_winner(cw));
+	}
+	ctd_control(cw);
 	if (cw->ctd_lives == 0 || cw->process == NULL)
 		stop_game = true;
-	ctd_control(cw);
-	if (vm_proc_kill_not_living(cw) == 0 || cw->cycle_to_die <= 0)
-		return (declare_winner(cw));
-	vm_proc_set_lives(cw, 0);
 	return (stop_game);
 }
 

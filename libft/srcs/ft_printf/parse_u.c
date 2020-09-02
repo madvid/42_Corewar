@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_u.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 11:46:27 by yaye              #+#    #+#             */
-/*   Updated: 2019/07/25 11:46:29 by yaye             ###   ########.fr       */
+/*   Updated: 2020/09/01 17:32:46 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include "ft_printf.h"
 #include "libft.h"
 
 void	to_u(unsigned long u, char *s, t_pfarg *arg)

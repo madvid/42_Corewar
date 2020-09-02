@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_x.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:07:58 by yaye              #+#    #+#             */
-/*   Updated: 2019/07/25 12:08:00 by yaye             ###   ########.fr       */
+/*   Updated: 2020/09/01 17:33:08 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include "ft_printf.h"
 #include "libft.h"
 
 void	to_x(unsigned long u, char *s, t_pfarg *arg)

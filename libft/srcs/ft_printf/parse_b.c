@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_b.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaye <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 13:10:53 by yaye              #+#    #+#             */
-/*   Updated: 2019/07/30 13:10:54 by yaye             ###   ########.fr       */
+/*   Updated: 2020/09/01 17:30:53 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include "ft_printf.h"
 #include "libft.h"
 
 void	to_b(unsigned long u, char *s, t_pfarg *arg)
