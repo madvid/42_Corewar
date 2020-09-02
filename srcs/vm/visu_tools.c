@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/01 19:43:06 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 10:00:13 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 		if ((code_error = procedural_loop(cw)) != 0)
 			return (code_error);
 		cw->tot_cycle++;
+		texture_free(v);
 	}
-	texture_free(v);
 	return (stop_game = main_exe2(cw, stop_game));
 }

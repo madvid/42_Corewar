@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_op_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/08/31 20:01:37 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 16:32:41 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int		get_arg_value(t_cw *cw, t_process *p, int i, int t)
 				| ((unsigned int)cw->arena[(arg + 1) % MEM_SIZE] & 255) << 16
 				| ((unsigned int)cw->arena[(arg + 2) % MEM_SIZE] & 255) << 8
 				| ((unsigned int)cw->arena[(arg + 3) % MEM_SIZE] & 255);
-		}		
+		}
 		return ((t - IND_CODE) == RELATIVE ? relative_ind : arg);
 	}
 	if (cw->op_tab[(int)(p->opcode - 1)].direct_size == 1)

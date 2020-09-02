@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_launch.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 10:48:49 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/01 19:42:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 16:13:23 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		load_visu(t_visu *v, t_cw *cw, t_parse *p)
 	load_players(v, p);
 }
 
-int		visualizer(t_cw *cw, t_parse *p)
+int			visualizer(t_cw *cw, t_parse *p)
 {
 	t_visu		v;
 	static bool	stop_game;

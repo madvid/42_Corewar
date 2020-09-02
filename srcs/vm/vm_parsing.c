@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 13:29:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 20:48:22 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 16:30:16 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,52 +129,6 @@ int				vm_options_flag1(char **av, t_parse **p, int *i)
 			return (code_error);
 	}
 	return (0);
-}
-
-/*
-** Function: is_valid_nb_champ
-** Description:
-**	Checks if the number given by the user is a positive int sinfle digit
-**	in [1 ; 4].
-** Return:
-**	1: if the number for the id champion is correct.
-**	0: otherwise.
-*/
-
-static int		is_valid_nb_champ(char *nb)
-{
-	if (ft_strlen(nb) > 1 || !(nb[0] >= '1' && nb[0] <= '4'))
-	{
-		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
-		return (0);
-	}
-	return (1);
-}
-
-/*
-** Function: id_number_chp_flag
-** Description:
-**	Checks if the argument is the flag to specify the id of the champion.
-**	Plus if the flag is the good one, function checks if the specify ID
-**	is available.
-** Return:
-**	1: if av[i] is "-n" and ID is available
-**	0: otherwise
-*/
-
-static int		id_number_chp_flag(t_parse **p, char **av, int *i)
-{
-	if (ft_strequ(av[*i], "-n") == 1)
-	{
-		if (av[++(*i)] && is_valid_nb_champ(av[*i]))
-		{
-			(*p)->options->n = 1;
-			(*p)->id_champ = (int)(av[(*i)++][0] - '0');
-		}
-		else
-			return (0);
-	}
-	return (1);
 }
 
 /*

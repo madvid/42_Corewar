@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_chp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:30:51 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/01 19:41:42 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 16:17:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ void		fill_proc_name(t_visu *v, t_list *xplr, int i)
 		tmp2 = ft_strjoin(op_tab[((t_process*)(xplr->cnt))->opcode - 1].name, \
 				":                  ");
 	tmp = ft_itoa(((t_process*)(xplr->cnt))->opcode);
+	dst = ft_strjoin(tmp2, tmp);
+	ft_memdel((void**)&tmp2);
+	ft_memdel((void**)&tmp);
+	tmp = ft_itoa(((t_process*)(xplr->cnt))->last_live);
+	tmp2 = ft_strjoin(dst, "     Last Live:       ");
 	dst = ft_strjoin(tmp2, tmp);
 	ft_memdel((void**)&tmp);
 	ft_memdel((void**)&tmp2);

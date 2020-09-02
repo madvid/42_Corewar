@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 00:10:11 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 20:20:16 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 09:58:02 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <SDL2_image/SDL_image.h>
 # include <SDL2_ttf/SDL_ttf.h>
 # include <SDL2_mixer/SDL_mixer.h>
+# include "vm.h"
 
 # include "op_and_op_struct.h"
 
