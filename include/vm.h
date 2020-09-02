@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 17:20:30 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 18:37:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 */
 void				vm_champion_introduction(t_list **lst_champs);
 int					vm_execution(t_cw *cw);
-void				vm_exec_init_pc(t_cw *cw);
+void				vm_init_wcycle(t_cw *cw);
 int					procedural_loop(t_cw *cw);
 void				new_attribut_proc(t_cw *cw, t_process *proc);
 int					ctd_control(t_cw *cw);

@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   vm_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 16:36:35 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/02 18:37:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
 /*
-** Function: vm_exec_init_pc
+** Function: vm_init_wcycle
 ** Description:
 **	Initiates the very first processes of the champions, i.e. charging the 1st
 **	instruction, storing the adress of the next opcode of each champion, sets
 **	the wait_cycles and jump.
 */
 
-void	vm_exec_init_pc(t_cw *cw)
+void	vm_init_wcycle(t_cw *cw)
 {
 	t_list		*xplr;
 	t_process	*proc;
@@ -158,7 +158,7 @@ int		vm_execution(t_cw *cw)
 	int			code_error;
 
 	code_error = 0;
-	vm_exec_init_pc(cw);
+	vm_init_wcycle(cw);
 	cw->tot_cycle = 1;
 	if (cw->options->dump && cw->options->dump_cycle == 0)
 		return (dump_memory(cw->arena));

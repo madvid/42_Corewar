@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_launch.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 10:48:49 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/02 16:13:23 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/02 18:37:59 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int			visualizer(t_cw *cw, t_parse *p)
 	v.angle = 0;
 	v = init_menu(&v);
 	load_menu(&v);
-	vm_exec_init_pc(cw);
+	vm_init_wcycle(cw);
 	cw->tot_cycle = 1;
 	cw->cycle_to_die = 1536;
 	while (stop_game == false && v.isquit == 0)
