@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 12:59:10 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 14:09:44 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,15 +161,17 @@ int		procedural_loop(t_cw *cw)
 
 void	ctd_control(t_cw *cw)
 {
-	if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
+	if (cw->i_check == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
 	{
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
-		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
+		cw->i_check = (cw->i_check == MAX_CHECKS) ? 1 : cw->i_check;
 		if (cw->options->v_lvl & 2)
 			vprint_cycle(cw, 0);
 		if (cw->cycle_to_die < 0 && cw->options->v_lvl & 2)
 			vprint_cycle(cw, 1);
 	}
+	else
+		cw->i_check++;
 }
 
 /*
