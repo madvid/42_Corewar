@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 18:22:58 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 12:18:38 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 11:17:13 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		dump_memory(char *arena)
 	{
 		j = 0;
 		ft_printf("0x%.4x :", i);
-		while (j < 64)
+		while (j < 32)
 		{
 			ft_printf(" %2.2x", (u_int8_t)arena[i + j]);
 			j++;

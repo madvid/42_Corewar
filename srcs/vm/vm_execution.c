@@ -6,53 +6,11 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 14:10:27 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 15:11:00 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/02 16:36:35 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
-/*
-** Function: instruction_width
-** Description:
-**	Reads the encoding byte and calculates the length in bytes of the arguments
-**	field.
-** Remarks:
-**	Each arg can take 4 values:
-**		ag_1: can be 192/128/64 depending if 11/10/01 (xx 00 00 00).
-**		ag_2: can be 48/32/16 depending if 11/10/01 (00 xx 00 00).
-**		ag_3: can be 12/8/4 depending if 11/10/01 (00 00 xx 00).
-** Reminder:
-**	In the encoding byte are present the type of the different arguments:
-**		11 means the argument is an indirect type (2 bytes long),
-**		10 means the argument is an direct type (4 bytes long),
-**		01 means the argument is an indirect type (1 byte long)
-** Return
-**	width: total length in term of bytes of the different parameters of opcode.
-**	0: if the encoding byte is invalid.
-*/
-
-int		instruction_width(unsigned char encoding, t_op op_elem)
-{
-	u_int8_t	ag_1;
-	u_int8_t	ag_2;
-	u_int8_t	ag_3;
-	size_t		size_dir;
-	int			width;
-
-	width = 0;
-	size_dir = (op_elem.direct_size == 1) ? 2 : 4;
-	ag_1 = (encoding & 0b11000000) >> 6;
-	ag_2 = (encoding & 0b00110000) >> 4;
-	ag_3 = (encoding & 0b00001100) >> 2;
-	if (ag_1 != 0 && op_elem.n_arg >= 1)
-		width += (ag_1 == 2) ? (int)size_dir : 2 * (ag_1 / 3) + (1 - ag_1 / 2);
-	if (ag_2 != 0 && op_elem.n_arg >= 2)
-		width += (ag_2 == 2) ? (int)size_dir : 2 * (ag_2 / 3) + (1 - ag_2 / 2);
-	if (ag_3 != 0 && op_elem.n_arg >= 3)
-		width += (ag_3 == 2) ? (int)size_dir : 2 * (ag_3 / 3) + (1 - ag_3 / 2);
-	return (width);
-}
 
 /*
 ** Function: vm_exec_init_pc
@@ -86,25 +44,25 @@ void	vm_exec_init_pc(t_cw *cw)
 
 int		declare_winner(t_cw *cw)
 {
-	int		score;
-	int		winner;
-	char	*name;
-	int		i;
+	char		*name;
+	t_list		*xplr;
 
-	score = cw->champ_lives[0];
-	winner = 1;
-	i = 1;
-	while (i < 4)
+	if (cw->lst_champs == NULL)
+		return (0);
+	name = NULL;
+	xplr = cw->lst_champs;
+	while (xplr)
 	{
-		if (cw->champ_lives[i] > score)
+		if (((t_champ*)(xplr->cnt))->id == cw->last_champ)
 		{
-			score = cw->champ_lives[i];
-			winner = i + 1;
+			name = ((t_champ*)(xplr->cnt))->name;
+			break ;
 		}
-		i++;
+		xplr = xplr->next;
 	}
-	name = champ_name_via_id(cw->lst_champs, winner);
-	ft_printf("Contestant %d, \"%s\", has won !\n", winner, name);
+	if (!name)
+		return (0);
+	ft_printf("Contestant %d, \"%s\", has won !\n", cw->last_champ, name);
 	return (FIN_DU_GAME);
 }
 
@@ -134,7 +92,7 @@ int		procedural_loop(t_cw *cw)
 	while (xplr)
 	{
 		proc = (t_process*)(xplr->cnt);
-		if (proc->wait_cycles == -1)	//  ++ c'est new_attribut_proc()
+		if (proc->wait_cycles == -1)
 		{
 			proc->opcode = cw->arena[proc->i];
 			proc->wait_cycles = (proc->opcode >= 1 && proc->opcode <= 16) \
@@ -159,17 +117,25 @@ int		procedural_loop(t_cw *cw)
 **	* cycle_to_die hasn't be decrease since MAX_CHECKS verification.
 */
 
-void	ctd_control(t_cw *cw)
+int		ctd_control(t_cw *cw)
 {
-	if (cw->i_check++ == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
+	int			code_error;
+
+	if (++cw->i_check == MAX_CHECKS || cw->ctd_lives >= NBR_LIVE)
 	{
 		cw->cycle_to_die -= (int)CYCLE_DELTA;
 		cw->i_check = (cw->i_check == MAX_CHECKS) ? 0 : cw->i_check;
 		if (cw->options->v_lvl & 2)
 			vprint_cycle(cw, 0);
-		if (cw->cycle_to_die < 0 && cw->options->v_lvl & 2)
-			vprint_cycle(cw, 1);
+		if (cw->cycle_to_die < 1)
+		{
+			if ((code_error = procedural_loop(cw)) > 0)
+				return (code_error);
+			if (vm_proc_kill_not_living(cw) == 0)
+				return (declare_winner(cw));
+		}
 	}
+	return (0);
 }
 
 /*

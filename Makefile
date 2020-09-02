@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
+#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/09/01 20:20:45 by mdavid           ###   ########.fr        #
+#    Updated: 2020/09/02 16:40:34 by armajchr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,7 @@ VM_FILES =	main					\
 			vm_tools_encode_byte	\
 			vm_tools_opcode			\
 			vm_tools_process		\
+			vm_tools_process2		\
 			vm_tools_options		\
 			vm_tools_op_functions	\
 			vm_op_functions_1		\
@@ -78,6 +79,7 @@ VM_FILES =	main					\
 			vm_op_functions_4		\
 			vm_cw_arena_init		\
 			vm_execution			\
+			vm_tools_execution		\
 			ft_lst_fdel_champ		\
 			ft_lst_fdel_proc		\
 			verbosity				\

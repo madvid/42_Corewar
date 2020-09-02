@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_opcode.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:15 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 20:13:58 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 16:39:55 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int			vm_proc_perform_opcode(t_cw *cw, t_process *proc)
 
 	if (proc->wait_cycles > 0)
 		return (0);
-	if (proc->opcode < 1 || proc->opcode > 16)	// si opcode invalide => proc->i++
+	if (proc->opcode < 1 || proc->opcode > 16)
 		range = 1;
 	else
 	{

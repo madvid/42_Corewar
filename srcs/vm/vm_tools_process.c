@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_process.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 12:41:23 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 20:19:01 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 16:35:47 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,55 +94,6 @@ void		free_one_process(t_list **lst_proc, int id)
 	((t_process*)(to_del->cnt))->registers = NULL;
 	ft_memdel(&(to_del->cnt));
 	ft_memdel((void**)(&(to_del)));
-}
-
-/*
-** Function: vm_proc_kill_no_live
-** Description:
-**	[put some explanations here !]
-** Return:
-**	1: if at least one process remaind in the list cw->process after killing
-**		concerned processes.
-**	0: if no process remainds or if the number of processes exceed INT_MAX
-*/
-
-int			vm_proc_kill_not_living(t_cw *cw)
-{
-	t_list		*xplr;
-	t_list		*next;
-	t_list		*before;
-
-	xplr = cw->process;
-	before = cw->process;
-	while (xplr)
-	{
-		if (((t_process*)(xplr->cnt))->n_lives == 0)
-		{
-			next = xplr->next;
-			if (cw->options->v_lvl & 0b00001000)
-				vprint_deaths(cw, (t_process*)(xplr->cnt));
-			if (xplr - cw->process == 0)
-			{
-				ft_lstdelone(&xplr, &ft_lst_fdel_proc);
-				cw->process = next;
-				xplr = next;
-				before = next;
-			}
-			else
-			{
-				ft_lstdelone(&xplr, &ft_lst_fdel_proc);
-				before->next = next;
-				xplr = next;
-			}
-		}
-		else
-		{
-			((t_process*)(xplr->cnt))->n_lives = 0;
-			before = xplr;
-			xplr = xplr->next;
-		}
-	}
-	return ((ft_lst_len(cw->process) == 0) ? 0 : 1);
 }
 
 /*

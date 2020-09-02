@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_op_functions_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:05:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 14:45:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/02 16:28:44 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,27 +169,4 @@ int			fork_creation_process(t_cw *cw, t_process *cur_proc, int addr)
 	init_newproc_fork(new_proc, cur_proc);
 	ft_lstadd(&(cw->process), new_link);
 	return (1);
-}
-
-/*
-** Function: op_fork
-** Description:
-**	[put some explanations here !]
-** Return:
-**	0: the process is correctly created
-**	CD_FORK: a memory allocation issue occurs during the fork instruction
-*/
-
-int			op_fork(t_cw *cw, t_process *p)
-{
-	t_arg		v_arg;
-	int			addr;
-
-	op_arg_init(&v_arg, DIR_CODE, 1);
-	addr = get_arg_value(cw, p, p->i + 1, DIR_CODE);
-	v_arg.arg[0] = addr;
-	if (!fork_creation_process(cw, p, addr % IDX_MOD))
-		return (CD_FORK);
-	verbotab(cw, p, v_arg);
-	return (0);
 }

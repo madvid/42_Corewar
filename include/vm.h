@@ -6,7 +6,7 @@
 /*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 09:58:01 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/02 16:31:27 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int 				is_valid_champ_filename(char* filename);
 int					vm_options_flag(char **av, t_parse **p, int *i);
 int					is_dump_option(char *arg, t_parse *p);
 int					in_verbose_range(char *arg);
+int		            is_valid_nb_champ(char *nb);
+int		            id_number_chp_flag(t_parse **p, char **av, int *i);
 
 /*
 ** Prototypes des fonctions de parsing des fichiers des champions
@@ -120,7 +122,7 @@ int					vm_execution(t_cw *cw);
 void				vm_exec_init_pc(t_cw *cw);
 int					procedural_loop(t_cw *cw);
 void				new_attribut_proc(t_cw *cw, t_process *proc);
-void				ctd_control(t_cw *cw);
+int					ctd_control(t_cw *cw);
 
 bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
 int					instruction_width(unsigned char encoding, t_op op_elem);
