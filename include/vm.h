@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 16:31:27 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/02 17:20:30 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int 				is_valid_champ_filename(char* filename);
 int					vm_options_flag(char **av, t_parse **p, int *i);
 int					is_dump_option(char *arg, t_parse *p);
 int					in_verbose_range(char *arg);
-int		            is_valid_nb_champ(char *nb);
-int		            id_number_chp_flag(t_parse **p, char **av, int *i);
+int					is_valid_nb_champ(char *nb);
+int					id_number_chp_flag(t_parse **p, char **av, int *i);
 
 /*
 ** Prototypes des fonctions de parsing des fichiers des champions
