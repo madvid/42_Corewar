@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 13:42:39 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 15:18:14 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void				vm_init_wcycle(t_cw *cw);
 int					procedural_loop(t_cw *cw);
 void				new_attribut_proc(t_cw *cw, t_process *proc);
 int					ctd_control(t_cw *cw);
-
 bool				is_valid_encoding(u_int8_t opcode, u_int8_t encoding);
 int					instruction_width(unsigned char encoding, t_op op_elem);
 char				*champ_name_via_id(t_list *lst_champs, int id);
@@ -176,6 +175,7 @@ int					fork_creation_process(t_cw *cw, t_process *cur_proc, int addr);
 int					get_arg_value(t_cw *cw, t_process *cur_proc, int index, int type);
 void				write_in_arena(t_cw *cw, t_process *p, int arg[3]);
 void				write_in_reg(t_cw *cw, t_process *p, int arg[3]);
+int					live_for_a_champ(t_list * l_champ, int id);
 
 
 /*

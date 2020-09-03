@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 14:50:26 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 16:38:58 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	set_champ_value(t_champ *champ, t_parse *p, char *str)
 	if (p->options->n == 1)
 	{
 		if (p->id_available[p->id_champ - 1] == 1)
-			return ((int)CD_BD_VAL);
+			return ((int)CD_DUPL_N);
 		champ->id = p->id_champ;
 	}
 	p->id_available[champ->id - 1] = 1;
@@ -103,7 +103,11 @@ int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 	if (!(champ = (t_champ*)malloc(sizeof(t_champ))))
 		return ((int)CD_MEM_CHAMP);
 	if ((code_error = set_champ_value(champ, p, av)) != 0)
+	{
+		free(champ);
+		champ = NULL;
 		return (code_error);
+	}
 	if (!(nw_link = ft_lstnew(champ)))
 		return ((int)CD_MEM_CHAMP);
 	ft_lstadd(lst_champs, nw_link);

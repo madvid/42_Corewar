@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/30 14:25:46 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 16:31:48 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/03 16:30:32 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ int		in_verbose_range(char *arg)
 int		is_valid_nb_champ(char *nb)
 {
 	if (ft_strlen(nb) > 1 || !(nb[0] >= '1' && nb[0] <= '4'))
-	{
-		ft_putendl("Error: champion number must be 1, 2, 3 or 4.");
 		return (0);
-	}
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:58:02 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 13:42:32 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 15:36:15 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 # define CD_EMPTY_CHP	13
 # define CD_MAX_CHAMP	14
 # define CD_INV_FD		15
-# define CD_MAGIC_EXEC	17
+# define CD_MAGIC_EXEC	16
+# define CD_CHP_SIZ		17
 # define CD_CHP_ERR		18
 # define CD_SORT_CHP	19
 # define CD_PROC_MEM	20
