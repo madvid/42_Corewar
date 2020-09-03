@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/14 00:32:42 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 20:35:47 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 16:19:23 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,5 @@ char		*get_champ_bcode(int fd, int l_bcode)
 		return (0);
 	}
 	ft_strdel(&buff1);
-	if (!buff2[l_bcode - 1])
-		ft_strdel(&buff2);
 	return (buff2);
 }
