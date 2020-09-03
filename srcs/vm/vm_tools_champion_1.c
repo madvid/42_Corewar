@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 13:42:26 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 14:50:26 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,14 @@ int			is_valid_champ_filename(char *filename)
 static int	set_champ_value(t_champ *champ, t_parse *p, char *str)
 {
 	if (p->options->n == 0)
-		champ->id = attribut_nb_champ(p->id_available);
+	{
+		if ((champ->id = attribut_nb_champ(p->id_available)) == 0)
+			return ((int)CD_BD_VAL);
+	}
 	if (p->options->n == 1)
 	{
 		if (p->id_available[p->id_champ - 1] == 1)
-			return ((int)CD_DUPL_N);
+			return ((int)CD_BD_VAL);
 		champ->id = p->id_champ;
 	}
 	p->id_available[champ->id - 1] = 1;
