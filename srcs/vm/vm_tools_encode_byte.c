@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 16:35:12 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 11:14:09 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 12:11:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,11 @@ bool	is_valid_encoding(u_int8_t opcode, u_int8_t encoding)
 	l_arg[1] = (l_arg[1] == IND_CODE) ? T_IND : l_arg[1];
 	l_arg[2] = (l_arg[2] == IND_CODE) ? T_IND : l_arg[2];
 	l_arg[3] = (l_arg[3] == IND_CODE) ? T_IND : l_arg[3];
-	if (l_arg[0] != (int)op_tab[(int)opcode - 1].n_arg)
-		return (false);
 	while (i <= (int)op_tab[(int)opcode - 1].n_arg)
 	{
 		if ((l_arg[i] & (int)op_tab[(int)opcode - 1].type[i - 1]) == 0)
 			return (false);
 		i++;
 	}
-	if (l_arg[4] != 0)
-		return (false);
 	return (true);
 }
