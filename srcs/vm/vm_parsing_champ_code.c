@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 17:44:39 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 12:22:03 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 15:38:16 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ static int		vm_champ_file_parse(t_champ *ichamp, t_parse **p)
 	if (magic_key - (int)(COREWAR_EXEC_MAGIC) != 0)
 		return (vm_error_manager((int)CD_MAGIC_EXEC, p, NULL));
 	ichamp->name = get_champ_name(fd);
-	ichamp->l_bytecode = get_champ_l_bcode(fd);
+	if ((ichamp->l_bytecode = get_champ_l_bcode(fd)) > (int)CHAMP_MAX_SIZE)
+	{
+		ft_printf("Error: File %s has too large code (%d > %d).\n", \
+			ichamp->name, ichamp->l_bytecode, (int)CHAMP_MAX_SIZE);
+		return (vm_error_manager((int)CD_CHP_SIZ, p, NULL));
+	}
 	ichamp->comment = get_champ_comment(fd);
 	ichamp->bytecode = get_champ_bcode(fd, ichamp->l_bytecode);
 	ichamp->mem_pos = 0;
