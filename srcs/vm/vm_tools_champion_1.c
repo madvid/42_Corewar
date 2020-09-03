@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 13:49:06 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 19:54:17 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 13:42:26 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,12 @@ int			vm_create_champion(t_list **lst_champs, char *av, t_parse *p)
 ** Function: vm_champion_introduction
 ** Description:
 **	Introduces the different champions before the battle.
+** Return:
+**	0: if everything is fine = sorting of the list went well.
+**	CD_SORT_CHP: if there is an error during the sorting process.
 */
 
-void		vm_champion_introduction(t_list **lst_champs)
+int			vm_champion_introduction(t_list **lst_champs)
 {
 	t_list		*xplr;
 	t_champ		*chp;
@@ -124,10 +127,7 @@ void		vm_champion_introduction(t_list **lst_champs)
 
 	ft_putstr("Introducing contestants...\n");
 	if (lst_sort_champion(lst_champs) == -1)
-	{
-		ft_printf("erreur dans la fonction de tri des champions.\n");
-		return ;
-	}
+		return (CD_SORT_CHP);
 	while (++id <= 4)
 	{
 		xplr = *lst_champs;
@@ -141,4 +141,5 @@ void		vm_champion_introduction(t_list **lst_champs)
 			ft_printf(" \"%s\" (\"%s\") !\n", chp->name, chp->comment);
 		}
 	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 18:02:34 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/28 11:55:50 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 13:52:18 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,5 +194,5 @@ int			vm_cw_arena_init(t_cw **cw, t_parse **p)
 		xplr2 = xplr2->next;
 	}
 	(*cw)->options = (*p)->options;
-	return (1);
+	return (0);
 }

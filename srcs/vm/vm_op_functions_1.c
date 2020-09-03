@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 12:17:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 14:02:49 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ int		op_load(t_cw *cw, t_process *p)
 **	  the value
 **	  cur_proc->registers[ARG_1]
 ** Return:
-**	[value_1]: 1 if encoding byte and arguments are valid
-**	[value_2]: 0 else
+**	0:
 */
 
 int		op_store(t_cw *cw, t_process *p)

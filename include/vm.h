@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 18:37:59 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 13:42:39 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int					vm_cw_arena_init(t_cw **cw, t_parse **p);
 /*
 ** Lancement et déroulement de corewar.
 */
-void				vm_champion_introduction(t_list **lst_champs);
+int					vm_champion_introduction(t_list **lst_champs);
 int					vm_execution(t_cw *cw);
 void				vm_init_wcycle(t_cw *cw);
 int					procedural_loop(t_cw *cw);
