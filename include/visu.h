@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 00:10:11 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 17:32:48 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/04 13:08:24 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct		s_visu
 **Render data
 */
 	int				i;
-
+	int				cycle_sec;
 }					t_visu;
 
 /*
@@ -124,10 +124,10 @@ typedef struct		s_visu
 **<<<<<Window functions>>>>>
 */
 
+int					visualizer(t_cw *cw, t_parse *p);
 void				init_window(t_visu *v);
 t_visu				init_visu(t_visu *v);
 void				load_title(t_visu *v);
-int					visualizer(t_cw *cw, t_parse *p);
 void				menu_move(t_visu *v);
 void				load_menu(t_visu *v);
 t_visu				init_menu(t_visu *v);

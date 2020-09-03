@@ -3,37 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   temporary_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 01:00:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/08/31 17:26:16 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 12:10:20 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdio.h>
+#include <stdio.h>
 #include "vm.h"
 
-typedef struct		s_color_champ
-{
-	size_t		start;
-	size_t		end;
-	char	*color;
-}					t_color_champ;
-
-void		tool_print_parsing(t_parse *p)
-{
-	printf("variable t_parse p:\n");
-	printf("   p->nb_champ = %d\n", p->nb_champ);
-	printf("   p->options->dump = %d\n", p->options->dump);
-	printf("   p->options->nbr_cycle = %d\n", p->options->dump_cycle);
-	printf("   p->options->n = %d\n", p->options->n);
-}
-
 /*
-** Imprime le bytecode des champions (mais possiblement aussi de la zone mémoire)
+** Imprime le bytecode des champions
+**(mais possiblement aussi de la zone mémoire)
 */
 
-static void	print_chp_bcode(char *bcode, int l_bcode)
+static void		print_chp_bcode(char *bcode, int l_bcode)
 {
 	int		i;
 	int		width_line;
@@ -57,7 +42,7 @@ static void	print_chp_bcode(char *bcode, int l_bcode)
 ** Fonction qui affiche 1 champion, celui reçu en parametre.
 */
 
-void		tool_print_champ(t_champ *champ)
+void			tool_print_champ(t_champ *champ)
 {
 	printf("\033[0;33mChampion:\033[0m\n");
 	printf("   \033[1;32mchamp_file :\033[0m |%s|\n", champ->champ_file);
@@ -67,14 +52,14 @@ void		tool_print_champ(t_champ *champ)
 	printf("   \033[1;32mmem position :\033[0m |%d|\n", champ->mem_pos);
 	printf("   \033[1;32ml_bytecode :\033[0m |%d|\n", champ->l_bytecode);
 	print_chp_bcode(champ->bytecode, champ->l_bytecode);
-	//printf("   champ_file : %s\n", ((t_champ*)(xplr->cnt)->bytecode));
 }
 
 /*
-** Fonction qui affiche tous les champions de la liste de champions présent dans la structure p (parsing)
+** Fonction qui affiche tous les champions de la liste de champions présent
+** dans la structure p (parsing)
 */
 
-void		tool_print_champ_list(t_list *lst_champs)
+void			tool_print_champ_list(t_list *lst_champs)
 {
 	t_list		*xplr;
 	int			i;
@@ -90,20 +75,20 @@ void		tool_print_champ_list(t_list *lst_champs)
 		printf("   comment : |%s|\n", ((t_champ*)(xplr->cnt))->comment);
 		printf("   mem position : |%d|\n", ((t_champ*)(xplr->cnt))->mem_pos);
 		printf("   l_bytecode : |%d|\n", ((t_champ*)(xplr->cnt))->l_bytecode);
-		print_chp_bcode(((t_champ*)(xplr->cnt))->bytecode, ((t_champ*)(xplr->cnt))->l_bytecode);
+		print_chp_bcode(((t_champ*)(xplr->cnt))->bytecode, \
+				((t_champ*)(xplr->cnt))->l_bytecode);
 		printf("  next:|%p|\n", xplr->next);
-		//printf("   champ_file : %s\n", ((t_champ*)(xplr->cnt)->bytecode));
 		i++;
 		xplr = xplr->next;
 	}
 }
 
 /*
-** Fonction qui affiche tous les champions de la liste de champions présent dans la structure p (parsing)
-** au format court
+** Fonction qui affiche tous les champions de la liste de champions présent
+** dans la structure p (parsing) au format court
 */
 
-void		tool_print_short_champ_list(t_list *lst_champs)
+void			tool_print_short_champ_list(t_list *lst_champs)
 {
 	t_list		*xplr;
 	int			i;
@@ -119,193 +104,4 @@ void		tool_print_short_champ_list(t_list *lst_champs)
 		i++;
 		xplr = xplr->next;
 	}
-}
-
-/*
-** Fonction pour imprimer la zone memoire correspondant à l'id-arène.
-** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
-*/
-
-void		tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p)
-{
-	size_t			i;
-	int				width_line;
-	t_color_champ	**champ;
-	static char		*color[] = {"\033[0m", "\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;34m"};
-	int				j = 0;
-	t_list			*l_champ;
-
-	i = 0;
-	width_line = 32;
-	l_champ = p->lst_champs;
-	champ = (t_color_champ**)ft_memalloc(sizeof(t_color_champ*) * p->nb_champ);
-	while (j < p->nb_champ)
-	{
-		champ[j] = (t_color_champ*)ft_memalloc(sizeof(t_color_champ));
-		champ[j]->start = ((t_champ*)(l_champ->cnt))->mem_pos;
-		champ[j]->end = champ[j]->start + ((t_champ*)(l_champ->cnt))->l_bytecode;
-		champ[j]->color = color[j + 1];
-		j++;
-		l_champ = l_champ->next;
-	}
-	printf("\033[1;36m|>---------------------------------------- [ID ARENA] ----------------------------------------<|\033[0m ");
-	while (i < mem_size)
-	{
-		j = -1;
-		while (++j < p->nb_champ)
-			if (i == champ[j]->start)
-				printf("%s", champ[j]->color);
-		j = -1;
-		while (++j < p->nb_champ)
-			if (i == champ[j]->end)
-				printf("%s", color[0]);
-		if (i % width_line == 0)
-			printf("\n");
-		printf("%d  ", id_arena[i]);
-		i++;
-	}
-	printf("\n\033[1;36m|>------------------------------------------- [FIN] ------------------------------------------<|\033[0m\n");
-}
-
-/*
-** Fonction pour imprimer la zone memoire correspondant à l'arène.
-** Parametres: l'arene au sein de la struct cw et la taille (MEM_SIZE)
-*/
-
-void		tool_print_arena(char *arena, size_t mem_size, t_parse *p)
-{
-	size_t			i;
-	int				width_line;
-	t_color_champ	**champ;
-	static char		*color[] = {"\033[0m", "\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;34m"};
-	int				j = 0;
-	t_list			*l_champ;
-
-	i = 0;
-	width_line = 64;
-	l_champ = p->lst_champs;
-	champ = (t_color_champ**)ft_memalloc(sizeof(t_color_champ*) * p->nb_champ);
-	while (j < p->nb_champ)
-	{
-		champ[j] = (t_color_champ*)ft_memalloc(sizeof(t_color_champ));
-		champ[j]->start = ((t_champ*)(l_champ->cnt))->mem_pos;
-		champ[j]->end = champ[j]->start + ((t_champ*)(l_champ->cnt))->l_bytecode;
-		// printf("champ[j=%d]->start = %lu\n", j, champ[j]->start);
-		// printf("champ[j=%d]->end = %lu\n", j, champ[j]->end);
-		champ[j]->color = color[j + 1];
-		j++;
-		l_champ = l_champ->next;
-	}
-	printf("\033[1;31m|>------------------------------------------ [ARENA] -----------------------------------------<|\033[0m ");
-	while (i < mem_size)
-	{
-		j = -1;
-		while (++j < p->nb_champ)
-			if (i == champ[j]->start)
-				printf("%s", champ[j]->color);
-		j = -1;
-		while (++j < p->nb_champ)
-			if (i == champ[j]->end)
-				printf("%s", color[0]);
-		if (i % width_line == 0)
-			printf("\n");
-		if (((int)arena[i] & 255) < 16)
-			printf("0");
-		printf("%x ", ((int)arena[i] & 255));
-		i++;
-	}
-	printf("\n\033[1;31m|>------------------------------------------- [FIN] ------------------------------------------<|\033[0m\n");
-}
-
-/*static int	p_atoint(char *reg)
-{
-	int		ret;
-
-	ret = 0;
-	ret = (((int)reg[0] & 255) << 24) + (((int)reg[1] & 255) << 16) + (((int)reg[2] & 255) << 8) + (((int)reg[3] & 255));
-	return (ret);
-}*/
-
-
-/*
-** Imprime le contenue du processeur donné en paramètre.
-*/
-
-void		tool_print_processor(t_process *process, int nb)
-{
-	ft_printf(" ______________________________________________________________\n");
-	ft_printf("|_ _ _ _ _ _ _ _ _ _ _ _ _ _PROCESS #%d_ _ _ _ _ _ _ _ _ _ _ _ _|\n", nb);
-	ft_printf("| id:__________%d                                               |\n", process->id);
-	ft_printf("| carry:_______%d                                               |\n", process->carry);
-	ft_printf("| opcode:______%X                                               |\n", process->opcode);
-	ft_printf("| n_lives:_____%2d                                              |\n", process->n_lives);
-	ft_printf("| last_live:___%2d                                              |\n", process->last_live);
-	ft_printf("| wait_cycles:_%3d                                             |\n", process->wait_cycles);
-	ft_printf("| position:____%7d (0x%.4x)                                  |\n", process->i, process->i);
-	ft_printf("| pc:__________%7d (0x%.4x)                                  |\n", process->pc, process->pc);
-	ft_printf("|                ___r1___   ___r2___   ___r3___   ___r4___     |\n");
-	ft_printf("| registers:___| %8d | %8d | %8d | %8d |   |\n", process->registers[0], process->registers[1], process->registers[2], process->registers[3]);
-	ft_printf("|            r5| %8d | %8d | %8d | %8d |r8 |\n", process->registers[4], process->registers[5], process->registers[6], process->registers[7]);
-	ft_printf("|            r7| %8d | %8d | %8d | %8d |r12|\n", process->registers[8], process->registers[9], process->registers[10], process->registers[11]);
-	ft_printf("|              | %8d | %8d | %8d | %8d |r16|\n", process->registers[12], process->registers[13], process->registers[14], process->registers[15]);
-	ft_printf("|______________________________________________________________|\n");
-}
-
-
-/*
-** Imprime le contenue de tous les processeurs (liste donnée en paramètre).
-*/
-
-void		tool_print_all_processors(t_list *processes)
-{
-	t_list	*xplr;
-	int		nb;
-
-	nb = 0;
-	xplr = processes;
-	while(xplr && xplr->cnt && (t_process*)(xplr->cnt))
-	{
-		// printf("valeur xplr->cnt:%p\n", (t_process*)(xplr->cnt));
-		tool_print_processor((t_process*)(xplr->cnt), nb);
-		// printf("valeur xplr->next:%p\n", xplr->next);
-		xplr = xplr->next;
-		nb++;
-	}
-	printf("- - - - END OF ALL PROCESSES\n\n");
-}
-
-/*
-** Affiche l'ensemble des processus (id et position simplement)
-*/
-
-void		tool_print_short_processors(t_cw *cw)
-{
-	t_list		*xplr;
-	t_process	*proc;
-	int			index;
-
-	xplr = cw->process;
-	while (xplr)
-	{
-		proc = (t_process*)(xplr->cnt);
-		index = proc->i;
-		ft_printf("P %d -- is at the memory adress : %d (index = %d) -- opcode = %d(w_c = %d)\n", proc->id, proc->i, index, proc->opcode, proc->wait_cycles);
-		xplr = xplr->next;
-	}
-}
-
-/*
-** Affiche le contenue de la variable de structure t_arg
-*/
-
-void		tool_print_t_arg(t_arg arg)
-{
-	ft_printf(">> T_ARG <<");
-	ft_printf(" - arg.type[0] = %d", arg.type[0]);
-	ft_printf(" - arg.type[1] = %d", arg.type[1]);
-	ft_printf(" - arg.type[2] = %d", arg.type[2]);
-	ft_printf(" - arg.arg[0] = %d", arg.arg[0]);
-	ft_printf(" - arg.arg[1] = %d", arg.arg[1]);
-	ft_printf(" - arg.arg[2] = %d", arg.arg[2]);
-	ft_printf(" - arg.widht = %d\n", arg.widht);
 }

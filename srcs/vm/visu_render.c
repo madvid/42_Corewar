@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 10:18:43 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/01 19:41:29 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/04 11:44:51 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ t_visu		visu_breaker2(t_visu *v)
 						if (v->event.key.keysym.scancode == SDL_SCANCODE_R)
 							return (*v);
 			}
+			if (v->event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS \
+				&& v->cycle_sec <= 500)
+				v->cycle_sec += 10;
+			if (v->event.key.keysym.scancode == SDL_SCANCODE_KP_MINUS \
+				&& v->cycle_sec > 10)
+				v->cycle_sec -= 10;
 		}
 	}
 	return (*v);

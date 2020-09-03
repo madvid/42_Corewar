@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 09:43:18 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/02 10:00:13 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/04 11:45:35 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_visu		init_details(t_visu *v)
 	v->color_chp[2] = (SDL_Color) {255, 255, 0, 255};
 	v->color_chp[3] = (SDL_Color) {36, 113, 163, 255};
 	v->color_process = (SDL_Color) {48, 204, 111, 255};
+	v->cycle_sec = 1;
 	return (*v);
 }
 
@@ -81,6 +82,7 @@ int			find_nbr_proc(t_cw *cw)
 	return (j);
 }
 
+
 bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 {
 	int			code_error;
@@ -90,12 +92,16 @@ bool		main_exe(t_visu *v, t_cw *cw, bool stop_game, t_parse *p)
 	cw->ctd_lives = 0;
 	while (++cw->i_cycle < cw->cycle_to_die && v->menu_loop && !v->isquit)
 	{
-		load_visu(v, cw, p);
-		visu_render(v);
+		if (cw->tot_cycle % v->cycle_sec == 0)
+		{
+			load_visu(v, cw, p);
+			visu_render(v);
+		}
 		if ((code_error = procedural_loop(cw)) != 0)
 			return (code_error);
+		if (cw->tot_cycle % v->cycle_sec == 0)
+			texture_free(v);
 		cw->tot_cycle++;
-		texture_free(v);
 	}
 	return (stop_game = main_exe2(cw, stop_game));
 }

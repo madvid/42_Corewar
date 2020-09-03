@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 11:52:37 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 15:18:14 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/04 13:01:40 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@
 void				tool_print_parsing(t_parse *p);										// a retirer
 void				tool_print_champ(t_champ *champ);									// a retirer
 void				tool_print_champ_list(t_list *lst_champs);							// a retirer
-void				tool_print_arena(char *arena, size_t mem_size, t_parse *p);			// a retirer
-void				tool_print_id_arena(int *id_arena, size_t mem_size, t_parse *p);	// a retirer
+void				tool_print_arena(char *arena, t_parse *p);							// a retirer
+void				tool_print_id_arena(int *id_arena, t_parse *p);						// a retirer
 void				tool_print_processor(t_process *process, int nb);					// a retirer
 void				tool_print_all_processors(t_list *processes);						// a retirer
 void				tool_print_short_processors(t_cw *cw);								// a retirer

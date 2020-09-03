@@ -6,11 +6,12 @@
 #    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/09/03 15:38:52 by mdavid           ###   ########.fr        #
+#    Updated: 2020/09/04 13:06:47 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 VM = corewar
+VM_VISU = corewar_visu
 ASM = asm
 DASM = dasm
 UNAME_S := $(shell uname -s)
@@ -21,6 +22,9 @@ ifeq ($(UNAME_S),Darwin)
 	OS = Darwin
 endif
 
+ifndef TMP
+	TMP = 0
+endif
 
 INC_DIR = include/
 OP_H = $(INC_DIR)op.h
@@ -39,9 +43,9 @@ ASM_DIR = asm/
 DSM_DIR = dasm/
 CM_DIR = commun/
 ODIR = objects/
+TMP_DIR = temp_tools/
 
 #SDL
-FLAG_LINUX_SDL = sdl-config --cflags --libs
 FW_PATH = ./visu/frameworks
 SDL2 = SDL2.framework/Versions/A/SDL2
 SDL2_IMG = SDL2_image.framework/Versions/A/SDL2_image
@@ -58,8 +62,7 @@ RM = rm -rf
 
 ### SOURCES AND OBJECTS VARIABLES: ###
 
-VM_FILES =	main					\
-			vm_parsing				\
+VM_FILES =	vm_parsing				\
 			vm_parsing_init			\
 			vm_parsing_champ_code	\
 			vm_error_manager		\
@@ -95,7 +98,8 @@ VS_FILES =	visu_arena				\
 			visu_players			\
 			visu_tools				\
 			visu_tools2				\
-			ft_itoa_base2
+			ft_itoa_base2			\
+			main_visu
 
 ASM_FILES =	asm_main				\
 			asm_get_cor				\
@@ -106,20 +110,28 @@ ASM_FILES =	asm_main				\
 DSM_FILES =	dasm_main				\
 			dasm_get_s
 
+TMP_FILES = temporary_tools			\
+			temporary_tools2		\
+			temporary_tools3
 
-# ifeq ($(OS),Darwin)
-# 	VM_FILES += $(VS_FILES)
-# endif
+ifeq ($(TMP),1)
+	VM_FILES += $(TMP_FILES)
+endif
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
+VM_SRC_VISU = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VS_FILES)))
 AS_SRC = $(addprefix $(SRC_DIR)$(ASM_DIR), $(addsuffix .c,$(ASM_FILES)))
 DS_SRC = $(addprefix $(SRC_DIR)$(DSM_DIR), $(addsuffix .c,$(DSM_FILES)))
 OP_SRC = $(SRC_DIR)$(CM_DIR)op.c
+MAIN_SRC = $(SRC_DIR)$(VM_DIR)main.c
+
 
 VM_OBJ = $(patsubst %.c, $(ODIR)%.o, $(addsuffix .c,$(VM_FILES)))
+VM_OBJ_VISU = $(patsubst %.c, $(ODIR)%.o, $(addsuffix .c,$(VS_FILES)))
 AS_OBJ = $(patsubst %.c, $(ODIR)%.o, $(addsuffix .c,$(ASM_FILES)))
 DS_OBJ = $(patsubst %.c, $(ODIR)%.o, $(addsuffix .c,$(DSM_FILES)))
 OP_OBJ = $(ODIR)op.o
+MAIN_OBJ = $(ODIR)main.o
 
 vpath %.c $(SRC_DIR)vm
 vpath %.c $(SRC_DIR)asm
@@ -148,26 +160,24 @@ WHITE = \033[1;37m
 
 ### RULES: ###i
 
-all: $(ODIR) $(VM) $(ASM) $(DASM)
+all: $(ODIR) $(VM) $(VM_VISU) $(ASM) $(DASM)
 
-$(VM): $(ODIR) $(LIBFT) $(OP_OBJ) $(VM_OBJ)
+$(VM): $(ODIR) $(LIBFT) $(MAIN_OBJ) $(OP_OBJ) $(VM_OBJ)
 	@echo "$(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@\n"
-	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB)
-# ifeq ($(OS),Linux)
-# 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB)
-# endif
-# ifeq ($(OS),Darwin)
-# 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB) -F $(FW_PATH)\
-# 		-framework SDL2\
-# 		-framework SDL2_image\
-# 		-framework SDL2_ttf\
-# 		-framework SDL2_mixer
-# 	@install_name_tool -change @rpath/$(SDL2) $(SDL2_PATH) $@
-# 	@install_name_tool -change @rpath/$(SDL2_IMG) $(SDL2_IMG_PATH) $@
-# 	@install_name_tool -change @rpath/$(SDL2_TTF) $(SDL2_TTF_PATH) $@
-# 	@install_name_tool -change @rpath/$(SDL2_MXR) $(SDL2_MXR_PATH) $@
-# -include $(DEP)
-# endif
+	@$(CC) $(FLAGS) -o $@ $(MAIN_OBJ) $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB)
+
+$(VM_VISU): $(ODIR) $(LIBFT) $(OP_OBJ) $(VM_OBJ) $(VM_OBJ_VISU)
+	@echo "$(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@\n"
+	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(VM_OBJ_VISU) $(OP_OBJ) -I$(INC_DIR) $(LIB) -F $(FW_PATH)\
+		-framework SDL2\
+		-framework SDL2_image\
+		-framework SDL2_ttf\
+		-framework SDL2_mixer
+	@install_name_tool -change @rpath/$(SDL2) $(SDL2_PATH) $@
+	@install_name_tool -change @rpath/$(SDL2_IMG) $(SDL2_IMG_PATH) $@
+	@install_name_tool -change @rpath/$(SDL2_TTF) $(SDL2_TTF_PATH) $@
+	@install_name_tool -change @rpath/$(SDL2_MXR) $(SDL2_MXR_PATH) $@
+-include $(DEP)
 
 $(ASM) : $(ODIR) $(LIBFT) $(OP_OBJ) $(AS_OBJ)
 	@$(CC) $(FLAGS) -o $@ $(AS_OBJ) $(OP_OBJ) $(LIB)
@@ -177,15 +187,18 @@ $(DASM) : $(ODIR) $(LIBFT) $(OP_OBJ) $(DS_OBJ)
 	@$(CC) $(FLAGS) -o $@ $(DS_OBJ) $(OP_OBJ) $(LIB)
 	@echo "$(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@\n"
 
-$(VM_OBJ) : $(ODIR)%.o: %.c $(INC_VM)
+$(VM_OBJ) : $(ODIR)%.o: %.c $(INC_VM) 
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
 	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
-# ifeq ($(OS),Linux)
-# 	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
-# endif
-# ifeq ($(OS),Darwin)
-# 	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
-# endif
+
+$(VM_OBJ_VISU) : $(ODIR)%.o: %.c $(INC_VM)
+ifeq ($(OS),Darwin)
+	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
+endif
+
+$(MAIN_OBJ) : $(ODIR)%.o: %.c $(INC_VM)
+	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
+	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
 
 $(AS_OBJ) : $(ODIR)%.o: %.c $(INC_ASM)
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"

@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 09:52:05 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/01 19:41:15 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/04 11:50:01 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ t_visu		init_process(t_visu *v)
 	v->process_title[1] = TTF_RenderText_Blended(v->font_process,\
 			"Nb_lives during this CTD: ", v->color_title);
 	v->process_title[2] = TTF_RenderText_Blended(v->font_process,\
-			"NB of check before CTD: ", v->color_title);
+			"Speed [1-501]: ", v->color_title);
 	v->process_title[3] = TTF_RenderText_Blended(v->font_process,\
-			"Total nbr of lives: ", v->color_title);
+			"Total nbr process: ", v->color_title);
 	v->process_title[4] = TTF_RenderText_Blended(v->font_process,\
 			"Cycle in CTD: ", v->color_title);
 	v->process_title[5] = TTF_RenderText_Blended(v->font_process,\
@@ -75,7 +75,7 @@ void		get_process_data(t_visu *v, t_cw *cw)
 	v->process_name[1] = TTF_RenderText_Blended(v->font_process,\
 			tmp, v->color_title);
 	ft_memdel((void**)&tmp);
-	tmp = ft_itoa(cw->i_check);
+	tmp = ft_itoa(v->cycle_sec);
 	v->process_name[2] = TTF_RenderText_Blended(v->font_process,\
 			tmp, v->color_title);
 	ft_memdel((void**)&tmp);

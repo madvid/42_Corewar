@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   corewar_struct.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 19:16:11 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/01 19:21:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 10:27:06 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@
 /*
 ** Définition des structures de la partie vm (parsing etc...)
 */
+
+typedef struct		s_color_champ
+{
+	size_t			start;
+	size_t			end;
+	char			*color;
+}					t_color_champ;
 
 typedef struct		s_options
 {

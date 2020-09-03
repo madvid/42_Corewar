@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dasm_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/07 13:52:00 by yaye              #+#    #+#             */
-/*   Updated: 2020/09/01 17:59:55 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 12:07:00 by armajchr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 /*
 ** Writes error message
 ** Resets champion_s[] and chamion_cor[] to 0
-** Exits program 
+** Exits program
 */
 
 void	leave(t_dasm *a, char *s)

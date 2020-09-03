@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu_tools2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:36:32 by armajchr          #+#    #+#             */
-/*   Updated: 2020/09/02 15:10:44 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/04 13:08:42 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		get_process_data2(t_visu *v, t_cw *cw)
 {
 	char	*tmp;
 
-	tmp = ft_itoa(cw->tot_lives);
+	tmp = ft_itoa(ft_lst_len(cw->process));
 	v->process_name[3] = TTF_RenderText_Blended(v->font_process,\
 			tmp, v->color_title);
 	ft_memdel((void**)&tmp);
