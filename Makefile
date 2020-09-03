@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+         #
+#    By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/11 16:48:33 by mdavid            #+#    #+#              #
-#    Updated: 2020/09/02 16:40:34 by armajchr         ###   ########.fr        #
+#    Updated: 2020/09/03 11:23:17 by mdavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,9 +107,9 @@ DSM_FILES =	dasm_main				\
 			dasm_get_s
 
 
-ifeq ($(OS),Darwin)
-	VM_FILES += $(VS_FILES)
-endif
+# ifeq ($(OS),Darwin)
+# 	VM_FILES += $(VS_FILES)
+# endif
 
 VM_SRC = $(addprefix $(SRC_DIR)$(VM_DIR), $(addsuffix .c,$(VM_FILES)))
 AS_SRC = $(addprefix $(SRC_DIR)$(ASM_DIR), $(addsuffix .c,$(ASM_FILES)))
@@ -152,21 +152,22 @@ all: $(ODIR) $(VM) $(ASM) $(DASM)
 
 $(VM): $(ODIR) $(LIBFT) $(OP_OBJ) $(VM_OBJ)
 	@echo "$(VIOLET)[$(CC)] $(CYAN)Constructing executable:$(NOC) $@\n"
-ifeq ($(OS),Linux)
 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB)
-endif
-ifeq ($(OS),Darwin)
-	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB) -F $(FW_PATH)\
-		-framework SDL2\
-		-framework SDL2_image\
-		-framework SDL2_ttf\
-		-framework SDL2_mixer
-	@install_name_tool -change @rpath/$(SDL2) $(SDL2_PATH) $@
-	@install_name_tool -change @rpath/$(SDL2_IMG) $(SDL2_IMG_PATH) $@
-	@install_name_tool -change @rpath/$(SDL2_TTF) $(SDL2_TTF_PATH) $@
-	@install_name_tool -change @rpath/$(SDL2_MXR) $(SDL2_MXR_PATH) $@
--include $(DEP)
-endif
+# ifeq ($(OS),Linux)
+# 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB)
+# endif
+# ifeq ($(OS),Darwin)
+# 	@$(CC) $(FLAGS) -o $@ $(VM_OBJ) $(OP_OBJ) -I$(INC_DIR) $(LIB) -F $(FW_PATH)\
+# 		-framework SDL2\
+# 		-framework SDL2_image\
+# 		-framework SDL2_ttf\
+# 		-framework SDL2_mixer
+# 	@install_name_tool -change @rpath/$(SDL2) $(SDL2_PATH) $@
+# 	@install_name_tool -change @rpath/$(SDL2_IMG) $(SDL2_IMG_PATH) $@
+# 	@install_name_tool -change @rpath/$(SDL2_TTF) $(SDL2_TTF_PATH) $@
+# 	@install_name_tool -change @rpath/$(SDL2_MXR) $(SDL2_MXR_PATH) $@
+# -include $(DEP)
+# endif
 
 $(ASM) : $(ODIR) $(LIBFT) $(OP_OBJ) $(AS_OBJ)
 	@$(CC) $(FLAGS) -o $@ $(AS_OBJ) $(OP_OBJ) $(LIB)
@@ -178,12 +179,13 @@ $(DASM) : $(ODIR) $(LIBFT) $(OP_OBJ) $(DS_OBJ)
 
 $(VM_OBJ) : $(ODIR)%.o: %.c $(INC_VM)
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"
-ifeq ($(OS),Linux)
 	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
-endif
-ifeq ($(OS),Darwin)
-	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
-endif
+# ifeq ($(OS),Linux)
+# 	@$(CC) $(FLAGS) -o $@ -c $< -I$(INC_DIR)
+# endif
+# ifeq ($(OS),Darwin)
+# 	@$(CC) $(FLAGS) -o $@ -MMD -MP -c $< -I$(INC_DIR) -F $(FW_PATH)
+# endif
 
 $(AS_OBJ) : $(ODIR)%.o: %.c $(INC_ASM)
 	@echo " $(VIOLET)[$(CC)] $(GREEN)[$(FLAGS)]$(NOC) $(YELLOW)in progress ...:$(NOC) $< $(RED)->$(NOC) $@"

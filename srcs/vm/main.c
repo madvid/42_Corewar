@@ -6,11 +6,11 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 12:42:17 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/02 17:25:40 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 10:25:34 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "visu.h"
+// #include "visu.h"
 #include "vm.h"
 
 
@@ -33,10 +33,11 @@ int			main(int ac, char **av)
 	vm_champion_introduction(&(p->lst_champs));
 	vm_cw_arena_init(&cw, &p);
 	cw->lst_champs = p->lst_champs;
-	if (p->options->sdl == true)
-		code_error = visualizer(cw, p);
-	else
-		code_error = vm_execution(cw);
+	// if (p->options->sdl == true)
+	// 	code_error = visualizer(cw, p);
+	// else
+	// 	code_error = vm_execution(cw);
+	code_error = vm_execution(cw);
 	vm_error_manager(code_error, &p, &cw);
 	return (0);
 }

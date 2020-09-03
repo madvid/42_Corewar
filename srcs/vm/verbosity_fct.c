@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 14:15:39 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/31 17:50:36 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 11:35:21 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	vprint_pcmv(t_cw *cw, t_process *p, t_arg a)
 {
 	int			j;
 
+	if (cw->tot_cycle < 133)
 	if (p->opcode == 9 && p->carry)
 		return ;
 	ft_printf("ADV %d (0x%.4x -> 0x%.4x) ", a.widht, p->i, \
