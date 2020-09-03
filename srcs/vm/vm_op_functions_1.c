@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 14:04:59 by mdavid            #+#    #+#             */
-/*   Updated: 2020/09/03 14:02:49 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/03 15:19:33 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		op_alive(t_cw *cw, t_process *proc)
 	cw->ctd_lives++;
 	cw->tot_lives++;
 	proc->last_live = cw->tot_cycle;
-	if (-arg > 0 && -arg <= cw->n_champ)
+	if (live_for_a_champ(cw->lst_champs, -arg) == 1)
 	{
 		cw->last_champ = -arg;
 		cw->champ_lives[-arg - 1]++;

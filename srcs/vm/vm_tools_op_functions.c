@@ -3,14 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   vm_tools_op_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armajchr <armajchr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 11:53:41 by yaye              #+#    #+#             */
-/*   Updated: 2020/09/02 16:32:41 by armajchr         ###   ########.fr       */
+/*   Updated: 2020/09/03 15:17:37 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+/*
+** Function: live_for_a_champ
+** Description:
+**	Checks if the argument of instruction alive is one of the ID of a
+**	champion.
+** Return:
+**	1: a champions has it ID.
+**	0: no champion has it ID.
+*/
+
+int		live_for_a_champ(t_list * l_champ, int id)
+{
+	t_list		*xplr;
+
+	xplr = l_champ;
+	while(xplr)
+	{
+		if (((t_champ*)(xplr->cnt))->id == id)
+			return (1);
+		xplr = xplr->next;
+	}
+	return (0);
+}
+
+/*
+**
+**
+**
+**
+*/
 
 void	write_in_reg(t_cw *cw, t_process *p, int arg[3])
 {
