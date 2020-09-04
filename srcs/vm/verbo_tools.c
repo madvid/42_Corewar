@@ -6,7 +6,7 @@
 /*   By: mdavid <mdavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:03:54 by armajchr          #+#    #+#             */
-/*   Updated: 2020/08/31 17:48:44 by mdavid           ###   ########.fr       */
+/*   Updated: 2020/09/04 13:13:27 by mdavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	opcode_v12(void *ptr, t_arg a)
 	range = ((t_process*)(ptr))->opcode == 12 ? a.arg[0] % IDX_MOD \
 		: a.arg[0];
 	dest = range + ((t_process*)(ptr))->i;
-	dest = ((t_process*)(ptr))->opcode == 12 ? dest % MEM_SIZE : dest;
 	ft_printf("P %4d | %s %d (%d)\n", ((t_process*)(ptr))->id, \
 		op_tab[((t_process*)(ptr))->opcode - 1].name, a.arg[0], dest);
 }
