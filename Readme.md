@@ -138,13 +138,18 @@ typedef struct		header_s
 
 ### Partie VM:
 
-#### Parsing des fichiers des champions:
+#### Description du format des fichiers des champions [fichier].cor:
 Le contenue d'un fichier correspondant à un champion est en bycode.
 Ce fichier doit contenir une entête constituée:
 * d'un nombre magique '0x ea 83 f3'. Comme nous pouvons le voir ce nombre magique
-est constitué de 4 valeurs en hexadécimales, comme chacune des valeurs hexadécimales
-encode 2 bits, le nombre magique occupe 8 bits et donc 1 octets. 
-
+est constitué de 4 valeurs hexadécimales, chacunes des valeurs hexadécimales représentent 1 byte/octet, le nombre magique occupe donc 4 octets et donc 32 bits. 
+* Un ensemble de 128 octets réservé pour le nom du champion.
+* Un *padding* de 4 octets, qui ont comme valeur NULL,
+* 4 octets donnant la taille (```CHP_SIZE```) du bytecode du champion (que l'on trouve en dernier).
+* Un champ d'octets correspondant au commentaire d'une taille de 2048 octets.
+* Un *padding* de 4 octets, devant être NULL,
+* Un champ de ```CHP_SIZE``` octets.
+Nous ne devons trouver rien d'autre à priori, le fichier doit donc être terminé après le code du champion.
 
 ### Brouillons:
 
