@@ -143,13 +143,19 @@ Le contenue d'un fichier correspondant à un champion est en bycode.
 Ce fichier doit contenir une entête constituée:
 * d'un nombre magique '0x ea 83 f3'. Comme nous pouvons le voir ce nombre magique
 est constitué de 4 valeurs hexadécimales, chacunes des valeurs hexadécimales représentent 1 byte/octet, le nombre magique occupe donc 4 octets et donc 32 bits. 
-* Un ensemble de 128 octets réservé pour le nom du champion.
+* Un ensemble de 128 (```PROG_NAME_LENGTH```) octets réservé pour le nom du champion.
 * Un *padding* de 4 octets, qui ont comme valeur NULL,
 * 4 octets donnant la taille (```CHP_SIZE```) du bytecode du champion (que l'on trouve en dernier).
-* Un champ d'octets correspondant au commentaire d'une taille de 2048 octets.
+* Un champ d'octets correspondant au commentaire d'une taille de 2048 (```COMMENT_LENGTH```) octets.
 * Un *padding* de 4 octets, devant être NULL,
-* Un champ de ```CHP_SIZE``` octets.
-Nous ne devons trouver rien d'autre à priori, le fichier doit donc être terminé après le code du champion.
+* Un champ de ```chp_size``` octets.
+Nous ne devons trouver rien d'autre a priori, le fichier doit donc être terminé après le code du champion.
+
+Les tailles de plusieurs des champs d'octets étant définies dans le header op.h, la section de code correspondant au parsing doit faire appel à ces définitions.
+Il est important de vérifier ces champs d'octets lorsque cela est possible, notamment le *magic_number* ainsi que la valeur des octets constituant les 2 paddings.
+Pour ce qui est du contenue du nom, commentaire et du code du champion, il a été choisi de ne pas faire de vérification quant à leurs contenus.
+Cela n'est a priori aucunement gênant pour ces 2 premiers champs, mais pour le dernier des erreurs concernant les valeurs des registres peuvent être présentés par exemple, mais nous ne les vérifierons qu'au moment de l'exécution du code (voir la section correspondante).
+
 
 ### Brouillons:
 
