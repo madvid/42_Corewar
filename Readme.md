@@ -1,6 +1,7 @@
 # Projet Corewar:
 auteurs: armajchr, mdavid, yaye
 
+---
 ## Présentation du projet:
 [source: pdf du sujet 42]
 * Le Corewar est un jeu très particulier.
@@ -13,12 +14,27 @@ Il consiste à rassembler autour d’une "machine virtuelle" des "joueurs", lesq
 ## Description d'ensemble:
 [source: pdf du sujet 42]
 Le projet consiste à rendre trois parties distinctes :
-* L’assembleur: C’est le programme qui va compiler vos champions et les traduire du langage dans lequel vous allez les écrire (l’assembleur) vers un "bytecode", à savoir un code machine qui sera directement interprété par la machine virtuelle.
-* La machine virtuelle: C’est l’"arène" dans laquelle les champions vont s’exécuter. Elle offre de nombreuses fonctionnalités, toutes utiles au combat des champions. Il va de soi qu’elle permet d’exécuter plusieurs processus en simultané ; on vous demande une arène, pas un simulateur de one-man show.
+* L’assembleur: le programme qui va compiler les champions et les traduire du langage dans lequel vous allez les écrire (l’assembleur) vers un "bytecode", à savoir un code machine qui sera directement interprété par la machine virtuelle.
+* La machine virtuelle: l’"arène" dans laquelle les champions vont s’exécuter. Elle offre de nombreuses fonctionnalités, toutes utiles au combat des champions. Il va de soi qu’elle permet d’exécuter plusieurs processus en simultané : on vous demande une arène, pas un simulateur de one-man show.
 * Le champion: C’est un cas un peu particulier. Plus tard, pour le championnat, vous allez devoir rendre un champion si puissant et effrayant qu’il ferait trembler de peur un bocalien. Cependant, comme cela constitue en soi un travail conséquent, et que pour l’instant on est juste intéressés par votre capacité à réaliser les autres programmes du Corewar, et que votre champion du moment ne sert qu’à nous prouver que vous savez écrire des bouts d’ASM de Corewar, le champion à rendre dans le cadre de ce projet précis n’a besoin d’effrayer qu’un hérisson neurasthénique.
 
 ## Objectif(s) du document:
-Ce document sert `a rassembler l'ensemble des réflexions de ses auteurs concernant le projet. Vous pourrez y trouver des explications concernant certains concepts, des pistes de compréhension et de réflexions.
+Ce document présente et introduit le projet corewar et contient également un certain nombre d'informations concernant la méthode employer ainsi qu'une description des ressources du projet (op.h et op.c).
+
+## Présentation du projet:
+
+---
+
+## Description du code:
+### ASM:
+
+### VM:
+
+### Les options:
+
+---
+
+## Les ressources:
 
 ### Fichier op.h:
 Quelques explications concernant les macros définies dans le fichier ```op.h```:
@@ -40,8 +56,9 @@ Il faut distinguer c'est 3 objets, un bit est la plus petite unité mémoire qui
 
 ---
 #### Remarque:
-Attention, en se référant aux différents cheat sheet, on peut être confus en voyant que pour les registres on parle de 4 bytes et 1 byte.
-Cela vient du fait que dans le fichier bytecode et dans la zone mémoire de la VM, le byte correspondant/faisant référence au registre est son adresse, et non pas le registre lui même. N'ayant que 16 registres à disposition pour chaque champion, il devient donc logique d'être en mesure de distinguer leurs adresses avec un seul byte uniquement.
+Attention, en se référant aux différents cheat sheet (voir la section bibliographie), on peut être confus en voyant que pour les registres il est parfois évoqué une taille de 4 octets et d'autres fois une taille d'un octet.
+
+Cela vient du fait que dans le fichier bytecode et dans la zone mémoire de la VM, le byte correspondant à un registre correspond à son numéro/son indice, son indice au sein du tableau de registres. Et non pas le contenu du registre.
 
 ---
 
