@@ -14,23 +14,35 @@ Il consiste à rassembler autour d’une "machine virtuelle" des "joueurs", lesq
 ## Description d'ensemble:
 [source: pdf du sujet 42]
 Le projet consiste à rendre trois parties distinctes :
-* L’assembleur: le programme qui va compiler les champions et les traduire du langage dans lequel vous allez les écrire (l’assembleur) vers un "bytecode", à savoir un code machine qui sera directement interprété par la machine virtuelle.
-* La machine virtuelle: l’"arène" dans laquelle les champions vont s’exécuter. Elle offre de nombreuses fonctionnalités, toutes utiles au combat des champions. Il va de soi qu’elle permet d’exécuter plusieurs processus en simultané : on vous demande une arène, pas un simulateur de one-man show.
-* Le champion: C’est un cas un peu particulier. Plus tard, pour le championnat, vous allez devoir rendre un champion si puissant et effrayant qu’il ferait trembler de peur un bocalien. Cependant, comme cela constitue en soi un travail conséquent, et que pour l’instant on est juste intéressés par votre capacité à réaliser les autres programmes du Corewar, et que votre champion du moment ne sert qu’à nous prouver que vous savez écrire des bouts d’ASM de Corewar, le champion à rendre dans le cadre de ce projet précis n’a besoin d’effrayer qu’un hérisson neurasthénique.
+* **L’assembleur**: le programme qui va compiler les champions et les traduire du langage dans lequel vous allez les écrire (l’assembleur) vers un "bytecode", à savoir un code machine qui sera directement interprété par la machine virtuelle.
+* **La machine virtuelle**: l’"arène" dans laquelle les champions vont s’exécuter. Elle offre de nombreuses fonctionnalités, toutes utiles au combat des champions. Il va de soi qu’elle permet d’exécuter plusieurs processus en simultané : on vous demande une arène, pas un simulateur de one-man show.
+* **Le champion**: C’est un cas un peu particulier. Plus tard, pour le championnat, vous allez devoir rendre un champion si puissant et effrayant qu’il ferait trembler de peur un bocalien. Cependant, comme cela constitue en soi un travail conséquent, et que pour l’instant on est juste intéressés par votre capacité à réaliser les autres programmes du Corewar, et que votre champion du moment ne sert qu’à nous prouver que vous savez écrire des bouts d’ASM de Corewar, le champion à rendre dans le cadre de ce projet précis n’a besoin d’effrayer qu’un hérisson neurasthénique.
 
-## Objectif(s) du document:
-Ce document présente et introduit le projet corewar et contient également un certain nombre d'informations concernant la méthode employer ainsi qu'une description des ressources du projet (op.h et op.c).
 
 ## Présentation du projet:
 
 ---
 
-## Description du code:
 ### ASM:
+L'exécutable ```asm``` est généré à partir de la règle ```make asm``` présente dans le Makefile. Comme indiqué précédemment, l'assembleur permet de traduire les fichiers écrits en assembleur (fichier avec extension *.s*) des champions en bytecode (fichier avec extension *.cor*).
+
+### DASM:
+L'exécutable ```dasm``` est généré à partir de la règle ```make dasm``` présente dans le Makefile. Ce programme est un bonus du projet, il permet de *'desassembler'* les fichiers en bytecode (extension *.cor*) en fichier assembleur (extension *.s*).
 
 ### VM:
+Deux exécutables sont associés avec la machine virtuelle:
+* ```corewar```,
+* ```corewar_visu```.
+
+Ces exécutables sont générés à partir des règles ```make corewar``` et ```make corewar_visu``` présentent dans le Makefile.
+L'exécutable ```corewar``` ne gère pas le viualizer accessible via le flag ```-SDL``` tandis que l'exécutable ```corewar_visu``` gère l'option permettant de lancer le visualizer. L'exécutable ```corewar_visu``` fonctionne uniquement sous *OS* Mac, le visualizer est donc uniquement disponible sous *MacOS*.
 
 ### Les options:
+Plusieurs options, sous forme de *flag*, sont disponibles avec l'exécutable ```corewar```:
+* ```-dump N```: option dump, permet d'afficher sur la sortie standard l'état de l'arène au $N^{ieme}$ cycle,
+* ```-v verbose_lvl```: option verbose, permet d'activer la verbose,
+* ```-SDL```: flag permettant de lancer le visualizer au lancement du programme,
+* ```-m on```: option musique, ,
 
 ---
 
